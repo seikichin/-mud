@@ -1,0 +1,11 @@
+//yinghua-steps.c
+inherit SKILL;
+
+void setup() {
+  set("name", "樱花步法");
+  set("type", "dodge");
+  set("usage/dodge", 1);
+  set("skill_class", "npc");
+  set("difficulty", 200);
+  set("effective_level", 120);
+}

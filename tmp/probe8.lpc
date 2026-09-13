@@ -1,0 +1,38 @@
+// probe8.lpc - which promise efuns does THIS driver actually have?
+// Referencing an undefined efun is a compile error: that is the signal.
+
+async int pf() {
+  await async_yield();
+  return 1;
+}
+
+string p_catch(string arg) {
+  promise p = promise_create();
+  promise q;
+
+  q = promise_catch(p, function(mixed r) { return r; });
+  return sprintf("catch ok %O", promisep(q));
+}
+
+string p_all(string arg) {
+  promise a, b;
+
+  a = promise_all(({}));
+  b = promise_all_settled(({}));
+  return sprintf("all=%O all_settled=%O", promisep(a), promisep(b));
+}
+
+string p_race(string arg) {
+  promise a, b;
+
+  a = promise_any(({}));
+  b = promise_race(({}));
+  return sprintf("any=%O race=%O", promisep(a), promisep(b));
+}
+
+string p_cancel(string arg) {
+  promise p = pf();
+
+  promise_cancel(p);
+  return sprintf("cancel ok status=%d", promise_status(p));
+}

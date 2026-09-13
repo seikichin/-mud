@@ -1,0 +1,3 @@
+// uptest parent base v2
+object mark_ob() { return this_object(); }
+int query_base_mark() { return 9002; }

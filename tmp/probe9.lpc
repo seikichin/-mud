@@ -1,0 +1,39 @@
+// probe9.lpc - does recompile_object() refresh stat()[2] (ob->load_time)?
+
+string p_who(string f) {
+  object o;
+  mixed *a, *b;
+  int before, after;
+
+  o = find_object(f);
+  if (!o) return "not loaded: " + f;
+
+  a = stat(f);
+  before = a[2];
+  recompile_object(o);
+  b = stat(f);
+  after = b[2];
+
+  return sprintf("%s load_time before=%d after=%d mtime=%d changed=%d",
+    f, before, after, a[1], before != after);
+}
+
+string p_load(string f) {
+  object o;
+  mixed *a, *b;
+  int before, after;
+
+  catch(destruct(find_object(f)));   // 先卸掉，改用 load_object 重新载入
+  catch(load_object(f));
+  o = find_object(f);
+  if (!o) return "load failed: " + f;
+
+  a = stat(f);
+  before = a[2];
+  recompile_object(o);
+  b = stat(f);
+  after = b[2];
+
+  return sprintf("%s [after load_object] load_time=%d then recompile=%d mtime=%d",
+    f, before, after, a[1]);
+}

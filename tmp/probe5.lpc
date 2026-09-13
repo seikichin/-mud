@@ -1,0 +1,105 @@
+// probe5.lpc - verify primitives needed by the updatep refactor
+// driven in-game:  call /tmp/probe5->p_xxx("...")
+// All functions take one dummy arg because cmds/arch/call.lpc always
+// passes at least one (possibly empty) parameter.
+
+#include <stat.h>
+
+int ends4(string s) { return sizeof(s) >= 4 && s[<4..] == ".lpc"; }
+
+// --- 1. the exact behaviour of the buggy suffix expression ------------
+string p_slice(string arg) {
+  string f = "foo.lpc";
+  int n = sizeof(f);
+
+  return sprintf("n=%d [n-2..n]=[%s] [n-3..n]=[%s] last4=[%s] ends4=%d",
+    n, f[(n - 2)..n], f[(n - 3)..n], f[<4..], ends4(f));
+}
+
+// --- 2. get_dir(dir,-1): are directories included? --------------------
+string p_dir(string d) {
+  mixed *full;
+  string out = "";
+  int i, nf = 0, nd = 0;
+
+  full = get_dir(d, -1);
+  for (i = 0; i < sizeof(full); i++) {
+    if (full[i][1] == -2) {
+      nd++;
+      if (nd <= 4) out += "D:" + full[i][0] + " ";
+    } else {
+      nf++;
+      if (nf <= 4) out += "F:" + full[i][0] + " ";
+    }
+  }
+  return sprintf("d=%s entries=%d files=%d dirs=%d %s", d, sizeof(full), nf, nd, out);
+}
+
+// --- 3. stat() shape --------------------------------------------------
+string p_stat(string f) {
+  mixed *i;
+
+  i = stat(f);
+  if (!pointerp(i)) return sprintf("stat(%s)=%O", f, i);
+  return sprintf("stat(%s)=%O size=%O mtime=%O loaded=%O ctime=%O",
+    f, i, i[STAT_FILE_SIZE], i[STAT_LAST_MODIFIED],
+    i[STAT_TIME_OBJECT_LOADED], i[STAT_TIME_FILE_CREATED]);
+}
+
+// --- 4. is recompile_object() present? --------------------------------
+string p_recomp(string f) {
+  object o;
+  int n;
+
+  o = find_object(f);
+  if (!o) return sprintf("not loaded: %s", f);
+  n = recompile_object(o);
+  return sprintf("recompile_object(%s) = %d", f, n);
+}
+
+// --- 5. async worker: suspend, then write to the captured player -------
+async void p_worker(object who, int steps) {
+  int i;
+  promise y;
+
+  for (i = 1; i <= steps; i++) {
+    if (!who) return;
+    y = async_yield();
+    tell_object(who, sprintf("[probe5] step %d/%d  yield-status=%d\n",
+      i, steps, promise_status(y)));
+    await y;
+  }
+  if (who) tell_object(who, "[probe5] worker done\n");
+}
+
+string p_async(string arg) {
+  object who = this_player();
+
+  p_worker(who, 3);
+  return sprintf("fired who=%O scheduler=%O", who, async_info(1));
+}
+
+// --- 6. acatch compiles and catches --------------------------------
+async void p_acatch_worker(object who) {
+  mixed err;
+
+  await async_yield();
+  err = acatch(error("boom-from-acatch"));
+  if (who) tell_object(who, sprintf("[probe5] acatch -> %O\n", err));
+}
+
+string p_acatch(string arg) {
+  object who = this_player();
+
+  p_acatch_worker(who);
+  return "acatch fired";
+}
+
+// --- 7. eval limit semantics (what set_eval_limit(1) really does) -----
+string p_eval(string arg) {
+  int old, remain;
+
+  old = set_eval_limit(1);
+  remain = set_eval_limit(-1);
+  return sprintf("after set_eval_limit(1): max=%d remaining=%d", old, remain);
+}

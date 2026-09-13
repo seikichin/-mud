@@ -1,0 +1,2 @@
+// uptest c
+int query_mark() { return 333; }

@@ -1,0 +1,550 @@
+//	/d/fy/npc/gifter.lpc
+//	礼物使者  gift angel
+//
+//	来源：D:\\mud\\fymud\\d\\fy\\npc\\gifter.c （ldmud 风云，GBK 编码）
+//	移植至 fluffos / fy2005 的适配说明：
+//	  1. 本档与题库 /data/poem/QRdata.txt、/data/poem/grewords.txt 均为 UTF-8。
+//	  2. fluffos 的字符串按「字符（码点）」索引与切片（str[i]、str[i..j] 皆为全闭区间），
+//	     故 swap_word() / insert_string() 改写为字符级实现（原版按 GBK 双字节切分）。
+//	  3. ask 指令只认 inquiry 中的「函数指针」——dbase 的 query() 会执行
+//	     evaluate(fp, this_object())，所以各入口函数皆接收一个参数。
+//	  4. 原版 call_out("greeting", ...) 却没有定义 greeting()，此处补上以免运行时出错。
+//	  5. 原版死代码 random_string()（GBK 双字节乱序）已移除，未被任何地方调用。
+
+inherit NPC;
+inherit F_VENDOR;
+
+#include <ansi.h>
+
+#define CHANNEL_D	"/adm/daemons/channeld"
+#define QR_DATA		"/data/poem/QRdata.txt"
+#define GRE_WORDS	"/data/poem/grewords.txt"
+
+#define QR_MAX_LINE		703		// 开心词典题库行数
+#define GRE_MAX_LINE	12646	// 英语单词表行数
+
+//	入口：供 set("inquiry") 以函数指针引用（dbase 会带 this_object() 调用）
+int get_reward(object ob);
+int ask_test(object ob);
+int ask_gre(object ob);
+
+//	内部实现
+string get_question(object me);
+string get_words(object me);
+string insert_string(string str);
+string swap_word(string str);
+int do_answer(string arg);
+int do_guess(string arg);
+
+
+void create()
+{
+	object cloth;
+
+	set_name(HIM + "礼物使者" + NOR,
+		({ "gift angel", "tian shi", "gift", "angel", "liwu" }));
+
+	set("long", "礼物天使，负责风云节庆期间礼物发放的使者。每天也可以找她参与答题\n");
+	set("gender", "女性");
+	set("age", 18);
+	set("attitude", "friendly");
+	set("can_speak", 1);
+
+	set("max_gin", 5000);
+	set("max_kee", 5000);
+	set("max_sen", 5000);
+	set("max_force", 5000);
+	set("force", 5000);
+	set("enforce", 350);
+
+	set("str", 50);
+	set("int", 50);
+	set("con", 50);
+	set("dex", 50);
+	set("combat_exp", 1200000);
+
+	set("inquiry", ([
+		"节日礼物"	: (: get_reward :),
+		"礼物"		: (: get_reward :),
+		"question"	: (: ask_test :),
+		"开心词典"	: (: ask_test :),
+		"开心辞典"	: (: ask_test :),
+		"english"	: (: ask_gre :),
+		"English"	: (: ask_gre :),
+		"单词"		: (: ask_gre :),
+	]));
+
+	set("vendor_goods", ([
+		"/obj/wiz_toy/lvyi.lpc"			: 10,
+		"/obj/wiz_toy/qingshiling.lpc"	: 10,
+	]));
+
+	setup();
+
+	cloth = carry_object("/obj/armor/cloth");
+	cloth->set_name(MAG + "霓裳羽衣" + NOR, ({ "nishang yuyi", "yuyi" }));
+	cloth->set("long", "这是一件霓裳羽衣(nishang yuyi)  婷婷袅袅，锦簇花攒。\n");
+	cloth->set("value", 0);
+	cloth->wear();
+}
+
+void reset()
+{
+	set("vendor_goods", ([
+		"/obj/wiz_toy/lvyi.lpc"			: 10,
+		"/obj/wiz_toy/qingshiling.lpc"	: 10,
+		"/obj/generate/boots_110_18.lpc                ": 1,
+		"/obj/generate/boots_110_8.lpc                 ": 1,
+		"/obj/generate/boots_130_19.lpc                ": 1,
+		"/obj/generate/boots_130_9.lpc                 ": 1,
+		"/obj/generate/boots_150_10.lpc                ": 1,
+		"/obj/generate/boots_150_20.lpc                ": 1,
+		"/obj/generate/boots_15_12.lpc                 ": 1,
+		"/obj/generate/boots_15_2.lpc                  ": 1,
+		"/obj/generate/boots_170_11.lpc                ": 1,
+		"/obj/generate/boots_170_21.lpc                ": 1,
+		"/obj/generate/boots_25_13.lpc                 ": 1,
+		"/obj/generate/boots_25_3.lpc                  ": 1,
+		"/obj/generate/boots_40_14.lpc                 ": 1,
+		"/obj/generate/boots_40_4.lpc                  ": 1,
+		"/obj/generate/boots_55_15.lpc                 ": 1,
+		"/obj/generate/boots_55_5.lpc                  ": 1,
+		"/obj/generate/boots_70_16.lpc                 ": 1,
+		"/obj/generate/boots_70_6.lpc                  ": 1,
+		"/obj/generate/boots_90_17.lpc                 ": 1,
+		"/obj/generate/boots_90_7.lpc                  ": 1,
+		"/obj/generate/cloth1_130_8.lpc                ": 1,
+		"/obj/generate/cloth1_150_19.lpc               ": 1,
+		"/obj/generate/cloth1_25_2.lpc                 ": 1,
+		"/obj/generate/cloth1_40_13.lpc                ": 1,
+		"/obj/generate/cloth1_70_5.lpc                 ": 1,
+		"/obj/generate/cloth1_90_16.lpc                ": 1,
+		"/obj/generate/cloth2_110_17.lpc               ": 1,
+		"/obj/generate/cloth2_110_7.lpc                ": 1,
+		"/obj/generate/cloth2_15_1.lpc                 ": 1,
+		"/obj/generate/cloth2_15_11.lpc                ": 1,
+		"/obj/generate/cloth2_170_10.lpc               ": 1,
+		"/obj/generate/cloth2_170_20.lpc               ": 1,
+		"/obj/generate/cloth2_55_14.lpc                ": 1,
+		"/obj/generate/cloth2_55_4.lpc                 ": 1,
+		"/obj/generate/cloth3_130_18.lpc               ": 1,
+		"/obj/generate/cloth3_150_9.lpc                ": 1,
+		"/obj/generate/cloth3_25_12.lpc                ": 1,
+		"/obj/generate/cloth3_40_3.lpc                 ": 1,
+		"/obj/generate/cloth3_70_15.lpc                ": 1,
+		"/obj/generate/cloth3_90_6.lpc                 ": 1,
+		"/obj/generate/head_110_17.lpc                 ": 1,
+		"/obj/generate/head_110_7.lpc                  ": 1,
+		"/obj/generate/head_130_18.lpc                 ": 1,
+		"/obj/generate/head_130_8.lpc                  ": 1,
+		"/obj/generate/head_150_19.lpc                 ": 1,
+		"/obj/generate/head_150_9.lpc                  ": 1,
+		"/obj/generate/head_15_1.lpc                   ": 1,
+		"/obj/generate/head_15_11.lpc                  ": 1,
+		"/obj/generate/head_170_10.lpc                 ": 1,
+		"/obj/generate/head_170_21.lpc                 ": 1,
+		"/obj/generate/head_25_12.lpc                  ": 1,
+		"/obj/generate/head_25_2.lpc                   ": 1,
+		"/obj/generate/head_40_13.lpc                  ": 1,
+		"/obj/generate/head_40_3.lpc                   ": 1,
+		"/obj/generate/head_55_14.lpc                  ": 1,
+		"/obj/generate/head_55_4.lpc                   ": 1,
+		"/obj/generate/head_70_15.lpc                  ": 1,
+		"/obj/generate/head_70_5.lpc                   ": 1,
+		"/obj/generate/head_90_16.lpc                  ": 1,
+		"/obj/generate/head_90_6.lpc                   ": 1,
+		"/obj/generate/neck_110_17.lpc                 ": 1,
+		"/obj/generate/neck_110_7.lpc                  ": 1,
+		"/obj/generate/neck_130_18.lpc                 ": 1,
+		"/obj/generate/neck_130_8.lpc                  ": 1,
+		"/obj/generate/neck_150_19.lpc                 ": 1,
+		"/obj/generate/neck_150_9.lpc                  ": 1,
+		"/obj/generate/neck_15_1.lpc                   ": 1,
+		"/obj/generate/neck_15_11.lpc                  ": 1,
+		"/obj/generate/neck_170_10.lpc                 ": 1,
+		"/obj/generate/neck_170_20.lpc                 ": 1,
+		"/obj/generate/neck_25_12.lpc                  ": 1,
+		"/obj/generate/neck_25_2.lpc                   ": 1,
+		"/obj/generate/neck_40_13.lpc                  ": 1,
+		"/obj/generate/neck_40_3.lpc                   ": 1,
+		"/obj/generate/neck_55_14.lpc                  ": 1,
+		"/obj/generate/neck_55_4.lpc                   ": 1,
+		"/obj/generate/neck_70_15.lpc                  ": 1,
+		"/obj/generate/neck_70_5.lpc                   ": 1,
+		"/obj/generate/neck_90_16.lpc                  ": 1,
+		"/obj/generate/neck_90_6.lpc                   ": 1,
+		"/obj/generate/surcoat_110_19.lpc              ": 1,
+		"/obj/generate/surcoat_110_7.lpc               ": 1,
+		"/obj/generate/surcoat_130_20.lpc              ": 1,
+		"/obj/generate/surcoat_130_8.lpc               ": 1,
+		"/obj/generate/surcoat_150_23.lpc              ": 1,
+		"/obj/generate/surcoat_150_9.lpc               ": 1,
+		"/obj/generate/surcoat_15_1.lpc                ": 1,
+		"/obj/generate/surcoat_15_13.lpc               ": 1,
+		"/obj/generate/surcoat_170_12.lpc              ": 1,
+		"/obj/generate/surcoat_170_22.lpc              ": 1,
+		"/obj/generate/surcoat_25_14.lpc               ": 1,
+		"/obj/generate/surcoat_25_2.lpc                ": 1,
+		"/obj/generate/surcoat_40_15.lpc               ": 1,
+		"/obj/generate/surcoat_40_3.lpc                ": 1,
+		"/obj/generate/surcoat_55_16.lpc               ": 1,
+		"/obj/generate/surcoat_55_4.lpc                ": 1,
+		"/obj/generate/surcoat_70_17.lpc               ": 1,
+		"/obj/generate/surcoat_70_5.lpc                ": 1,
+		"/obj/generate/surcoat_90_18.lpc               ": 1,
+		"/obj/generate/surcoat_90_6.lpc                ": 1,
+		"/obj/generate/wrists_110_6.lpc                ": 1,
+		"/obj/generate/wrists_130_7.lpc                ": 1,
+		"/obj/generate/wrists_150_8.lpc                ": 1,
+		"/obj/generate/wrists_15_1.lpc                 ": 1,
+		"/obj/generate/wrists_170_9.lpc                ": 1,
+		"/obj/generate/wrists_25_1.lpc                 ": 1,
+		"/obj/generate/wrists_40_2.lpc                 ": 1,
+		"/obj/generate/wrists_55_3.lpc                 ": 1,
+		"/obj/generate/wrists_70_4.lpc                 ": 1,
+		"/obj/generate/wrists_90_5.lpc                 ": 1,
+	]));
+}
+
+void init()
+{
+	object ob;
+
+	::init();
+	if (interactive(ob = this_player()) && !is_fighting()) {
+		remove_call_out("greeting");
+		call_out("greeting", 1, ob);
+	}
+	add_action("do_vendor_list", "list");
+	add_action("do_answer", "answer");
+	add_action("do_guess", "guess");
+}
+
+void greeting(object ob)
+{
+	if (!ob || environment(ob) != environment()) return;
+	// 礼物使者不主动搭话；保留此函数供 call_out 调用。
+	return;
+}
+
+//	节日礼物：交由 /adm/daemons/festivald 处理
+//
+//	注意：festivald 依赖 /adm/etc/festival 数据档与 localtime() 等接口，
+//	已于 2026-09-13 移植为 /adm/daemons/festivald.lpc（并已登记到 adm/etc/preload）。
+//	此处保留存在性检查，避免 call_other 到不存在的物件而抛运行时错误。
+int get_reward(object ob)
+{
+	object me;
+	string ret;
+
+	me = this_player();
+
+	if (file_size("/adm/daemons/festivald.lpc") < 0) {
+		tell_object(me, "礼物使者说道：节日奖励尚未开放，暂时没有可以领取的礼物。\n");
+		return 1;
+	}
+
+	ret = "/adm/daemons/festivald"->get_reward(me);
+	tell_object(me, ret);
+	return 1;
+}
+
+//	出题：开心词典
+int ask_test(object ob)
+{
+	object me;
+	string question;
+	int errortimes;
+
+	me = this_player();
+
+	if (me->is_busy()) {
+		tell_object(me, "礼物使者说道：回答问题太费脑筋了，你还是休息一下吧。\n");
+		return 1;
+	}
+
+	if (me->query("last_kxcd") - 240 >= time() && !wizardp(me)) {
+		tell_object(me, "礼物使者说道：回答问题太费脑筋了，你还是休息一下吧。\n");
+		return 1;
+	}
+
+	if (me->query_temp("answer_kxcd") && !wizardp(me)) {
+		tell_object(me, "你没有在规定时间内回答问题！\n");
+		me->delete_temp("kxcd/lianxu");
+		me->delete_temp("answer_kxcd");
+		return 1;
+	}
+
+	if (me->query("kxcd/success") >= 60 && me->query("combat_exp") < 100000) {
+		tell_object(me, "在达到十万经验之前，你只有六十次答题奖励机会。\n");
+		return 1;
+	}
+	if (me->query("kxcd/success") >= 180 && me->query("combat_exp") < 200000) {
+		tell_object(me, "在达到二十万经验之前，你只有一百八十次答题奖励机会。\n");
+		return 1;
+	}
+	if (me->query("kxcd/success") >= 300 && me->query("combat_exp") < 300000) {
+		tell_object(me, "在达到三十万经验之前，你只有三百次答题奖励机会。\n");
+		return 1;
+	}
+	if (me->query("kxcd/success") >= 1000) {
+		tell_object(me, "礼物使者道：你是此中高手，这些都难不倒你了。\n");
+		return 1;
+	}
+
+	if (time() - query_temp("last_test_time") < 3) {
+		tell_object(me, "礼物使者答道：我正在准备出题，请你稍等！\n");
+		return 1;
+	}
+	set_temp("last_test_time", time());
+	me->set("last_kxcd", time() + 300);
+
+	question = get_question(me);
+	errortimes = 0;
+	while (question == "题库出错了!" && errortimes < 10) {
+		question = get_question(me);
+		errortimes = errortimes + 1;
+	}
+
+	tell_object(me, "礼物使者说道：准备好了吗？我开始出题了哦。\n\n");
+	tell_object(me, HIY + question + "\n" + NOR);
+	tell_object(me, "\n");
+	tell_object(me, "礼物使者说道：请用answer来回答(例如“answer 3”，表示你认为\n"
+		+ "第三个答案是正确的)，你只有3分钟的时间。你可以求助广大的bt们。\n");
+	return 1;
+}
+
+//	随机交换相邻两个字的次序（对人没问题，对机器人很难）
+string swap_word(string str)
+{
+	int len, i, w1;
+	string *words, tmp;
+
+	words = ({});
+	len = strlen(str);
+	for (i = 0; i < len; i++)
+		words += ({ str[i..i] });
+
+	if (sizeof(words) < 2) return str;
+
+	w1 = random(sizeof(words) - 1);
+	tmp = words[w1];
+	words[w1] = words[w1 + 1];
+	words[w1 + 1] = tmp;
+
+	str = "";
+	for (i = 0; i < sizeof(words); i++)
+		str += words[i];
+
+	return str;
+}
+
+//	随机插入干扰字符，增加机器人难度
+string insert_string(string str)
+{
+	int i;
+	string *spch, tmp;
+
+	tmp = "";
+	spch = ({
+		"├", "┽", "┾", "┿", "┠", "┡", "┢", "┣", "│", "┬", "┭", "┮", "┯",
+		"┰", "┱", "┲", "┳", "┼", "┽", "┾", "┿", "┠", "┡", "┢", "＄", "￡", "‰",
+		"％", "℃", "¤", "￠", "ㄇ", "ㄋ", "ㄎ", "ㄑ", "ㄘ", "ㄨ", "ㄙ", "ㄖ", "ㄒ", "ㄏ",
+		"ㄙ", "ㄩ", "ョ", "ュ", "ャ", "ω", "ψ", "γ", "δ"
+	});
+
+	for (i = 0; i < strlen(str); i++) {
+		tmp += str[i..i];
+		if (random(10) == 1 && i % 2)
+			tmp += spch[random(sizeof(spch))];
+	}
+	return tmp;
+}
+
+//	随机取一个英语单词题：给中文解释，要求回答英文单词
+string get_words(object me)
+{
+	int i, tries;
+	string question, *file, output;
+
+	output = "";
+
+	for (tries = 0; tries < 8; tries++) {
+		i = random(GRE_MAX_LINE) + 1;
+		question = read_file(GRE_WORDS, i, 1);
+		if (!stringp(question)) continue;
+
+		file = explode(question, "@@@@");
+		if (sizeof(file) != 2) continue;
+		if (!strlen(replace_string(file[0], "\n", ""))) continue;
+		if (!strlen(replace_string(file[1], "\n", ""))) continue;
+
+		me->set_temp("gre/explain", file[1]);
+		me->set_temp("gre/words", replace_string(file[0], "\n", ""));
+		output = file[1];
+		return output;
+	}
+	return "";
+}
+
+int ask_gre(object ob)
+{
+	object me;
+	string question;
+
+	me = this_player();
+
+	if (me->query("last_kxcd") >= time() && !wizardp(me)) {
+		tell_object(me, "礼物使者说道：回答问题太费脑筋了，你还是休息一下吧。\n");
+		return 1;
+	}
+	if (time() - query_temp("last_gre_time") < 3) {
+		tell_object(me, "礼物使者答道：我正在准备出题，请你稍等！\n");
+		return 1;
+	}
+	set_temp("last_gre_time", time());
+	me->set("last_kxcd", time() + 60);
+
+	question = get_words(me);
+	tell_object(me, "礼物使者说道：准备好了吗？我开始出题了哦。\n现在给你考的是英语单词题，根据下面单词的中文解释回答出正确的单词。\n");
+	tell_object(me, HIY + question + "\n" + NOR);
+	tell_object(me, "礼物使者说道：请用“guess 答案”的方式来回答。\n");
+	return 1;
+}
+
+//	回答开心词典（answer <序号>）
+int do_answer(string arg)
+{
+	object me;
+
+	me = this_player();
+	if (!me->query_temp("answer_kxcd")) return 0;
+	if (!arg || arg == "") {
+		tell_object(me, "礼物使者疑惑道：你的答案呢？\n");
+		return 1;
+	}
+	/*
+	 * 注意：fluffos 的 (int)"1" 仍然是字符串 "1"（不做数字解析），
+	 * 这与 ldmud 不同，必须改用 to_int()。
+	 */
+	if (to_int(arg) != me->query_temp("answer_kxcd")) {
+		tell_object(me, "礼物使者笑道：哈哈，你回答错了，正确的答案是" + HIR
+			+ me->query_temp("answer_kxcd") + NOR + "。\n");
+		me->delete_temp("kxcd/lianxu");
+		me->delete_temp("answer_kxcd");
+		return 1;
+	}
+
+	tell_object(me, "礼物使者说道：恭喜你，答对了！\n");
+
+	if (me->query("last_kxcd") <= time()) {
+		tell_object(me, "礼物使者说道：可惜你答题太慢，没有奖励！\n");
+		me->delete("last_kxcd");
+		me->delete_temp("answer_kxcd");
+		return 1;
+	}
+
+	if (me->query("combat_exp") < 300000) {
+		me->set("newbie_hongdou", 1);
+	}
+	tell_object(me, "你的经验和潜能提高了！\n");
+	me->add("kxcd/success", 1);
+	me->add("combat_exp", 50 + random(50));
+	me->add("potential", 50 + random(20));
+	if (me->query("combat_exp") > 300000) {
+		me->add("potential", random(20));
+	}
+	me->add_temp("kxcd/lianxu", 1);
+	me->delete("last_kxcd");
+	me->delete_temp("answer_kxcd");
+
+	// 加 busy，机器人答题对系统影响太大
+	me->start_busy(2 + random(8));
+
+	if (me->query_temp("kxcd/lianxu") == 20) {
+		tell_object(me, "你已经连续答对20道题了，真是小强啊!\n");
+		me->add("potential", 200);
+		tell_object(me, "你获得了200潜能的额外奖励！\n");
+	}
+	if (me->query_temp("kxcd/lianxu") == 50) {
+		tell_object(me, "你已经连续答对50道题了，真是大牛啊!\n");
+		me->add("potential", 500);
+		tell_object(me, "你获得了50潜能的额外奖励！\n");
+		CHANNEL_D->do_channel(this_object(), "bd", me->query("id") + "连续答对了50道题！");
+		CHANNEL_D->do_channel(this_object(), "bd", "admire " + me->query("id"), 1);
+	}
+	return 1;
+}
+
+//	回答英语单词（guess <单词>）
+int do_guess(string arg)
+{
+	object me;
+
+	me = this_player();
+	if (!me->query_temp("gre/words")) return 0;
+	if (!arg || arg == "") {
+		tell_object(me, "礼物使者疑惑道：你的答案呢？\n");
+		return 1;
+	}
+	if (arg != me->query_temp("gre/words")) {
+		tell_object(me, "礼物使者笑道：哈哈，你回答错了，正确的答案是" + HIR
+			+ me->query_temp("gre/words") + NOR + "。\n");
+		me->delete_temp("gre");
+		return 1;
+	}
+
+	tell_object(me, "礼物使者说道：恭喜你，答对了！\n");
+	me->add("kxcd/gre", 1);
+	me->delete_temp("gre");
+	if (me->query("kxcd/gre") <= 1000) {
+		tell_object(me, "你的经验和潜能提高了！\n");
+		me->add("combat_exp", 50 + random(50));
+		me->add("potential", 50 + random(20));
+	} else {
+		tell_object(me, "礼物使者笑道：很不错，你已经答对了" + me->query("kxcd/gre") + "道单词题了。\n");
+	}
+	return 1;
+}
+
+//	随机取一题，并把正确选项随机换到某一位置
+string get_question(object me)
+{
+	int i, j, k, answer;
+	string quest_list, str, *quests, *quest;
+
+	i = random(QR_MAX_LINE) + 1;
+	quest_list = read_file(QR_DATA, i, 1);
+	if (!stringp(quest_list)) return "题库出错了!";
+
+	quests = explode(quest_list, "@@@@");
+	if (sizeof(quests) != 2) return "题库出错了!";
+
+	quest = explode(quests[0], "√");
+	if (sizeof(quest) != 5) return "题库出错了!";
+
+	if (sscanf(replace_string(replace_string(quests[1], " ", ""), "\n", ""), "%d", answer) != 1
+		|| answer < 1 || answer > 4)
+		return "题库出错了!";
+
+	if (random(me->query_temp("kxcd/lianxu")) > 40) {
+		tell_object(this_player(),
+			this_object()->query("name") + "说道：看来不来点狠的是难不住你了！\n");
+		this_object()->command("grin");
+		str = swap_word(quest[0]);		// 随机交换两个字的次序
+		str = insert_string(str);		// 随机插入干扰字符
+	} else {
+		str = quest[0];
+	}
+
+	j = random(4) + 1;	// 把正确答案与随机一个选项交换
+	for (k = 1; k <= 4; k++) {
+		str += "\n" + k + ".  ";
+		if (k == j) str += quest[answer];
+		else if (k == answer) str += quest[j];
+		else str += quest[k];
+	}
+
+	me->set_temp("answer_kxcd", j);
+	return str;
+}

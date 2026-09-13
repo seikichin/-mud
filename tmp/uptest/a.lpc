@@ -1,0 +1,8 @@
+// uptest a
+#include "uptest_inc.h"
+
+int counter = 100;
+
+int query_mark() { return UPTEST_MARK; }
+int query_counter() { return counter; }
+int set_counter(int v) { counter = v; return counter; }

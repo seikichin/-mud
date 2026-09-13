@@ -1,0 +1,38 @@
+// probe4.lpc - async worker writing to captured player
+
+async void w_run(object who, int steps) {
+  int i;
+
+  for (i = 1; i <= steps; i++) {
+    if (!who) break;
+    tell_object(who, sprintf("[w] step %d\n", i));
+    if (i % 2 == 0) await async_yield();
+  }
+  if (who) tell_object(who, "[w] done\n");
+}
+
+// capture this_player() inside the command context, then fire and return
+string p_fire2(int steps) {
+  object who = this_player();
+
+  w_run(who, steps);
+  return sprintf("fired who=%O", who);
+}
+
+// capture, then suspend BEFORE writing, to prove the reference survives
+async void w_run2(object who) {
+  await async_yield();
+  if (who) tell_object(who, "[w2] after-suspend write ok\n");
+  else tell_object(this_player(), "[w2] who is null\n");
+}
+
+string p_fire3() {
+  object who = this_player();
+
+  w_run2(who);
+  return sprintf("fired2 who=%O", who);
+}
+
+string p_thispl() {
+  return sprintf("this_player=%O", this_player());
+}

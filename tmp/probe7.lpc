@@ -1,0 +1,18 @@
+// probe7.lpc - how much detail can we get out of a failed load?
+
+string p_try(string f) {
+  string a, b, c, d;
+
+  a = catch(load_object(f));
+  b = catch(call_other(f, "???"));
+  c = catch(load_object(f));
+  d = catch(clone_object(f));
+  return sprintf("load=[%O] callother=[%O] clone=[%O]", a, b, d);
+}
+
+string p_noerr(string arg) {
+  string e;
+
+  e = catch(load_object("/tmp/uptest/nosuchfile"));
+  return sprintf("missing=[%O]", e);
+}

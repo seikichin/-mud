@@ -1,0 +1,153 @@
+// pathd.c
+// walk 寻路守护进程 —— 移植自 DGD 版风云 mudlib 的 adm/daemons/pathd.c
+//
+// 原版 ldmud 用 set_temp("father-"+id) 记录 BFS 父链; DGD 版改用本地 parent
+// mapping(object_name -> ({ 父房间, 方向键 })), 不污染房间对象的临时状态, 也无需清理。
+//
+// BFS 广度优先搜索, 深度上限 MAX_DEPTH, 节点上限 MAX_NODES 防止全图爆炸。
+//
+// fluffos 移植要点:
+//   1. object_name() 在 fluffos 不存在, 改用 file_name() 作为房间唯一键。
+//   2. remove_ansi() 在 fluffos 不存在, 去色统一改用 /feature/annie.lpc 的
+//      ngstr_uncolor() (本 mudlib 唯一的去色实现; 只用于比较, 不改变输出)。
+//   3. fluffos 的 load_object() 失败只返回 0, 不抛异常; 仍保留 catch 兜底
+//      (与 DGD 版一致: 遇到意外异常时优雅降级为"未找到")。
+//   4. 健壮性: DGD 版只在最外层兜一个 catch, 图里任何一个房间出错都会让整次
+//      搜索失败。fluffos 版改为逐出口 catch + function_exists 过滤, 个别编不过
+//      的房间(其空壳对象会被驱动缓存)只当作"此路不通"跳过。
+//      另外用 bad_rooms 缓存这些房间: 驱动的编译报错会直接写给玩家, 缓存可避免
+//      每次搜索都重复刷屏。修好对应文件后 update 本守护进程即可清空缓存。
+//   5. 每层调用一次 reset_eval_cost(): BFS 本身受 MAX_NODES 限制不会失控,
+//      但一次搜索可能装载上千个房间, 需要避免被 maximum evaluation cost 中断
+//      (中断会产生"其实可达却报告找不到"的错误结果)。
+//   6. 不继承 F_CLEAN_UP: 本守护进程无状态, 常驻即可; 也避免 clean_up() 内部
+//      调用 this_object()->query() 带来的额外继承依赖。
+
+#define MAX_DEPTH 18
+#define MAX_NODES 3000
+
+// 装载失败(文件不存在 / 编译不过 / 无 query 接口)的房间路径缓存
+mapping bad_rooms = ([]);
+
+mixed search_for_path1(object ob, string name);
+mixed search_for_path(object ob, string name);
+private string *build_dirs(object start, object goal, mapping parent);
+private object resolve_exit(mixed dest);
+private string strip_color(string str);
+
+// 去色: 统一使用 /feature/annie.lpc 的 ngstr_uncolor (只用于测量与比较)
+private string strip_color(string str) {
+  if (!stringp(str)) return "";
+  return F_ANNIE->ngstr_uncolor(str);
+}
+
+// 解析出口值: 对象直接使用; 字符串路径 find_object/load_object 惰性加载。
+// 返回 0 表示此出口不可用, 由调用方跳过。
+private object resolve_exit(mixed dest) {
+  object ob;
+  string err;
+
+  if (objectp(dest)) return dest;
+  if (!stringp(dest) || dest == "") return 0;
+
+  ob = find_object(dest);
+  if (ob && function_exists("query", ob)) return ob;
+
+  if (bad_rooms[dest]) return 0;
+
+  err = catch(ob = load_object(dest));
+  if (err || !ob || !function_exists("query", ob)) {
+    // 编译失败的房间会被驱动缓存为无 program 的"空壳对象", 这里必须过滤掉
+    bad_rooms[dest] = 1;
+    return 0;
+  }
+  return ob;
+}
+
+// 对外接口(与原版 ldmud / DGD 同名同语义)。
+// 成功返回 ({ 目标房间, 方向名数组 }); 失败/异常返回 1。
+mixed search_for_path1(object ob, string name) {
+  mixed result;
+  string err;
+
+  if (!ob || !name) return 1;
+  err = catch(result = search_for_path(ob, name));
+  if (err) return 1;
+  return result;
+}
+
+mixed search_for_path(object ob, string name) {
+  mapping parent, visited;
+  object *queue, *nextq;
+  object env, room, nxt;
+  mapping exits;
+  string *dirs;
+  int depth, i, j, nodes;
+  string rn, err;
+  mixed sh;
+
+  if (!ob || !name) return 1;
+  env = environment(ob);
+  if (!env) return 1;
+
+  parent = ([]);
+  visited = ([]);
+  queue = ({ env });
+  visited[file_name(env)] = 1;
+  nodes = 1;
+
+  for (depth = 0; depth < MAX_DEPTH && sizeof(queue) > 0; depth++) {
+    reset_eval_cost();
+    nextq = ({});
+    for (i = 0; i < sizeof(queue); i++) {
+      room = queue[i];
+      if (!room) continue;
+      if (!function_exists("query", room)) continue;
+
+      exits = 0;
+      err = catch(exits = room->query("exits"));
+      if (err || !mapp(exits)) continue;
+
+      dirs = keys(exits);
+      for (j = 0; j < sizeof(dirs); j++) {
+        nxt = resolve_exit(exits[dirs[j]]);
+        if (!nxt || nxt == env) continue;
+        rn = file_name(nxt);
+        if (visited[rn]) continue;
+        visited[rn] = 1;
+        nodes++;
+        if (nodes > MAX_NODES) return 1;
+        parent[rn] = ({ room, dirs[j] });
+
+        // 目标匹配: 房间 short 去颜色后与中文地址完全相等
+        sh = 0;
+        err = catch(sh = nxt->query("short"));
+        if (!err && stringp(sh) && strip_color(sh) == name) {
+          return ({ nxt, build_dirs(env, nxt, parent) });
+        }
+        nextq += ({ nxt });
+      }
+    }
+    queue = nextq;
+  }
+  return 1;
+}
+
+// 从目标沿 parent 链回溯到起点, 得到方向名序列。
+private string *build_dirs(object start, object goal, mapping parent) {
+  string *dirs;
+  object cur;
+  string rn;
+  mixed rec;
+
+  dirs = ({});
+  cur = goal;
+  while (cur && cur != start) {
+    rn = file_name(cur);
+    rec = parent[rn];
+    if (!rec) break;
+    dirs = ({ rec[1] }) + dirs;
+    cur = rec[0];
+  }
+  return dirs;
+}

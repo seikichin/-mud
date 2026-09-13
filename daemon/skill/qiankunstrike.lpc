@@ -1,0 +1,12 @@
+//qiankunstrike.c
+inherit SKILL;
+
+void setup() {
+  set("name", "乾坤大挪移掌");
+  set("type", "unarmed");
+  set("usage/unarmed", 1);
+  set("usage/parry", 1);
+  set("skill_class", "npc");
+  set("difficulty", 200);
+  set("effective_level", 120);
+}

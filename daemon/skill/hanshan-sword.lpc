@@ -1,0 +1,12 @@
+//hanshan-sword.c
+inherit SKILL;
+
+void setup() {
+  set("name", "寒山十八式");
+  set("type", "sword");
+  set("usage/sword", 1);
+  set("usage/parry", 1);
+  set("skill_class", "quanli");
+  set("difficulty", 200);
+  set("effective_level", 120);
+}

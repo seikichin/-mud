@@ -1,0 +1,11 @@
+//tang-blade.c
+inherit SKILL;
+
+void setup() {
+  set("name", "五瓣兰刀法");
+  set("type", "blade");
+  set("usage/blade", 1);
+  set("skill_class", "quanli");
+  set("difficulty", 200);
+  set("effective_level", 150);
+}

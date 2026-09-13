@@ -1,0 +1,345 @@
+// query.c
+// 查询任务物品所在位置 + 路径指引
+//
+// 移植自 DGD 版风云 mudlib 的 cmds/usr/query.c 。
+// 数据源: /adm/etc/dbase.sqlite (物品), /adm/etc/path.sqlite (路径)
+// 两个数据库均已转存为 UTF-8 编码, 与 mudlib 编码一致。
+//
+// fluffos 与 DGD 的主要差异:
+//   1. sqlite_query() -> db_exec() + db_fetch()。db_fetch 只返回列值数组(无列名),
+//      故必须按 SELECT 的列顺序取值; 返回数组索引自 0 开始。
+//   2. strlen() 返回字符数而非字节数, 排版统一改用 /feature/annie.lpc 提供的
+//      列宽函数(非 ASCII 字形按 2 列计): ngstr_cols / ngstr_pad / ngstr_fit 。
+//   3. 数字拼接字符串需用 sprintf("%d", n) 。
+
+#include <ansi.h>
+inherit F_CLEAN_UP;
+
+#ifdef __PACKAGE_DB__
+#ifdef __USE_SQLITE3__
+
+#define DB_PATH        "/adm/etc/dbase.sqlite"
+#define PATH_PATH      "/adm/etc/path.sqlite"
+#define DB_TYPE        __USE_SQLITE3__
+#define QUERY_COOLDOWN 20
+#define MAX_ARG_LEN    80
+#define ENTRY_WIDTH    34
+#define ROUTE_WIDTH    72
+#define HI_LINE        "----------------------------------------------------------------"
+
+// 前向声明
+mixed db_query(int handle, string sql);
+string col_value(mixed row, int idx);
+string sql_escape(string s);
+string col_cut(string s, int width);
+string col_trim(string s, int width);
+string wrap_route(string route, int width);
+string room_short(int ph, string key);
+int ngstr_cols(string str);
+int ngstr_fit(string str, int width);
+string ngstr_pad(string str, int width);
+
+// 显示列宽函数统一实现在 /feature/annie.lpc, 此处仅作转发
+// (非 ASCII 字形按 2 列计, ANSI 转义序列不计宽度)
+int ngstr_cols(string str) {
+  return (int)"/feature/annie"->ngstr_cols(str);
+}
+
+int ngstr_fit(string str, int width) {
+  return (int)"/feature/annie"->ngstr_fit(str, width);
+}
+
+string ngstr_pad(string str, int width) {
+  return (string)"/feature/annie"->ngstr_pad(str, width);
+}
+
+// 执行查询: 返回"每行为列值数组"的数组
+// 出错返回 0, 无结果返回 ({})
+mixed db_query(int handle, string sql) {
+  mixed rows, res;
+  mixed *out;
+  int n, i;
+
+  rows = db_exec(handle, sql);
+  if (stringp(rows)) return 0; // SQL 错误
+  if (!intp(rows) || rows <= 0) return ({});
+
+  n = rows;
+  out = allocate(n);
+  for (i = 1; i <= n; i++) {
+    res = db_fetch(handle, i);
+    out[i - 1] = arrayp(res) ? res : ({});
+  }
+  return out;
+}
+
+// 安全取列值(按列序号, 自 0 开始), 空值转空串
+string col_value(mixed row, int idx) {
+  mixed v;
+
+  if (!arrayp(row) || idx < 0 || idx >= sizeof(row)) return "";
+  v = row[idx];
+  if (stringp(v)) return v;
+  return "";
+}
+
+// SQL 单引号转义(单引号不属于 UTF-8 多字节序列, 按字符翻倍不会破坏汉字)
+string sql_escape(string s) {
+  if (!stringp(s)) return "";
+  return implode(explode(s, "'"), "''");
+}
+
+// 按显示列宽截断(不加省略号)
+string col_cut(string s, int width) {
+  int n;
+
+  if (!stringp(s)) return "";
+  if (ngstr_cols(s) <= width) return s;
+  n = ngstr_fit(s, width);
+  return s[0..n - 1];
+}
+
+// 按显示列宽截断并加省略号
+string col_trim(string s, int width) {
+  int n;
+
+  if (!stringp(s)) return "";
+  if (ngstr_cols(s) <= width) return s;
+  n = ngstr_fit(s, width - 2);
+  return s[0..n - 1] + "..";
+}
+
+// 路线折行: 按显示列宽, 词边界断行, 行首 2 空格缩进
+string wrap_route(string route, int width) {
+  string *words, line, out;
+  int i, n;
+
+  if (!stringp(route) || route == "") return "";
+  words = explode(route, " ");
+  out = "";
+  line = "";
+  n = sizeof(words);
+  for (i = 0; i < n; i++) {
+    if (!stringp(words[i]) || words[i] == "") continue;
+    if (line == "") {
+      line = "  " + words[i];
+    } else if (ngstr_cols(line) + 1 + ngstr_cols(words[i]) <= width) {
+      line += " " + words[i];
+    } else {
+      out += line + "\n";
+      line = "  " + words[i];
+    }
+  }
+  if (line != "") out += line;
+  return out;
+}
+
+// 查房间中文名(room_name 表), 查不到返回空串
+string room_short(int ph, string key) {
+  mixed qr;
+
+  if (!ph || !stringp(key) || key == "") return "";
+  qr = db_query(ph, "SELECT short FROM room_name WHERE room = '" + sql_escape(key) + "'");
+  if (arrayp(qr) && sizeof(qr) > 0) return col_value(qr[0], 0);
+  return "";
+}
+
+int main(object me, string arg) {
+  int dbh, ph, i, total, rid;
+  mixed rows, qr;
+  mixed *roomFiles;
+  string kw, sql, entry, name, id, rname, room, city, f2r, c2r, f2c, center;
+  string startName, centerName, roomName;
+
+  if (!arg || arg == "") {
+    notify_fail(HIC + "指令格式 : query 查询内容" + NOR + "\n");
+    return 0;
+  }
+
+  // 频率限制, 防止刷屏
+  if (!wizardp(me)) {
+    if (time() - me->query_temp("query/last") < QUERY_COOLDOWN) {
+      notify_fail("系统气喘嘘地叹道：慢慢来 ....\n");
+      return 0;
+    }
+    me->set_temp("query/last", time());
+  }
+
+  // 限制查询长度
+  if (strlen(arg) > MAX_ARG_LEN) {
+    notify_fail("查询内容太长了。\n");
+    return 0;
+  }
+
+  // 过滤纯符号查询
+  if (implode(explode(arg, "'"), "") == "") {
+    notify_fail("查询内容无效。\n");
+    return 0;
+  }
+
+  // 打开数据库
+  dbh = db_connect("", DB_PATH, "", DB_TYPE);
+  if (!intp(dbh) || dbh <= 0) {
+    notify_fail("查询系统暂时无法使用，请稍后再试。\n");
+    return 0;
+  }
+  ph = db_connect("", PATH_PATH, "", DB_TYPE);
+  if (!intp(ph) || ph <= 0) ph = 0;
+
+  kw = sql_escape(arg);
+  if (!wizardp(me)) {
+    // 玩家: 仅精确匹配完整物品名 / id / 房间名, 防止模糊搜索刷数据
+    sql = "SELECT min(rowid) rid, name, id, r_name, file FROM quest WHERE "
+      + "name = '" + kw + "' OR "
+      + "id = '" + kw + "' OR "
+      + "r_name = '" + kw + "' "
+      + "GROUP BY name, id, r_name, file LIMIT 20";
+  } else {
+    sql = "SELECT min(rowid) rid, name, id, r_name, file FROM quest WHERE "
+      + "instr(name, '" + kw + "') > 0 OR "
+      + "instr(id, '" + kw + "') > 0 OR "
+      + "instr(r_name, '" + kw + "') > 0 OR "
+      + "instr(file, '" + kw + "') > 0 "
+      + "GROUP BY name, id, r_name, file LIMIT 20";
+  }
+
+  rows = db_query(dbh, sql);
+  db_close(dbh);
+  if (!arrayp(rows)) rows = ({});
+
+  total = sizeof(rows);
+  if (total <= 0) {
+    if (!wizardp(me)) {
+      write(HIW + "查询关键词过短或不完整，请输入完整的物品名称，例如：query 铁菜刀\n" + NOR);
+    } else {
+      write(HIW + "未查询到任何结果。\n" + NOR);
+    }
+    if (ph) db_close(ph);
+    return 1;
+  }
+
+  roomFiles = allocate(total);
+
+  // 起点中文名
+  startName = room_short(ph, "d/fy/fysquare");
+  if (startName == "") startName = "fysquare";
+
+  write(HIW + "\n你查询的物品所在位置为：\n" + NOR);
+  write(HIW + HI_LINE + NOR + "\n");
+
+  for (i = 0; i < total; i++) {
+    name  = col_cut(col_value(rows[i], 1), 20);
+    id    = col_cut(col_value(rows[i], 2), 24);
+    rname = col_value(rows[i], 3);
+    entry = col_trim(sprintf("%s ( %s )", name, id), ENTRY_WIDTH);
+
+    // 路径指引
+    room = ""; city = ""; f2r = ""; c2r = ""; f2c = ""; center = "";
+    centerName = ""; roomName = "";
+    rid = rows[i][0];
+    if (ph) {
+      qr = db_query(ph, "SELECT room FROM quest_loc WHERE rid = '" + sprintf("%d", rid) + "'");
+      if (arrayp(qr) && sizeof(qr) > 0) {
+        room = col_value(qr[0], 0);
+        if (room != "") roomFiles[i] = "/" + room + ".lpc";
+      }
+      if (room != "") {
+        qr = db_query(ph, "SELECT city, f2r, c2r FROM route WHERE room = '" + sql_escape(room) + "'");
+        if (arrayp(qr) && sizeof(qr) > 0) {
+          city = col_value(qr[0], 0);
+          f2r  = col_value(qr[0], 1);
+          c2r  = col_value(qr[0], 2);
+        }
+        if (city != "") {
+          qr = db_query(ph, "SELECT center, f2c FROM center WHERE city = '" + sql_escape(city) + "'");
+          if (arrayp(qr) && sizeof(qr) > 0) {
+            center = col_value(qr[0], 0);
+            f2c    = col_value(qr[0], 1);
+          }
+        }
+      }
+    }
+
+    // 目标房间中文名(优先 room_name 表, 其次数据库 r_name;
+    // 库中有少量 r_name 为脏值 "0", 最终兜底显示房间路径)
+    if (room != "") roomName = room_short(ph, room);
+    if (roomName == "" || roomName == "0") roomName = rname;
+    if (roomName == "" || roomName == "0") roomName = room;
+
+    write("  " + ngstr_pad(entry, ENTRY_WIDTH) + HIG + startName + " -> " + roomName + NOR + "\n");
+
+    if (room == "") {
+      write("  (无路径数据)\n");
+    } else if (f2r != "") {
+      // 直达优先, 不绕城市中心
+      write("  路线:\n" + HIG + wrap_route(f2r, ROUTE_WIDTH) + NOR + "\n");
+    } else if (city != "" && c2r != "") {
+      if (center != "") centerName = room_short(ph, center);
+      if (centerName == "") centerName = city;
+      if (f2c != "") {
+        write("  路线: " + HIG + startName + " -> " + f2c + " " + HIC + "-> " + centerName + " " + NOR + HIG + "-> " + c2r + NOR + "\n");
+      } else {
+        write("  路线: " + HIG + centerName + " -> " + c2r + NOR + " " + HIW + "(迷宫/传送区域)\n" + NOR);
+      }
+    } else {
+      write("  (该区域暂无路径数据)\n");
+    }
+  }
+
+  write(HIW + HI_LINE + NOR + "\n");
+  write(sprintf(HIW + "共找到 %d 条记录。\n" + NOR, total));
+
+  if (ph) db_close(ph);
+
+  // 巫师可以看到对象文件路径
+  if (wizardp(me)) {
+    for (i = 0; i < total; i++) {
+      write(sprintf("[巫师] %s   file = %s   env = %s\n",
+        col_value(rows[i], 1), col_value(rows[i], 4),
+        (i < sizeof(roomFiles) && stringp(roomFiles[i])) ? roomFiles[i] : "(unknown)"));
+    }
+  }
+
+  return 1;
+}
+
+int help(object me) {
+  write(HIW + "----------------------------------------------------------------" + NOR + "\n"
+    + HIC + "指令格式 : query 查询内容" + NOR + "\n"
+    + HIW + "----------------------------------------------------------------" + NOR + "\n"
+    + "\n"
+    + "这个指令可以显示出查询任务物品的位置，\n"
+    + "并给出从 风云天下 出发的路线指引。\n"
+    + "查询内容支持物品的中文名、英文 id 或房间名，\n"
+    + "例如：query 大胖子、query fatman、query 东地巷。\n"
+    + "英文查询区分大小写，请使用小写字母。\n"
+    + "\n"
+    + HIW + "----------------------------------------------------------------" + NOR + "\n"
+    + "\n");
+  return 1;
+}
+
+#else
+
+int main(object me, string arg) {
+  return notify_fail("本指令需要 SQLite 数据库支持。\n");
+}
+
+int help(object me) {
+  write("本指令需要 SQLite 数据库支持。\n");
+  return 1;
+}
+
+#endif
+#else
+
+int main(object me, string arg) {
+  return notify_fail("本指令需要数据库支持。\n");
+}
+
+int help(object me) {
+  write("本指令需要数据库支持。\n");
+  return 1;
+}
+
+#endif

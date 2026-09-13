@@ -1,0 +1,350 @@
+//  festivald.lpc
+//  节日奖励精灵
+//  移植自 ldmud 版风云 /adm/daemons/festivald.c（原作者同上）
+//
+//  数据档 /adm/etc/festival，每行 9 段，以冒号分隔：
+//    英文标识:中文名:开始时间:结束时间:节日日期:节日中文名:奖励类型:经验限制:奖励列表
+//    时间格式 YYYY-MM-DD
+//    奖励类型 0=限领一次 1=每日领取
+//    奖励列表 形如 exp|10000,pot|20000,gold|11，多项以逗号分隔
+//      类型 exp=经验 pot=潜能 score=评价 gold=黄金，其它视为物件路径（发放该物件）
+//
+//  对外接口：
+//    string query_festival_string();    当前节日活动说明文字
+//    string get_reward(object usr);     给 usr 发放当前节日奖励，返回给玩家看的文字
+//    int    is_festival(string arg);    指定活动此刻是否进行中
+
+#include <ansi.h>
+#include <globals.h>
+#include <localtime.h>
+
+inherit F_DBASE;
+
+mapping festivals = ([]);
+string *now_festivals = ({});
+string now_string = "";
+
+void setup();
+void check_festival();
+string set_festival_string();
+string give_festival_reward(object usr, string arg);
+int compare_date(mixed a, mixed b);
+int is_festival(string arg);
+
+void create() {
+  seteuid(getuid());
+  set("channel_id", "节日奖励精灵");
+  setup();
+  check_festival();
+}
+
+//  读取并解析 /adm/etc/festival
+void setup() {
+  string sen;
+  string *fess, *tmp, *tmp2, *parts;
+  int i, sz, j, sz2;
+  string reward;
+  int rewardcount;
+  mapping fes;
+
+  festivals = ([]);
+
+  sen = read_file("/adm/etc/festival");
+  if (!stringp(sen) || sen == "") return;
+
+  sen = replace_string(sen, "\r", "");
+  fess = explode(sen, "\n");
+  sz = sizeof(fess);
+  for (i = 0; i < sz; i++) {
+    if (!stringp(fess[i]) || fess[i] == "") continue;
+    tmp = explode(fess[i], ":");
+    if (sizeof(tmp) < 9) continue;
+
+    parts = explode(tmp[2], "-");
+    if (sizeof(parts) != 3) continue;
+
+    fes = ([]);
+    fes["cname"] = tmp[1];
+    fes["fname"] = tmp[5];
+    fes["fdate"] = tmp[4];
+    fes["stime"] = tmp[2];
+    fes["etime"] = tmp[3];
+    fes["stimey"] = to_int(parts[0]);
+    fes["stimem"] = to_int(parts[1]);
+    fes["stimed"] = to_int(parts[2]);
+
+    parts = explode(tmp[3], "-");
+    if (sizeof(parts) != 3) continue;
+    fes["etimey"] = to_int(parts[0]);
+    fes["etimem"] = to_int(parts[1]);
+    fes["etimed"] = to_int(parts[2]);
+
+    fes["type"] = to_int(tmp[6]);      //  0=限领一次 1=每日领取
+    fes["explimit"] = to_int(tmp[7]);
+    fes["reward"] = ([]);
+
+    //  奖励列表：类型|数量，类型|数量
+    tmp2 = explode(tmp[8], ",");
+    sz2 = sizeof(tmp2);
+    for (j = 0; j < sz2; j++) {
+      parts = explode(tmp2[j], "|");
+      if (sizeof(parts) != 2) continue;
+      reward = parts[0];
+      rewardcount = to_int(parts[1]);
+      if (!stringp(reward) || reward == "" || rewardcount <= 0) continue;
+      fes["reward"][reward] = rewardcount;
+    }
+
+    festivals[tmp[0]] = fes;
+  }
+}
+
+//  当前节日活动说明
+string set_festival_string() {
+  string ret;
+  string *tmp;
+  int i, sz, j, sz2;
+
+  sz = sizeof(now_festivals);
+  if (!sz) {
+    ret = HIY + "当前没有正在进行的节日活动。\n" + NOR;
+  } else {
+    ret = HIY + "当前正在进行中的节日活动有：\n";
+    for (i = 0; i < sz; i++) {
+      if (!festivals[now_festivals[i]]) continue;
+      ret += HIY + "\t活动名称：" + HIG + festivals[now_festivals[i]]["cname"] + "\n";
+      ret += HIY + "\t英文标识：" + HIG + now_festivals[i] + "\n";
+      ret += HIY + "\t起始时间：" + HIG + festivals[now_festivals[i]]["stime"] + "\n";
+      ret += HIY + "\t结束时间：" + HIG + festivals[now_festivals[i]]["etime"] + "\n";
+      ret += HIY + "\t经验限制：" + HIG + festivals[now_festivals[i]]["explimit"] + "\n";
+      ret += HIY + "\t奖励内容：" + HIG;
+      tmp = keys(festivals[now_festivals[i]]["reward"]);
+      sz2 = sizeof(tmp);
+      for (j = 0; j < sz2; j++) {
+        switch (tmp[j]) {
+        case "exp":   { ret += "经验"; break; }
+        case "pot":   { ret += "潜能"; break; }
+        case "score": { ret += "评价"; break; }
+        case "gold":  { ret += "黄金"; break; }
+        default:      { ret += tmp[j]; break; }
+        }
+        ret += ":" + festivals[now_festivals[i]]["reward"][tmp[j]] + "，";
+      }
+      ret += "\n";
+      ret += HIY + "\t奖励类型：" + HIG + (festivals[now_festivals[i]]["type"] ? "每日领取" : "限领一次") + "\n";
+      ret += HIY + "\t所属节日：" + HIG + festivals[now_festivals[i]]["fname"] + "(" + festivals[now_festivals[i]]["fdate"] + ")\n\n";
+    }
+  }
+
+  ret += NOR;
+  return ret;
+}
+
+string query_festival_string() {
+  return now_string;
+}
+
+//  a <= b 返回 1，a > b 返回 0
+int compare_date(mixed a, mixed b) {
+  if (a[0] < b[0]) return 1;
+  if (a[0] > b[0]) return 0;
+  if (a[1] < b[1]) return 1;
+  if (a[1] > b[1]) return 0;
+  if (a[2] < b[2]) return 1;
+  if (a[2] > b[2]) return 0;
+  return 1;
+}
+
+int is_festival(string arg) {
+  mixed lc;
+  int y, m, d;
+
+  lc = localtime(time());
+  y = lc[LT_YEAR];
+  m = lc[LT_MON] + 1;
+  d = lc[LT_MDAY];
+
+  if (!arg || undefinedp(festivals[arg]))
+    return 0;
+
+  if (compare_date(({festivals[arg]["stimey"], festivals[arg]["stimem"], festivals[arg]["stimed"]}), ({y, m, d}))
+    && compare_date(({y, m, d}), ({festivals[arg]["etimey"], festivals[arg]["etimem"], festivals[arg]["etimed"]})))
+    return 1;
+
+  return 0;
+}
+
+void check_festival() {
+  int i, sz;
+  string *tmp_fes, *feskeys;
+
+  //  先判断是否有旧的活动过期
+  tmp_fes = copy(now_festivals);
+  sz = sizeof(tmp_fes);
+  for (i = 0; i < sz; i++) {
+    if (!is_festival(tmp_fes[i])) {
+      now_festivals -= ({tmp_fes[i]});
+      CHANNEL_D->do_sys_channel("info", "节日精灵：节日活动 " + festivals[tmp_fes[i]]["cname"] + " 结束了。");
+    }
+  }
+
+  //  再检查是否有新活动开始
+  feskeys = keys(festivals);
+  sz = sizeof(feskeys);
+  for (i = 0; i < sz; i++) {
+    if (member_array(feskeys[i], now_festivals) >= 0) continue;
+    if (is_festival(feskeys[i])) {
+      now_festivals += ({feskeys[i]});
+      CHANNEL_D->do_sys_channel("info", "节日精灵：节日活动 " + festivals[feskeys[i]]["cname"] + " 开始了。");
+    }
+  }
+
+  now_string = set_festival_string();
+  call_out("check_festival", 60);
+}
+
+//  发放单个活动的奖励
+string give_festival_reward(object usr, string arg) {
+  string ret;
+  string *tmp;
+  int i, j, sz2, count;
+  object ob;
+
+  if (!usr || !arg || !festivals[arg]) return "";
+
+  ret = "您在节日活动：" + festivals[arg]["cname"] + "(" + arg + ")中获得了如下奖励：\n";
+  tmp = keys(festivals[arg]["reward"]);
+  sz2 = sizeof(tmp);
+  for (j = 0; j < sz2; j++) {
+    count = festivals[arg]["reward"][tmp[j]];
+    switch (tmp[j]) {
+    case "exp": {
+      usr->add("combat_exp", count);
+      ret += "经验";
+      break;
+    }
+    case "pot": {
+      usr->add("potential", count);
+      ret += "潜能";
+      break;
+    }
+    case "score": {
+      usr->add("score", count);
+      ret += "评价";
+      break;
+    }
+    case "gold": {
+      ob = clone_object("/obj/money/gold");
+      if (ob) {
+        ob->set_amount(count);
+        ob->move(usr);
+      }
+      ret += "黄金";
+      break;
+    }
+    default: {
+      //  发道具的简单接口
+      ob = 0;
+      for (i = 0; i < count; i++) {
+        ob = clone_object(tmp[j]);
+        if (!ob) break;
+        ob->move(usr);
+      }
+      if (ob) ret += ob->query("name");
+      break;
+    }
+    }
+    ret += ":" + count + "，";
+  }
+  ret += "\n";
+  return ret;
+}
+
+//  领取当前所有节日奖励
+string get_reward(object usr) {
+  int i, sz;
+  mapping fes_record;
+  string today, ret, fes;
+  int y, m, d, ty, tm, td;
+  mixed lc;
+  string *parts;
+  int changed;
+
+  if (!usr) return "无法领取节日奖励。\n";
+
+  sz = sizeof(now_festivals);
+  if (!sz) return "目前没有正在进行中的节日，因此没有可以领取的奖励。\n";
+
+  ret = "";
+  changed = 0;
+
+  lc = localtime(time());
+  ty = lc[LT_YEAR];
+  tm = lc[LT_MON] + 1;
+  td = lc[LT_MDAY];
+  today = sprintf("%d-%.2d-%.2d", ty, tm, td);
+
+  fes_record = usr->query("festival_record");
+  if (!mapp(fes_record)) fes_record = ([]);
+
+  for (i = 0; i < sz; i++) {
+    fes = now_festivals[i];
+    if (!festivals[fes]) continue;
+
+    if (!fes_record[fes]) {
+      //  无记录，可领奖
+      if (usr->query("combat_exp") < festivals[fes]["explimit"]) {
+        ret += festivals[fes]["cname"] + "(" + fes + ")要求经验至少为" + festivals[fes]["explimit"] + "，您当前经验不足，无法领取奖励。\n";
+      } else {
+        ret += give_festival_reward(usr, fes);
+        fes_record[fes] = today;
+        changed = 1;
+      }
+      continue;
+    }
+
+    parts = explode(fes_record[fes], "-");
+    if (sizeof(parts) != 3) {
+      fes_record[fes] = 0;
+      changed = 1;
+      continue;
+    }
+    y = to_int(parts[0]);
+    m = to_int(parts[1]);
+    d = to_int(parts[2]);
+
+    if (compare_date(({festivals[fes]["stimey"], festivals[fes]["stimem"], festivals[fes]["stimed"]}), ({y, m, d})) == 0) {
+      //  奖励记录早于本次活动开始，属上一次节日所领，可再领
+      if (usr->query("combat_exp") < festivals[fes]["explimit"]) {
+        ret += festivals[fes]["cname"] + "(" + fes + ")要求经验至少为" + festivals[fes]["explimit"] + "，您当前经验不足，无法领取奖励。\n";
+      } else {
+        ret += give_festival_reward(usr, fes);
+        fes_record[fes] = today;
+        changed = 1;
+      }
+      continue;
+    }
+
+    if (festivals[fes]["type"] == 0) {
+      //  限领一次
+      ret += festivals[fes]["cname"] + "(" + fes + ")只能领取一次奖励，您于" + fes_record[fes] + "已领取过，不能再次领取。\n";
+      continue;
+    }
+
+    //  每日领取
+    if (compare_date(({ty, tm, td}), ({y, m, d})) == 0) {
+      if (usr->query("combat_exp") < festivals[fes]["explimit"]) {
+        ret += festivals[fes]["cname"] + "(" + fes + ")要求经验至少为" + festivals[fes]["explimit"] + "，您当前经验不足，无法领取奖励。\n";
+      } else {
+        ret += give_festival_reward(usr, fes);
+        fes_record[fes] = today;
+        changed = 1;
+      }
+    } else {
+      ret += festivals[fes]["cname"] + "(" + fes + ")在活动期间可每日领取奖励一次，您今天（" + today + "）已经领取过奖励，不能再次领取。\n";
+    }
+  }
+
+  if (changed) usr->set("festival_record", fes_record);
+  return ret;
+}

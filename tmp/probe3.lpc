@@ -1,0 +1,51 @@
+// probe3.lpc - extension / get_dir / negative-index / async-write probes
+
+string p_scan() {
+  string *fs = ({ "a.lpc", "abc.lpc", "x.c", "y.h", "lpc", "a.lpc.lpc" });
+  string out = "", t;
+  int i;
+
+  for (i = 0; i < sizeof(fs); i++) {
+    if (sscanf(fs[i], "%s.lpc", t))
+      out += sprintf("[%s]=LPC(%s) ", fs[i], t);
+    else
+      out += sprintf("[%s]=no ", fs[i]);
+  }
+  return out;
+}
+
+string p_negrange() {
+  string f = "foo.lpc";
+  return sprintf("neg=[%s] last4=[%s]", f[<4..], f[strlen(f) - 4..]);
+}
+
+string p_dir2(string d) {
+  mixed *full = get_dir(d, -1);
+  string out = "";
+  int i, n = 0, nd = 0;
+
+  for (i = 0; i < sizeof(full); i++) {
+    if (full[i][1] == -2) {
+      nd++;
+      if (nd < 5) out += sprintf("DIR:%s ", full[i][0]);
+    } else n++;
+  }
+  return sprintf("files=%d dirs=%d %s", n, nd, out);
+}
+
+// async worker writing back to a captured player
+async void p_worker(object who) {
+  int i;
+
+  for (i = 1; i <= 6; i++) {
+    if (!who) break;
+    tell_object(who, sprintf("  [worker] step %d\n", i));
+    if (i % 2 == 0) await async_yield();
+  }
+  if (who) tell_object(who, "  [worker] done\n");
+}
+
+string p_fire(object who) {
+  p_worker(who);
+  return "fired";
+}

@@ -1,0 +1,72 @@
+// probe6.lpc - suffix helper + async worker + acatch runtime checks
+// driven in-game:  call /tmp/probe6->p_xxx("x")
+
+// strsrch-based suffix test: no reliance on range-slice semantics
+int ends_lpc(string s) {
+  if (sizeof(s) < 4) return 0;
+  return strsrch(s, ".lpc", -1) == sizeof(s) - 4;
+}
+
+string p_ends(string arg) {
+  string *t = ({ "a.lpc", "abc.lpc", "x.c", "lpc", "a.lpc.lpc", ".lpc", "a.lpc/" });
+  string out = "";
+  int i;
+
+  for (i = 0; i < sizeof(t); i++)
+    out += sprintf("[%s]=%d ", t[i], ends_lpc(t[i]));
+  return out;
+}
+
+// the async worker shape the refactor will use:
+// park first, then compile one item per fresh eval budget
+async void w_run(object who, int items) {
+  int i;
+
+  for (i = 1; i <= items; i++) {
+    await async_yield();          // fresh budget + driver serves others
+    if (!who) return;
+    tell_object(who, sprintf("[probe6] item %d/%d\n", i, items));
+  }
+  if (who) tell_object(who, "[probe6] worker done\n");
+}
+
+string p_async(string arg) {
+  object who = this_player();
+  mapping sched;
+
+  w_run(who, 4);
+  sched = async_info(1);
+  return sprintf("fired who=%O suspended=%d pending=%d",
+    who, sched["suspended"], sched["pending_deliveries"]);
+}
+
+// acatch catches an error raised inside a suspended-safe region
+async void w_acatch(object who) {
+  mixed err;
+
+  await async_yield();
+  err = acatch(error("boom-from-acatch"));
+  if (who) tell_object(who, sprintf("[probe6] acatch -> %O\n", err));
+}
+
+string p_acatch(string arg) {
+  object who = this_player();
+
+  w_acatch(who);
+  return "acatch fired";
+}
+
+// does a plain (already settled) await still park, as documented?
+async void w_plain(object who) {
+  promise p = promise_create();
+  promise_resolve(p, 7);
+  await p;                        // documented: always parks, even settled
+  if (who) tell_object(who, "[probe6] plain-await resumed ok\n");
+}
+
+string p_plain(string arg) {
+  object who = this_player();
+
+  w_plain(who);
+  return "plain-await fired";
+}

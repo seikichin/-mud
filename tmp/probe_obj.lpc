@@ -1,0 +1,7 @@
+// probe_obj.lpc - bare object for destruct probe
+#include <ansi.h>
+
+void create() {
+}
+
+string ping() { return "pong"; }

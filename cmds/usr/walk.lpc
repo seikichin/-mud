@@ -1,0 +1,134 @@
+// walk.c
+// 移植自 DGD 版风云 mudlib 的 cmds/usr/walk.c
+// 用法: walk 中文地址 —— 搜索从当前位置到目标房间的最短路径并自动行走。
+// 依赖 /adm/daemons/pathd 的 search_for_path1()。
+//
+// fluffos 移植要点:
+//   1. is_root() -> wizardp()  (本 mudlib 统一用 wizardp 判断巫师权限)
+//   2. 副本/迷宫的判断改用 fluffos 的实际标记:
+//      - DGD 的 query("room_id") 在 fluffos 全库不存在。
+//      - fluffos 的虚拟房间(公共随机迷宫 VRM_SERVER / 私人副本 standardmaze,
+//        maze, halloween)统一由生成器 set("virtual_room", 1), 故改用
+//        query("virtual_room") 判断(玩家自建房间 vroom 不含此标记, 不受影响)。
+//      - 迷宫入口等实体房间仍按 base_name() 的 /d/maze/ 前缀判断。
+//      - DGD 版的 "/f/" 前缀在本 mudlib 不存在, 已删除。
+//   3. is_chat_room() 在本 mudlib 不存在, 改为 function_exists() 守卫后调用,
+//      若某个房间确实定义了这个接口则依然生效。
+//   4. 数字拼字符串改为 sprintf("%d", n)。
+
+#include <ansi.h>
+
+inherit F_CLEAN_UP;
+
+#define PATH_D "/adm/daemons/pathd"
+
+int help(object me);
+
+// 是否处于禁止寻路的地方(迷宫/副本的虚拟房间, 或迷宫目录内的实体房间)
+private int in_maze(object room) {
+  string file, rest;
+
+  if (!room) return 0;
+  if (room->query("virtual_room")) return 1;
+
+  file = base_name(room);
+  if (stringp(file) && sscanf(file, "/d/maze/%s", rest) == 1) return 1;
+  return 0;
+}
+
+// 把方向数组按显示列宽折行, 断点取在分号之后
+// (方向名都是 ASCII 英文, 故 strlen 即显示列宽)
+private string wrap_dirs(string *dirs, int width) {
+  string out, line;
+  int i, n;
+
+  out = "";
+  line = "";
+  n = sizeof(dirs);
+  for (i = 0; i < n; i++) {
+    if (line == "")
+      line = dirs[i];
+    else if (strlen(line) + 1 + strlen(dirs[i]) > width) {
+      out += line + ";\n";
+      line = dirs[i];
+    } else
+      line += ";" + dirs[i];
+  }
+  if (line != "") out += line + "\n";
+  return out;
+}
+
+int main(object me, string arg) {
+  mixed a;
+  string *dirs;
+  int i, br;
+
+  if (!wizardp(me))
+    if (uptime() < 2100)
+      return notify_fail("系统气喘嘘地叹道：重启不到2100秒，请稍后再试 ....\n");
+
+  if (time() - me->query_temp("last_walk") < 10)
+    return notify_fail("系统气喘嘘地叹道：慢慢来 ....\n");
+
+  if (!arg)
+    return notify_fail("你想得到去哪儿的路径？\n");
+
+  if (environment(me) && function_exists("is_chat_room", environment(me))
+    && environment(me)->is_chat_room())
+    return notify_fail("聊天室内不能使用寻路功能！\n");
+
+  if (!wizardp(me)) {
+    // 迷宫内部房间(虚拟房间)与迷宫入口文件(/d/maze/*.lpc)都禁止寻路
+    if (in_maze(environment(me)))
+      return notify_fail("副本里禁止使用walk寻路功能 ....\n");
+  }
+
+  if (!is_chinese(arg))
+    return notify_fail("指令格式：walk 中文地址\n");
+
+  me->set_temp("last_walk", time());
+  a = PATH_D->search_for_path1(me, arg);
+  if (!a || a == 1) {
+    me->set_temp("last_walk", time() + 10);
+    write("没有这个地方，或者这个地方离这里超过规定的距离限制。\n");
+    return 1;
+  }
+
+  dirs = a[1];
+  write(arg + "路径搜索完成，共" + sprintf("%d", sizeof(dirs)) + "步，路线为：\n");
+  write(wrap_dirs(dirs, 60));
+
+  // 临时开启 brief, 沿途只显示房间短名, 走完恢复原设置
+  br = me->query("env/brief");
+  me->set("env/brief", 1);
+  for (i = 0; i < sizeof(dirs); i++) {
+    me->ccommand(dirs[i]);
+  }
+  if (br)
+    me->set("env/brief", br);
+  else
+    me->set("env/brief", 0);
+
+  write("你已经到达" + arg + "。\n");
+  return 1;
+}
+
+int help(object me) {
+  write(HIW + "----------------------------------------------------------------" + NOR + "\n"
+    + HIC + "指令格式 : walk 中文地址" + NOR + "\n"
+    + HIW + "----------------------------------------------------------------" + NOR + "\n"
+    + "\n"
+    + "自动寻路并行走。参数是目的地的中文地址(房间短名)，\n"
+    + "系统会在当前位置附近搜索最短路径，然后自动走过去。\n"
+    + "例如：walk 风云天下、walk 东地巷。\n"
+    + "\n"
+    + "说明：\n"
+    + "  1. 每十秒只能使用一次。\n"
+    + "  2. 聊天室、迷宫与副本内不能使用。\n"
+    + "  3. 搜索范围有限(18 层深度 / 3000 个房间)，\n"
+    + "     地址不存在或距离过远时会提示找不到。\n"
+    + "  4. 行走过程会自动改用 brief 模式，走完恢复原设置。\n"
+    + "\n"
+    + HIW + "----------------------------------------------------------------" + NOR + "\n");
+  return 1;
+}

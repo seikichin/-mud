@@ -1,0 +1,48 @@
+// probe2.lpc - semantics probes (ASCII only)
+
+string p_ext() {
+  string f = "foo.lpc";
+  int size = sizeof(f);
+  string tail = f[(size - 2)..size];
+  return sprintf("sizeof=%d strlen=%d tail=[%s] isLpc=%d",
+    size, strlen(f), tail, (tail == ".lpc"));
+}
+
+string p_ext2() {
+  string *fs = ({ "a.lpc", "abc.lpc", "x.c", "y.h" });
+  string out = "";
+  int i, size;
+
+  for (i = 0; i < sizeof(fs); i++) {
+    size = sizeof(fs[i]);
+    out += sprintf("[%s]size=%d tail=[%s] eq=%d | ",
+      fs[i], size, fs[i][(size - 2)..size],
+      (fs[i][(size - 2)..size] == ".lpc"));
+  }
+  return out;
+}
+
+string p_dir(string d) {
+  mixed *flat = get_dir(d);
+  mixed *full = get_dir(d, -1);
+  return sprintf("flat=%d full=%d first=%O", sizeof(flat), sizeof(full),
+    sizeof(full) ? full[0] : 0);
+}
+
+string p_destruct() {
+  object o = clone_object("/tmp/probe_obj");
+  string before = sprintf("before if=%d objectp=%d", (o ? 1 : 0), objectp(o));
+
+  destruct(o);
+  return before + sprintf(" || after if=%d objectp=%d", (o ? 1 : 0), objectp(o));
+}
+
+async int p_async_int() {
+  await async_yield();
+  return 5;
+}
+
+string p_call_async() {
+  promise p = p_async_int();
+  return sprintf("promise=%O status=%d", p, promise_status(p));
+}

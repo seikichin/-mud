@@ -1,0 +1,236 @@
+// /adm/daemons/mapd.lpc
+// Map Daemon - Mudlet 地图房间号/区域/坐标查询
+//
+// 移植自 LDMud 风云 /adm/daemons/mapd.c（逻辑与数据格式保持一致）。
+// 房间数据由 C:\mud\map_export 离线导出生成 (mapd_data.lpc)，与 Mudlet 导入地图 id/坐标完全一致。
+// 供 GMCP Room.Info 推送 num/area/areaId/coord，实现走动自动定位。
+//
+// 与 LDMud 原版的差异（仅移植相关，不改语义）：
+//   1) 数据文件名 .c -> .lpc；数据本身逐字未改，键仍统一为 "d/路径.c"。
+//   2) 本 mudlib 没有 remove_ansi()，改用本文件内的 mapd_remove_ansi()。
+//   3) 不使用 LDMud 的 pa[1..] 开区间数组切片（FluffOS 语法差异），改为显式循环重组路径。
+//   4) FluffOS 是单趟编译、无前向引用：本文件所有内部函数在首部集中前置声明。
+//
+// 键格式说明（重要）：
+//   mapd_data 的键是 "d/fy/ansheng.c"（导出器的键格式，带 .c）。
+//   而 FluffOS 的 base_name(房间) 返回 "/d/fy/ansheng"（有前导 /、不带扩展名；文件实际是 .lpc）。
+//   normalize_key() 负责把两者对齐：去前导 /、去克隆后缀 #N、扩展名统一补成 ".c"。
+//   （用 base_name 而不是 program_name：base_name 读的是 obname，不受 replace_program 影响。）
+
+#include "/adm/daemons/mapd_data.lpc"
+
+// 合并后的总房间表（段表 mapd_rooms_0..N 定义于 mapd_data.lpc）
+mapping mapd_rooms;
+
+// ---- 前置声明（FluffOS 无前向引用） ----
+string normalize_key(string path);
+string mapd_remove_ansi(string s);
+mapping query_room(mixed ob);
+int query_room_id(mixed ob);
+int query_area_id(mixed ob);
+int *query_coor(mixed ob);
+string query_area_cn(int areaId);
+int query_room_count();
+int query_area_count();
+mapping query_room_info(object env);
+
+// 段数随 mapd_data.lpc 变化时同步增减（每段约 250 条）
+void create() {
+  mapd_rooms = ([]);
+  mapd_rooms += mapd_rooms_0;
+  mapd_rooms += mapd_rooms_1;
+  mapd_rooms += mapd_rooms_2;
+  mapd_rooms += mapd_rooms_3;
+  mapd_rooms += mapd_rooms_4;
+  mapd_rooms += mapd_rooms_5;
+  mapd_rooms += mapd_rooms_6;
+  mapd_rooms += mapd_rooms_7;
+  mapd_rooms += mapd_rooms_8;
+  mapd_rooms += mapd_rooms_9;
+  mapd_rooms += mapd_rooms_10;
+
+  // 段表已并入总表，释放（与原版一致）
+  mapd_rooms_0 = 0;
+  mapd_rooms_1 = 0;
+  mapd_rooms_2 = 0;
+  mapd_rooms_3 = 0;
+  mapd_rooms_4 = 0;
+  mapd_rooms_5 = 0;
+  mapd_rooms_6 = 0;
+  mapd_rooms_7 = 0;
+  mapd_rooms_8 = 0;
+  mapd_rooms_9 = 0;
+  mapd_rooms_10 = 0;
+}
+
+// 归一化程序路径 -> "d/路径/名.c"
+//   去克隆后缀 "#N"、去前导 '/' 与重复 '/'、扩展名 .lpc/.c 统一补成 ".c"
+string normalize_key(string path) {
+  string *pa;
+  string *out;
+  string seg;
+  string res;
+  int i;
+  int n;
+
+  if (!stringp(path) || !strlen(path)) return 0;
+
+  // 1) 去克隆后缀 "#N"
+  pa = explode(path, "#");
+  path = pa[0];
+
+  // 2) 拆段重组：跳过空段 => 同时去掉前导 '/' 与重复的 '/'
+  pa = explode(path, "/");
+  out = ({});
+  n = sizeof(pa);
+  for (i = 0; i < n; i++) {
+    seg = pa[i];
+    if (!stringp(seg) || !strlen(seg)) continue;
+    out += ({ seg });
+  }
+  if (!sizeof(out)) return 0;
+  res = implode(out, "/");
+
+  // 3) 扩展名归一：.lpc / .c 都归一成 ".c"（与 mapd_data 的键一致）
+  n = strlen(res);
+  if (n > 4 && res[n-4..n-1] == ".lpc") res = res[0..n-5];
+  n = strlen(res);
+  if (n > 2 && res[n-2..n-1] == ".c") res = res[0..n-3];
+
+  return res + ".c";
+}
+
+// 去掉 ANSI 颜色控制序列（ESC 到其后第一个字母）。
+// 本 mudlib 没有 LDMud 的 remove_ansi()，故自带一份。
+string mapd_remove_ansi(string s) {
+  string out;
+  int i;
+  int n;
+  int c;
+  int esc;
+
+  if (!stringp(s)) return "";
+
+  out = "";
+  esc = 0;
+  n = strlen(s);
+  for (i = 0; i < n; i++) {
+    c = s[i];
+    if (esc) {
+      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) esc = 0;
+      continue;
+    }
+    if (c == 27) {
+      esc = 1;
+      continue;
+    }
+    out += s[i..i];
+  }
+  return out;
+}
+
+// 由房间对象或路径字符串查房间记录；返回 ([ "path","id","areaId","x","y","z","area" ]) 或 0
+mapping query_room(mixed ob) {
+  string key;
+  int *v;
+
+  if (objectp(ob)) {
+    // 注意: 不能用 program_name()——房间若 replace_program(ROOM)，程序被替换后
+    // program_name() 会返回 std/room 导致查不到；base_name() 读 obname，不受影响。
+    key = normalize_key(base_name(ob));
+  } else if (stringp(ob)) {
+    key = normalize_key(ob);
+  } else {
+    return 0;
+  }
+
+  if (!key || !mapd_rooms[key]) return 0;
+
+  v = mapd_rooms[key];
+  return ([
+    "path":   key,
+    "id":     v[0],
+    "areaId": v[1],
+    "x":      v[2],
+    "y":      v[3],
+    "z":      v[4],
+    "area":   mapd_areas[v[1]] || ("area" + v[1])
+  ]);
+}
+
+int query_room_id(mixed ob) {
+  mapping m;
+
+  m = query_room(ob);
+  if (mapp(m)) return m["id"];
+  return 0;
+}
+
+int query_area_id(mixed ob) {
+  mapping m;
+
+  m = query_room(ob);
+  if (mapp(m)) return m["areaId"];
+  return 0;
+}
+
+// 返回坐标数组 ({x,y,z}) 或 0
+int *query_coor(mixed ob) {
+  mapping m;
+
+  m = query_room(ob);
+  if (mapp(m)) return ({ m["x"], m["y"], m["z"] });
+  return 0;
+}
+
+// 区域 id -> 中文区域名
+string query_area_cn(int areaId) {
+  return mapd_areas[areaId] || 0;
+}
+
+int query_room_count() {
+  return sizeof(mapd_rooms);
+}
+
+int query_area_count() {
+  return sizeof(mapd_areas);
+}
+
+// Room.Info 组包：环境对象 -> 完整 mapping(含 num/area/areaId/coord/name/exits)；不在图中返回 0
+// 字段与 LDMud 版 /adm/daemons/mapd.c::query_room_info() 完全一致，GMCP 客户端可直接复用同一套脚本。
+mapping query_room_info(object env) {
+  string key;
+  string nm;
+  int *v;
+  mapping exits;
+  mapping info;
+  string *exit_keys;
+
+  if (!objectp(env)) return 0;
+
+  // 同上: base_name() 不受 replace_program() 影响（保留原文件路径）
+  key = normalize_key(base_name(env));
+  if (!key || !mapd_rooms[key]) return 0;
+
+  v = mapd_rooms[key];
+
+  // short 可能带 ANSI 色码(如 HIW"西风道"NOR)，去色后再推给客户端
+  nm = env->query("short");
+  if (!stringp(nm) || !strlen(nm)) nm = env->query("name");
+
+  info = ([
+    "num":    v[0],
+    "area":   mapd_areas[v[1]] || ("area" + v[1]),
+    "areaId": v[1],
+    "coord":  ([ "x": v[2], "y": v[3], "z": v[4] ]),
+    "name":   mapd_remove_ansi(nm)
+  ]);
+
+  exits = env->query("exits");
+  if (mapp(exits)) {
+    exit_keys = keys(exits);
+    if (sizeof(exit_keys)) info["exits"] = exit_keys;
+  }
+
+  return info;
+}

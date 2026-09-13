@@ -1,0 +1,836 @@
+// gmcpd.lpc - GMCP (Generic Mud Communication Protocol) 组件主体
+//
+// 组件分层:
+//   include/gmcp.h		协议常量(包名/消息名/上限)
+//   feature/gmcp.lpc	连线侧(login/user 继承): 驱动 applies + 唯一 send_gmcp 出口
+//   adm/daemons/gmcpd.lpc	本文件: 能力判定/握手/分发/推送 API(唯一策略点)
+//
+// 对外只有两个发送入口:
+//   send(ob, module, data)		单点
+//   broadcast(audience, module, data)	房间/数组/单点
+// 其余 send_xxx() 只是"取数据 + 去重"的封装, 游戏逻辑直接调它们即可。
+//
+// 能力判定只有一个入口 query_gmcp(ob): interactive + has_gmcp() + 玩家没关。
+
+#include <ansi.h>
+#include <gmcp.h>
+
+void create() { }
+
+// ==================================================================
+// 前置声明
+// FluffOS 是单趟编译(没有前向引用): 同一文件内"先调用、后定义"必须在
+// 这里先声明, 否则会报 Undefined function / Too many arguments。
+// ==================================================================
+int query_gmcp(object ob);
+mapping query_gmcp_packages(object ob);
+int query_gmcp_package(object ob, string pkg);
+int query_gmcp_module(object ob, string module);
+string gmcp_pkg_of(string module);
+
+void send(object ob, string module, mixed data);
+void broadcast(mixed audience, string module, mixed data);
+
+void hello(object ob);
+void activate(object ob);
+void goodbye(object ob);
+void init_packages(object ob);
+
+int receive(object ob, string message);
+void gmcp_supports_update(object ob, mixed payload, int mode);
+void send_ping(object ob);
+
+void tick(object ob);
+
+void send_name(object ob);
+void send_statusvars(object ob);
+void send_status(object ob);
+void send_stats(object ob);
+void send_vitals(object ob);
+void send_room(object ob);
+void send_items(object ob, string where);
+void send_comm(object ob, string channel, string talker, string text);
+
+string gmcp_text(mixed v);
+int gmcp_is_ascii(string s);
+string gmcp_id(object ob);
+string gmcp_category(object ob);
+string gmcp_strip_ansi(string s);
+string gmcp_trim(string s);
+int gmcp_json_ok(string s);
+mapping query_room_payload(object env);
+void gmcp_log(object ob, string msg);
+
+// ==================================================================
+// 一、能力 / 状态
+// ==================================================================
+
+// 本连线 GMCP 是否可用 —— 组件唯一的判定入口
+int query_gmcp(object ob) {
+  mixed v;
+
+  if (!objectp(ob)) return 0;
+  if (!interactive(ob)) return 0;
+
+#if efun_defined(has_gmcp)
+  if (!has_gmcp(ob)) return 0;
+#else
+  return 0;
+#endif
+
+  // 玩家偏好(可用 set gmcp on/off 设置): 默认开启
+  v = ob->query("env/gmcp");
+  if (undefinedp(v) || !v) return 1;
+  if (intp(v)) return v ? 1 : 0;
+  if (stringp(v)) {
+    v = lower_case(v);
+    if (v == "0" || v == "no" || v == "off" || v == "false" ||
+        v == "disable" || v == "disabled")
+      return 0;
+  }
+  return 1;
+}
+
+// 客户端声明支持的包(小写包名 -> 版本号)
+mapping query_gmcp_packages(object ob) {
+  mapping m;
+
+  if (!objectp(ob)) return ([]);
+  m = ob->query_temp("gmcp/packages");
+  if (!mapp(m)) return ([]);
+  return m;
+}
+
+// 客户端是否声明支持某个包(包名大小写不敏感)
+//   core 恒为真;
+//   客户端还没声明任何包表时不做限制(否则"只发 Core.Hello 的客户端"什么都收不到)
+int query_gmcp_package(object ob, string pkg) {
+  mapping m;
+
+  if (!stringp(pkg)) return 0;
+  pkg = lower_case(pkg);
+  if (pkg == "core") return 1;
+
+  if (!objectp(ob)) return 0;
+  m = ob->query_temp("gmcp/packages");
+  if (!mapp(m) || !sizeof(m)) return 1;
+
+  return m[pkg] ? 1 : 0;
+}
+
+// "Comm.Channel.Text" -> "comm.channel"  (去掉最后一段, 得到该消息所属的包)
+string gmcp_pkg_of(string module) {
+  int i, last;
+
+  if (!stringp(module)) return "";
+
+  last = -1;
+  for (i = 0; i < strlen(module); i++)
+    if (module[i] == '.') last = i;
+
+  if (last <= 0) return lower_case(module);
+  return lower_case(module[0..last-1]);
+}
+
+// 客户端是否声明了"能接收 module 这条消息"的包。
+//
+// 与 query_gmcp_package() 的区别: 这里按点号**逐级回退**匹配 ——
+//   "Comm.Channel.Text" 依次尝试 "comm.channel.text" -> "comm.channel" -> "comm"
+//   "Char.Items.List"   依次尝试 "char.items.list"   -> "char.items"   -> "char"
+// 任一命中即放行; core 恒放行。
+//
+// 为什么必须逐级回退(不能用某一级的精确匹配): 各客户端声明的粒度不同 ——
+//   * Mudlet 的 gmod.enableModule(user,"Comm.Channel") 会把前缀**全部展开**,
+//     同时声明 "Comm" 与 "Comm.Channel"(见 mudlet-lua/lua/GMCP.lua);
+//   * 规范客户端只声明 "Comm.Channel";
+//   * UNItopia 的 send_gmcp() 则是包名精确匹配。
+// 只认某一级就会静默丢消息 —— 这正是之前 Comm.Channel.Text 发不出去的原因。
+int query_gmcp_module(object ob, string module) {
+  mapping m;
+  string pkg;
+  int i, last;
+
+  if (!stringp(module) || !strlen(module)) return 0;
+  module = lower_case(module);
+
+  if (!objectp(ob)) return 0;
+  m = ob->query_temp("gmcp/packages");
+  if (!mapp(m) || !sizeof(m)) return 1;   // 尚未声明任何包: 不做限制
+
+  pkg = module;
+  while (1) {
+    if (pkg == "core") return 1;
+    if (m[pkg]) return 1;
+
+    // 去掉最后一段, 作为下一个候选
+    last = -1;
+    for (i = 0; i < strlen(pkg); i++)
+      if (pkg[i] == '.') last = i;
+    if (last <= 0) break;
+    pkg = pkg[0..last-1];
+  }
+  return 0;
+}
+
+// ==================================================================
+// 二、发送(唯二出口)
+// ==================================================================
+
+// 单点发送。这里不直接调 send_gmcp() —— 必须由连线对象自己发,
+// 见 feature/gmcp.lpc 顶部的说明。
+void send(object ob, string module, mixed data) {
+  if (!query_gmcp(ob)) return;
+  if (!stringp(module) || !strlen(module)) return;
+  if (!query_gmcp_module(ob, module)) return;
+
+  ob->gmcp_send(module, data);
+}
+
+// 广播: audience 可以是房间(发给房内所有连线对象)、玩家对象、对象数组。
+void broadcast(mixed audience, string module, mixed data) {
+  mixed *targets;
+  int i;
+
+  if (!stringp(module) || !strlen(module)) return;
+
+  targets = ({});
+  if (objectp(audience)) {
+    if (interactive(audience)) targets = ({ audience });
+    else targets = all_inventory(audience);   // 房间/容器
+  } else if (arrayp(audience)) {
+    targets = audience;
+  } else {
+    return;
+  }
+
+  for (i = 0; i < sizeof(targets); i++) {
+    if (!objectp(targets[i])) continue;
+    if (!interactive(targets[i])) continue;
+    send(targets[i], module, data);
+  }
+}
+
+// ==================================================================
+// 三、握手 / 生命周期
+// ==================================================================
+
+// 协商成功即发: 自报家门 + 声明服务端支持的包
+void hello(object ob) {
+  if (!query_gmcp(ob)) return;
+
+  // 标记"本次连线已握手"。activate() 会在每次新连线时先清掉它,
+  // 因此重连后 Core.Hello / Core.Supports.Set 会重发。
+  ob->set_temp("gmcp/hello", 1);
+
+  // 与 LDMud 一致: Core.Hello 只带一个 name 字段(字符串)。
+  send(ob, GMCP_CORE_HELLO, ([
+    "name": GMCP_MUD_NAME,
+  ]));
+
+  send(ob, GMCP_CORE_SUPPORTS_SET, GMCP_SERVER_SUPPORTS);
+}
+
+// 进入世界 / 重连之后调用(由 LOGIN_D 调用), 做两件事:
+//   1) 回放登录期缓冲的客户端消息(在 /obj/login 上攒的)
+//   2) 握手 + 按客户端已声明的包补推初始状态
+void activate(object ob) {
+  object link;
+  mixed msgs;
+  int i;
+
+  if (!query_gmcp(ob)) return;
+
+  // 0) 握手标记是**链路级**的, 每次新连线都要重发。
+  //    对照 UNItopia: init_gmcp() 绑在 telnet 协商回调上, 每开一条新连线都会
+  //    重发 Core.Hello; 若沿用上一次连线的标记, 重连后客户端就收不到
+  //    Core.Hello / Core.Supports.Set(实测确认过)。
+  //    注意: 数据类去重缓存(gmcp/vitals, gmcp/stats, gmcp/status)**故意不重置**,
+  //    与 UNItopia(last_hpsp_str/lstats)及 LDMud 一致 —— 值一变就会补发,
+  //    全清只会产生多余流量。
+  ob->set_temp("gmcp/hello", 0);
+
+  // 1) 登录交接: 清空上一次连线的包表, 随后由回放的 Core.Supports.* 重建。
+  //    照抄 UNItopia transfer_gmcp() 的 packages = ([:1]): TCP 重连/换客户端时
+  //    玩家对象不会重建, 旧包表会残留(客户端只发 Add 时尤其明显)。
+  link = ob->query_temp("link_ob");
+  if (objectp(link)) {
+    ob->set_temp("gmcp/packages", ([]));
+
+    msgs = link->query_gmcp_messages();
+    if (arrayp(msgs) && sizeof(msgs)) {
+      for (i = 0; i < sizeof(msgs); i++)
+        receive(ob, msgs[i]);
+    }
+    link->clear_gmcp_messages();
+  }
+
+  // 2) 握手(每次连线一次, 见上面 0)
+  if (!ob->query_temp("gmcp/hello"))
+    hello(ob);
+
+  init_packages(ob);
+}
+
+// 退出世界
+void goodbye(object ob) {
+  if (!query_gmcp(ob)) return;
+  send(ob, GMCP_CORE_GOODBYE, ([
+    "reason": "bye",
+  ]));
+}
+
+// ==================================================================
+// 四、初始状态下发
+// ==================================================================
+
+// 按客户端声明的包补推初始状态。
+// 增删一个包 = 这里加一行 + 加一个 send_xxx()。
+void init_packages(object ob) {
+  if (!query_gmcp(ob)) return;
+
+  if (query_gmcp_module(ob, GMCP_CHAR_NAME)) {
+    send_name(ob);
+    send_statusvars(ob);
+    send_status(ob);
+    send_stats(ob);
+    send_vitals(ob);
+  }
+  if (query_gmcp_module(ob, GMCP_ROOM_INFO))
+    send_room(ob);
+  // 与 LDMud 一致: 初始化只发背包(inv); 房间清单改由客户端发
+  // Char.Items.Room 按需索取(见 receive())。
+  if (query_gmcp_module(ob, GMCP_CHAR_ITEMS_LIST))
+    send_items(ob, GMCP_LIST_INV);
+}
+
+// ==================================================================
+// 五、接收(由 feature/gmcp.lpc 的 gmcp() apply 转发进来)
+// ==================================================================
+
+// 返回 1 表示已识别处理
+int receive(object ob, string message) {
+  string module, args, err;
+  mixed payload;
+  int n;
+
+  if (!objectp(ob) || !stringp(message)) return 0;
+
+  message = gmcp_trim(message);
+  if (!strlen(message)) return 0;
+  if (strlen(message) > GMCP_MAX_PAYLOAD) return 1;
+
+  // "Char.Vitals {json}" / "Core.Ping"
+  n = strsrch(message, " ");
+  if (n == -1) {
+    module = message;
+    args = "";
+  } else {
+    module = message[0..n-1];
+    args = message[n+1..];
+  }
+
+  payload = 0;
+  if (strlen(args)) {
+    // 先用轻量预检把明显的垃圾挡掉, 再交给 json_decode
+    if (!gmcp_json_ok(args)) {
+      gmcp_log(ob, "BAD-JSON " + module);
+      return 1;
+    }
+    err = catch(payload = json_decode(args));
+    if (stringp(err)) {
+      gmcp_log(ob, "DECODE-ERR " + module);
+      return 1;
+    }
+  }
+
+  // ---- Core: 组件自己处理 ----
+  if (module == GMCP_CORE_PING) { send_ping(ob); return 1; }
+
+  if (module == GMCP_CORE_GOODBYE) {
+    ob->set_temp("gmcp/goodbye", 1);
+    return 1;
+  }
+
+  if (module == GMCP_CORE_HELLO) {
+    if (mapp(payload)) ob->set_temp("gmcp/client", payload);
+    return 1;
+  }
+
+  if (module == GMCP_CORE_SUPPORTS_SET) {
+    gmcp_supports_update(ob, payload, GMCP_SUP_SET);
+    // 登录对象还没有玩家身份(name/query/environment 都不成立),
+    // 此时只记包表, 初始状态等 exec 之后由 activate() 统一补推。
+    if (!ob->query_temp("gmcp/buffer")) init_packages(ob);
+    return 1;
+  }
+
+  if (module == GMCP_CORE_SUPPORTS_ADD) {
+    gmcp_supports_update(ob, payload, GMCP_SUP_ADD);
+    if (!ob->query_temp("gmcp/buffer")) init_packages(ob);
+    return 1;
+  }
+
+  if (module == GMCP_CORE_SUPPORTS_REMOVE) {
+    gmcp_supports_update(ob, payload, GMCP_SUP_REMOVE);
+    return 1;
+  }
+
+  // ---- 按需重发(客户端主动 Get) ----
+  if (module == "Char.Vitals.Get") {
+    ob->set_temp("gmcp/vitals", 0);   // 强制重发
+    send_vitals(ob);
+    return 1;
+  }
+  if (module == "Char.Status.Get") { send_status(ob); return 1; }
+  if (module == "Char.Name.Get")   { send_name(ob);   return 1; }
+  if (module == "Char.Items.Inv")  { send_items(ob, GMCP_LIST_INV);  return 1; }
+  if (module == "Char.Items.Room") { send_items(ob, GMCP_LIST_ROOM); return 1; }
+  if (module == "Room.Info.Get")   { send_room(ob);   return 1; }
+
+  // ---- 未识别: 限流记录, 不报错(客户端可能声明了本库不支持的包) ----
+  gmcp_log(ob, "UNHANDLED " + module);
+  return 0;
+}
+
+// Core.Supports.Set/Add/Remove 的包表维护
+void gmcp_supports_update(object ob, mixed payload, int mode) {
+  mapping pkgs;
+  string item, key;
+  int i, n, ver;
+
+  if (!objectp(ob)) return;
+  if (!arrayp(payload)) return;
+
+  pkgs = ob->query_temp("gmcp/packages");
+  if (!mapp(pkgs)) pkgs = ([]);
+  if (mode == GMCP_SUP_SET) pkgs = ([]);   // Set 是覆盖语义
+
+  for (i = 0; i < sizeof(payload); i++) {
+    item = payload[i];
+    if (!stringp(item)) continue;
+
+    n = strsrch(item, " ");
+    if (n == -1) {
+      key = lower_case(item);
+      ver = 1;
+    } else {
+      key = lower_case(item[0..n-1]);
+      ver = (int)item[n+1..];
+    }
+    if (!strlen(key)) continue;
+
+    if (mode == GMCP_SUP_REMOVE)
+      map_delete(pkgs, key);
+    else
+      pkgs[key] = ver ? ver : 1;
+  }
+
+  ob->set_temp("gmcp/packages", pkgs);
+}
+
+// Core.Ping -> Core.Ping (pong)
+void send_ping(object ob) { send(ob, GMCP_CORE_PING, ([])); }
+
+// ==================================================================
+// 六、心跳: 增量推送
+// ==================================================================
+
+// 由 obj/user.lpc 的 heart_beat() 调用。内部全部带去重,
+// 没有变化时只做几次 query_temp, 开销可忽略。
+void tick(object ob) {
+  if (!query_gmcp(ob)) return;
+
+  // 兜底: LOGIN_D 的 activate() 万一没走到(例如某些巫师登录路径)
+  if (!ob->query_temp("gmcp/hello"))
+    activate(ob);
+
+  send_vitals(ob);
+}
+
+// ==================================================================
+// 七、推送单元(game code 只调这些)
+// ==================================================================
+
+void send_name(object ob) {
+  if (!query_gmcp(ob)) return;
+
+  send(ob, GMCP_CHAR_NAME, ([
+    "name":     gmcp_text(ob->name(1)),
+    "fullname": gmcp_text(ob->name()),
+    "id":       gmcp_text(ob->query("id")),
+    "gender":   gmcp_text(ob->query("gender")),
+    "race":     gmcp_text(ob->query("race")),
+  ]));
+}
+
+// 三个命脉字段的显示名(客户端拿它做状态条标题)
+void send_statusvars(object ob) {
+  if (!query_gmcp(ob)) return;
+
+  // 与 LDMud 一致: 键名 = 风云原生字段名, 值 = 中文显示名(共 6 条)。
+  // 客户端拿它当状态条标题, 具体数值由 Char.Vitals 提供。
+  send(ob, GMCP_CHAR_STATUSVARS, ([
+    "kee":   "气血",
+    "gin":   "精力",
+    "sen":   "心神",
+    "force": "内力",
+    "mana":  "法力",
+    "atman": "灵力",
+  ]));
+}
+
+void send_status(object ob) {
+  mapping m;
+  string nw;
+
+  if (!query_gmcp(ob)) return;
+  // 先判包: 否则客户端还没声明 char 时就写坏 gmcp/status 缓存,
+  // 等他声明后值没变反而不补发。
+  if (!query_gmcp_module(ob, GMCP_CHAR_STATUS)) return;
+
+  // 与 LDMud 一致: 只发 race/class/gender 三个字段。
+  nw = sprintf("%s,%s,%s",
+    gmcp_text(ob->query("race")),
+    gmcp_text(ob->query("class")),
+    gmcp_text(ob->query("gender")));
+
+  if (nw == ob->query_temp("gmcp/status")) return;
+  ob->set_temp("gmcp/status", nw);
+
+  m = ([
+    "race":   gmcp_text(ob->query("race")),
+    "class":  gmcp_text(ob->query("class")),
+    "gender": gmcp_text(ob->query("gender")),
+  ]);
+
+  send(ob, GMCP_CHAR_STATUS, m);
+}
+
+// 五维属性。与 LDMud 一致: 键为 str/agi/int/con/cps, 且值都是字符串
+// (LDMud 侧是 to_string(({int})(x)) 的结果)。
+void send_stats(object ob) {
+  mapping m;
+  string key;
+
+  if (!query_gmcp(ob)) return;
+  // 先判包, 理由同 send_status(): 不能污染 gmcp/stats 去重缓存。
+  if (!query_gmcp_module(ob, GMCP_CHAR_STATS)) return;
+
+  key = sprintf("%s,%s,%s,%s,%s",
+    gmcp_text(ob->query("str")),
+    gmcp_text(ob->query("agi")),
+    gmcp_text(ob->query("int")),
+    gmcp_text(ob->query("con")),
+    gmcp_text(ob->query("cps")));
+
+  if (key == ob->query_temp("gmcp/stats")) return;
+  ob->set_temp("gmcp/stats", key);
+
+  m = ([
+    "str": gmcp_text(ob->query("str")),
+    "agi": gmcp_text(ob->query("agi")),
+    "int": gmcp_text(ob->query("int")),
+    "con": gmcp_text(ob->query("con")),
+    "cps": gmcp_text(ob->query("cps")),
+  ]);
+
+  send(ob, GMCP_CHAR_STATS, m);
+}
+
+// 命脉: 字段名与 LDMud 风云 mudlib 的 update_points_display() 完全一致。
+void send_vitals(object ob) {
+  mapping m;
+  string key;
+  mixed prev;
+  int kee, eff_kee, max_kee;
+  int gin, eff_gin, max_gin;
+  int sen, eff_sen, max_sen;
+  int force, max_force;
+  int mana, max_mana;
+  int atman, max_atman;
+
+  if (!query_gmcp(ob)) return;
+  if (!query_gmcp_module(ob, GMCP_CHAR_VITALS)) return;
+
+  kee = (int)ob->query("kee");  eff_kee = (int)ob->query("eff_kee");  max_kee = (int)ob->query("max_kee");
+  gin = (int)ob->query("gin");  eff_gin = (int)ob->query("eff_gin");  max_gin = (int)ob->query("max_gin");
+  sen = (int)ob->query("sen");  eff_sen = (int)ob->query("eff_sen");  max_sen = (int)ob->query("max_sen");
+  force = (int)ob->query("force");  max_force = (int)ob->query("max_force");
+  mana = (int)ob->query("mana");    max_mana = (int)ob->query("max_mana");
+  atman = (int)ob->query("atman");  max_atman = (int)ob->query("max_atman");
+
+  key = sprintf("%d/%d/%d,%d/%d/%d,%d/%d/%d,%d/%d,%d/%d,%d/%d",
+    kee, eff_kee, max_kee, gin, eff_gin, max_gin, sen, eff_sen, max_sen,
+    force, max_force, mana, max_mana, atman, max_atman);
+
+  prev = ob->query_temp("gmcp/vitals");
+  if (stringp(prev) && prev == key) return;   // 没变化就不发
+  ob->set_temp("gmcp/vitals", key);
+
+  // 字段名对齐 LDMud:
+  //   hp/effhp/maxhp = 气血(kee), sp/effsp/maxsp = 精力(gin), ep/effep/maxep = 心神(sen)
+  // 其后是风云原生字段(含 force 内力 / mana 法力 / atman 灵力)。
+  m = ([
+    "hp": kee, "effhp": eff_kee, "maxhp": max_kee,
+    "sp": gin, "effsp": eff_gin, "maxsp": max_gin,
+    "ep": sen, "effep": eff_sen, "maxep": max_sen,
+    "kee": kee, "eff_kee": eff_kee, "max_kee": max_kee,
+    "gin": gin, "eff_gin": eff_gin, "max_gin": max_gin,
+    "sen": sen, "eff_sen": eff_sen, "max_sen": max_sen,
+    "force": force, "max_force": max_force,
+    "mana": mana, "max_mana": max_mana,
+    "atman": atman, "max_atman": max_atman,
+  ]);
+
+  send(ob, GMCP_CHAR_VITALS, m);
+}
+
+// 房间信息载荷: 环境对象 -> mapping。
+//
+// 字段与 LDMud 风云 mudlib 的 feature/gmcp.c::gmcp_send_room_info() 保持一致,
+// 地图字段由 mapd(与 Mudlet 离线导出地图同源) 提供:
+//   命中地图: { num, area, areaId, coord:{x,y,z}, name, exits:[方向...] }
+//   未收录  : { name, exits:[方向...], area }        (即 LDMud 的 fallback 分支)
+//
+// 独立成一个函数是为了能脱离连线对象做无头测试(见 /adm/tmp/mapd_probe.lpc)。
+mapping query_room_payload(object env) {
+  mapping info;
+  mixed ex;
+  string nm;
+
+  if (!objectp(env)) return 0;
+
+  // 优先使用 mapd: num/area/areaId/coord/name/exits; 未收录则退回基础字段
+  info = MAP_D->query_room_info(env);
+  if (mapp(info)) return info;
+
+  nm = env->query("short");
+  if (!stringp(nm) || !strlen(nm)) nm = env->query("name");
+
+  ex = env->query("exits");
+  if (!mapp(ex)) ex = ([]);
+
+  return ([
+    "name":  gmcp_strip_ansi(gmcp_text(nm)),
+    "exits": keys(ex),
+    "area":  env->query("area") || 0,
+  ]);
+}
+
+// 房间信息。move() 与 look 之后调用。
+void send_room(object ob) {
+  mapping out;
+
+  if (!query_gmcp(ob)) return;
+  if (!query_gmcp_module(ob, GMCP_ROOM_INFO)) return;
+
+  out = query_room_payload(environment(ob));
+  if (!mapp(out)) return;
+
+  send(ob, GMCP_ROOM_INFO, out);
+}
+
+// 背包/房间物品清单
+void send_items(object ob, string where) {
+  mixed *inv, *items;
+  object env;
+  int i;
+
+  if (!query_gmcp(ob)) return;
+  if (!query_gmcp_module(ob, GMCP_CHAR_ITEMS_LIST)) return;
+
+  if (where == GMCP_LIST_ROOM) {
+    env = environment(ob);
+    if (objectp(env)) inv = all_inventory(env);
+    else inv = ({});
+  } else {
+    where = GMCP_LIST_INV;
+    inv = all_inventory(ob);
+  }
+
+  items = ({});
+  for (i = 0; i < sizeof(inv); i++) {
+    if (!objectp(inv[i])) continue;
+    if (inv[i] == ob) continue;
+    items += ({ ([
+      // name 必须去掉 ANSI 颜色: LDMud 侧同为无色纯文本
+      "name":     gmcp_strip_ansi(gmcp_text(inv[i]->query("name"))),
+      "id":       gmcp_id(inv[i]),
+      "category": gmcp_category(inv[i]),
+    ]) });
+  }
+
+  send(ob, GMCP_CHAR_ITEMS_LIST, ([
+    "location": where,
+    "items":    items,
+  ]));
+}
+
+// 频道消息(Comm.Channel.Text)。字段与 LDMud 风云 mudlib 完全一致:
+//   channel —— 频道名("Local"=说话, "Tell"=私聊, 其余为频道命令名如 chat/rumor)
+//   talker  —— 发言者显示名
+//   text    —— 正文(已去掉 ANSI 颜色)
+//
+// 本函数只是"把一条消息投给某个连线对象"的出口, 收件人由调用点决定,
+// 与 LDMud 一致:
+//   say     -> 投给说话者本人     (channel="Local")
+//   tell    -> 投给接收者         (channel="Tell")
+//   channel -> 投给发言者本人     (channel=频道命令名)
+//
+// 注: LDMud 侧 text 会先经 wrap(text,48) 折行。本引擎没有 `%-=*s` 折行格式、
+//     也没有 wrap() 可用, 故这里保持原文, 由客户端自行折行 ——
+//     短消息与 LDMud 的输出逐字节一致, 仅超长行不预折。
+void send_comm(object ob, string channel, string talker, string text) {
+  if (!query_gmcp(ob)) return;
+  if (!query_gmcp_module(ob, GMCP_COMM_CHANNEL_TEXT)) return;
+  if (!stringp(channel) || !strlen(channel)) return;
+
+  send(ob, GMCP_COMM_CHANNEL_TEXT, ([
+    "channel": channel,
+    "talker":  gmcp_text(talker),
+    "text":    gmcp_strip_ansi(gmcp_text(text)),
+  ]));
+}
+
+// ==================================================================
+// 八、工具函数
+// ==================================================================
+
+// 任意值 -> 字符串(GMCP 的键值都应当是字符串)
+string gmcp_text(mixed v) {
+  if (stringp(v)) return v;
+  if (intp(v)) return sprintf("%d", v);
+  if (floatp(v)) return sprintf("%f", v);
+  if (arrayp(v)) return sizeof(v) ? gmcp_text(v[0]) : "";
+  if (objectp(v)) return "";
+  if (!v) return "";
+  return sprintf("%O", v);
+}
+
+int gmcp_is_ascii(string s) {
+  int i, c;
+
+  if (!stringp(s) || !strlen(s)) return 0;
+  for (i = 0; i < strlen(s); i++) {
+    c = s[i];
+    if (c >= 'a' && c <= 'z') continue;
+    if (c >= 'A' && c <= 'Z') continue;
+    if (c >= '0' && c <= '9') continue;
+    if (c == '-' || c == '_') continue;
+    return 0;
+  }
+  return 1;
+}
+
+// query("id") 既可能是字符串也可能是数组(本库两种都有)
+string gmcp_id(object ob) {
+  mixed v;
+  int i;
+
+  v = ob->query("id");
+  if (stringp(v)) return v;
+
+  if (arrayp(v)) {
+    for (i = 0; i < sizeof(v); i++)
+      if (stringp(v[i]) && gmcp_is_ascii(v[i])) return v[i];
+    return sizeof(v) ? gmcp_text(v[0]) : "";
+  }
+
+  return gmcp_text(v);
+}
+
+// 物品分类(先用 living() 分出生物, 再按本库的 /obj/ 目录归类)
+string gmcp_category(object ob) {
+  string f;
+
+  if (living(ob)) return "living";
+
+  f = file_name(ob);
+  if (!stringp(f)) return "other";
+
+  if (strsrch(f, "/obj/weapon") == 0) return "weapon";
+  if (strsrch(f, "/obj/armor") == 0) return "armor";
+  if (strsrch(f, "/obj/money") == 0) return "money";
+  if (strsrch(f, "/obj/food_item") == 0) return "food";
+  if (strsrch(f, "/obj/medicine") == 0) return "medicine";
+  if (strsrch(f, "/obj/book") == 0) return "book";
+
+  return "other";
+}
+
+// 去掉 ANSI 颜色控制序列(ESC ... 直到一个字母)
+string gmcp_strip_ansi(string s) {
+  string out;
+  int i, c, esc;
+
+  if (!stringp(s)) return "";
+
+  out = "";
+  esc = 0;
+  for (i = 0; i < strlen(s); i++) {
+    c = s[i];
+    if (esc) {
+      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) esc = 0;
+      continue;
+    }
+    if (c == 27) { esc = 1; continue; }
+    out += s[i..i];
+  }
+  return out;
+}
+
+// 去掉首尾空白(GMCP 消息由客户端输入, 不能假定干净)
+string gmcp_trim(string s) {
+  int i, j, n, c;
+
+  if (!stringp(s)) return "";
+
+  n = strlen(s);
+  i = 0;
+  j = n - 1;
+
+  while (i < n) {
+    c = s[i];
+    if (c == ' ' || c == '\t' || c == '\r' || c == '\n') i++;
+    else break;
+  }
+  while (j >= i) {
+    c = s[j];
+    if (c == ' ' || c == '\t' || c == '\r' || c == '\n') j--;
+    else break;
+  }
+
+  if (j < i) return "";
+  return s[i..j];
+}
+
+// 轻量 JSON 预检: 挡掉明显的垃圾, 减少 json_decode() 抛硬错误的概率。
+// 规范上限见 GMCP_MAX_PAYLOAD。
+int gmcp_json_ok(string s) {
+  int n, c;
+
+  if (!stringp(s)) return 0;
+
+  n = strlen(s);
+  if (n < 2 || n > GMCP_MAX_PAYLOAD) return 0;
+
+  c = s[0];
+  if (c == '[' && s[n-1] == ']') return 1;
+  if (c == '{' && s[n-1] == '}') return 1;
+
+  return 0;
+}
+
+// 限流日志
+void gmcp_log(object ob, string msg) {
+  int n;
+
+  if (!objectp(ob)) return;
+
+  n = (int)ob->query_temp("gmcp/logged");
+  if (n >= GMCP_MAX_UNHANDLED_LOG) return;
+  ob->set_temp("gmcp/logged", n + 1);
+
+  log_file("gmcp", sprintf("%s [%s] %s\n",
+    ctime(time()), gmcp_text(ob->query("id")), msg));
+}

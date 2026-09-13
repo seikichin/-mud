@@ -1,0 +1,359 @@
+/* *****************************************************************
+ *
+ *  lpc + exec
+ *
+ *  - (lpc) original from Jubal E. Harshaw (GumbiMud)
+ *  - (exec) original from who knows who, modified by neverbot for RLMud
+ *  - (lpc + exec) MudOS version (CcMudlib) by neverbot, 11/2008
+ *  - ported to DGD (CcMudlib) by neverbot, 08/2015
+ *
+ * ***************************************************************** */
+
+
+#define CODER_DIR "/tmp/"
+
+
+private int show, dont_overwrite, dont_remove, compile_only;
+private mixed arg;
+
+private string parse_args(string str);
+private string defines();
+private string before();
+private string after();
+private string temp_file(object me);
+private int check_file(string file);
+private int check_code(string str);
+private int show_source(string source);
+private int report(string statu, string file, string detail);
+private int cleanup(string file);
+private int write_xlpc_log(object me, string mode, string statu,
+                           string file, string code);
+
+
+// The help text is dynamic: every wizard receives an isolated temporary file.
+string query_help()
+{
+  return "XLPC - execute temporary LPC code.\n\n" +
+         "Syntax: xlpc [-s] [-p] [-d] [-c] [-a <arg>] <LPC code>\n\n" +
+         "Options:\n" +
+         "  -s          Show the generated source with line numbers.\n" +
+         "  -p          Preserve the generated source file after use.\n" +
+         "  -d          Abort if this wizard's temporary file already exists.\n" +
+         "  -c          Compile only; do not call main().\n" +
+         "  -a <arg>    Pass <arg> to main(arg); this option must precede code.\n" +
+         "  -h          Show this help.\n\n" +
+         "Each wizard uses /tmp/xlpc_<wizard>.c, avoiding cross-wizard conflicts.\n" +
+         "Use return <expression> when you want XLPC to display a value.\n\n" +
+         "Available macros:\n" + defines() + "\n" +
+         "Examples:\n" +
+         "  xlpc return 2 + 3\n" +
+         "  xlpc -s -a hello return arg\n" +
+         "  xlpc -c object ob; ob = this_player()\n";
+}
+
+private string temp_file(object me)
+{
+  string user;
+  user = geteuid(me);
+  if (!user || !strlen(user))
+    user = "unknown";
+
+  return CODER_DIR + "xlpc_" + user + ".c";
+}
+
+private int check_file(string file)
+{
+  object ob;
+  int size;
+
+  if (file_size(CODER_DIR) != -2)
+  {
+    report("CANCELLED", file,
+           "Temporary directory does not exist: " + CODER_DIR);
+    return 0;
+  }
+
+  size = file_size(file);
+  ob = find_object(file);
+
+  if (dont_overwrite && (size >= 0 || ob))
+  {
+    report("CANCELLED", file,
+           "The temporary file already exists; -d prohibits overwriting it.");
+    return 0;
+  }
+
+  if (ob)
+    destruct(ob);
+
+  if (size >= 0 && !rm(file))
+  {
+    report("CANCELLED", file,
+           "Could not remove the previous temporary source file.");
+    return 0;
+  }
+
+  return 1;
+}
+
+private int check_code(string str)
+{
+  if (!str || !strlen(str))
+  {
+    write("XLPC: no LPC code was supplied.\n");
+    return 0;
+  }
+
+  return 1;
+}
+
+private int show_source(string source)
+{
+  string *lines;
+  int i;
+
+  lines = explode(source, "\n");
+
+  write("\n+--------------------------------------------------+\n");
+  write("| XLPC :: GENERATED SOURCE                         |\n");
+  write("+--------------------------------------------------+\n");
+
+  for (i = 0; i < sizeof(lines); i++)
+    write(sprintf("%3d | %s\n", i + 1, lines[i]));
+
+  write("+--------------------------------------------------+\n");
+  return 1;
+}
+
+private int report(string statu, string file, string detail)
+{
+  write("\n+--------------------------------------------------+\n");
+  write("| XLPC :: " + statu + "\n");
+  write("| File : " + file + "\n");
+  write("+--------------------------------------------------+\n");
+  write(detail);
+  if (!strlen(detail) || detail[strlen(detail) - 1] != '\n')
+    write("\n");
+  write("+--------------------------------------------------+\n");
+
+  return 1;
+}
+
+private int cleanup(string file)
+{
+  object ob;
+
+  ob = find_object(file);
+  if (ob)
+    destruct(ob);
+
+  if (!dont_remove && file_size(file) >= 0 && !rm(file))
+    write("XLPC warning: could not remove temporary file " + file + "\n");
+
+  return 1;
+}
+
+private int write_xlpc_log(object me, string mode, string statu,
+                           string file, string code)
+{
+  string user;
+
+  user = geteuid(me);
+  if (!user || !strlen(user))
+    user = "unknown";
+
+  code = replace_string(code, "\n", "\\n");
+  log_file("xlpc", ctime(time()) + " user=" + user +
+           " mode=" + mode + " statu=" + statu +
+           " file=" + file + " code=" + code + "\n");
+  return 1;
+}
+
+int main(object me, string str)
+{
+  object ob;
+  string file, source, error, mode, statu;
+  mixed ret;
+ mapping ru1, ru2; 
+int time;
+
+  if (!this_player())
+    return 0;
+
+  show = 0;
+  dont_overwrite = 0;
+  dont_remove = 0;
+  compile_only = 0;
+  arg = 0;
+
+  if (!str || !strlen(str))
+  {
+    write(query_help());
+    return 1;
+  }
+
+  str = parse_args(str);
+  if (!str)
+    return 1;
+
+  if (!check_code(str))
+    return 1;
+
+  file = temp_file(me);
+  source = before() + str + after();
+  mode = compile_only ? "compile" : "execute";
+
+  if (show)
+    show_source(source);
+
+  if (!check_file(file))
+    return 1;
+
+  if (!write_file(file, source))
+  {
+    report("WRITE FAILED", file,
+           "Could not create the temporary source file.");
+    write_xlpc_log(me, mode, "write-failed", file, str);
+    cleanup(file);
+    return 1;
+  }
+
+  error = catch(ob = load_object(file));
+
+  if (error)
+  {
+    report("COMPILE FAILED", file, error);
+    write_xlpc_log(me, mode, "compile-failed", file, str);
+    cleanup(file);
+    return 1;
+  }
+
+  if (!ob)
+  {
+    report("COMPILE FAILED", file,
+           "The compiler did not return an executable object.");
+    write_xlpc_log(me, mode, "compile-failed", file, str);
+    cleanup(file);
+    return 1;
+  }
+
+  if (compile_only)
+  {
+    report("COMPILE OK", file,
+           "The code compiled successfully; main() was not invoked.");
+    write_xlpc_log(me, mode, "ok", file, str);
+    cleanup(file);
+    return 1;
+  }
+    ru1=rusage();
+  error = catch(ret = ob->main(arg));
+    ru2=rusage();
+  if (error)
+  {
+    statu = "EXECUTION FAILED";
+    report(statu, file, error);
+    write_xlpc_log(me, mode, "execution-failed", file, str);
+  }
+  else
+  {
+  	time=ru2["utime"]-ru1["utime"]+ru2["stime"]-ru1["stime"];
+    statu = "EXECUTION OK"; 
+    report(statu, file, "Return value:\n" + sprintf("%O\n",ret)+("Evaluation time: "+(time<0 ? 0 : time)+" ms"));
+    write_xlpc_log(me, mode, "ok", file, str);
+  }
+
+  cleanup(file);
+  return 1;
+}
+
+private string parse_args(string str)
+{
+  string flags, rest, invalid;
+
+  if (str == "-h" || str == "--help")
+  {
+    write(query_help());
+    return 0;
+  }
+
+  /*
+   * Accept both compact flags (-sp) and separate flag groups
+   * (-s -p).  Parsing stops at the first non-option token, which
+   * is the beginning of the LPC source text.
+   */
+  while (sscanf(str, "-%s %s", flags, rest) == 2)
+  {
+    if (flags == "h" || flags == "help")
+    {
+      write(query_help());
+      return 0;
+    }
+
+    invalid = flags;
+    invalid = replace_string(invalid, "s", "");
+    invalid = replace_string(invalid, "d", "");
+    invalid = replace_string(invalid, "p", "");
+    invalid = replace_string(invalid, "c", "");
+    invalid = replace_string(invalid, "a", "");
+
+    if (strlen(invalid))
+    {
+      write("XLPC: unknown option -" + invalid + "\n\n");
+      write(query_help());
+      return 0;
+    }
+
+    if (strsrch(flags, "s") >= 0)
+      show = 1;
+    if (strsrch(flags, "d") >= 0)
+      dont_overwrite = 1;
+    if (strsrch(flags, "p") >= 0)
+      dont_remove = 1;
+    if (strsrch(flags, "c") >= 0)
+      compile_only = 1;
+
+    if (strsrch(flags, "a") >= 0)
+    {
+      if (rest[0] == '"')
+      {
+        if (sscanf(rest, "\"%s\" %s", arg, str) == 2)
+          return str;
+      }
+      else if (sscanf(rest, "%s %s", arg, str) == 2)
+        return str;
+
+      write("XLPC: -a requires an argument followed by LPC code.\n\n");
+      write(query_help());
+      return 0;
+    }
+
+    str = rest;
+  }
+
+  return str;
+}
+
+// Code to include in the generated file
+
+private string defines()
+{
+  return "#define TP this_player()\n#define TO this_object()\n" +
+         "#define QN query_name()\n#define QCN query_cap_name()\n";
+}
+
+private string before()
+{
+  return defines() +
+         "\nvoid create() { }\n" +
+         "void dest_me() { destruct(this_object()); }\n" +
+         "\nmixed main(mixed arg)\n{\n" +
+         "  /* BEGIN USER CODE */\n\n  ";
+}
+
+private string after()
+{
+  return ";\n\n  /* END USER CODE */\n}\n";
+}
+
+// string help() { main(); }
+

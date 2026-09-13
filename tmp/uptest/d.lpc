@@ -1,0 +1,3 @@
+// uptest d (inherits outside dir)
+inherit "/tmp/uptest2/pbase";
+int query_mark() { return 4444; }

@@ -1,0 +1,51 @@
+// probe_async.lpc - probe promise/async support (ASCII only)
+
+string probe_basic() {
+  promise p = promise_create();
+  return sprintf("CREATE status=%d promisep=%d",
+    promise_status(p), promisep(p));
+}
+
+string probe_settle() {
+  promise p = promise_create();
+  promise_resolve(p, 42);
+  return sprintf("RESOLVE status=%d result=%O",
+    promise_status(p), promise_result(p));
+}
+
+string probe_reject() {
+  promise p = promise_create();
+  promise_reject(p, "boom");
+  return sprintf("REJECT status=%d result=%O",
+    promise_status(p), promise_result(p));
+}
+
+string probe_then() {
+  promise p = promise_create();
+  promise q = promise_then(p, function(mixed v) { return v + 1; });
+  promise_resolve(p, 41);
+  async_yield();  // let drain run
+  return sprintf("THEN status=%d result=%O", promise_status(q), promise_result(q));
+}
+
+async int probe_async_fn() {
+  await async_yield();
+  return 7;
+}
+
+string probe_async() {
+  promise p = probe_async_fn();
+  return sprintf("ASYNC status=%d", promise_status(p));
+}
+
+string probe_info() {
+  mixed *info = async_info();
+  mapping s = async_info(1);
+  return sprintf("INFO suspended=%d scheduler=%O", sizeof(info), s);
+}
+
+string probe_evalimit() {
+  int m = set_eval_limit(1);
+  int r = set_eval_limit(-1);
+  return sprintf("EVALMAX=%d REMAIN=%d", m, r);
+}

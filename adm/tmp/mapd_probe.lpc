@@ -1,0 +1,110 @@
+// /adm/tmp/mapd_probe.lpc
+// 临时自检对象（仅用于验证 mapd 移植；验证完应删除并从 preload 移除）
+// 结果追加写入 /log/mapd_probe.txt
+
+#define OUT "/log/mapd_probe.txt"
+
+void say(string s) {
+  write_file(OUT, s + "\n");
+}
+
+void create() {
+  string *paths;
+  string p;
+  string bn;
+  string fn;
+  string key;
+  string js;
+  object room;
+  object room2;
+  mapping q;
+  mapping info;
+  int i;
+  int n;
+  int hits;
+  int miss;
+
+  write_file(OUT, "\n==== mapd probe ====\n");
+
+  // 0) 基本规模
+  say("room_count = " + MAP_D->query_room_count());
+  say("area_count = " + MAP_D->query_area_count());
+
+  // 1) 房间对象 -> 键归一化 -> 查表（本次要回答的核心问题）
+  paths = ({
+    "/d/fy/ansheng",
+    "/d/fy/stone2",
+    "/d/laowu/laowu",
+    "/d/huashan/xiaojing",
+    "/d/wudang/pine4",
+    "/d/guanyin/deep2",
+    "/d/changchun/stone1",
+    "/d/qianjin/bridge"
+  });
+
+  hits = 0;
+  miss = 0;
+  n = sizeof(paths);
+  for (i = 0; i < n; i++) {
+    p = paths[i];
+    room = load_object(p);
+    if (!objectp(room)) {
+      say(p + " -> LOAD FAILED");
+      continue;
+    }
+    bn = base_name(room);
+    fn = file_name(room);
+    key = MAP_D->normalize_key(bn);
+    q = MAP_D->query_room(room);
+    if (mapp(q)) {
+      hits++;
+      say(sprintf("%-22s base_name=%-22s file_name=%-22s key=%-26s num=%d area=%s areaId=%d coor=%d,%d,%d",
+        p, bn, fn, key, q["id"], q["area"], q["areaId"],
+        q["x"], q["y"], q["z"]));
+    } else {
+      miss++;
+      say(sprintf("%-22s base_name=%-22s file_name=%-22s key=%-26s -> NOT FOUND",
+        p, bn, fn, key));
+    }
+  }
+  say("hits=" + hits + " miss=" + miss);
+
+  // 2) normalize_key 各种输入形态
+  say("nk(/d/fy/ansheng)      = " + MAP_D->normalize_key("/d/fy/ansheng"));
+  say("nk(/d/fy/ansheng.lpc)  = " + MAP_D->normalize_key("/d/fy/ansheng.lpc"));
+  say("nk(d/fy/ansheng.c)     = " + MAP_D->normalize_key("d/fy/ansheng.c"));
+  say("nk(/d/fy/ansheng#12)   = " + MAP_D->normalize_key("/d/fy/ansheng#12"));
+
+  // 3) 完整 Room.Info 组包 + JSON（mapd 直出）
+  room = load_object("/d/fy/ansheng");
+  if (objectp(room)) {
+    info = MAP_D->query_room_info(room);
+    say("mapd json = " + json_encode(info));
+  }
+
+  // 4) GMCP 层载荷（gmcpd.lpc::query_room_payload，与 LDMud 一致）
+  if (objectp(room)) {
+    info = GMCP_D->query_room_payload(room);
+    say("gmcp json(hit) = " + json_encode(info));
+  }
+
+  // 4b) 一张不在图里的房间 -> fallback 分支
+  room2 = load_object("/obj/void");
+  if (objectp(room2)) {
+    info = GMCP_D->query_room_payload(room2);
+    say("gmcp json(fallback /obj/void) = " + json_encode(info));
+  } else {
+    say("fallback test: /obj/void LOAD FAILED");
+  }
+
+  // 5) 多房间批量核对：直接从 mapd 表里随机抽查 20 个键，load 后反向验证
+  n = 0;
+  i = 0;
+  {
+    string *ks;
+    ks = keys(MAP_D->query_room(load_object("/d/fy/ansheng")));
+    say("query_room keys = " + sprintf("%O", ks));
+  }
+
+  say("==== probe done ====");
+}

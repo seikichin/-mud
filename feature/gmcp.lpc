@@ -1,0 +1,97 @@
+// feature/gmcp.lpc - GMCP 连线侧组件
+//
+// 由 obj/login.lpc 与 obj/user.lpc 继承(即"当前连线对象")。
+//
+// 为什么必须有这一层:
+//   驱动的 send_gmcp() 用的是 current_object->interactive, 也就是说
+//   "发送"这个动作必须由当前连线对象自己执行 —— 在 daemon 里调用只会
+//   打印 "wrong usage. send_gmcp() should only be called by a user object."
+//   然后丢弃。所以整个 mudlib 里只有本文件的 gmcp_send() 真正调用
+//   send_gmcp(), 其它代码一律通过 GMCP_D->send(ob, ...) 转发。
+//
+// 关于 this_object()-> 写法:
+//   本文件是被 login/user 继承的 mixin, 编译时它自己不认识 F_DBASE 提供的
+//   set_temp/query_temp(那是在"继承本文件的对象"里才存在的), 直接写
+//   query_temp(...) 会报 Undefined function。用 this_object()-> 走运行期
+//   按名解析即可 —— 与 mxpd.lpc 里 ob->query_temp(...) 的写法一致。
+//
+// 登录期缓冲(FluffOS 特有, 必须处理):
+//   GMCP 协商成功以及客户端发 Core.Hello / Core.Supports.Set 都发生在
+//   登录阶段, 此时连线对象是 /obj/login 而不是玩家对象。驱动在 exec()
+//   之后既不会重新触发 gmcp_enable(), 也不会把这些消息转投给新对象。
+//   所以在 login 对象上先缓冲(设 gmcp/buffer 临时标志), 由 LOGIN_D 在
+//   exec 之后调 GMCP_D->activate(user) 回放 —— 否则客户端声明的包表
+//   会整个丢掉, 后续所有按包过滤的推送都会静默失效。
+//
+// 编码陷阱(FluffOS 特有):
+//   驱动的 send_gmcp() 会把净荷按本连线的 set_encoding() 目标编码转码
+//   (ucnv_fromAlgorithmic(UCNV_UTF8 -> ip->trans)), 而 GMCP 规范要求
+//   净荷是 UTF-8。本库登录菜单默认项是「国标码(gbk)」, 所以 GMCP 客户端
+//   应当选 utf-8。组件把"发送"收敛到本文件这一个出口, 需要改策略时
+//   只动这里。
+
+#include <gmcp.h>
+
+// 登录期缓冲的客户端消息(只有登录对象会用到)
+nosave string *gmcp_messages = ({});
+// 本次连线的 GMCP 是否已协商成功
+nosave int gmcp_negotiated = 0;
+
+// 是否是 Core.Ping(无状态, 登录期也要立即应答)
+int gmcp_is_ping(string message) {
+  if (!stringp(message)) return 0;
+  return strsrch(message, "Core.Ping") == 0 ? 1 : 0;
+}
+
+// ---- 驱动 apply: 协商完成(IAC DO 201) ----
+void gmcp_enable() {
+  gmcp_negotiated = 1;
+
+  // 任何对象收到这个 apply 都先握手(login 与 user 都可能收到)
+  GMCP_D->hello(this_object());
+
+  // 慢客户端可能在 exec 进入玩家之后才回 IAC DO 201;
+  // 如果本对象已经是玩家对象(没有登录缓冲标志), 直接补推初始状态。
+  if (!this_object()->query_temp("gmcp/buffer"))
+    GMCP_D->activate(this_object());
+}
+
+// ---- 驱动 apply: 收到客户端发来的 GMCP ----
+void gmcp(string message) {
+  // 登录期(连线对象还是 /obj/login): 一律先缓冲, 等 exec 进入玩家后由
+  // GMCP_D->activate() 在玩家对象上回放。
+  // 唯一的例外是 Core.Ping —— 它是无状态的保活探测, 本库的登录流程很长
+  // (选内码/验证码/建号), 拖到登录结束才回 pong 会让客户端误判掉线。
+  if (this_object()->query_temp("gmcp/buffer") && !gmcp_is_ping(message)) {
+    if (sizeof(gmcp_messages) < 64)
+      gmcp_messages += ({ message });
+    return;
+  }
+
+  GMCP_D->receive(this_object(), message);
+}
+
+// ---- 整个 mudlib 唯一的 send_gmcp 出口 ----
+// module 形如 "Char.Vitals"; data 可为 mapping/数组/字符串/数值。
+void gmcp_send(string module, mixed data) {
+  string payload;
+
+  if (!stringp(module) || !strlen(module)) return;
+
+#if efun_defined(has_gmcp)
+  if (!has_gmcp(this_object())) return;   // 没协商成功就绝不往外发
+
+  if (undefinedp(data)) data = ([]);
+  payload = json_encode(data);
+  if (!stringp(payload)) return;
+
+  catch(send_gmcp(module + " " + payload));
+#endif
+}
+
+// ---- 供 GMCP_D 取用/清空登录期缓冲 ----
+string *query_gmcp_messages() { return gmcp_messages; }
+
+void clear_gmcp_messages() { gmcp_messages = ({}); }
+
+int query_gmcp_negotiated() { return gmcp_negotiated; }
