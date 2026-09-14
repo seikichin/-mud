@@ -1,0 +1,96 @@
+// big6 固定迷宫的房间模板：按坐标定制每一格的描述
+//
+// ★ 必须定义 create()（哪怕空实现）：/std/room 的 create() 里有
+//   if (clonep(this_object())) { destruct(this_object()); return ...; }
+//   不覆盖它的话 new()/clone_object() 必然返回 0。
+// 用法：区域文件里 set_inherit_room(__DIR__ "big6-room")
+// 工厂建好 coor/exits 后会调用 setup_room_desc(room, l, m, h, x, y, z)
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  int kind;
+
+  // 先把坐标映射成一个"房型编号"，不在表内的走默认
+  kind = 0;
+  if (z == 0 && y == 0) {
+    if (x == 0) kind = 1;
+    else if (x == 1) kind = 2;
+    else if (x == 2) kind = 3;
+    else if (x == 3) kind = 4;
+  } else if (z == 0 && y == 5 && x == 3) {
+    kind = 5;
+  }
+
+  switch (kind) {
+    case 1:
+      room->set("short", HIY "藏经阁" NOR);
+      room->set("long", @LONG
+    一间小小的藏经阁。木架上的经卷大半发霉了，只有靠门那一格还留着
+    一册摊开的残卷。地上有个蒲团，凹下去很深。
+LONG
+      );
+      break;
+
+    case 2:
+      room->set("short", HIG "药圃" NOR);
+      room->set("long", @LONG
+    石室角落辟出来的一小块药圃，土还是湿的，却什么也没长出来。圃边
+    斜插着半截木牌，上面的字被水泡烂了。
+LONG
+      );
+      break;
+
+    case 3:
+      room->set("short", HIC "寒潭" NOR);
+      room->set("long", @LONG
+    一汪极小的寒潭，水色发青，深不见底。潭边的石头被磨得很光滑，
+    像是常年有人在这里坐着。
+LONG
+      );
+      break;
+
+    case 4:
+      room->set("short", HIM "锁链室" NOR);
+      room->set("long", @LONG
+    四壁垂下几十条断掉的铁链，链条末端都拖着半截锁扣。地上摊着一层
+    黑褐色的东西，踩上去软软的。
+LONG
+      );
+      break;
+
+    case 5:
+      room->set("short", HIW "窟口石室" NOR);
+      room->set("long", @LONG
+    刚进石窟的地方。身后的洞口透进一点天光，风从这里灌进来，把地上
+    的碎石吹得沙沙作响。
+LONG
+      );
+      break;
+
+    default:
+      room->set("short", HIB "石室" NOR);
+      room->set("long", @LONG
+    幽暗的石窟，四壁潮湿，地上散落着碎石。
+LONG
+      );
+      break;
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品（先留空）
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

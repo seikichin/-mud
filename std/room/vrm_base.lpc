@@ -1,0 +1,187 @@
+/******************************************************
+ * vrm_base.c  -  虚拟随机迷宫（Virtual Random Maze）
+ *                公共基类 / 共享状态
+ *
+ * 由下列 5 个文件中的公共部分抽取而来：
+ *   std/room/vrm_server.lpc      (2D 公共迷宫库)
+ *   std/room/vrm_server2.lpc     (3D 公共迷宫库)
+ *   obj/dungeon/maze.lpc         (3D + owner 私人副本)
+ *   obj/dungeon/standardmaze.lpc
+ *   obj/dungeon/halloween.lpc
+ *
+ * 【为什么这里一律不加 private】
+ *   fluffos 的 private 成员【不会被子类继承】：
+ *   子类代码既不能读写 private 变量，也不能调用 private 函数。
+ *   所以共享成员必须去掉 private 才能被 5 个引擎共用。
+ *   变量在 LPC 中本来就无法通过 call_other 从外部访问，
+ *   因此去掉 private 不会扩大对外接口。
+ *
+ * 【修改约定】
+ *   改动本文件后，必须按“先父后子”顺序 update 使用方：
+ *     update /std/room/vrm_base.lpc
+ *     update /std/room/vrm_server.lpc  (或 vrm_server2 / 区域文件)
+ ******************************************************/
+
+// ============ 公共状态 ============
+mixed *all;
+int l;    // 迷宫的东西向单边长
+int m;    // 迷宫的南北向单边长
+int s;    // 迷宫每格的坐标差，ｄｅｆａｕｌｔ＝１０
+string *inherit_rooms = ({});  // 迷宫允许继承的档案名称
+string entry_dir;  // 迷宫入口方向
+string link_entry_dir;  // 迷宫入口与区域的连接方向
+string link_entry_room;  // 迷宫入口所连接区域档案的文件名
+int link_entry_room_x;  // 迷宫入口的x坐标
+int link_entry_room_y;  // 迷宫入口的y坐标
+int link_entry_room_z;  // 迷宫入口的z坐标
+string link_exit_dir;  // 迷宫出口与区域的连接方向
+string link_exit_room;  // 迷宫出口所连接区域档案的文件名
+string entry_short;  // 迷宫入口的短描述
+string entry_desc;  // 迷宫入口的长描述
+string exit_short;  // 迷宫出口的短描述
+string exit_desc;  // 迷宫出口的长描述
+string *maze_room_desc = ({});  // 迷宫房间的长描述
+string maze_room_short;  // 迷宫房间的短描述
+int is_outdoors = 0;  // 迷宫房间是否为户外
+int maze_built = 0;
+
+// ============ 公共访问器 / 设置器 ============
+
+int query_maze_length() {
+  return l;
+}
+
+int query_maze_height() {
+  return m;
+}
+
+// 迷宫是否已真正建好（create() 只设好尺寸 l/m/h，构建完成才置 maze_built = 1）
+int query_maze_built() {
+  return maze_built;
+}
+
+int player_in(object m_room) {
+  object *inv;
+  inv = all_inventory(m_room);
+  for (int i = 0; i < sizeof(inv); i++)
+    //if player in the room return
+    if (userp(inv[i]))
+      return 1;
+
+  return 0;
+}
+
+void set_inherit_room(mixed rooms) {
+  if (stringp(rooms)) {
+    // 此档案是否存在
+    if (file_size(sprintf("%s.lpc", rooms)) > 0)
+      inherit_rooms = ({ rooms });
+    return;
+  }
+
+  else if (arrayp(rooms)) {
+    foreach (string f in rooms) {
+      if (!stringp(f) || f == "")
+        return;
+      if (file_size(sprintf("%s.lpc", f)) <= 0)
+        return;
+    }
+    inherit_rooms = rooms;
+    return;
+  }
+
+  return;
+}
+
+void set_link_entry_dir(string dir) {
+  if (!stringp(dir) || dir == "")
+    return;
+
+  link_entry_dir = dir;
+}
+
+void set_link_entry_room_x(int x) {
+  if (!intp(x)) link_entry_room_x = 0;
+  else link_entry_room_x = x;
+}
+
+void set_link_entry_room_y(int y) {
+  if (!intp(y)) link_entry_room_y = 0;
+  else link_entry_room_y = y;
+}
+
+void set_link_entry_room_z(int z) {
+  if (!intp(z)) link_entry_room_z = 0;
+  else link_entry_room_z = z;
+}
+
+void set_maze_spacing(int space) {
+  if (!intp(space)) s = 10;
+  else s = space;
+}
+
+void set_link_exit_dir(string dir) {
+  if (!stringp(dir) || dir == "")
+    return;
+
+  link_exit_dir = dir;
+}
+
+void set_entry_short(string desc) {
+  if (!stringp(desc) || desc == "")
+    return;
+
+  entry_short = desc;
+}
+
+void set_entry_desc(string desc) {
+  if (!stringp(desc) || desc == "")
+    return;
+
+  entry_desc = desc;
+}
+
+void set_exit_short(string desc) {
+  if (!stringp(desc) || desc == "")
+    return;
+
+  exit_short = desc;
+}
+
+void set_exit_desc(string desc) {
+  if (!stringp(desc) || desc == "")
+    return;
+
+  exit_desc = desc;
+}
+
+void set_maze_room_short(string desc) {
+  if (!stringp(desc) || desc == "")
+    return;
+
+  maze_room_short = desc;
+}
+
+void set_maze_room_desc(mixed desces) {
+  if (stringp(desces)) {
+    maze_room_desc = ({ desces });
+    return;
+  }
+
+  if (arrayp(desces)) {
+    foreach (string desc in desces)
+      if (!stringp(desc))
+        return;
+    maze_room_desc = desces;
+    return;
+  }
+}
+
+void set_outdoors(int outd) {
+  if (!intp(outd))
+    return;
+
+  if (outd)
+    is_outdoors = 1;
+}
+

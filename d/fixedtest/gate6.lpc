@@ -1,0 +1,19 @@
+// 固定形状大区域测试：入口房
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "石窟口" NOR);
+  set("long", @LONG
+    一处塌陷的窟口，往里黑漆漆的，听得到风声。
+LONG
+  );
+
+  set("exits", ([
+    "down": "/d/fixedtest/big6/pub6/entry",
+  ]));
+
+  set("no_fly", 1);
+  setup();
+}

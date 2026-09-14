@@ -1,0 +1,41 @@
+// 固定地下城测试 2：双层（h=2）验证 [Z=] 段
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>;
+
+void create() {
+  set_inherit_room("/std/room/vrm_fixed_room");
+  set_maze_map(__DIR__ "fixed2");
+  set_maze_spacing(1);
+  set_maze_owner_key("pub");
+
+  set_entry_dir("north");
+  set_link_entry_dir("down");
+  set_entry_back_dir("up");
+  set_link_entry_room("/d/fixedtest/gate2");
+
+  set_link_exit_room("/d/fixedtest/gate2");
+  set_exit_back_dir("up");
+
+  set_link_entry_room_x(0);
+  set_link_entry_room_y(0);
+  set_link_entry_room_z(0);
+
+  set_entry_short(HIW "枯井口" NOR);
+  set_entry_desc(@LONG
+    一口枯井，井下隐约能看到石砌的台阶。
+LONG
+  );
+
+  set_exit_short(HIY "井底石室" NOR);
+  set_exit_desc(@LONG
+    井底的石室，四壁渗着水，地面上积着浅浅一层。
+LONG
+  );
+
+  set_maze_room_short(HIB "井下石室" NOR);
+  set_maze_room_desc(@LONG
+    四壁都是湿漉漉的青石，水声在耳边回响。
+LONG
+  );
+}

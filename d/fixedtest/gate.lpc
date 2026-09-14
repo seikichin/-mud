@@ -1,0 +1,19 @@
+// 固定地下城测试：入口房
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "石阶" NOR);
+  set("long", @LONG
+    一道向下的石阶，黑洞洞地看不见底。石阶边上竖着一块木牌。
+LONG
+  );
+
+  set("exits", ([
+    "down": "/d/fixedtest/fixed1/pub/entry",
+  ]));
+
+  set("no_fly", 1);
+  setup();
+}

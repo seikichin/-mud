@@ -1,0 +1,34 @@
+// 固定区域通用房间模板（vrm_fixed 用）
+// 区域可用 set_inherit_room() 指定自己的模板；本模板提供可用的默认外观。
+//
+// 工厂会在最后调用 setup_room_desc（此时 coor/exits 已设好，可覆盖）。
+// setup_npc_obj 是预留的怪物/物品钩子（当前工厂会调用；未定义也不会报错）。
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  room->set("short", HIB "石室" NOR);
+
+  room->set("long", @LONG
+    四面都是青石砌成的墙，墙角生着暗绿的苔藓。
+    头顶的石缝中偶尔渗下几滴水珠，在寂静中格外清晰。
+LONG
+  );
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 每格的怪物 / 物品（默认不生成）
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

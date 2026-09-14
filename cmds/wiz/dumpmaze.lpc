@@ -1,0 +1,78 @@
+// dumpmaze - 把迷宫引擎当前的拓扑导出为 vrm_fixed 可用的地图文件
+//
+// 语法:
+//   dumpmaze <引擎路径>                        查看（不写文件）
+//   dumpmaze <引擎路径> <输出文件> [<owner>]   写入文件
+//
+// 例:
+//   dumpmaze /obj/dungeon/standardmaze
+//   dumpmaze /obj/dungeon/standardmaze /d/xxx/mymaze.map
+//
+// 用途：先把随机迷宫跑出来，觉得布局好就 dump 下来，
+//       改成固定地图（inherit /std/room/vrm_fixed）重复使用。
+
+#include <ansi.h>
+
+int main(object me, string arg) {
+  string engine, out, who;
+  object eng;
+  string *lines, *parts;
+  string txt;
+  int i, n;
+
+  if (!arg || arg == "")
+    return notify_fail("语法: dumpmaze <引擎路径> [<输出文件>] [<owner>]\n");
+
+  // 本驱动的 sscanf 在「实参少于格式数」时返回 0 且不回填变量
+  // （实测 sscanf("onlyone","%s %s %s",...) == 0），
+  // 因此改用 explode 自行切词，并过滤连续空白产生的空段。
+  parts = filter(explode(arg, " "), (: $1 != "" :));
+  if (sizeof(parts) < 1)
+    return notify_fail("语法: dumpmaze <引擎路径> [<输出文件>] [<owner>]\n");
+
+  engine = parts[0];
+  if (sizeof(parts) > 1) out = parts[1];
+  if (sizeof(parts) > 2) who = parts[2];
+
+  eng = find_object(engine);
+  if (!eng) eng = load_object(engine);
+  if (!eng) return notify_fail(sprintf("找不到引擎 %s\n", engine));
+
+  // 尚未建图则先触发一次（走真实驱动路径，让 compile_object 生效）
+  // 注意: 不能用 query_maze_length() 判断 —— 它在 create() 里就已非 0，
+  //       真正的「建图完成」标志是 maze_built（由引擎构建完成后置 1）。
+  if (!eng->query_maze_built()) {
+    who = who ? who : me->query("id");
+    if (!load_object(sprintf("%s/%s/entry", engine, who)))
+      return notify_fail("建图失败（查 log/debug.log）\n");
+    eng = find_object(engine);
+  }
+
+  if (!eng || !eng->query_maze_built())
+    return notify_fail("迷宫未建立\n");
+
+  if (!function_exists("query_maze_dump_lines", eng))
+    return notify_fail(sprintf("%s 不支持导出拓扑（需要 vrm_dungeon 系引擎）\n", engine));
+
+  lines = eng->query_maze_dump_lines();
+  n = sizeof(lines);
+  if (!n) return notify_fail("无拓扑可导出\n");
+
+  txt = "";
+  for (i = 0; i < n; i++) txt += lines[i] + "\n";
+
+  if (!out || out == "") {
+    write(sprintf("%d 行:\n", n));
+    write(txt);
+    return 1;
+  }
+
+  // 注意: write_file 是「追加」语义，写前必须先删除旧文件
+  if (file_size(out) >= 0) rm(out);
+
+  if (!write_file(out, txt))
+    return notify_fail(sprintf("写文件失败: %s\n", out));
+
+  write(sprintf("已导出 %d 行到 %s\n", n, out));
+  return 1;
+}

@@ -1,0 +1,70 @@
+// vrmcheck.lpc - 虚拟随机迷宫(VRM)引擎体检
+//
+// 用途: 维护 /std/room/vrm_base.lpc 或迷宫引擎后，一键确认
+//       5 个引擎 + 13 个迷宫区域是否正常工作。
+//
+// 注意: 修改 vrm_base.lpc 后必须【先父后子】逐个 update 使用者:
+//         update /std/room/vrm_base.lpc
+//         update /std/room/vrm_server.lpc
+//         update /std/room/vrm_server2.lpc
+//         update /obj/dungeon/maze.lpc  等
+//       再跑本命令复核。
+//
+// query_maze_room() 有 euid 闸门（只能由 master 调用），
+// 因此本命令只做 API 存在性与尺寸自检，不做房间生成测试；
+// 房间生成请实际走进迷宫验证。
+
+int main(object me, string arg) {
+  string r = "";
+  object ob;
+  int bad = 0;
+
+  string *engines = ({
+    "/std/room/vrm_server", "/std/room/vrm_server2",
+    "/obj/dungeon/maze", "/obj/dungeon/standardmaze", "/obj/dungeon/halloween"
+  });
+  string *areas = ({
+    "/d/bashan/maze1", "/d/bashan/maze2", "/d/bashan/maze3", "/d/bashan/maze4",
+    "/d/cyan/maze",
+    "/d/maze/cave-maze", "/d/maze/jq1-maze", "/d/maze/jq2-maze",
+    "/d/maze/jq3-maze", "/d/maze/sl-maze", "/d/maze/taoyuan-maze",
+    "/d/xiangsi/icecave-maze", "/d/xiangsi/icecave2-maze"
+  });
+
+  r += "======== A. 迷宫引擎 (inherit /std/room/vrm_base 的 5 个) ========\n";
+  foreach (string p in engines) {
+    ob = load_object(p);
+    if (!ob) { r += "  [FAIL] " + p + " 载入失败\n"; bad++; continue; }
+    r += sprintf("  %-30s len=%-3d height=%-3d", p,
+      ob->query_maze_length(), ob->query_maze_height());
+    if (function_exists("query_maze_altitude", ob))
+      r += sprintf(" alt=%-3d", ob->query_maze_altitude());
+    else r += " alt=-  ";
+    if (!function_exists("set_maze_spacing", ob)) { r += " [FAIL: vrm_base 未继承]"; bad++; }
+    if (!function_exists("player_in", ob))       { r += " [FAIL: player_in 缺失]"; bad++; }
+    r += "\n";
+  }
+
+  r += "\n======== B. 迷宫区域 (13 个) ========\n";
+  foreach (string p in areas) {
+    ob = load_object(p);
+    if (!ob) { r += "  [FAIL] " + p + " 载入失败\n"; bad++; continue; }
+    r += sprintf("  %-28s len=%-3d height=%-3d", p,
+      ob->query_maze_length(), ob->query_maze_height());
+    if (function_exists("query_maze_altitude", ob))
+      r += sprintf(" alt=%-3d", ob->query_maze_altitude());
+    if (!ob->query_maze_length() || !ob->query_maze_height()) {
+      r += "  [WARN: 尺寸为 0，create() 可能未执行]"; bad++;
+    }
+    r += "\n";
+  }
+
+  r += sprintf("\n结果: %s\n", bad ? sprintf("发现 %d 处异常", bad) : "全部正常");
+  write(r);
+  return 1;
+}
+
+int help(object me) {
+  write("VRM 迷宫引擎体检: 检查 5 个引擎与 13 个迷宫区域的继承与尺寸。\n");
+  return 1;
+}

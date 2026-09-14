@@ -1,0 +1,590 @@
+/******************************************************
+ * vrm_fixed.lpc  -  固定形状虚拟区域引擎（固定地下城）
+ *
+ * 由 /std/room/vrm_dungeon.lpc 派生：保留全部房间工厂与生命周期管理，
+ * 只把“拓扑来源”从随机 DFS 换成地图文件。
+ *
+ * 【适用】
+ *   固定地下城：上百间同质房间，形状手工设计，每次重建都一样。
+ *   （十几间具名房间的营地/城镇街区不需要本引擎，直接写房间文件更合适）
+ *
+ * 【用法】
+ *   1) 区域文件 /d/xxx/fixed1.lpc：
+ *
+ *        inherit "/std/room/vrm_fixed";
+ *
+ *        void create() {
+ *          set_inherit_room(__DIR__ "fixed1_room");   // 房间模板
+ *          set_maze_map(__DIR__ "fixed1");            // 地图文件（.map 可省略）
+ *          set_maze_spacing(1);
+ *
+ *          set_entry_dir("north");                    // 入口在迷宫哪一侧
+ *          set_link_entry_dir("down");                // 外面进入的方向
+ *          set_entry_back_dir("up");                  // （可选）入口房返回外面的方向
+ *          set_link_entry_room("/d/xxx/gate");
+ *          set_link_exit_dir("up");
+ *          set_link_exit_room("/d/xxx/gate");
+ *
+ *          set_entry_short(...); set_entry_desc(...);
+ *          set_exit_short(...);  set_exit_desc(...);
+ *          set_maze_room_short(...); set_maze_room_desc(...);
+ *        }
+ *
+ *   2) 在相邻房间写一条普通出口（"pub" 是实例键，固定值即可）:
+ *
+ *        set("exits", ([ "down": "/d/xxx/fixed1/pub/entry" ]));
+ *
+ * 【地图文件格式】
+ *       [SIZE] l,m,h           # 可选；省略时按内容推导
+ *       [ENTRY] x,y,z          # 可选；入口格坐标
+ *       [EXIT]  x,y,z          # 可选；出口格坐标
+ *       [Z=0]                  # 楼层段头，后续数据行都属于 z=0
+ *       0C 0C 0C               # 每格两位十六进制方向位掩码
+ *       00 00 0C               # 00 = 无房间
+ *
+ *       位值（见 include/vrm.h）:
+ *         1=E(东,+x)  2=W(西,-x)  4=S(南,-y)  8=N(北,+y)  16=D(下,-z)  32=UP(上,+z)
+ *       数据行自 y=0 起（首行为 y=0），第 n 列的 x = n-1；格与格之间用空格分隔。
+ *       '#' 开头为注释；空行忽略；'[' 开头的行不得缩进。
+ *
+ * 【修改约定】
+ *   同 vrm_dungeon.lpc：先父后子 update
+ ******************************************************/
+
+#include <vrm.h>;
+inherit "/std/room/vrm_dungeon";
+
+// ---------- 地图文件状态 ----------
+string maze_map_file;      // 地图文件路径（.map 可省略）
+string *map_lines;         // 地图文本行（缓存）
+int map_meta_done;         // 头部是否已解析
+int map_broken;            // 地图加载失败（避免重复刷日志）
+int map_enter_set;
+int map_enter_x, map_enter_y, map_enter_z;
+int map_exit_set;
+int map_exit_x, map_exit_y, map_exit_z;
+string entry_back_dir;     // 入口房返回外面的方向
+string exit_back_dir;      // 出口房通向外面的方向
+string maze_owner_key;     // 固定区域的实例键（强制覆盖请求路径里的 owner）
+
+// ---------- 设置器 ----------
+
+void set_maze_map(string f) {
+  if (!stringp(f) || f == "") return;
+  maze_map_file = f;
+  map_lines = 0;
+  map_meta_done = 0;
+  map_broken = 0;
+}
+
+// 地图改动后重新读取
+void reload_maze_map() {
+  map_lines = 0;
+  map_meta_done = 0;
+  map_broken = 0;
+}
+
+void set_entry_back_dir(string d) {
+  if (stringp(d) && d != "") entry_back_dir = d;
+}
+
+// 固定区域的实例键：房间名统一为 <引擎>/<键>/...，与谁先进来无关。
+// 不设时沿用请求路径里的那段（通常就是入口房间写的那段）。
+void set_maze_owner_key(string k) {
+  if (stringp(k) && k != "") maze_owner_key = k;
+}
+
+void set_exit_back_dir(string d) {
+  if (stringp(d) && d != "") exit_back_dir = d;
+}
+
+string query_maze_map() { return maze_map_file; }
+
+// 返回方向：优先用显式设置，否则取进入方向的反向
+string query_entry_back_dir() {
+  if (stringp(entry_back_dir)) return entry_back_dir;
+  if (stringp(link_entry_dir) && stringp(reverse_dir[link_entry_dir]))
+    return reverse_dir[link_entry_dir];
+  return link_entry_dir;
+}
+
+string query_exit_back_dir() {
+  if (stringp(exit_back_dir)) return exit_back_dir;
+  if (stringp(link_exit_dir) && stringp(reverse_dir[link_exit_dir]))
+    return reverse_dir[link_exit_dir];
+  return link_exit_dir;
+}
+
+// ---------- 地图解析基础 ----------
+
+// 解析一个十六进制格（1~8 位）；非法字符返回 -1
+int map_hex(string s) {
+  int i, n, v, c;
+
+  if (!stringp(s) || s == "") return -1;
+  n = strlen(s);
+  v = 0;
+  for (i = 0; i < n; i++) {
+    c = s[i];
+    if (c >= 48 && c <= 57) v = v * 16 + (c - 48);
+    else if (c >= 97 && c <= 102) v = v * 16 + (c - 87);
+    else if (c >= 65 && c <= 70) v = v * 16 + (c - 55);
+    else return -1;
+  }
+  return v;
+}
+
+// 一行数据 → 格子数组
+int *map_row_cells(string line) {
+  string *toks;
+  int i, n;
+  int *res = ({});
+
+  if (!stringp(line) || line == "") return res;
+  toks = explode(line, " ");
+  n = sizeof(toks);
+  for (i = 0; i < n; i++) {
+    if (!stringp(toks[i]) || toks[i] == "") continue;
+    res += ({ map_hex(toks[i]) });
+  }
+  return res;
+}
+
+// 段头标签："[XXX] ..." → "XXX"；非段头返回 0
+string map_tag(string line) {
+  int e;
+  if (!stringp(line) || line == "" || line[0] != '[') return 0;
+  e = strsrch(line, "]");
+  if (e <= 1) return 0;
+  return line[1..e-1];
+}
+
+// 段头参数
+string map_arg(string line) {
+  int e;
+  if (!stringp(line) || line == "") return "";
+  e = strsrch(line, "]");
+  if (e < 0 || e + 1 >= strlen(line)) return "";
+  return line[e+1..];
+}
+
+// 读地图文件（缓存）
+string *query_map_lines() {
+  string txt;
+
+  if (arrayp(map_lines)) return map_lines;
+  if (!stringp(maze_map_file) || maze_map_file == "") return ({});
+
+  txt = read_file(maze_map_file);
+  if (!stringp(txt) || txt == "")
+    txt = read_file(maze_map_file + ".map");
+  if (!stringp(txt) || txt == "") {
+    log_file("VRM", sprintf("vrm_fixed: 无法读取地图 [%s]", maze_map_file));
+    map_lines = ({});
+    return map_lines;
+  }
+
+  txt = replace_string(txt, "\r", "");
+  map_lines = explode(txt, "\n");
+  return map_lines;
+}
+
+// ---------- 头部解析 ----------
+// 注意：create_maze() 的顺序是 refresh_vars() → check_vars() → query_maze_size()，
+// 而 check_vars() 会校验 l/m/h，所以固定地图的尺寸必须在 check_vars() 之前就绪
+// → 由下面的 refresh_vars() 覆盖提前装载（这也是本引擎与随机引擎的关键差异）。
+void query_maze_size() {
+  string *lines;
+  string line, tag, arg;
+  int i, n, a, b, c, zz, cols;
+  int currows, maxrows, maxcols, maxz, have_size;
+
+  if (map_meta_done) return;
+
+  lines = query_map_lines();
+  n = sizeof(lines);
+
+  have_size = 0;
+  currows = 0; maxrows = 0; maxcols = 0; maxz = 0;
+
+  for (i = 0; i < n; i++) {
+    line = lines[i];
+    if (!stringp(line) || line == "") continue;
+    if (line[0] == '#') continue;
+
+    if (line[0] == '[') {
+      tag = map_tag(line);
+      arg = map_arg(line);
+      if (!stringp(tag)) continue;
+
+      if (tag == "SIZE") {
+        if (sscanf(arg, "%d,%d,%d", a, b, c) == 3) {
+          l = a; m = b; h = c;
+          have_size = 1;
+        }
+        continue;
+      }
+      if (tag == "ENTRY") {
+        if (sscanf(arg, "%d,%d,%d", a, b, c) == 3) {
+          map_enter_set = 1;
+          map_enter_x = a; map_enter_y = b; map_enter_z = c;
+        }
+        continue;
+      }
+      if (tag == "EXIT") {
+        if (sscanf(arg, "%d,%d,%d", a, b, c) == 3) {
+          map_exit_set = 1;
+          map_exit_x = a; map_exit_y = b; map_exit_z = c;
+        }
+        continue;
+      }
+      if (sscanf(tag, "Z=%d", zz) == 1) {
+        if (currows > maxrows) maxrows = currows;
+        currows = 0;
+        if (zz + 1 > maxz) maxz = zz + 1;
+        continue;
+      }
+      continue;   // 未知段头忽略
+    }
+
+    // 数据行
+    cols = sizeof(map_row_cells(line));
+    if (cols > maxcols) maxcols = cols;
+    currows++;
+  }
+  if (currows > maxrows) maxrows = currows;
+
+  if (!have_size) {
+    // 按内容推导；推不出时保留 create() 里 set_maze_long() 的设定
+    if (maxcols >= 2) l = maxcols;
+    if (maxrows >= 2) m = maxrows;
+    if (maxz >= 1) h = maxz;
+  }
+
+  if (h < 1) h = 1;
+  map_meta_done = 1;
+}
+
+// 覆盖：在 check_vars() 之前把地图头读进来（定好 l/m/h）
+void refresh_vars() {
+  ::refresh_vars();
+  if (!map_meta_done) query_maze_size();
+  // 固定区域的实例键：无论谁触发，房间名都用同一个键
+  if (stringp(maze_owner_key) && maze_owner_key != "") owner = maze_owner_key;
+}
+
+// ---------- 填充 all[x][y][z] ----------
+void fill_maze_from_map() {
+  string *lines;
+  string line, tag;
+  int i, n, x, y, z, zz, v, bad;
+  int *cells;
+
+  lines = query_map_lines();
+  n = sizeof(lines);
+  z = 0; y = 0; bad = 0;
+
+  for (i = 0; i < n; i++) {
+    line = lines[i];
+    if (!stringp(line) || line == "") continue;
+    if (line[0] == '#') continue;
+
+    if (line[0] == '[') {
+      tag = map_tag(line);
+      if (stringp(tag) && sscanf(tag, "Z=%d", zz) == 1) {
+        z = zz;
+        y = 0;
+      }
+      continue;
+    }
+
+    if (z < 0 || z >= h) { y++; continue; }
+    if (y < 0 || y >= m) { y++; continue; }
+
+    cells = map_row_cells(line);
+    for (x = 0; x < sizeof(cells); x++) {
+      if (x >= l) break;
+      v = cells[x];
+      if (v < 0 || v > ALL) {
+        bad++;
+        v = 0;
+      }
+      all[x][y][z] = v;
+    }
+    y++;
+  }
+
+  if (bad)
+    log_file("VRM", sprintf("vrm_fixed: %s 有 %d 个非法格（已按墙处理）",
+      maze_map_file, bad));
+}
+
+// 地图加载失败：保留尺寸，把内容清空
+// （让扫描与房间工厂安全地失败，且地图修好后引擎还能重建）
+void map_fail(string why) {
+  if (!map_broken)
+    log_file("VRM", sprintf("vrm_fixed [%s]: %s", maze_map_file, why));
+  map_broken = 1;
+
+  if (l >= 2 && m >= 2 && h >= 1) {
+    all = allocate(l);
+    for (int i = 0; i < l; i++) all[i] = allocate(m);
+    for (int i = 0; i < l; i++)
+      for (int j = 0; j < m; j++) all[i][j] = allocate(h);
+  } else {
+    all = ({});
+  }
+}
+
+// ---------- 建图：分配数组 + 读地图 + 定入口 ----------
+void build_maze() {
+  int i, j;
+
+  if (!stringp(maze_map_file) || maze_map_file == "") {
+    map_fail("未调用 set_maze_map()");
+    return;
+  }
+
+  if (!map_meta_done) query_maze_size();
+
+  if (l < 2 || m < 2 || h < 1) {
+    map_fail(sprintf("地图尺寸非法 l=%d m=%d h=%d", l, m, h));
+    return;
+  }
+
+  all = allocate(l);
+  for (i = 0; i < l; i++) all[i] = allocate(m);
+  for (i = 0; i < l; i++)
+    for (j = 0; j < m; j++) all[i][j] = allocate(h);
+
+  fill_maze_from_map();
+
+  enter = new(class coordinate);
+  if (map_enter_set) {
+    enter->x = map_enter_x;
+    enter->y = map_enter_y;
+    enter->z = map_enter_z;
+  } else {
+    enter->x = to_int(l / 2);
+    enter->y = to_int(m / 2);
+    enter->z = 0;
+    switch (entry_dir) {
+      case "south": enter->y = 0; break;
+      case "north": enter->y = m - 1; break;
+      case "west":  enter->x = 0; break;
+      case "east":  enter->x = l - 1; break;
+      case "up":    enter->z = h - 1; break;
+      case "down":  enter->z = 0; break;
+    }
+  }
+
+  if (enter->x < 0 || enter->x >= l || enter->y < 0 || enter->y >= m
+      || enter->z < 0 || enter->z >= h) {
+    map_fail(sprintf("入口坐标越界 %d,%d,%d", enter->x, enter->y, enter->z));
+    return;
+  }
+
+  if (!all[enter->x][enter->y][enter->z]) {
+    map_fail(sprintf("入口格 %d,%d,%d 在地图中是空的",
+      enter->x, enter->y, enter->z));
+    return;
+  }
+}
+
+// ---------- 覆盖 vrm_dungeon 的钩子 ----------
+
+// 固定地图：拓扑来自文件，无出口时绝不递归重建（坏地图会打爆 eval cost）
+int query_maze_retry_on_failure() {
+  return 0;
+}
+
+// 地图里 [EXIT] 指定的出口是否可用
+int query_maze_has_fixed_exit() {
+  if (!map_exit_set) return 0;
+  if (!arrayp(all)) return 0;
+  if (map_exit_x < 0 || map_exit_x >= l) return 0;
+  if (map_exit_y < 0 || map_exit_y >= m) return 0;
+  if (map_exit_z < 0 || map_exit_z >= h) return 0;
+  return all[map_exit_x][map_exit_y][map_exit_z] ? 1 : 0;
+}
+
+mixed query_maze_leave(mixed valid_leaves, mixed dflt) {
+  class coordinate c;
+
+  if (!query_maze_has_fixed_exit()) return dflt;
+
+  c = new(class coordinate);
+  c->x = map_exit_x;
+  c->y = map_exit_y;
+  c->z = map_exit_z;
+  return c;
+}
+
+// 共享实例：固定区域是全服共用的一处地方，
+// 请求的 owner 键与首次建立时不同也不另建实例（否则会各自建一份副本）。
+int query_maze_shared() {
+  return 1;
+}
+
+// 固定区域是“公共场所”：不把迷宫实例挂到某个玩家身上
+object query_maze_actor() {
+  return this_object();
+}
+
+mixed query_maze_mark_ob(mixed who) {
+  return owner;
+}
+
+// 入口房：补一条通往区域外的普通出口（固定区域不走 out 动作）
+void setup_entry_room_extra(object ob) {
+  string d;
+  if (!ob) return;
+  d = query_entry_back_dir();
+  if (stringp(d) && d != "" && stringp(link_entry_room) && link_entry_room != "")
+    ob->set(sprintf("exits/%s", d), link_entry_room);
+}
+
+// 出口房：同上
+void setup_exit_room_extra(object ob) {
+  string d;
+  if (!ob) return;
+  d = query_exit_back_dir();
+  if (stringp(d) && d != "" && stringp(link_exit_room) && link_exit_room != "")
+    ob->set(sprintf("exits/%s", d), link_exit_room);
+}
+
+// ---------- 校验工具（地图作者 / 巫师命令用）----------
+
+// 校验已建成的迷宫：出口互反、指向不越界、入口/出口格存在。
+// 返回错误描述数组（空数组 = 通过）。
+string *check_maze_map() {
+  string *errs = ({});
+  int x, y, z, k, v, nx, ny, nz, cnt, enter_bit, leave_bit;
+  int *bit = ({ 1, 2, 4, 8, 16, 32 });
+  int *opp = ({ 2, 1, 8, 4, 32, 16 });
+  int *dx = ({ 1, -1, 0, 0, 0, 0 });
+  int *dy = ({ 0, 0, -1, 1, 0, 0 });
+  int *dz = ({ 0, 0, 0, 0, -1, 1 });
+
+  if (!arrayp(all) || l < 2 || m < 2 || h < 1)
+    return ({ "迷宫未建立（地图可能加载失败）" });
+
+  // 入口格/出口格各有一个位是「指向迷宫外」的（分别指向 entry / exit 房间），
+  // 这是引擎设计（查询房间时会被覆盖），校验时须放行。
+  switch (entry_dir) {
+    case "east": enter_bit = E; break;
+    case "west": enter_bit = W; break;
+    case "south": enter_bit = S; break;
+    case "north": enter_bit = N; break;
+    case "up": enter_bit = UP; break;
+    case "down": enter_bit = D; break;
+  }
+  switch (reverse_dir[entry_dir]) {
+    case "east": leave_bit = E; break;
+    case "west": leave_bit = W; break;
+    case "south": leave_bit = S; break;
+    case "north": leave_bit = N; break;
+    case "up": leave_bit = UP; break;
+    case "down": leave_bit = D; break;
+  }
+
+  cnt = 0;
+  for (x = 0; x < l; x++)
+    for (y = 0; y < m; y++)
+      for (z = 0; z < h; z++) {
+        v = all[x][y][z];
+        if (!v) continue;
+        cnt++;
+        for (k = 0; k < 6; k++) {
+          if (!(v & bit[k])) continue;
+          nx = x + dx[k]; ny = y + dy[k]; nz = z + dz[k];
+          if (nx < 0 || nx >= l || ny < 0 || ny >= m || nz < 0 || nz >= h) {
+            if ((x == enter->x && y == enter->y && z == enter->z && bit[k] == enter_bit)
+             || (x == leave->x && y == leave->y && z == leave->z && bit[k] == leave_bit))
+              continue;
+            errs += ({ sprintf("(%d,%d,%d) 方向位 %d 指向越界", x, y, z, bit[k]) });
+            continue;
+          }
+          if (!all[nx][ny][nz])
+            errs += ({ sprintf("(%d,%d,%d) 方向位 %d 指向空房间", x, y, z, bit[k]) });
+          else if (!(all[nx][ny][nz] & opp[k]))
+            errs += ({ sprintf("(%d,%d,%d) 与 (%d,%d,%d) 出口不互反", x, y, z, nx, ny, nz) });
+        }
+      }
+
+  if (cnt < 1) errs += ({ "地图里没有任何房间" });
+
+  if (map_enter_set) {
+    if (map_enter_x < 0 || map_enter_x >= l || map_enter_y < 0 || map_enter_y >= m
+        || map_enter_z < 0 || map_enter_z >= h)
+      errs += ({ "[ENTRY] 越界" });
+    else if (!all[map_enter_x][map_enter_y][map_enter_z])
+      errs += ({ "[ENTRY] 指向空房间" });
+  } else {
+    errs += ({ "缺少 [ENTRY]（将按 entry_dir 自动选）" });
+  }
+
+  if (map_exit_set) {
+    if (map_exit_x < 0 || map_exit_x >= l || map_exit_y < 0 || map_exit_y >= m
+        || map_exit_z < 0 || map_exit_z >= h)
+      errs += ({ "[EXIT] 越界" });
+    else if (!all[map_exit_x][map_exit_y][map_exit_z])
+      errs += ({ "[EXIT] 指向空房间" });
+  } else {
+    errs += ({ "缺少 [EXIT]（将按边界房间随机选）" });
+  }
+
+  return errs;
+}
+
+// 连通性检查：从入口 BFS，返回不可达的房间数
+int check_maze_reachable() {
+  int *q = ({});
+  int *seen = ({});
+  int i, x, y, z, k, v, nx, ny, nz, cnt, idx, key, total;
+  int *bit = ({ 1, 2, 4, 8, 16, 32 });
+  int *dx = ({ 1, -1, 0, 0, 0, 0 });
+  int *dy = ({ 0, 0, -1, 1, 0, 0 });
+  int *dz = ({ 0, 0, 0, 0, -1, 1 });
+
+  if (!arrayp(all) || l < 2 || m < 2 || h < 1) return -1;
+
+  total = 0;
+  for (x = 0; x < l; x++)
+    for (y = 0; y < m; y++)
+      for (z = 0; z < h; z++)
+        if (all[x][y][z]) total++;
+
+  if (!total) return 0;
+
+  seen = allocate(l * m * h);
+  for (i = 0; i < l * m * h; i++) seen[i] = 0;
+
+  x = enter->x; y = enter->y; z = enter->z;
+  key = x + y * l + z * l * m;
+  seen[key] = 1;
+  q = ({ key });
+  cnt = 1;
+
+  for (idx = 0; idx < sizeof(q); idx++) {
+    int key2 = q[idx];
+    x = key2 % l;
+    y = (key2 / l) % m;
+    z = key2 / (l * m);
+
+    v = all[x][y][z];
+    for (k = 0; k < 6; k++) {
+      if (!(v & bit[k])) continue;
+      nx = x + dx[k]; ny = y + dy[k]; nz = z + dz[k];
+      if (nx < 0 || nx >= l || ny < 0 || ny >= m || nz < 0 || nz >= h) continue;
+      if (!all[nx][ny][nz]) continue;
+      key = nx + ny * l + nz * l * m;
+      if (seen[key]) continue;
+      seen[key] = 1;
+      q += ({ key });
+      cnt++;
+    }
+  }
+
+  return total - cnt;
+}

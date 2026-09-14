@@ -1,0 +1,41 @@
+// 固定形状大区域测试：6x6 完美迷宫（aardio 生成）
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "big6-room");
+  set_maze_map(__DIR__ "big6");
+  set_maze_spacing(1);
+  set_maze_owner_key("pub6");
+
+  set_entry_dir("north");
+  set_link_entry_dir("down");
+  set_entry_back_dir("up");
+  set_link_entry_room("/d/fixedtest/gate6");
+
+  set_link_exit_room("/d/fixedtest/gate6");
+  set_exit_back_dir("up");
+
+  set_link_entry_room_x(0);
+  set_link_entry_room_y(0);
+  set_link_entry_room_z(0);
+
+  set_entry_short(HIW "石窟入口" NOR);
+  set_entry_desc(@LONG
+    一道低矮的石窟口，冷风从里面吹出来，石壁上结着白霜。
+LONG
+  );
+
+  set_exit_short(HIY "石窟尽头" NOR);
+  set_exit_desc(@LONG
+    石窟尽头，一面石壁上刻着残缺的壁画，看不出画的是什么。
+LONG
+  );
+
+  set_maze_room_short(HIB "石窟" NOR);
+  set_maze_room_desc(@LONG
+    幽暗的石窟，四壁潮湿，地上散落着碎石。
+LONG
+  );
+}
