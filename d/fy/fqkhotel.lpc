@@ -30,6 +30,7 @@ LONG);
 
   set("objects", ([
     __DIR__ "npc/waiter": 1,
+	__DIR__"npc/gifter" : 1,	
   ]));
 
   set("coor/x", 80);

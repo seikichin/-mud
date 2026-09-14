@@ -328,7 +328,7 @@ int look_room(object me, object env) {
   str = sprintf("%s - %s\n",
     mxp ? MXP_D->rshort(me, env->query("short")) : env->query("short"),
     wizardp(me) ? file_name(env) + sprintf(" - (%d,%d,%d)", env->query("coor/x"),
-      env->query("coor/y"), env->query("coor/z")) : "");
+      env->query("coor/y"), env->query("coor/z")) :  sprintf("(%d,%d,%d)",env->query("coor/x"), env->query("coor/y"),env->query("coor/z")));
 
   // 实时小地图(可选, 用 set show_way 1 打开)
   if (me->query("env/show_way") && !me->query("env/brief"))

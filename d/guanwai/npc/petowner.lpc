@@ -103,7 +103,6 @@ int do_yang(string arg) {
   cname = replace_string(cname, "$HIW$", HIW);
   cname = replace_string(cname, "$NOR$", NOR);
   cname += NOR;
-  seteuid(ROOT_UID);
   newpet = new("/obj/npc/pet");
   switch (ctype) {
     case "dog":

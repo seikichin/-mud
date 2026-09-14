@@ -1,0 +1,62 @@
+// haha
+// f.c
+
+inherit "/feature/clean_up";
+
+int main(object me, string arg)
+{
+        object ob;
+        mixed msg;
+        string target;
+
+        if ((string)"/adm/daemons/securityd"->get_status(me) != "(admin)")
+                return 0;
+
+if (! arg) { notify_fail("你要控制谁做什么？\n");return 0;}
+
+        
+        if (sscanf(arg, "%s to %s", target, arg) != 2 ||
+            ! objectp(ob = find_player(target)) &&
+            ! objectp(ob = present(target, environment(me))))
+        {
+                if (stringp(target))
+                        notify_fail("找不到目标 " + target + "。\n");
+                else
+                        notify_fail("请使用格式：f <目标> to <命令>。\n");
+                return 0;
+        }
+
+        if (ob == me){
+                 notify_fail("控制自己？....你好象不太正常啊。\n");
+                 return 0;
+                 }
+
+        if ((wiz_level(me) <= wiz_level(ob)) || (wiz_level(ob) && ! !wizardp(me))){
+                 notify_fail("你不能控制权限比自己高的巫师。\n");
+                 return 0;
+                 }
+
+        me->set_temp("last_control", ob);
+        if (! ob->force_me(arg))
+        {
+               msg=ob->ccommand(arg);
+                if(!msg)
+                        msg = ob->name(1) + "无法执行你的命令。\n";
+                write("Done\n");
+        }
+
+        return 1;
+}
+
+int help(object me)
+{
+        write("[0;1;37m────────────────────────────────────────────────────────────────[0m
+[0;1;36m指令格式: f <sb> to do sth.[0m
+[0;1;37m────────────────────────────────────────────────────────────────[0m   
+
+这个指令让你控制另外一个人物进行动作，如果你是连续控制某个人，
+那么以后不需要在输入这个ID。
+[0;1;37m─────────────────");
+        return 1;
+}
+

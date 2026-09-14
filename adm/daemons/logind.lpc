@@ -10,7 +10,7 @@ inherit F_DBASE;
 int wiz_lock_level = WIZ_LOCK_LEVEL;
 int new_user_lock = NEW_USER_LOCK;
 int dummy_num = MAX_DUMMY;
-
+int verify_code_lock = 1;
 #ifdef MAX_USERS
 int max_ppl = MAX_USERS;
 #endif
@@ -101,6 +101,7 @@ void logon(object ob) {
 	}
 
 */
+set_encoding("gbk");
   if (BAN_D->is_banned(query_ip_number(ob)) ||
     BAN_D->is_banned(query_ip_number(ob))) {
     write("对不起，您的地址被拒绝连线。
@@ -229,7 +230,7 @@ private void get_id(string arg, object ob) {
   if (!(stringp(query_ip_number(ob)) && (query_ip_number(ob) == "127.0.0.1" ||
     query_ip_number(ob) == "::1" ||
     (strlen(query_ip_number(ob)) >= 4 && query_ip_number(ob)[0..3] == "127."))) &&
-    uptime() < 300 && !wiz_level(arg) && SERV != LOCAL) {
+  uptime() < 1 && !wiz_level(arg) && SERV != LOCAL) {
     write("风云系统正在初始化，请在五分钟后再登陆。\n");
     destruct(ob);
     return;
@@ -430,12 +431,18 @@ private void confirm_id(string yn, object ob) {
     input_to((: get_id :), ob);
     return;
   }
-  alle = "/feature/nada.lpc"->my_number();
-  write("\n");
-  write(alle[0]);
-  write("\n请输入以上校验码：");
-  input_to((: get_verify_code :), 1, ob, alle[1], 2);
-
+  if (verify_code_lock) {
+    alle = "/feature/nada.lpc"->my_number();
+    write("\n");
+    write(alle[0]);
+    write("\n请输入以上校验码：");
+    input_to((: get_verify_code :), 1, ob, alle[1], 2);
+    return;
+  }
+  // 关闭校验码：跳过图形验证，直接沿用"校验通过之后"的同一条流程。
+  // get_verify_code() 的 chs==2 分支会输出中文名字说明并 input_to(get_name)，
+  // 这里传入答案 0 与期望值 0，使 sscanf("%d") 的比对必然通过。
+  get_verify_code("0", ob, 0, 2);
   return;
 }
 
@@ -951,6 +958,14 @@ int set_newuser_lock(int level) {
   return level;
 }
 
+int set_verify_code_lock(int level) {
+  verify_code_lock = level;
+  return level;
+}
+
+int query_verify_code_lock() {
+  return verify_code_lock;
+}
 
 int set_dummy_num(int level) {
   dummy_num = level;

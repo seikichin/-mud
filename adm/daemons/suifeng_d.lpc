@@ -8,8 +8,8 @@
 
 #include <localtime.h>
 #include <ansi.h>
-#define DEFAULT_TIMES   200
-#define HOLIDY_TIMES    300
+#define DEFAULT_TIMES  900
+#define HOLIDY_TIMES    900
 void check_action_startend();
 
 void create() {
