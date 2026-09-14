@@ -184,7 +184,6 @@
 #define	F_VENDOR				"/feature/vendor.lpc"
 #define F_FLOWERSELLER				"/feature/flowerseller.lpc"
 #define	F_MASTER				"/std/char/master.lpc"
-#define F_VO					"/feature/vo.lpc"
 #define F_GMCP                 "/feature/gmcp.lpc"
 
 #define	F_ANNIE					"/feature/annie.lpc"
