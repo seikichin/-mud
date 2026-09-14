@@ -31,7 +31,7 @@ int main(object me, string arg) {
     me->set_temp("timer/big_cmd", time());
     num = sizeof(t);
 
-    printf(HIC "≡" HIY "───────────────────────────────────────────────" HIC "≡\n" NOR);
+    printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
     while (num--) {
       if (num == 0) {
         printf(
@@ -75,11 +75,11 @@ int main(object me, string arg) {
       );
       printf("\n");
     }
-    printf(HIC "≡" HIY "───────────────────────────────────────────────" HIC "≡\n" NOR);
+    printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
   } else {  // Or I am not in a team	
-    printf(HIC "≡" HIY "────────────────────────────" HIC "≡\n" NOR);
+    printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
     printf(CYN "  " + my["name"] + "(" + my["id"] + ")\n" NOR);
-    printf(HIC "≡" HIY "────────────────────────────" HIC "≡\n" NOR);
+    printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
     printf(" 【精力】%s%5d/ %5d %s(%3d%%)" NOR "【灵力】%s%5d/ %5d (%3d)\n" NOR,
       status_color(my["gin"], my["eff_gin"]), my["gin"], my["eff_gin"],
       status_color(my["eff_gin"], my["max_gin"]), my["eff_gin"] * 100 / my["max_gin"],
@@ -100,7 +100,7 @@ int main(object me, string arg) {
     );
   }
 
-  //	printf(HIC"≡"HIY"────────────────────────────"HIC"≡\n"NOR);
+  //	printf(HIC"≡"HIY"一一一一一一一一一一一一一一一一一一一一一一一一一一一一"HIC"≡\n"NOR);
 
   return 1;
 }

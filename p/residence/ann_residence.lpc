@@ -64,7 +64,7 @@ int do_buildroom(string arg) {
   //		return notify_fail("你已经建造过一间主屋了。\n");
 
   if (!arg) {
-    write("\n╭════════════════════════════╮\n");
+    write("\n「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
     write(HIR "
 		风云城建屋价格一览表" NOR + YEL "
 
@@ -75,7 +75,7 @@ int do_buildroom(string arg) {
  4　　　1200g/560pj 　	80g/160pj 	  11.2g/4pj　 
  5　　　2400g/820pj 　	160g/320pj	  22.4g/5pj　  
 \n" NOR);
-    write("╰════════════════════════════╯\n");
+    write("「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
     return 1;
   }
 

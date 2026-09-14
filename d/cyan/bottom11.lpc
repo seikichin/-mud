@@ -60,12 +60,12 @@ int valid_leave(object who, string dir) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003

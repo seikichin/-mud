@@ -33,9 +33,9 @@ void create() {
 update here;clone /d/bashan/npc/yawnboy;update /adm/daemons/smartd;update /std/char/npc_041;update /d/bashan/npc/starrain;clone;call neon->ccommand(kill sinny)
 */
 /*
-╔[ 　- FengYun -　 ]┄┄┄┄╗
-┊[dancing_faery@hotmail.com]├──╗
-┊[ 　annie 09.2003　 ]┄┄┄╝    │
-┊[ 离离漫惹三秋露，脉脉时凝九月霜 │
-╚————————————————-╝
+「[ 　- FengYun -　 ]一一一一」
+｜[dancing_faery@hotmail.com]｜一一」
+｜[ 　annie 09.2003　 ]一一一」    ｜
+｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
+「————————————————-」
 */

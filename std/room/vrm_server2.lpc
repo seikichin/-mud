@@ -644,7 +644,7 @@ private void link_to_down(int x, int y, int z)  // The up room is (x,y,z-1)
 // 绘制已建成迷宫的地图.
 // ann' marked 暂时不叫此函式。
 private void paint_vrm_map() {
-  string hor = "─", ver = "│  ", room = "◎", sroom = "●", ld = "▽", lu = "△", lb = "◇";
+  string hor = "一", ver = "｜  ", room = "◎", sroom = "●", ld = "▽", lu = "△", lb = "◇";
   int x, y, z;
   string output = "", map_file;
 
@@ -1134,12 +1134,12 @@ nomask object query_maze_room(string str) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003

@@ -130,7 +130,7 @@ int do_read(string arg) {
   if (arg == "3") {
     tianjiao = this_player()->query("m_killer");
     tell_object(this_player(), WHT "\t　　		风云天骄录（" + this_player()->name(1) + "）\n" NOR);
-    write(HIR BLK "───────────────────────────────────────\n" NOR);
+    write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
     if (!tianjiao) write(HIR "无\n" NOR);
     else {
       list = keys(tianjiao);
@@ -145,7 +145,7 @@ int do_read(string arg) {
         }
       }
     }
-    write(HIR BLK "\n───────────────────────────────────────\n" NOR);
+    write(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
     return 1;
   }
 
@@ -244,9 +244,9 @@ void selete_main(string num, object ob, string file) {
     if (book) {
       if (number) {
         write(CLR);
-        write(HIW "\n───────────────────────────────────[0m\n" NOR);
+        write(HIW "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m\n" NOR);
         write(page(book, number));
-        write(sprintf(HIW "─────────────────%-d─────────────────\n" NOR,
+        write(sprintf(HIW "一一一一一一一一一一一一一一一一一%-d一一一一一一一一一一一一一一一一一\n" NOR,
           number));
         input_to("back_off", ob, file);
         return;

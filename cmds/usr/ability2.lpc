@@ -127,9 +127,9 @@ int main(object me, string arg) {
     if (ob->query("pfm_r1/" + arg + "/expertise")
       || ob->query("pfm_r1/" + arg + "/memorized")) {
       write(HIG "\t　　		" + pfm_r1_data[arg]["c_id"] + "\n" NOR);
-      write(HIR BLK "─────────────────────────────────\n" NOR);
+      write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
       write(pfm_details[arg]);
-      write(HIR BLK "─────────────────────────────────\n" NOR);
+      write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
       return 1;
     }
   }
@@ -137,9 +137,9 @@ int main(object me, string arg) {
   num = sizeof(pfm_name);
 
   write(HIG "\t　　		风云绝技进阶\n" NOR);
-  write(HIR BLK "─────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   write(WHT "序号	绝招名		英文名		熟练度	 记忆	 时限	\n" NOR);
-  write(HIR BLK "─────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   for (i = 0; i < num; i++) {
     if (ob->query("pfm_r1/" + pfm_name[i] + "/expertise")
@@ -161,7 +161,7 @@ int main(object me, string arg) {
     write(msg);
   }
 
-  write(HIR BLK "─────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   return 1;
@@ -171,9 +171,9 @@ int main(object me, string arg) {
 int help(object me) {
   write(@HELP
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	ability2 [0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 ability2 			你现在掌握的风云绝招			
 ability2 绝招英文名	关于该绝招的一些具体说明
@@ -189,7 +189,7 @@ ability2 绝招英文名	关于该绝招的一些具体说明
 
 使用风云绝技需等级100以上。
 
-[0;1;37m────────────────────────────────[0m  
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m  
 HELP
   );
 

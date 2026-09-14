@@ -83,7 +83,7 @@ int do_pawn(string arg) {
   object ob;
   string term, *terms, *vterms;
   string data, p_c, capa;
-  int i, j, k, extra;
+  int i;
   mapping pawn2, vpawn2, fpawn2;
   object me;
   me = this_player();
@@ -99,38 +99,29 @@ int do_pawn(string arg) {
       vterms = keys(vpawn2);
       capa = "（" + sizeof(terms) + "/" + (environment()->query("extra_blackcase_size") + MAX_ITEM + 1) + "）";
 
-      write(HIY "┌─────────┐" NOR + HIR " 目前存放的物品" + capa + NOR + HIY "┌─────────┐\n" NOR
-        +HIY "├─────────┘" NOR + HIR "～～～～～～～～～～～～" NOR + HIY "└─────────┤\n" NOR);
+      write(HIY "「一一一一一一一一一」" NOR + HIR " 目前存放的物品" + capa + NOR + HIY "「一一一一一一一一一」\n" NOR
+        +HIY "｜一一一一一一一一一」" NOR + HIR "～～～～～～～～～～～～" NOR + HIY "「一一一一一一一一一｜\n" NOR);
 
       for (i = 0; i < sizeof(terms); i++) {
-        // Adjust spacing due to ANSI code
-        k = 0;
-        extra = 0;
-        for (j = 0; j < strlen(pawn2[terms[i]]); j++) {
-          if (pawn2[terms[i]][j] == ESC[0]) {
-            k = 1;
-          }
-          if (k == 1) {
-            extra++;
-          }
-          if (pawn2[terms[i]][j] == 'm') {
-            k = 0;
-          }
-        }
+        // 注意：fluffos 的 sprintf("%-*s") 字段宽度按「屏幕显示列数」计算——
+        // u8_width() 已自动忽略 ANSI 颜色码, 中文字按 2 列计。
+        // 因此这里直接给 16 即可（与 feature/pawnowner.lpc 的 do_pawn 一致）；
+        // 若再额外补偿 ANSI 码长度, 列宽会随物品名中颜色码的多少而浮动,
+        // 反而导致各行参差不齐。
         outstring = sprintf("%s%s\t%-5s：  %-*s  价值：%-25s%s\n",
           outstring,
-          HIY "│" NOR,
+          HIY "｜" NOR,
           terms[i],
-          16 + extra,
+          16,
           pawn2[terms[i]],
           MONEY_D->value_string(vpawn2[vterms[i]]),
-          HIY "│" NOR);
+          HIY "｜" NOR);
       }
       this_player()->start_more("", outstring, 0);
-      write(HIY "│								  │\n" NOR);
-      write(HIY "│" NOR "察看（stack）放入（stack 物品英文名）				  " HIY "│\n" NOR);
-      write(HIY "│" NOR "取出（retrieve 物品编号）永久销毁（dispose 物品编号）		  " HIY "│\n" NOR);
-      write(HIY "└─────────" CYN "────────────" HIY "───────────┘\n" NOR);
+      write(HIY "｜								  ｜\n" NOR);
+      write(HIY "｜" NOR "察看（stack）放入（stack 物品英文名）				  " HIY "｜\n" NOR);
+      write(HIY "｜" NOR "取出（retrieve 物品编号）永久销毁（dispose 物品编号）		  " HIY "｜\n" NOR);
+      write(HIY "「一一一一一一一一一" CYN "一一一一一一一一一一一一" HIY "一一一一一一一一一一一」\n" NOR);
 
     }
     return 1;
@@ -269,12 +260,12 @@ int do_redeem2(string arg) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003

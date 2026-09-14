@@ -3,16 +3,16 @@
 int main(object me, string str) {
   string output;
   me->add("sen", -5);
-  output = YEL "┌──────────┐" NOR + RED "  风云2005血雨檄  " NOR + YEL "┌───────────┐\n" NOR;
-  output += YEL "└──────────┘" NOR + CYN "~~~~~~~~~~~~~~~~" NOR + YEL "└───────────┘\n" NOR;
+  output = YEL "「一一一一一一一一一一」" NOR + RED "  风云2005血雨檄  " NOR + YEL "「一一一一一一一一一一一」\n" NOR;
+  output += YEL "「一一一一一一一一一一」" NOR + CYN "~~~~~~~~~~~~~~~~" NOR + YEL "「一一一一一一一一一一一」\n" NOR;
   output += QUESTNPC_D->dyn_evil_quest_list();
-  output += YEL "┌───────────────────────────────┐\n" NOR;
-  output += YEL "└───────────────────────────────┘\n" NOR;
-  output += YEL "┌──────────┐" NOR + BLU "  风云2005正气榜  " NOR + YEL "┌───────────┐\n" NOR;
-  output += YEL "└──────────┘" NOR + CYN "~~~~~~~~~~~~~~~~" NOR + YEL "└───────────┘\n" NOR;
+  output += YEL "「一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一」\n" NOR;
+  output += YEL "「一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一」\n" NOR;
+  output += YEL "「一一一一一一一一一一」" NOR + BLU "  风云2005正气榜  " NOR + YEL "「一一一一一一一一一一一」\n" NOR;
+  output += YEL "「一一一一一一一一一一」" NOR + CYN "~~~~~~~~~~~~~~~~" NOR + YEL "「一一一一一一一一一一一」\n" NOR;
   output += QUESTNPC_D->dyn_good_quest_list();
-  output += YEL "┌───────────────────────────────┐\n" NOR;
-  output += YEL "└───────────────────────────────┘\n" NOR;
+  output += YEL "「一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一」\n" NOR;
+  output += YEL "「一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一」\n" NOR;
 
   me->start_more("", output, 0);
   return 1;

@@ -9,9 +9,9 @@ void create() {
   else {
     set("unit", "幅");
     set("no_split", 1);
-    set("desc_ext2", "║│大西洋(1:100000000) 　　　　　　　　　　　　　　　　│║
-║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║
-║│　　　　　　　　　　　　　　　　　" HIR "○" NOR CYN "　　　　　　　　│║\n");
+    set("desc_ext2", "｜｜大西洋(1:100000000) 　　　　　　　　　　　　　　　　｜｜
+｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜
+｜｜　　　　　　　　　　　　　　　　　" HIR "○" NOR CYN "　　　　　　　　｜｜\n");
 
     set("long", CYN "
                                          ~

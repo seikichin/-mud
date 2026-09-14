@@ -23,7 +23,7 @@ int main(object me, string arg) {
   //	    if (!wiz_level(me)) list = filter_array(list, (: imm :));
   str = sprintf("\n%-30s\n",
     WHT "·" + MUD_NAME + "目前共有" + sizeof(list) + "位巫师·" NOR);
-  str = replace_string(str, "  ", "─");
+  str = replace_string(str, "  ", "一");
   i = sizeof(list);
   while (i--) {
     if (hood != wizhood(list[i])) {
@@ -102,13 +102,13 @@ int level(mixed ob1, mixed ob2) {
 
 int help(object me) {
   write(@HELP
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	wizlist[0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 用途 : 列出该游戏站点所有巫师名单。
 
-[0;1;37m────────────────────────────────[0m 
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m 
 HELP
   );
   return 1;

@@ -113,12 +113,12 @@ void setup_npc_obj(object room, int length, int width, int x, int y) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003

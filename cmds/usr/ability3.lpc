@@ -105,9 +105,9 @@ int main(object me, string arg) {
     WHT "\t　　	TASK %s能力进阶\n" NOR,
     "/std/char/master"->query_chinese_class(ob->query("class"))
   ));
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   write(WHT "序号		功效			  等级	    	升级点数\n" NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   //	if( ob->query("betrayer") ) {
   //		write("你有叛师前科，无法领会新门派的精髓。\n");
@@ -126,13 +126,13 @@ int main(object me, string arg) {
       }
     }
   }
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   write("你现在总共完成了" YEL + saved_task + NOR "个TASK，" YEL + saved_book + NOR "个怜花宝鉴，储存了" YEL + saved_count + NOR "TASK点数。
 合计" WHT + saved_ability3 + NOR "点高级能力。
 你已经用去了" RED + learned_ability3 + NOR "点高级能力，还剩下" HIG + (saved_ability3 - learned_ability3) + NOR "点可供分配。\n");
 
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   return 1;
 }
@@ -141,9 +141,9 @@ int main(object me, string arg) {
 int help(object me) {
   write(@HELP
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	ability3 [0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 ability3 	让你知道你目前所学过的一切能力，
 ability3 + n	提高第ｎ项能力的级别。
@@ -172,7 +172,7 @@ ability3 + n	提高第ｎ项能力的级别。
 注：与普通能力ABILITY不同，高级能力中的魔力、法力、内力的提
 高并不会增加相应的精气神数值。
 
-[0;1;37m────────────────────────────────[0m  
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m  
 HELP
   );
 

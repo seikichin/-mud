@@ -849,7 +849,7 @@ void snapshot(object ob) {
   riddle = ob->query("m_success");
 
   str += ngstr(WHT "\t　　" + ob->name() + "解开的谜题\n" NOR);
-  str += ngstr(HIR BLK "─────────────────────\n" NOR);
+  str += ngstr(HIR BLK "一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!riddle) str += ngstr(HIR "无\n" NOR);
   else {
@@ -861,13 +861,13 @@ void snapshot(object ob) {
         str += ngstr(HIR + list[i] + "\n" NOR);
     }
   }
-  str += ngstr(HIR BLK "\n─────────────────────\n" NOR);
+  str += ngstr(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   riddle = ob->query("riddle");
 
   str += ngstr(WHT "\t　　" + ob->name() + "正在解的谜题\n" NOR);
-  str += ngstr(HIR BLK "─────────────────────\n" NOR);
+  str += ngstr(HIR BLK "一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!riddle) str += ngstr(HIR "无\n" NOR);
   else {
@@ -879,7 +879,7 @@ void snapshot(object ob) {
         str += ngstr(HIR + list[i] + "\n" NOR);
     }
   }
-  str += ngstr(HIR BLK "\n─────────────────────\n" NOR);
+  str += ngstr(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   str = ngstr(str);
@@ -1080,14 +1080,14 @@ void reset_npc(object ob) {
 
 　　　     /＼              ／\      
 　　　   ▕   ＼＿＿　　　／  ︱       
-　　　   ▕ ／￣    ◥██◤╲︱       
+　　　   ▕ ／￣    ◥██◤＼︱       
 　　　    ∕                  ﹨       
 　　　    ︳   /￣\    /￣\   ▕      
 　　　    ︳   ︳●    ●  ︳ ▕       
-　　　   ┼    \ /    \　/    ┼      
+　　　   ＋    \ /    \　/    ＋      
 　　　    ﹨　      ●      　∕         
-　　　    ˉ╲　    　   　／ˉ         
-　　　    ╭─◤ˉˉˉ￣◥◤﹨           
+　　　    ˉ＼　    　   　／ˉ         
+　　　    「一◤ˉˉˉ￣◥◤﹨           
 　　　   （   ︳           /﹀﹀\◢█    
 　　　  （____︳  ▕ ／  ▕ .. █◤     
 　　　        \︿︿/ ︺︺︺＼●／         

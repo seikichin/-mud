@@ -347,12 +347,12 @@ int do_put(object me, object obj, object dest
         
         else return 0
 /
-　　　　　　　╔
-　　　　　　　║╰
-　　　　　　　║│╰
-　　　　　　　║││╰
-　　　　　　　║│││
-　　　　　　　╚╧╧╧
+　　　　　　　「
+　　　　　　　｜「
+　　　　　　　｜｜「
+　　　　　　　｜｜｜「
+　　　　　　　｜｜｜｜
+　　　　　　　「＝＝＝
 　　　　　　　- FengYun - 　　
 　　　　　　annie 08.200
 　　　dancing_faery@hotmail.co

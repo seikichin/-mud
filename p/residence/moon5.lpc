@@ -12,18 +12,6 @@ void create() {
     
 LONG);
   set("exits", ([
-    "512": __DIR__ "userroom/cemm1297099133",
-    "511": __DIR__ "userroom/zixia1296988681",
-    "510": __DIR__ "userroom/bon1296987354",
-    "509": __DIR__ "userroom/plate1296951368",
-    "508": __DIR__ "userroom/swk1296848888",
-    "507": __DIR__ "userroom/tsz1296833504",
-    "506": __DIR__ "userroom/shs1296724286",
-    "505": __DIR__ "userroom/zbj1296680770",
-    "504": __DIR__ "userroom/naga1296372807",
-    "503": __DIR__ "userroom/gene1296310653",
-    "502": __DIR__ "userroom/ruth1284550191",
-    "501": __DIR__ "userroom/alec1283130767",
     "down": __DIR__ "moon" + (query("floor") - 1),
     "up": __DIR__ "moon" + (query("floor") + 1),
   ]));

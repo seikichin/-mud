@@ -64,7 +64,7 @@ void set_items(mapping t_items) {  // this function is for transfering
 
 // ====== 显示列宽排版工具 (utf-8 / gbk 通用) ======
 // FluffOS 的 strlen() 返回"字符个数", strwidth() 又把 East Asian Ambiguous
-// 字形(║│─═◆◎·…)当成窄(1 列), 都不能直接用于这套框线排版;
+// 字形(｜｜一＝◆◎·…)当成窄(1 列), 都不能直接用于这套框线排版;
 // 这里统一用"非 ASCII 字形 = 2 列, ASCII = 1 列"的列宽(等价于原 GBK 版的
 // 字节数)。输出的字符在 utf-8 与 gbk 两种内码下完全相同, 因此排版一致。
 
@@ -159,6 +159,38 @@ int ngstr_fit(string str, int width) {
   }
   if (n < 1) n = 1;
   return n;
+}
+
+// 把制表符展开为空格(按 tabstop 列制表位); 客户端自行展开制表符的宽度不可控, 会导致框线错位
+string ngstr_expand_tabs(string str, int tabstop) {
+  string out, ch;
+  int i, len, col, n;
+
+  if (!stringp(str)) return "";
+  if (!tabstop || tabstop < 1) tabstop = 8;
+
+  out = "";
+  col = 0;
+  len = strlen(str);
+  for (i = 0; i < len; i++) {
+    ch = str[i..i];
+    if (ch == "\t") {
+      n = tabstop - (col % tabstop);
+      while (n > 0) {
+        out += " ";
+        col++;
+        n--;
+      }
+      continue;
+    }
+    out += ch;
+    if (ch == "\n") {
+      col = 0;
+    } else {
+      col += ngstr_chcol(ch);
+    }
+  }
+  return out;
 }
 
 // 右侧补齐到 lng 显示列

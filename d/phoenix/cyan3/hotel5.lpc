@@ -280,12 +280,12 @@ void do_ggyy(object me, object target, int count) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003

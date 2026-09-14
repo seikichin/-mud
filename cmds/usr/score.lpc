@@ -49,9 +49,9 @@ int main(object me, string arg) {
   task_num = F_LEVEL->level_to_pot(level) / 10 / 50;
   rewarded_task = ob->query("rewarded_task");
   my = ob->query_entire_dbase();
-  printf(HIC "≡" HIY "──────────────────────────────────" HIC "≡\n" NOR);
+  printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
   printf("   %s\n", ob->short(1));
-  printf(HIC "≡" HIY "──────────────────────────────────" HIC "≡\n" NOR);
+  printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
   line = sprintf(" 【力量】%-8s\t【民族】%-10s【杀死人数】 %d（%d） \n",
     display_attr(my["str"], ob->query_str()), (ob->query("national") ? ob->query("national") : "无"),
     my["MKS"], my["PKS"]);
@@ -175,7 +175,7 @@ int main(object me, string arg) {
     }
   }
   write(line);
-  printf(HIC "≡" HIY "──────────────────────────────────" HIC "≡\n" NOR);
+  printf(HIC "≡" HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一" HIC "≡\n" NOR);
   return 1;
 }
 
@@ -330,9 +330,9 @@ int basic_armor(object victim) {
 
 int help(object me) {
   write(@HELP
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	 score[0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
       
 这个指令可以显示你的基本资料：
 
@@ -395,7 +395,7 @@ int help(object me) {
 
 相关指令 : hp
 
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 HELP
   );
   return 1;

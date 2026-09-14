@@ -633,7 +633,7 @@ void link_to_down(int x, int y, int z)  // The up room is (x,y,z-1)
 }
 
 void paint_vrm_map() {
-  string hor = "─", ver = "│  ", room = "◎", sroom = "●", ld = "▽", lu = "△", lb = "◇";
+  string hor = "一", ver = "｜  ", room = "◎", sroom = "●", ld = "▽", lu = "△", lb = "◇";
   int x, y, z;
   string output = "", map_file;
 

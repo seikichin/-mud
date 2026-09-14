@@ -26,13 +26,13 @@ int main(object me, string arg) {
   vend_list = ob->query("vendetta");
 
   tell_object(me, WHT "\t　　当前状态：\n" NOR);
-  tell_object(me, HIR BLK "────────────────\n" NOR);
+  tell_object(me, HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
 
   if ((!mapp(buff_list) || !sizeof(buff_list))
     && (!mapp(cont_list) || !sizeof(cont_list))
     && (!mapp(vend_list) || !sizeof(vend_list))) {
     tell_object(me, "没有任何异常状态作用中。\n");
-    tell_object(me, HIR BLK "────────────────\n" NOR);
+    tell_object(me, HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
     return 1;
   }
 
@@ -65,7 +65,7 @@ int main(object me, string arg) {
   }
 
   if (mapp(cont_list) && sizeof(cont_list)) {
-    write(HIR BLK "────────────────\n" NOR);
+    write(HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
     lists = keys(cont_list);
     num = values(cont_list);
     for (i = 0; i < sizeof(lists); i++) {
@@ -78,7 +78,7 @@ int main(object me, string arg) {
   }
 
   if (mapp(vend_list) && sizeof(vend_list)) {
-    write(HIR BLK "────────────────\n" NOR);
+    write(HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
     lists = keys(vend_list);
     num = values(vend_list);
     for (i = 0; i < sizeof(lists); i++) {
@@ -92,7 +92,7 @@ int main(object me, string arg) {
     }
   }
 
-  tell_object(me, HIR BLK "────────────────\n" NOR);
+  tell_object(me, HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
 
 
   return 1;
@@ -102,13 +102,13 @@ int main(object me, string arg) {
 int help(object me) {
   write(@HELP
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	stat [0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 这个指令可以让你知道你目前所拥有的所有异常状态与持续时间。
 
-[0;1;37m────────────────────────────────[0m  
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m  
 HELP
   );
   return 1;

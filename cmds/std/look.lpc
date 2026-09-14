@@ -433,7 +433,7 @@ int look_item(object me, object obj) {
     return look_item_old(me, obj);
 
 
-  write("\n╭════════════════════════════╮\n");
+  write("\n「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
 
   strx = " " + obj->query("name") + "　t. " + CYN + obj->query_weight();
 
@@ -450,91 +450,91 @@ int look_item(object me, object obj) {
 
 
   strx = ngstr(strx + NOR, 56);
-  write("║" + strx + "║\n");
+  write("｜" + strx + "｜\n");
 
-  strx = "║ ◆物品类型 " + CYN;
+  strx = "｜ ＊物品类型 " + CYN;
   if (obj->query("weapon_prop")) {
-    strx = strx + "武器·";
+    strx = strx + "武器／";
     switch (obj->query("skill_type")) {
       case "sword":
         strx = strx + "剑";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "unarmed":
         strx = strx + "板指";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "long_sword":
         strx = strx + "重剑";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "blade":
         strx = strx + "刀";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "long_blade":
         strx = strx + "长刀";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "axe":
         strx = strx + "斧";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "long_axe":
         strx = strx + "巨斧";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "dagger":
         strx = strx + "匕首";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "fork":
         strx = strx + "叉";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "hammer":
         strx = strx + "锤";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "long_hammer":
         strx = strx + "大锤";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "staff":
         strx = strx + "杖";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "spear":
         strx = strx + "枪";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "throwing":
         strx = strx + "暗器";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "musket":
-        strx = strx + "火枪·枪";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + "火枪／枪";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
       case "whip":
         strx = strx + "鞭";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手";
         break;
       case "ring":
         strx = strx + "环";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手副手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手副手";
         break;
       case "fist":
         strx = strx + "爪";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "主手副手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "主手副手";
         break;
       case "stick":
         strx = strx + "棍";
-        strx = strx + NOR + " ◆装备位置 " + CYN + "双手";
+        strx = strx + NOR + " ＊装备位置 " + CYN + "双手";
         break;
     }
   } else if (obj->query("armor_prop")) {
-    strx = strx + "衣物·";
+    strx = strx + "衣物／";
     switch (obj->query("armor_type")) {
       case "head":
         strx = strx + "头饰";
@@ -578,11 +578,11 @@ int look_item(object me, object obj) {
     strx = strx + "一般物品";
 
   strx = ngstr(strx + NOR, 58);
-  write(strx + "║\n");
-  write("║ ═══════════════════════════ ║ \n");
+  write(strx + "｜\n");
+  write("｜ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ｜\n");
 
   if (obj->query("armor_prop")) {
-    strx = "║ ◆防护力 " + CYN + obj->query("armor_prop/armor") + NOR + "　◆装备级别　" + (obj->query("level_required") ? CYN + obj->query("level_required") + NOR : "无") + "　◆性别要求　";
+    strx = "｜ ＊防护力 " + CYN + obj->query("armor_prop/armor") + NOR + "　＊装备级别　" + (obj->query("level_required") ? CYN + obj->query("level_required") + NOR : "无") + "　＊性别要求　";
     if (obj->query("female_only"))
       strx += "女";
     else if (obj->query("male_only"))
@@ -591,23 +591,23 @@ int look_item(object me, object obj) {
       strx += "无";
 
     strx = ngstr(strx + NOR, 58);
-    write(strx + "║\n");
+    write(strx + "｜\n");
   }
 
   if (obj->query("weapon_prop")) {
 
-    strx = "║ ◆杀伤力 " + CYN + obj->query("weapon_prop/damage") + NOR + "　◆装备级别　" + (obj->query("level_required") ? CYN + obj->query("level_required") + NOR : "无") + "　◆性别要求　";
+    strx = "｜ ＊杀伤力 " + CYN + obj->query("weapon_prop/damage") + NOR + "　＊装备级别　" + (obj->query("level_required") ? CYN + obj->query("level_required") + NOR : "无") + "　＊性别要求　";
     if (obj->query("female_only"))
       strx += "女";
     else if (obj->query("male_only"))
       strx += "男";
     else
       strx += "无"; strx = ngstr(strx + NOR, 58);
-    write(strx + "║\n");
+    write(strx + "｜\n");
   }
 
 
-  write("║╭──────────────────────────╮║ \n");
+  write("｜｜一一一一一一一一一一一一一一一一一一一一一一一一一一｜｜\n");
 
 
   if (mapp(prop = obj->query("weapon_prop")) || mapp(prop = obj->query("armor_prop"))) {
@@ -626,7 +626,7 @@ int look_item(object me, object obj) {
           c++;
           e--;
           if (c % 5 == 1)
-            msg = "║│" + YEL "";
+            msg = "｜｜" + YEL "";
           else
             msg = YEL;
 
@@ -645,47 +645,47 @@ int look_item(object me, object obj) {
       if (c > d) {
         if (c % 5 == 0) {
           strx = ngstr(strx + NOR, 55);
-          write(strx + " " + "│║\n");
+          write(strx + " " + "｜｜\n");
           strx = "";
         } else if (e == 0) {
           strx = ngstr(strx + NOR, 56);
-          write(strx + "│║\n");
+          write(strx + "｜｜\n");
         }
         //					else
         //					   write(strx);
         d = c;
       }
     }
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
   } else {
     if (obj->query("desc_ext2")) {
       write(obj->query("desc_ext2"));
     }
     /*			else if (obj->query("liquid"))
 			{
-				write(nrstr(obj->extra_long(),61,"║│","│║ \n",0));
-				write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-				write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-				write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+				write(nrstr(obj->extra_long(),61,"｜｜","｜｜ \n",0));
+				write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
+				write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
+				write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
 			}*/
     else {
-      write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-      write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-      write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-      write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+      write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
+      write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
+      write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
+      write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜\n");
     }
   }
-  write("║├──────────────────────────┤║\n");
+  write("｜｜一一一一一一一一一一一一一一一一一一一一一一一一一一｜｜\n");
 
-  //        strx="║│";
-  strx = nrstr("/feature/nada.lpc"->ngstr(obj->long()), 60, "║│", "│║\n", obj->query("no_split"));
+  //        strx="｜｜";
+  strx = nrstr("/feature/nada.lpc"->ngstr(ngstr_expand_tabs(obj->long(), 8)), 60, "｜｜", "｜｜\n", obj->query("no_split"));
 
   //        strx=ngstr(strx+NOR,56);
-  //        write(strx+"│║\n");
+  //        write(strx+"｜｜\n");
   write(strx);
 
-  write("║╰──────────────────────────╯║\n");
-  strx = "║ ◆额外效果 " + CYN;
+  write("｜｜一一一一一一一一一一一一一一一一一一一一一一一一一一｜｜\n");
+  strx = "｜ ＊额外效果 " + CYN;
   if (obj->query("desc_ext"))
     strx = strx + obj->query("desc_ext");
   else {
@@ -708,13 +708,13 @@ int look_item(object me, object obj) {
       strx = strx + "无";
   }
   strx = ngstr(strx + NOR, 47);
-  strx = strx + "◎ ";
+  strx = strx + "〇 ";
   strx = strx + ngstr(
     CYN + (obj->query_value() ? obj->query_value() : obj->query("value")) + "" + NOR,
     8
   );
-  write(strx + "║\n");
-  write("╰════════════════════════════╯\n");
+  write(strx + "｜\n");
+  write("「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
 
 
   // 若物品为容器，并已经打开，则以正常方式显示。
@@ -1177,17 +1177,17 @@ string getfigure(object me) {
 
 int help(object me) {
   write(@HELP
-^[[0;1;37m────────────────────────────────^[[0m
+^[[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一^[[0m
 ^[[0;1;36m指令格式 :    look [<物品>|<生物>|<方向>]^[[0m
-^[[0;1;37m────────────────────────────────^[[0m   
+^[[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一^[[0m   
  
 这个指令让你查看你所在的环境、某件物品、生物、或是方向。
 
-^[[0;1;37m────────────────────────────────^[[0m    
+^[[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一^[[0m    
 HELP
   );
   return 1;
 }
 
 
-// 凝輕·dancing_faery@hotmail.com
+// 凝輕／dancing_faery@hotmail.com

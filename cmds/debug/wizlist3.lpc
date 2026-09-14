@@ -31,7 +31,7 @@ int main(object me, string arg) {
     }
   write("【" HIR + MUD_NAME + NOR "】" + "目前的开发组成员有：\n");
 
-  write(HIY "\n" NOR "━━━━━━━━━━━━━━━━━━━━━━━━━━" HIY "" NOR);
+  write(HIY "\n" NOR "一一一一一一一一一一一一一一一一一一一一一一一一一一" HIY "" NOR);
   list = SECURITY_D->query_wizlist();
   count = 0;
   for (i = 8; i > 0; i--) {
@@ -59,7 +59,7 @@ int main(object me, string arg) {
     write(msg);
   }
 
-  write(HIY "\n" NOR "━━━━━━━━━━━━━━━━━━━━━━━━━━" HIY "\n" NOR);
+  write(HIY "\n" NOR "一一一一一一一一一一一一一一一一一一一一一一一一一一" HIY "\n" NOR);
   write("合共有: " HIR + chinese_number(count) + NOR " 位。");
   write("其中" HIG "亮绿色" NOR "的表示在线管理人员。\n");
   return 1;

@@ -57,7 +57,7 @@ string long() {
   notes = query("notes");
   msg = query("long");
   msg = msg + "留言版的使用方法请见 help board。\n";
-  //┌──────────────────┐
+  //「一一一一一一一一一一一一一一一一一一」
   /*
 
 	if( !pointerp(notes) || !sizeof(notes) ) return query("long");

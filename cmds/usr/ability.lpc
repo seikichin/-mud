@@ -66,17 +66,17 @@ int main(object me, string arg) {
   }
 
   write(WHT "\t　　		基本能力进阶\n" NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   write(WHT "序号		功效			  等级	    	升级点数\n" NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   for (i = 0; i < sizeof(g_ability); i++)
     write(WHT + (i + 1) + NOR "\t" + get_ability_info(ob, g_ability[i], 0) + NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   write(WHT "\t　　		门派能力进阶\n" NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!stringp(myclass = ob->query("class"))) write("无门无派无特色。\n");
   //	else if (ob->query("betrayer"))
@@ -87,12 +87,12 @@ int main(object me, string arg) {
     for (i = 0; i < 5; i++)
       write(WHT + (i + 16) + NOR "\t" + get_ability_info(ob, m_ability[myclass][i], 1) + NOR);
 
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   write("你现在总共完成了" YEL + saved_quest + "." + saved_quest1 + NOR "个能力Quest，合计" WHT + saved_ability + NOR "点能力。
 你已经用去了" RED + learned_ability + NOR "点能力，还剩下" HIG + (saved_ability - learned_ability) + NOR "点可供分配。\n");
 
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   return 1;
 }
@@ -101,9 +101,9 @@ int main(object me, string arg) {
 int help(object me) {
   write(@HELP
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	ability [0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 ability 	让你知道你目前所学过的一切能力，
 ability + n	提高第ｎ项能力的级别。
@@ -138,7 +138,7 @@ ability + n	提高第ｎ项能力的级别。
 注意，不作分配的ABILITY点数最多只能储存6点，超过6点后Quest
 奖励将自动分配到经验上。
 
-[0;1;37m────────────────────────────────[0m  
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m  
 HELP
   );
 

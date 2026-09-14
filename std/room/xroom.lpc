@@ -420,57 +420,57 @@ int do_remodel(string arg) {
 
 int do_here(string arg) {
   string strx;
-  write("\n╭════════════════════════════╮\n");
+  write("\n「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
   strx = strx = "　　　　　　　　　　　" + WHT + query("short") + NOR "(" + (query("outdoors") ? CYN "室外" : CYN "室内") + NOR ")";
   strx = ngstr(strx + NOR, 56);
-  write("║" + strx + "║\n");
+  write("｜" + strx + "｜\n");
   strx = "　建造於" + YEL + "/cmds/usr/uptime"->chinese_time(7, "" + query("timestamp2")) + NOR;
   strx = ngstr(strx + NOR, 56);
-  write("║" + strx + "║\n");
-  write("║ ═══════════════════════════ ║ \n");
+  write("｜" + strx + "｜\n");
+  write("｜ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ｜ \n");
   strx = " ◆主人：" CYN + query("owner") + NOR " ◆主人：" CYN + (query("couple") ? query("couple") : "无") + NOR " ◆借用者：" CYN "特性关闭" NOR;
   strx = ngstr(strx + NOR, 56);
-  write("║" + strx + "║\n");
-  write("║╭──────────────────────────╮║ \n");
+  write("｜" + strx + "｜\n");
+  write("｜「一一一一一一一一一一一一一一一一一一一一一一一一一一」｜ \n");
   if (query("basic_tax") == -1) {
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
     strx = "可用空间：" CYN + query("free_space");
     strx = ngstr(strx + NOR, 52);
-    write("║│" + strx + "│║\n");
+    write("｜｜" + strx + "｜｜\n");
   } else {
     strx = "银两征收：" CYN + CHINESE_D->chinese_number(query_tax()) + "两" NOR "/周 评价征收：" CYN + CHINESE_D->chinese_number(query_stax() / 100) + "点" NOR "/周";
     strx = ngstr(strx + NOR, 52);
-    write("║│" + strx + "│║\n");
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+    write("｜｜" + strx + "｜｜\n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
 
     strx = "上次缴纳：" CYN + "/cmds/usr/uptime"->chinese_time(7, "" + pay_time());
     strx = ngstr(strx + NOR, 52);
-    write("║│" + strx + "│║\n");
+    write("｜｜" + strx + "｜｜\n");
 
     strx = "下次缴纳：" CYN + "/cmds/usr/uptime"->chinese_time(7, "" + (pay_time() + DAY * 7));
     if (time() > pay_time() + DAY * 7)
       strx += HIR "（已欠款" + chinese_number(query("expired") / 7 + 1) + "期）" NOR;
 
     strx = ngstr(strx + NOR, 52);
-    write("║│" + strx + "│║\n");
+    write("｜｜" + strx + "｜｜\n");
 
-    write("║│　　　　　　　　　　　　　　　　　　　　　　　　　　│║ \n");
+    write("｜｜　　　　　　　　　　　　　　　　　　　　　　　　　　｜｜ \n");
     strx = "累计已交：" CYN + query("already_pay") + "两" NOR "银子" CYN " " + query("already_spay") + "点" NOR "评价　　可用空间：" CYN + query("free_space");
     strx = ngstr(strx + NOR, 52);
-    write("║│" + strx + "│║\n");
+    write("｜｜" + strx + "｜｜\n");
   }
-  write("║╰──────────────────────────╯║\n");
+  write("｜「一一一一一一一一一一一一一一一一一一一一一一一一一一」｜\n");
 
-  strx = "║ ◆房产总额：" CYN + query("total_gold") + NOR "两黄金" + "/" CYN + query("total_score") + NOR "点评价";
+  strx = "｜ ◆房产总额：" CYN + query("total_gold") + NOR "两黄金" + "/" CYN + query("total_score") + NOR "点评价";
   strx = ngstr(strx + NOR, 44);
-  write(strx + "风云２００５  ║\n");
+  write(strx + "风云２００５  ｜\n");
 
-  //	write("║ ◆当前税率："CYN"◎2.0%"NOR"　　　 　　　 　　　 　风云２００５　║\n");
+  //	write("｜ ◆当前税率："CYN"◎2.0%"NOR"　　　 　　　 　　　 　风云２００５　｜\n");
 
-  write("╰════════════════════════════╯\n");
+  write("「＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝」\n");
 
   return 1;
 
@@ -581,16 +581,16 @@ int do_invite(string arg) {
   invite_list = query_temp("invite");
 
   write(WHT "\t　　邀请名单：\n" NOR);
-  write(HIR BLK "────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
   if (!mapp(invite_list) || !sizeof(invite_list)) {
     write("没有邀请任何人。\n");
-    write(HIR BLK "────────────────\n" NOR);
+    write(HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
     return 1;
   }
   lists = keys(invite_list);
   for (i = 0; i < sizeof(lists); i++)
     write(lists[i] + "\n");
-  write(HIR BLK "────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一\n" NOR);
   return 1;
 }
 
@@ -640,7 +640,7 @@ string query_save_file() {
 
   id = query("owner");
   if (!stringp(id)) return 0;
-  return sprintf(DATA_DIR "user/%c/%s/%s", id[0], id, id + ".room" + query("timestamp") + ".o");
+  return sprintf(DATA_DIR "user/%c/%s/%s", id[0], id, id + ".room.o");
 }
 
 int save() {
@@ -784,9 +784,9 @@ int input_description() {
 
 
 /*
-╔[ 　- FengYun -　 ]┄┄┄┄╗
-┊[dancing_faery@hotmail.com]├──╗
-┊[ 　annie 09.2003　 ]┄┄┄╝    │
-┊[ 离离漫惹三秋露，脉脉时凝九月霜 │
-╚————————————————-╝
+「[ 　- FengYun -　 ]一一一一」
+｜[dancing_faery@hotmail.com]｜一一」
+｜[ 　annie 09.2003　 ]一一一」    ｜
+｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
+「————————————————-」
 */

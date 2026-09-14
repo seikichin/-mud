@@ -18,7 +18,7 @@ int main(object me, string arg) {
   riddle = ob->query("riddle");
 
   write(WHT "\t　　		" + ob->name() + "正在解的谜题\n" NOR);
-  write(HIR BLK "───────────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!riddle) write(HIR "无\n" NOR);
   else {
@@ -34,13 +34,13 @@ int main(object me, string arg) {
       }
     }
   }
-  write(HIR BLK "\n───────────────────────────────────────\n" NOR);
+  write(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   riddle = ob->query("m_success");
 
   write(WHT "\t　　		" + ob->name() + "已经解开的谜题\n" NOR);
-  write(HIR BLK "───────────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!riddle) write(HIR "无\n" NOR, 16);
   else {
@@ -52,13 +52,13 @@ int main(object me, string arg) {
         write(CYN + list[i] + "\n" NOR);
     }
   }
-  write(HIR BLK "\n───────────────────────────────────────\n" NOR);
+  write(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
 
   riddle = ob->query("imbue");
 
   write(WHT "\t　　		" + ob->name() + "解谜增加的属性\n" NOR);
-  write(HIR BLK "───────────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!riddle) write(HIR "无\n" NOR);
   else {
@@ -79,20 +79,20 @@ int main(object me, string arg) {
         write(HIR + attr + " +" + num[i] + "\t" NOR);
     }
   }
-  write(HIR BLK "\n───────────────────────────────────────\n" NOR);
+  write(HIR BLK "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   return 1;
 }
 int help(object me) {
   write(@HELP
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	riddle            [0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 这个指令可以让你知道你目前已经解开的谜题，以及因解密增加的属性
 
-[0;1;37m────────────────────────────────[0m  
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m  
 HELP
   );
   return 1;

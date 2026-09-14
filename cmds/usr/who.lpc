@@ -119,7 +119,7 @@ mixed main(object me, string arg, int remote) {
     }
   }
   str += rule + "玩家有：";
-  str += HIY "\n────────────────────────────────────\n" NOR;
+  str += HIY "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR;
   list = sort_array(ob, "sort_user");
   if (!sizeof(list)) {
     str = "目前游戏中并没有" + rule + "玩家。\n";
@@ -137,7 +137,7 @@ mixed main(object me, string arg, int remote) {
       );
     }
 
-    str += HIY "────────────────────────────────────\n" NOR;
+    str += HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR;
     str += sprintf("共有%s位使用者连线中，系统负担：%s\n\n",
       CHINESE_D->chinese_number(numPlayer), query_load_average());
   } else {
@@ -157,7 +157,7 @@ mixed main(object me, string arg, int remote) {
     if (sizeof(list) % 3) {
       str += "\n";
     }
-    str += HIY "────────────────────────────────────\n" NOR;
+    str += HIY "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR;
     str += sprintf("共有%s位使用者连线中，系统负担：%s\n\n",
       CHINESE_D->chinese_number(numPlayer), query_load_average());
   }
@@ -195,9 +195,9 @@ int sort_user(object ob1, object ob2) {
 int help() {
   write("
 
-[0;1;37m────────────────────────────────[0m
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m
 [0;1;36m指令格式 : 	who [-h] [-l] [-w] [-p] [-f] [-m] [-a] [-d] [<ID>][0m
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 这个指令可以列出所有在游戏中的玩家及其等级。
 
@@ -217,7 +217,7 @@ int help() {
 为节省系统资源，此命令每五秒才能执行一次。
 
 相关指令： finger 
-[0;1;37m────────────────────────────────[0m 
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m 
 
 ");
   return 1;

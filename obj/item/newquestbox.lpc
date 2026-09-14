@@ -191,7 +191,7 @@ int do_qlook() {
   num = sizeof(items);
 
   write(WHT "\t  " + name() + "中的物品清单（" + num + "/50）\n" NOR);
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!num) write(HIR "　　空空如也，大肚能容天下万物。\n" NOR);
   else {
@@ -211,7 +211,7 @@ int do_qlook() {
         }
       }
       if (i % 2 == 0) {
-        outstring = sprintf("%-*s %5d│",
+        outstring = sprintf("%-*s %5d｜",
           22 + extra,
           list[i],
           items[list[i]]);
@@ -225,7 +225,7 @@ int do_qlook() {
       write(outstring);
     }
   }
-  write(HIR BLK "────────────────────────────────\n" NOR);
+  write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   return 1;
 }

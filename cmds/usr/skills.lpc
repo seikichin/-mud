@@ -74,7 +74,7 @@ int main(object me, string arg) {
       //		return notify_fail("你没有学过任何技能，还不能察看技能的具体信息。先去学点什么吧。\n");
 
       //		write( "你目前学过：\n\n");		
-      write(HIG "────────────────────────────────\n" NOR);
+      write(HIG "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
       if (mapp(learned_skill_points)) {
         write(sprintf("%s%s%-40s" NOR " - %-10s %3d/%5d\n\n",
@@ -167,7 +167,7 @@ int main(object me, string arg) {
         SKILL_D(skill_name)->help(me);
       me->set_temp("timer/check_skill_help", time());
 
-      write(HIG "────────────────────────────────\n" NOR);
+      write(HIG "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
       return 1;
     }
 
@@ -285,7 +285,7 @@ string pet_skill(object ob) {
 
 int help(object me) {
   write(@HELP
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 [0;1;36m指令格式 :[0;32m 
 
 （1） skills 
@@ -306,7 +306,7 @@ int help(object me) {
 
 为了避免刷屏，技能所对应的特技信息每２秒钟最多显示一次
 
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 
 关于各项的说明
 
@@ -360,7 +360,7 @@ int help(object me) {
 【金刚类反弹系数】用来计算铁布衫类武功的反弹伤害力。
 
 
-[0;1;37m────────────────────────────────[0m   
+[0;1;37m一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一[0m   
 HELP
   );
   return 1;

@@ -212,11 +212,11 @@ fight(object me) {
   }
 }
 /*
-╔[ 　- FengYun -　 ]┄┄┄┄╗
-┊[dancing_faery@hotmail.com]├──╗
-┊[ 　annie 09.2003　 ]┄┄┄╝    │
-┊[ 离离漫惹三秋露，脉脉时凝九月霜 │
-╚————————————————-╝
+「[ 　- FengYun -　 ]一一一一」
+｜[dancing_faery@hotmail.com]｜一一」
+｜[ 　annie 09.2003　 ]一一一」    ｜
+｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
+「————————————————-」
 */
 /*
 goto /d/bashan/hole3;update here;updatep /d/bashan/npc/;call here->attack();l

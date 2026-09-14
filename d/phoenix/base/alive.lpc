@@ -80,12 +80,12 @@ int destruct_area(string id) {
 
 /*
 
-　　　　　　　╔╕
-　　　　　　　║╰╮
-　　　　　　　║│╰╮
-　　　　　　　║││╰╮
-　　　　　　　║││││
-　　　　　　　╚╧╧╧╛
+　　　　　　　「」
+　　　　　　　｜「」
+　　　　　　　｜｜「」
+　　　　　　　｜｜｜「」
+　　　　　　　｜｜｜｜｜
+　　　　　　　「＝＝＝」
 
 　　　　　　　- FengYun - 　　　
 　　　　　　annie 08.2003
@@ -95,9 +95,9 @@ int destruct_area(string id) {
 
 
 /*
-╔[ 　- FengYun -　 ]┄┄┄┄╗
-┊[dancing_faery@hotmail.com]├──╗
-┊[ 　annie 09.2003　 ]┄┄┄╝    │
-┊[ 离离漫惹三秋露，脉脉时凝九月霜 │
-╚————————————————-╝
+「[ 　- FengYun -　 ]一一一一」
+｜[dancing_faery@hotmail.com]｜一一」
+｜[ 　annie 09.2003　 ]一一一」    ｜
+｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
+「————————————————-」
 */

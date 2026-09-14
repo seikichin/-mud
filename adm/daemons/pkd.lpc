@@ -362,7 +362,7 @@ void print_pk_list() {
     write("\n现在没有正在通缉的歹徒。\n");
     return;
   }
-  write(HIY "\n─────────────" "通缉名单────────────\n\n" NOR);
+  write(HIY "\n一一一一一一一一一一一一一" "通缉名单一一一一一一一一一一一一\n\n" NOR);
   write(YEL "      姓名 		通缉时间    赏金          发起人\n" NOR);
   for (i = 0; i < sizeof(pk_list); i++) {
     duration = ((time() - pk_list[i]["start_time"])) / 60 / 60;
@@ -370,7 +370,7 @@ void print_pk_list() {
       i + 1, pk_list[i]["name"], pk_list[i]["hunted"], duration,
       pk_list[i]["reward"], pk_list[i]["initializer"]));
   }
-  write(HIY "\n─────────────────────────────\n" NOR);
+  write(HIY "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   return;
 }
 
@@ -380,7 +380,7 @@ void print_hunter_list() {
     write("\n现在没有正在执行公务的巡捕。\n");
     return;
   }
-  write(HIY "\n─────────────" "巡捕名单────────────\n\n" NOR);
+  write(HIY "\n一一一一一一一一一一一一一" "巡捕名单一一一一一一一一一一一一\n\n" NOR);
   write(YEL "      姓名 		加入时间	缉捕成功次数\n" NOR);
   for (i = 0; i < sizeof(hunter); i++) {
 
@@ -389,7 +389,7 @@ void print_hunter_list() {
       i + 1, hunter[i]["name"], hunter[i]["id"], duration, hunter[i]["rewarded"]
     ));
   }
-  write(HIY "\n─────────────────────────────\n" NOR);
+  write(HIY "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   return;
 }
 
@@ -400,14 +400,14 @@ void print_old_list() {
     write("\n现在没有原始记录。\n");
     return;
   }
-  write(HIY "\n───────────" "通缉名单──────────────\n\n" NOR);
+  write(HIY "\n一一一一一一一一一一一" "通缉名单一一一一一一一一一一一一一一\n\n" NOR);
   for (i = 0; i < sizeof(pk_old_list); i++) {
     duration = ((time() - pk_old_list[i]["start_time"])) / 60 / 60;
     write(sprintf("%d：%s（%s）  通缉时间：%d小时  悬赏：%d两黄金\n",
       i + 1, pk_old_list[i]["name"], pk_old_list[i]["hunted"], duration,
       pk_old_list[i]["reward"], pk_old_list[i]["initializer"]));
   }
-  write(HIY "\n─────────────────────────────\n" NOR);
+  write(HIY "\n一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
   return;
 }
 
