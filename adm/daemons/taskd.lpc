@@ -242,7 +242,7 @@ string dyn_quest_list() {
   string output = "", quest_string;
   object owner, item;
   mapping *quest_list = ({});
-  int i, j, k, extra;
+  int i;
 
   for (i = 0; i < sizeof(quests); i++) {
     reset_eval_cost();
@@ -269,20 +269,7 @@ string dyn_quest_list() {
       quest_list[i]["item"]->query("name"),
       quest_list[i]["item"]->query("id"),
       quest_list[i]["done"] ? "】" : "　");
-    k = 0;
-    extra = 0;
-    for (j = 0; j < strlen(quest_string); j++) {
-      if (quest_string[j] == ESC[0]) {
-        k = 1;
-      }
-      if (k == 1) {
-        extra++;
-      }
-      if (quest_string[j] == 'm') {
-        k = 0;
-      }
-    }
-    output += sprintf("%-*s", (45 + extra), quest_string);
+    output += sprintf("%-45s", quest_string);
     if (i % 2) {
       output += "\n";
     }

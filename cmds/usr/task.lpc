@@ -13,11 +13,11 @@ int main(object me, string str) {
     me->set_temp("timer/big_cmd", time());
 
   me->add("sen", -5);
-  output = HIY "「一一一一一一一一一一一一一一一」" NOR + HIR "　风云2005使命榜　" NOR + HIY "「一一一一一一一一一一一一一一一」\n" NOR;
-  output += HIY "「一一一一一一一一一一一一一一一」" NOR + HIR "～～～～～～～～" NOR + HIY "「一一一一一一一一一一一一一一一」\n" NOR;
+  output = HIY "「一一一一一一一一一一一一一一一一」" NOR + HIR "　风云2005使命榜　" NOR + HIY "「一一一一一一一一一一一一一一一一」\n" NOR;
+  output += HIY "「一一一一一一一一一一一一一一一一」" NOR + HIR "～～～～～～～～～" NOR + HIY "「一一一一一一一一一一一一一一一一」\n" NOR;
   output += TASK_D->dyn_quest_list();
-  output += HIY "「一一一一一一一一一一一一一一一」" NOR + HIR "　　　　　　　　" NOR + HIY "「一一一一一一一一一一一一一一一」\n" NOR;
-  output += HIY "「一一一一一一一一一一一一一一一」" NOR + HIR "～～～～～～～～" NOR + HIY "「一一一一一一一一一一一一一一一」\n" NOR;
+  output += HIY "「一一一一一一一一一一一一一一一一」" NOR + HIR "　　　　　　　　　" NOR + HIY "「一一一一一一一一一一一一一一一一」\n" NOR;
+  output += HIY "「一一一一一一一一一一一一一一一一」" NOR + HIR "～～～～～～～～～" NOR + HIY "「一一一一一一一一一一一一一一一一」\n" NOR;
 
   me->start_more("", output, 0);
   return 1;
