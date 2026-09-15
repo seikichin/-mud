@@ -5,6 +5,10 @@ string locate_obj(object me, string strr);
 string locate_quest(object me);
 object find_env(object ob);
 mapping *read_table(string file);
+string strip_ansi(string s);
+string trim_space(string s);
+string file_base(string file_name);
+int quest_match(object item, string file_name, string strr);
 mapping *quests;
 
 #define MAX_DIS	7
@@ -169,6 +173,7 @@ string locate_obj(object me, string strr) {
   int x, y, z, x0, y0, z0;
   int realdis;
   int tmp;
+  int rank;
   string str = "";
   reset_eval_cost();
 
@@ -178,10 +183,16 @@ string locate_obj(object me, string strr) {
   for (i = 0; i < sizeof(quests); i++) {
     if (!objectp(item = find_object(quests[i]["file_name"])))
       item = load_object(quests[i]["file_name"]);
-    if (!item)
+if (!item) {
       write("Please Report: Missing quest is " + quests[i]["file_name"] + "\n");
-    else if (item->query("id") == strr || item->query("name") == strr)
+      continue;
+    }
+    // 匹配等级高者优先（3=id/中文名，2=文件名，1=名称子串），同级保留先者
+    tmp = quest_match(item, quests[i]["file_name"], strr);
+    if (tmp > rank) {
+      rank = tmp;
       str = quests[i]["file_name"];
+    }
   }
   // tell_object(me, str);
   if (str != "") {
@@ -237,8 +248,11 @@ string locate_obj(object me, string strr) {
         if (x < 0 && y < 0) dir = directions[8];
         output = "『" + ob_list[i]->query("name") + "』似乎在" + dir + dis + "的" + alt + "。\n";
         return output;
-      } else return "";
+      }
+      // 母本(blueprint)恒在 children()[0]，它没有 environment，
+      // find_env 返回 0。此处必须继续检查其它副本，不能提前 return。
     }
+    return "";
   } else if (wizardp(me) || me->query("class") == "official") {
     if (!wizardp(me) && me->query("combat_exp") < 50000) {
       tell_object(this_player(), "确定他人的所在需要等级５。\n");
@@ -342,6 +356,95 @@ int help(object me) {
 HELP
   );
   return 1;
+}
+
+// 去掉字符串中的 ANSI 颜色控制码（ESC [ ... m）。
+// 注意：explode() 会丢弃开头的空段，所以原串以 ESC 开头时，
+// parts[0] 是第一条 ANSI 序列的残余，必须一并剥掉。
+string strip_ansi(string s) {
+  string *parts, r;
+  int i, n;
+
+  if (!stringp(s) || s == "") return "";
+  parts = explode(s, "\x1b");
+  if (sizeof(parts) < 2) return s;
+
+  r = "";
+  for (i = 0; i < sizeof(parts); i++) {
+    if (i == 0 && s[0] != 27) {
+      r += parts[i];
+      continue;
+    }
+    n = strsrch(parts[i], "m");
+    if (n >= 0) r += parts[i][n + 1..];
+  }
+  return r;
+}
+
+// 去掉首尾空白（含全角空格）。
+// ASCII 空白交给 efun trim()；全角空格 U+3000 必须按字符索引剥离——
+// 它是 3 字节 UTF-8，若作为 trim() 的第二参数传入会被当成字节集合，
+// 误伤同字节前缀的汉字（实测 "　《三字经》" 会被截坏）。
+string trim_space(string s) {
+  int a, b;
+
+  if (!stringp(s) || s == "") return "";
+  s = trim(s);
+  if (s == "") return "";
+
+  a = 0;
+  b = strlen(s) - 1;
+  while (a <= b && s[a] == 12288) a++;
+  while (b >= a && s[b] == 12288) b--;
+  if (b < a) return "";
+  return s[a..b];
+}
+
+// 取文件名末尾的名字：/questobj/szjing.lpc -> szjing
+string file_base(string file_name) {
+  string base;
+  int n;
+
+  if (!stringp(file_name) || file_name == "") return "";
+  base = file_name;
+
+  n = strsrch(base, "/", -1);
+  if (n >= 0 && n + 1 < strlen(base)) base = base[n + 1..];
+
+  n = strlen(base);
+  if (n > 4 && base[n - 4..] == ".lpc") base = base[0..n - 5];
+  return base;
+}
+
+// 判断使命物品是否匹配玩家输入，返回匹配等级（0 表示不匹配）。
+//   3 = id 别名 / 去色中文名精确相等
+//   2 = 文件名（不含目录与 .lpc 后缀）
+//   1 = 去色中文名包含输入（至少 2 个字符，避免过短误配）
+int quest_match(object item, string file_name, string strr) {
+  string nm, base, key;
+
+  if (!item || !stringp(strr) || strr == "") return 0;
+
+  strr = trim_space(strr);
+  if (strr == "") return 0;
+  key = lower_case(strr);
+
+  // 1) id 别名：一个物品可有多个 id，如 ({ "song-fish", "fish" })。
+  // id() 区分大小写，故原样与小写各试一次。
+  if (function_exists("id", item)
+    && (item->id(strr) || (key != strr && item->id(key)))) return 3;
+
+  nm = strip_ansi(item->query("name"));
+  if (nm != "" && lower_case(nm) == key) return 3;
+
+  // 2) 文件名（locate szjing）
+  base = file_base(file_name);
+  if (base != "" && lower_case(base) == key) return 2;
+
+  // 3) 名称子串（locate 宋嫂）
+  if (strlen(strr) >= 2 && nm != "" && strsrch(lower_case(nm), key) >= 0) return 1;
+
+  return 0;
 }
 
 object find_env(object ob) {
