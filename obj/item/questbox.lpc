@@ -157,7 +157,7 @@ int do_qqput(object me, object obj) {
   name = obj->query("name");  // We use Chinese Name to index Items.
   index = member_array(name, dir);
 
-  container_size = 50;
+  container_size = 100;
 
   //　允许放入已有的东西，即使已满
   if (index == -1 && sizeof(items) >= container_size)
@@ -180,7 +180,7 @@ int do_qqput(object me, object obj) {
 }
 
 int do_qlook() {
-  int i, j, k, extra, num;
+  int i, num;
   string *list, outstring;
 
   if (this_object()->query("timer/op") + 4 > time()) {
@@ -191,36 +191,29 @@ int do_qlook() {
 
   num = sizeof(items);
 
-  write(WHT "\t  " + name() + "中的物品清单（" + num + "/50）\n" NOR);
+  write(WHT "\t  " + name() + "中的物品清单（" + num + "/100）\n" NOR);
   write(HIR BLK "一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一\n" NOR);
 
   if (!num) write(HIR "　　空空如也，大肚能容天下万物。\n" NOR);
   else {
     list = keys(items);
     for (i = 0; i < num; i++) {
-      k = 0;
-      extra = 0;
-      for (j = 0; j < strlen(list[i]); j++) {
-        if (list[i][j] == ESC[0]) {
-          k = 1;
-        }
-        if (k == 1) {
-          extra++;
-        }
-        if (list[i][j] == 'm') {
-          k = 0;
-        }
-      }
+      /*
+       * sprintf() 的字段宽度按“显示列宽”计算（与 strwidth() 同一套规则）：
+       *   宽字符（中文）= 2 列，ANSI 颜色控制序列 = 0 列。
+       * 所以这里必须写固定的 22，不能再手工累加颜色代码的长度，
+       * 否则带颜色的物品名会被额外撑开（整列右移）。
+       */
       if (i % 2 == 0) {
         outstring = sprintf("%-*s %5d｜",
-          22 + extra,
+          22,
           list[i],
           items[list[i]]);
         if (i == num - 1)
           outstring += "\n";
       } else
         outstring = sprintf("%-*s %5d\n",
-          22 + extra,
+          22,
           list[i],
           items[list[i]]);
       write(outstring);
