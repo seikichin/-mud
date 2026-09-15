@@ -39,11 +39,20 @@ void init() {
   add_action("do_sell", "sell");
   add_action("do_redeem", "redeem");
   add_action("do_vendor_list", "list");
-  add_action("do_loan", "loan");
-  add_action("do_convert", "convert");
-  add_action("do_deposit", "deposit");
-  add_action("do_balance", "balance");
-  add_action("do_withdraw", "withdraw");
+	add_action("do_convert", "convert");
+	add_action("do_convert", "duihuan");
+	add_action("do_deposit", "deposit");
+	add_action("do_deposit", "cun");
+	add_action("do_balance", "balance");
+	add_action("do_balance", "chazhang");
+	add_action("do_withdraw", "withdraw");
+	add_action("do_withdraw", "qu");
+	add_action("do_loan","loan");
+	add_action("do_loan","jie");
+	add_action("do_transfer","transfer");
+	add_action("do_transfer","zhuan");
+
+
 }
 
 void die() {

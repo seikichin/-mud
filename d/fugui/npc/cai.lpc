@@ -50,11 +50,18 @@ void create() {
 
 void init() {
   ::init();
-  add_action("do_convert", "convert");
-  add_action("do_deposit", "deposit");
-  add_action("do_balance", "balance");
-  add_action("do_withdraw", "withdraw");
-  add_action("do_loan", "loan");
+	add_action("do_convert", "convert");
+	add_action("do_convert", "duihuan");
+	add_action("do_deposit", "deposit");
+	add_action("do_deposit", "cun");
+	add_action("do_balance", "balance");
+	add_action("do_balance", "chazhang");
+	add_action("do_withdraw", "withdraw");
+	add_action("do_withdraw", "qu");
+	add_action("do_loan","loan");
+	add_action("do_loan","jie");
+	add_action("do_transfer","transfer");
+	add_action("do_transfer","zhuan");
   //		add_action("do_accept", "accept");
 }
 
@@ -66,7 +73,7 @@ void reset() {
 int test_dart()
 {
 	object me;
-	
+
 	me=this_player();
 	if (random(100)>50  || query("marks/gived") )
 	{
@@ -83,40 +90,40 @@ int test_dart()
 }
 
 int do_accept(string arg)
-{    
+{
 	object obj;
 	object me;
-	if (arg != "mission") 
+	if (arg != "mission")
 		return notify_fail("什么？\n");
-		
+
 	me=this_player();
-	
+
 	if (! me->query_temp("marks/caiasked"))
 	{
 		return notify_fail("什么？\n");
 	}
-	
+
 	if (me->query("marks/财叔护镖"))
 	{
 		command("heihei");
 		command("say 这位"+RANK_D->query_respect(me)+"，为人要诚实，上次的任务完成啦吗？！");
 		return 1;
 	}
-	
+
 	if (me->query("combat_exp")<1500000)
 	{
 		command("heihei");
 		command("say 护镖路途危险，我看这位"+RANK_D->query_respect(me)+"似乎不够资格！");
 		return 1;
 	}
-	
+
 	if (!intp(me->query("deposit")) || me->query("deposit")<10000000)
 	{
 		command("hmm");
 		command("say 这次护送的镖银数目不小，我看这位"+RANK_D->query_respect(me)+"没有足够的存款做抵押。");
 		return 1;
 	}
-	
+
 	if ( query("marks/gived") )
 	{
 		command("sigh");

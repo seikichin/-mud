@@ -31,12 +31,18 @@ transfer    直接转帐\n");
 void init() {
   ::init();
   if (environment()->is_owner(this_player()->query("id"))) {
-    add_action("do_convert", "convert");
-    add_action("do_deposit", "deposit");
-    add_action("do_balance", "balance");
-    add_action("do_withdraw", "withdraw");
-    add_action("do_loan", "loan");
-    add_action("do_transfer", "transfer");
+	add_action("do_convert", "convert");
+	add_action("do_convert", "duihuan");
+	add_action("do_deposit", "deposit");
+	add_action("do_deposit", "cun");
+	add_action("do_balance", "balance");
+	add_action("do_balance", "chazhang");
+	add_action("do_withdraw", "withdraw");
+	add_action("do_withdraw", "qu");
+	add_action("do_loan","loan");
+	add_action("do_loan","jie");
+	add_action("do_transfer","transfer");
+	add_action("do_transfer","zhuan");
   }
 }
 
@@ -51,7 +57,7 @@ void init() {
 　　　　　　　｜｜｜｜｜
 　　　　　　　「＝＝＝」
 
-　　　　　　　- FengYun - 　　　
+　　　　　　　- FengYun -
 　　　　　　annie 08.2003
 　　　dancing_faery@hotmail.com
 */
