@@ -53,8 +53,6 @@ void init() {
 
 int do_answer(string arg) {
   object ob = this_player();
-  string a1;
-
 
   if (!arg)
     return 0;
@@ -63,13 +61,12 @@ int do_answer(string arg) {
     return 0;
 
   if (ob->query_temp("annie/baiyun_1_2_3") == 1) {
-    a1 = arg[0..7];
-    if (crypt(a1, "jBsRnh8nhUvA6") != "jBsRnh8nhUvA6") {
-      command("heihei");
-      return 1;
-    }
-    a1 = arg[8..];
-    if (crypt(a1, "eN/NQj5KBYxXk") != "eN/NQj5KBYxXk") {
+    /*
+      原版用 crypt() 校验 arg 的前 8 字节（MudOS 字节索引时代），并分两段哈希比对；
+      fluffos 既按「字符」索引字符串、mudlib 又已 UTF-8 化，哈希与切片全部错位 ——
+      永远不可能通过。现改回明文（与 ldmud 权威版一致）：前 5 字 "地虎盖天王"。
+    */
+    if (strlen(arg) < 5 || arg[0..4] != "地虎盖天王") {
       command("heihei");
       return 1;
     }
@@ -79,10 +76,8 @@ int do_answer(string arg) {
     ccommand("say 哪个天王？");
     return 1;
   }
-  if (crypt(
-    arg,
-    "BkxpD7mnSS3p."
-  ) != "BkxpD7mnSS3p." && crypt(arg, "UkMcu7/.un9HU") != "UkMcu7/.un9HU") {
+  // 原为 crypt(arg,...) 双哈希比对，同上原因永久失效 → 改明文（ldmud 权威版同款）
+  if (arg != "史天王" && arg != "地虎盖天王") {
     command("heihei");
     return 1;
   }

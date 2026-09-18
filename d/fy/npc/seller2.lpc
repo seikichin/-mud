@@ -86,30 +86,22 @@ int do_answer(string arg) {
   string msg;
   int i;
 
-  string a1;
-  int a2;
+  string argn;
 
   if (!arg)
     return notify_fail("你要回答什么？\n");
 
   if (REWARD_D->riddle_check(ob, "吃面") != 1) {
-    // annie; 防more程式解读演示
-    a1 = arg[0..3];
-    if (crypt(a1, "m/ZNhkGgSUjmo") != "m/ZNhkGgSUjmo")
-      a2 = 0;
-    else
-      a2 = 4;
-    if (crypt(arg[a2..a2 + 7], "ERALFDGn3JqKM") != "ERALFDGn3JqKM") {
-      command("say 好说、好说。");
-      return 1;
-    }
-    a2 += 10;
-    if (crypt(arg[a2..a2 + 7], "pF6DHQq2KAFp6") != "pF6DHQq2KAFp6") {
-      command("say 好说、好说。");
-      return 1;
-    }
-    a2 += 10;
-    if (crypt(arg[a2..], "SMi3blOT3v18Y") != "SMi3blOT3v18Y") {
+    /*
+      原版这里用 crypt() 哈希校验一段密语（annie 时代的「防 more 程式解读」手段）。
+      crypt() 是字节级哈希，而本 mudlib 已全面 UTF-8 化、fluffos 又按「字符」索引字符串，
+      源码里硬编码的那串哈希对应的是 MudOS/GBK 时代的字节 —— 在本环境永远不可能匹配，
+      「吃面」任务因此彻底死锁。现改回明文口令（与 ldmud 权威版一致）。
+    */
+    argn = replace_string(arg, " ", "");
+    argn = replace_string(argn, "，", "");
+    argn = replace_string(argn, ",", "");
+    if (argn != "一碗金花一碗银花一碗珠花") {
       command("say 好说、好说。");
       return 1;
     }
