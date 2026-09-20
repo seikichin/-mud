@@ -1,0 +1,18 @@
+// shixi —— 由 nitan/d/wudu/shixi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,20,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石隙");
+  set("long", @LONG
+这里是一道岩石的缝隙，窄得要人侧身挤过。你沿着曲折的岩缝
+向前摸去，四周黑漆漆的，只有脚下的砂石发出轻微的声响。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "4/2/1",
+    "westdown" : __DIR__ "mishi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

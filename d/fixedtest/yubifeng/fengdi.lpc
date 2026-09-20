@@ -1,0 +1,14 @@
+// fengdi —— 由 nitan/d/yubifeng/fengdi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(6110,5170,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "玉笔峰下");
+  set("long", " ");
+  set("exits", ([
+    "west" : __DIR__ "songlin5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

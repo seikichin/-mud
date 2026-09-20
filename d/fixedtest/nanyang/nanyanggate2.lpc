@@ -1,0 +1,13 @@
+// nanyang 出口房：商号·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "商号" NOR);
+  set("long", "商号。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

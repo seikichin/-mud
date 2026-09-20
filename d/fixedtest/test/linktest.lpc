@@ -1,0 +1,22 @@
+// linktest 区域档（测试 vrm_fixed 的 [LINK]）
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "linktest-room");
+  set_maze_map(__DIR__ "linktest");
+  set_maze_spacing(10);
+  set_maze_owner_key("linktest");
+
+  set_entry_dir("north");
+  set_link_entry_room("/d/fixedtest/linktestgate");
+  set_link_exit_room("/d/fixedtest/linktestgate2");
+
+  set_entry_short(HIW "linktest入口" NOR);
+  set_entry_desc("linktest 测试迷宫的入口。");
+  set_exit_short(HIY "linktest出口" NOR);
+  set_exit_desc("linktest 测试迷宫的出口。");
+
+  set_maze_room_short(HIB "测试格" NOR);
+  set_maze_room_desc("linktest 测试迷宫的房间。");
+}

@@ -1,0 +1,20 @@
+// zoulangc —— 由 nitan/d/gaochang/zoulangc.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "走廊");
+  set("long", @LONG
+这里是殿堂走廊。房顶一侧支在南面的高墙上，另一侧则与北边殿
+堂的屋顶相连。彩梁画栋，抬眼望去，连顶棚也用彩漆绘满了各种
+飞天的图形，每幅画似乎都在诉说一个娓娓动人的故事。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "zoulangw",
+    "southeast" : __DIR__ "zoulange",
+    "north" : __DIR__ "0/10/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

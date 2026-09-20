@@ -1,0 +1,44 @@
+// huli —— 由 nitan/d/shiliang/huli.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1610,-1780,-10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "湖里");
+  set("long", @LONG
+水很深，你耳边全是水声，岸上大家惊讶的看着你…
+你觉得自己干了件傻事，太瓜了。
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{       object ob;
+        add_action("do_swim", "swim");
+}
+
+void check_trigger()
+{
+        object me;
+        me = this_player();
+        if ((int)query("trigger") == 13) {
+                message_vision("$N终于游上了岸, 你爬上岸一看, 你的衣服已经被大家拿走了...\n", me);
+                me->move("/d/fixedtest/shiliang/2/8/1");
+                delete("trigger");
+                return;
+        }
+        if ((int)query("trigger") < 0) {
+                message_vision("$N又游回原来的岸边,$N爬上岸一看, 你的衣服已经被大家拿走了...\n",me);
+                me->move("/d/fixedtest/shiliang/2/8/1");
+                delete("trigger");
+                return;
+        }
+}
+
+
+void reset()
+{
+        ::reset();
+        delete("trigger");
+}

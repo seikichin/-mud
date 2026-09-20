@@ -1,0 +1,23 @@
+// southgate2 —— 由 nitan/d/xiangyang/southgate2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7820,-820,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "朱雀外门");
+  set("long", @LONG
+这里是襄阳城的南城门，只见城门上方刻着『朱雀门』三个大字。
+城门高三丈，宽约二丈有余，尺许厚的城门上镶满了拳头般大小的柳
+钉。门洞长约四丈，大约每隔两个时辰就换官兵把守。近年来蒙古屡
+次侵犯襄阳城，故这儿把守相当严密，城内一些官兵们正在盘查要离
+襄阳城的人。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "2/0/0",
+    "south" : __DIR__ "caodi6",
+    "east" : __DIR__ "caodi4",
+    "west" : __DIR__ "caodi5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

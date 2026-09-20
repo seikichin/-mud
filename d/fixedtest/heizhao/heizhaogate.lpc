@@ -1,0 +1,13 @@
+// heizhao 入口房：石梁·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "石梁" NOR);
+  set("long", "石梁。往 down 可进入迷宫。\n");
+  set("exits", ([
+    "down" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

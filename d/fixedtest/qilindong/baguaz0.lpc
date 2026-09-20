@@ -1,0 +1,26 @@
+// baguaz0 —— 由 nitan/d/qilindong/baguaz0.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR"八阵图"NOR);
+  set("long", @LONG
+你一踏进阵中只觉得四周变得天昏地暗。这里横七竖八的堆放着
+各种巨石，细心一看发觉每个石头摆放位置恰到好处，暗合八卦原理
+，相传是三国时代诸葛亮留下来的阵法，环环想扣，若想出过此阵并
+非易事。
+LONG );
+  set("exits", ([
+    "离" : __DIR__ "baguaz0",
+    "艮" : __DIR__ "baguaz1",
+    "坤" : __DIR__ "baguaz0",
+    "兑" : __DIR__ "baguaz1",
+    "震" : __DIR__ "baguaz1",
+    "巽" : __DIR__ "baguaz1",
+    "乾" : __DIR__ "baguaz0",
+    "坎" : __DIR__ "baguaz0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

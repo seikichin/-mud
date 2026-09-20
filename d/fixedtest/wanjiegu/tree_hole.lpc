@@ -1,0 +1,18 @@
+// tree_hole —— 由 nitan/d/wanjiegu/tree_hole.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(0,20,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树洞");
+  set("long", @LONG
+树洞内非常狭窄，光线黑暗，地上铺满是枯草。洞的墙上有一只
+大蜘蛛正在编织一个蜘蛛网。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "0/2/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/enter", "/d/fixedtest/wanjiegu/15/0/0");
+}

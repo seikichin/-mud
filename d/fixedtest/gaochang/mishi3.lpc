@@ -1,0 +1,16 @@
+// mishi3 —— 由 nitan/d/gaochang/mishi3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗室");
+  set("long", @LONG
+这是在高昌最深处的一个暗室，什么也看不清。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "0/11/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

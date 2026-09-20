@@ -1,0 +1,20 @@
+// lingmu —— 由 nitan/d/meizhuang/lingmu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,40,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "古皇陵");
+  set("long", @LONG
+你一走到这里，突然一片明亮，原来这里竟然是古代蚕丛王的陵
+墓，中间停放着一具棺木，棺木的上方悬挂着一颗鹅蛋一般大小的夜
+明珠，把这里照得异常明亮，棺木的正中放着一本书，书看起来很陈
+旧，似乎是一位前辈异人留下的。 
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "hupan",
+    "south" : __DIR__ "4/2/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

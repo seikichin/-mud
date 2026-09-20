@@ -1,0 +1,21 @@
+// sying1 —— 由 nitan/d/city2/sying1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW"元帅帐营"NOR);
+  set("long", @LONG
+这里就是「大宋」元帅的帐营，两边分立着众将领军士，大宋元
+帅在这里负责调兵遣将，抗击蒙古军的入侵，不时有传令兵匆忙地进
+出，传递着前线的军情。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "sying4",
+    "west" : __DIR__ "sying2",
+    "east" : __DIR__ "sying3",
+    "north" : __DIR__ "sying",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

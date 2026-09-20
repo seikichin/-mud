@@ -1,0 +1,20 @@
+// longhongdong —— 由 nitan/d/hangzhou/longhongdong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(730,-2070,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "龙泓洞");
+  set("long", @LONG
+又叫通天洞。在洞口的岩壁上刻有姿态各异，一丈多高的佛像六
+尊。左下方有两组浮雕。前一组记述了唐僧取经的故事；後一组为白
+马驮经，刻有“竺法阑”，“聂摩腾”字样。东边是下山的路。小路
+往上延伸向西北。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "shexudong",
+    "eastdown" : __DIR__ "feilaifeng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

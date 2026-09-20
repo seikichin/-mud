@@ -1,0 +1,18 @@
+// road5 —— 由 nitan/d/wuliang/road5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-71020,-79890,100)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后山小路");
+  set("long", @LONG
+这是条通往后山的羊肠小路，就是无量弟子也绝少来此。这里山
+林茂密，人迹罕见，小鸟鸣响不绝于耳。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "road3",
+    "north" : __DIR__ "road6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

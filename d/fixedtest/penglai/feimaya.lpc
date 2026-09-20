@@ -1,0 +1,19 @@
+// feimaya —— 由 nitan/d/penglai/feimaya.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,20,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "飞马崖");
+  set("long", @LONG
+飞马乃岛中仙者的主要坐骑，这里便是飞马生长的地方。据说，
+每过几年仙者便回来这里挑选新的飞马。传说，这飞马与寻常之马
+不同，其主要饲料来源于金色沙滩的金沙，只有喂实金沙飞马才能
+生长。放眼望去，悬崖四周一群飞马正飞行，追逐嬉戏。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// tulu2 —— 由 nitan/d/jingzhou/tulu2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7100,-2170,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄土路");
+  set("long", @LONG
+这是一条黄土路，不时可见江湖中人背着包袱，别着刀剑往北走去。
+地上有许多马车碾过的痕迹。
+LONG );
+  set("exits", ([
+    "southwest" : "/d/fixedtest/kunming/12/11/0",
+    "west" : __DIR__ "tulu3",
+    "southeast" : "/d/fixedtest/yueyang/beimen",
+    "north" : __DIR__ "tulu1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

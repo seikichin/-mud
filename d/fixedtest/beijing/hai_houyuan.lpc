@@ -1,0 +1,18 @@
+// hai_houyuan —— 由 nitan/d/beijing/hai_houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2810,7610,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后院");
+  set("long", @LONG
+这里是海澄公府大厅后侧的一个小花园，杂乱地种着各种花草，
+看来无人打理，杂草已经长得很高了。一些鲜花夹杂在草丛中，阵阵
+花香不断地飘过。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "3/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// fenghuotai1-1 —— 由 nitan/d/changcheng/fenghuotai1-1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6000,7000,100)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "烽火台");
+  set("long", WHT@LONG
+这里是烽火台的内部，这里不是很亮，四周乱糟糟的放着一些杂物，
+但靠墙的兵器架上的兵器却擦的亮光闪闪，可见虽然生活很艰苦，但将
+士们却没有忘记自己的责任。
+LONG NOR);
+  set("exits", ([
+    "westdown" : __DIR__ "changcheng8",
+    "southdown" : __DIR__ "changcheng7",
+    "up" : __DIR__ "fenghuotai1-2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

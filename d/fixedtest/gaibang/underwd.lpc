@@ -1,0 +1,18 @@
+// underwd —— 由 nitan/d/gaibang/underwd.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2000,-810,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "土匪窝边");
+  set("long", @LONG
+这是武当山下土匪窝边上的小山洞。里面破破烂烂的，丢满了各种
+杂物，还有丐帮弟子收集的破铜烂铁等。从这里通往丐帮的秘密通道。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "wdandao2",
+    "out" : "/d/fixedtest/wudang/tufeiwo1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

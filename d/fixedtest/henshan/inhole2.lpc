@@ -1,0 +1,18 @@
+// inhole2 —— 由 nitan/d/henshan/inhole2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "水帘洞内");
+  set("long", @LONG
+这里阴风瑟瑟，一片漆黑，什么也看不见。唯有洞外有一丝光亮。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "inhole1",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/west", __DIR__"zigai1");
+  set("exits/north", __DIR__"zigai2");
+}

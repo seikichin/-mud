@@ -1,0 +1,19 @@
+// jmqmen —— 由 nitan/d/mingjiao/jmqmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(320,30,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "巨木旗大门");
+  set("long", @LONG
+这里是明教巨木旗的大门，庄严古朴，门前对插四面镶绿游龙旗。
+碧绿的大门敞开着，似乎看不出有何设防。从门里望进去，只有一片
+苍翠的树林。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "jmqshulin1",
+    "west" : __DIR__ "9/5/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

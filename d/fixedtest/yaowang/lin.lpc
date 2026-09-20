@@ -1,0 +1,14 @@
+// lin —— 由 nitan/d/yaowang/lin.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "浓密树林");
+  set("long", @LONG
+这里是一片浓密的树林，参天的大树遮天蔽日，偶尔有几缕
+光线透进来。地上满是枯枝败叶，空气中弥漫着让人不安的气氛。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

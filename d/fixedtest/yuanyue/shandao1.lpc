@@ -1,0 +1,20 @@
+// shandao1 —— 由 nitan/d/yuanyue/shandao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-590,190,70)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山道");
+  set("long", @LONG
+到了此处，山势渐渐平坦些许，已可大致看到不远的圆月山庄，
+那是一栋坐落在山腰上的房子，房子很大，建筑得很堂皇。表示房主
+一定很有钱。但房子距离小镇也太远了些，也太偏僻了些，附近简直
+可说是荒无人烟。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shandao2",
+    "south" : "/d/fixedtest/wudang/sanbuguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

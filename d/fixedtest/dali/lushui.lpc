@@ -1,0 +1,19 @@
+// lushui —— 由 nitan/d/dali/lushui.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19210,-6880,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "泸水沿岸");
+  set("long", @LONG
+一条土路沿着泸水纵贯谷地南北，脚下泸水滔滔流去，长年累月
+冲刷着谷中大地，东面碧罗雪山、西面的高黎山皆高耸蔽日。土路北
+通此谷中心大镇巴的甸，南连数个乌夷小部落。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "atoubu",
+    "north" : __DIR__ "badidian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

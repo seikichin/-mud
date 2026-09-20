@@ -1,0 +1,18 @@
+// fenghuotai1-2 —— 由 nitan/d/changcheng/fenghuotai1-2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6000,7000,110)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "烽火台");
+  set("long", WHT @LONG
+这里是烽火台的二楼，站在这里你可以看的很远。戍边的将士们就
+是长年守卫在这里，防止匈奴的进攻，保卫边疆的安全。从这里向东你
+隐隐约约可以看到长城上著名的居庸关。
+LONG NOR);
+  set("exits", ([
+    "down" : __DIR__ "fenghuotai1-1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

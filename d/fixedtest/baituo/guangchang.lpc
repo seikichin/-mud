@@ -1,0 +1,20 @@
+// guangchang —— 由 nitan/d/baituo/guangchang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49980,19980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "广场");
+  set("long", @LONG
+这里是一块不小的广场，上面堆着农家晒的谷物。北上是白驼山
+庄。东面有间小农舍，西边有块菜地，南方是一座小桥。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "bridge",
+    "east" : __DIR__ "nongshe",
+    "northup" : __DIR__ "3/0/1",
+    "west" : __DIR__ "shanlu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

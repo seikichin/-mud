@@ -1,0 +1,18 @@
+// kongdi —— 由 nitan/d/gaochang/kongdi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-37000,10000,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "空地");
+  set("long", @LONG
+突然之间，眼前豁然开朗，出现一大片空地，空地尽头处又有两扇
+铁门，嵌在大山岩中。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "1/0/0",
+    "north" : __DIR__ "shulin14",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

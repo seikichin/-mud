@@ -1,0 +1,19 @@
+// xijie —— 由 nitan/d/baituo/xijie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49970,19980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西街");
+  set("long", @LONG
+这里是小镇的西街。北边有个酒店，门前树立着高高的旗杆，一
+块青布幌子迎风飘扬，上面印着朱红色的酒字。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "jiudian",
+    "east" : __DIR__ "dongjie",
+    "west" : __DIR__ "bridge",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// ertiangate —— 由 nitan/d/wudang/ertiangate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-400,160)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "二天门");
+  set("long", @LONG
+这里是「二天门」，金光灿灿的金顶就在眼前了。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "santiangate",
+    "northdown" : __DIR__ "toutiangate",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

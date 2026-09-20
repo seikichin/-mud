@@ -1,0 +1,19 @@
+// yongdao3 —— 由 nitan/d/xiakedao/yongdao3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3080,-22120,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+这里往来者甚多，多数是急匆匆武林人物，亦有不少青衣弟子。
+许多人都手持食物边走边吃，惟恐耽误了时间。几个衣衫褴褛的乞丐
+便在墙边鼾然入睡。一个小僮踮起脚尖，正在添加灯油。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "dating",
+    "south" : __DIR__ "shimen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

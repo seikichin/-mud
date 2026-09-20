@@ -1,0 +1,14 @@
+// duchuan2 —— 由 nitan/d/gaoli/duchuan2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "渡船");
+  set("long", @LONG
+一叶小舟，最多也就能载七、八个人。一名六十多岁的老艄公手持
+一根长竹篙，正在船尾吃力地撑着船。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

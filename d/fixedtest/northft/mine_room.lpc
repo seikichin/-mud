@@ -1,0 +1,28 @@
+// mine_room —— 由 nitan/d/northft/mine_room.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "矿区");
+  set("long", @LONG
+这里是一片巨大的矿区，放眼一望四处是巨大的岩石，很多
+岩石上还留有被人敲砸过的痕迹，地上还散落着一些碎石头。
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+int cmd_dig_function(object me, string arg)
+{
+	if(!me || (environment(me) != this_object()))
+		return 0;
+
+	if( me->query("qi") <= 20 )
+		return notify_fail("你已经累的没有一点力气了。\n");
+
+	message_vision("$N抡起手中的十字镐狠狠的砸了下去。\n", me);
+	me->start_busy(10);
+	call_out("finish_dig", 3+random(3), me);
+	return 1;
+}

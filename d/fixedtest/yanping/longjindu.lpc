@@ -1,0 +1,14 @@
+// longjindu —— 由 nitan/d/yanping/longjindu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1530,-6200,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "龙津渡");
+  set("long", " ");
+  set("exits", ([
+    "northwest" : __DIR__ "yanfumen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

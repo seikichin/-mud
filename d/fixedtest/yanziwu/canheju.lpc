@@ -1,0 +1,21 @@
+// canheju —— 由 nitan/d/yanziwu/canheju.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "参合居");
+  set("long", @LONG
+这是慕容世家首脑人物日常起居之地，布置得华丽中不乏清雅，
+平实中透着高贵。楠木方桌，大太师椅，以及墙上的字画都透着一股
+非凡之气。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "shuwu",
+    "north" : __DIR__ "yimen",
+    "east" : __DIR__ "zuijing",
+    "west" : __DIR__ "qiushuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

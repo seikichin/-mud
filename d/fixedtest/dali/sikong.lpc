@@ -1,0 +1,17 @@
+// sikong —— 由 nitan/d/dali/sikong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19121,-6841,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "司空堂");
+  set("long", @LONG
+这里是大理国司空堂。堂内无余物，四壁却堆满了书籍。想来主
+人爱书如命，即便工余亦手不释卷。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zonglichu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

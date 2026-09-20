@@ -1,0 +1,19 @@
+// huagai —— 由 nitan/d/guanwai/huagai.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "华盖峰");
+  set("long", @LONG
+长白东侧最高峰，自古以来，华盖峰就是风雨云雾的故道。云雾起处，
+恰似掀开锅盖一般，雾气翻滚，池水云天，一脉相连，气壮华夏，故名华盖
+峰。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "tianchi1",
+    "north" : __DIR__ "tianhuo",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

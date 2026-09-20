@@ -1,0 +1,17 @@
+// xsandao1 —— 由 nitan/d/gaibang/xsandao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-10000,-2000,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗道");
+  set("long", @LONG
+这是丐帮极其秘密的地下通道，乃用丐帮几辈人之心血掘成。 
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "xsandao2",
+    "northeast" : __DIR__ "undertre",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

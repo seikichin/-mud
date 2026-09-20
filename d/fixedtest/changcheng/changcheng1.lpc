@@ -1,0 +1,19 @@
+// changcheng1 —— 由 nitan/d/changcheng/changcheng1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-500,5000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长城");
+  set("long", WHT@LONG
+这里就是举世闻名的──长城。站在长城上，你可以看到四周群山
+环绕，山上到处都是矮矮的灌木丛，举目望去，你脚下的长城顺着山脊
+象一条巨龙般蜿蜒的向东、西延伸出去。
+LONG NOR);
+  set("exits", ([
+    "east" : __DIR__ "juyongguan",
+    "west" : __DIR__ "changcheng2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

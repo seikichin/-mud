@@ -1,0 +1,24 @@
+// nanjiang —— 由 nitan/d/xingxiu/nanjiang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,30,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南疆沙漠");
+  set("long", @LONG
+这就是浩瀚的塔克拉马干大沙漠，一走进来，你仿佛迷失
+了方向。你感到口内十分焦渴，还是快些离开吧。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "nanjiang",
+    "southeast" : __DIR__ "nanjiang",
+    "northwest" : __DIR__ "nanjiang1",
+    "south" : __DIR__ "nanjiang",
+    "southwest" : __DIR__ "nanjiang",
+    "northeast" : __DIR__ "1/2/0",
+    "east" : __DIR__ "nanjiang",
+    "north" : __DIR__ "nanjiang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

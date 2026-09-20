@@ -1,0 +1,16 @@
+// nongshe —— 由 nitan/d/baituo/nongshe.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49980,19980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "农舍");
+  set("long", @LONG
+这里是一间小农舍，家具很新。看来主人比较富裕。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "guangchang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

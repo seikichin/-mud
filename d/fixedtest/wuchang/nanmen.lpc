@@ -1,0 +1,18 @@
+// nanmen —— 由 nitan/d/wuchang/nanmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5090,-1910,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南门");
+  set("long", @LONG
+这里是九江的南门。这里的行人很多。虽是战乱年代，但九江还是
+很繁华。不时有行人在这里出出进进，几个官兵耀武扬威地站在这里，
+检查着来往的行人。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

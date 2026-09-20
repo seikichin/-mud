@@ -1,0 +1,27 @@
+// nanshanzhong1 —— 由 nitan/d/penglai/nanshanzhong1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,20,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南山中");
+  set("long", @LONG
+这里是蓬莱仙岛仙者修炼仙法的地方，传说南山本不存在，乃
+是众仙施法而变成。四周仙气大盛，原本以为南山与普通高山无异，
+却不知这里的奇幻之处。一旦进如南山之中，唯一的出路就是回到
+山脚下，你站立良久才发现，所在之处并非一成不变，随着仙气地
+流动，时高时低，时隐时现。有时你除了四周的仙气什么都看不见，
+有时却随着此处的升高，竟可以望见东方的麒麟崖。据说，当四周
+环境随着仙气不断变化的时候，可以找到去南山之颠的路，运气好
+的话还会发现传说中的七仙女台和飞马崖。
+LONG );
+  set("exits", ([
+    "xunlu" : __DIR__ "nanshanzhong0",
+    "out" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/nanshanzhidian", __DIR__"nanshanzhidian");
+  set("exits/qixiannvtai", __DIR__"qixiannvtai");
+  set("exits/feimaya", __DIR__"feimaya");
+}

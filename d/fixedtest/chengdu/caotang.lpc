@@ -1,0 +1,17 @@
+// caotang —— 由 nitan/d/chengdu/caotang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15270,-1810,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "杜甫草堂");
+  set("long", @LONG
+这里是杜甫流寓成都的故居。草堂里流水回萦，小桥勾连，竹树
+掩映，显得既庄严肃穆，古朴典雅，又不失幽深静谧，秀丽清朗。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "path2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

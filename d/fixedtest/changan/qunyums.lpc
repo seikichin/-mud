@@ -1,0 +1,18 @@
+// qunyums —— 由 nitan/d/changan/qunyums.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "群玉楼密室");
+  set("long", @LONG
+屋子里面布置得简单而富有情趣。房间很宽敞，悬挂着几盆花花
+草草，红绿相间，疏密有致，令人赏心悦目。屋子里一个十来岁的小
+姑娘正哭个不停，旁边站了四个打手。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "6/7/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// xfang4 —— 由 nitan/d/hudie/xfang4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,90,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厢房");
+  set("long", @LONG
+这是一间别致的厢房，推开房门，揭开门帘，但见房内黑沉沉的
+宛似夜晚，房间内所有的窗户都用毡子遮住了，床上的帐帘也关得严
+严实实。看来这里就是「见死不救」胡青牛休息的地方了。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "2/8/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

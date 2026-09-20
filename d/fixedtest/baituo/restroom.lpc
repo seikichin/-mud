@@ -1,0 +1,18 @@
+// restroom —— 由 nitan/d/baituo/restroom.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49990,20030,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "休息室");
+  set("long", @LONG
+这是一家药铺，一股浓浓的药味让你几欲窒息，那是从药柜上的
+几百个小抽屉里散发出来的。神医平一指坐在茶几旁独自喝着茶，看
+也不看你一眼。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "3/4/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

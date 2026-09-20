@@ -1,0 +1,21 @@
+// caoyuan2 —— 由 nitan/d/hasake/caoyuan2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,70,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "草原");
+  set("long", @LONG
+你走进了这遍绵绵不绝的大草原，脚下是寸厚的青草，软绵绵的还真
+不好走，看来买匹马来代步到是的好主意。北边和西边都有好多帐篷，往
+东可以看见沙漠的边缘。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "6/5/0",
+    "northeast" : __DIR__ "caoyuan3",
+    "southeast" : __DIR__ "7/7/0",
+    "west" : __DIR__ "3/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

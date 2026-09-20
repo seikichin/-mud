@@ -1,0 +1,19 @@
+// tianroad1 —— 由 nitan/d/heimuya/tianroad1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,60,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "乱石小径");
+  set("long", @LONG
+这是一处乱石怪异的小径，向西再迂回转东北可以通往平安州。
+据说前方经常有野兽出没，不可久留。东方不远有一座建筑，颇为气
+派。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "tianroad2",
+    "west" : __DIR__ "3/7/10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

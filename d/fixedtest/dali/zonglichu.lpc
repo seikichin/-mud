@@ -1,0 +1,21 @@
+// zonglichu —— 由 nitan/d/dali/zonglichu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19121,-6851,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "国务总理处");
+  set("long", @LONG
+总理处是镇南王皇太弟总理国务之处，满桌的奏章整理得井井有
+条。四周摆了很多茶花，争奇斗艳。茶花是大理国花，看来主人对它
+也是钟爱有加。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "situ",
+    "south" : __DIR__ "wfdating",
+    "east" : __DIR__ "sima",
+    "north" : __DIR__ "sikong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

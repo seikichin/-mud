@@ -1,0 +1,10 @@
+==== 验证 meizhuang ====
+  地图 L,M,H = 9,9,3    非空格 = 27
+  ENTRY = 4,2,0   EXIT = 2,8,1   entry_dir = up
+  不可达房间数 = 8   (0 = 从入口全连通)
+  check_maze_map 错误数 = 1
+  出口集差异数 = 0
+  原文同格同向多候选 = 0（已由生成器消解，见 build_report 的冲突记录）
+  入格原房间总数 = 27
+  ---- check_maze_map 错误 ----
+    (2,8,1) down 指向空格

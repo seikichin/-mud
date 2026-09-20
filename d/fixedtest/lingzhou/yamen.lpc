@@ -1,0 +1,17 @@
+// yamen —— 由 nitan/d/lingzhou/yamen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6260,2920,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "衙门");
+  set("long", @LONG
+这是灵州府衙所在地，黑色大门平时紧紧闭着，门前四个身着皂服
+的衙役没精打采的拄着水火棍站着。边上有个大鼓。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "6/6/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// well —— 由 nitan/d/fuzhou/well.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1820,-6310,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "井中");
+  set("long", @LONG
+这是在一口枯井中。光线极暗，什么也看不清。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "well1",
+    "up" : __DIR__ "houyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

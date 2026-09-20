@@ -1,0 +1,19 @@
+// kunlun3 —— 由 nitan/d/kunlun/kunlun3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "昆仑之巅");
+  set("long", @LONG
+四下无声，只有风吹松涛，幽韵天成，仰视苍天，注视群山，令
+人不觉怆然而发思古之幽情！往前看，只见一块很大的冰壁，下临绝
+崖，大冰壁表面极其光滑，如同镜子一般，散发出奇异的光芒，往下
+看，峭壁如刀削，云卷雾涌，深不见底。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "kunlun2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// shudao13 —— 由 nitan/d/chengdu/shudao13.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15100,-1830,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蜀道");
+  set("long", @LONG
+你走在以险著称天下的蜀道上，道路十分狭窄，这里不时会有强
+盗出没，来往的人很少，举目看去，方圆几百里内没有人烟，你还是
+加快步子走吧。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "shudao12",
+    "west" : __DIR__ "shudao14",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

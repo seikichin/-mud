@@ -1,0 +1,17 @@
+// jiulou2 —— 由 nitan/d/tangmen/jiulou2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(150,20,60)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "唐门酒楼二楼");
+  set("long", "这里是雅座，非常的清静，一般没有人来在这里的，来的都是一些唐\n"
+"门中人，好象找唐肥有事的。所以这里虽然是雅座，却是没有生意的。老\n"
+"板唐肥正坐在一扇窗子(window)的边上，好象向外在看什么东东。墙上挂\n"
+"着一些个没见过的字画。\n");
+  set("exits", ([
+    "down" : __DIR__ "jiulou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

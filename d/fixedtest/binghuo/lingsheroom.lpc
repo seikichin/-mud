@@ -1,0 +1,18 @@
+// lingsheroom —— 由 nitan/d/binghuo/lingsheroom.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,30,40)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山顶小屋");
+  set("long", @LONG
+这里是金花婆婆在岛上的居所。小屋是岛上漫山遍野生长的青竹
+搭就。海风吹响，很是凉爽。四壁小竹窗，尽收窗外婆娑树影后的兰
+天、白云、碧海和黄沙，主人把这收拾得极为清雅。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "8/2/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

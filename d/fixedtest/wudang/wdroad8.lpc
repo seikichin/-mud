@@ -1,0 +1,18 @@
+// wdroad8 —— 由 nitan/d/wudang/wdroad8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-320,-160,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小路");
+  set("long", @LONG
+这里是陕西境内。一条静悄悄的黄土路，两旁有些小土屋，疏疏
+落落的。但路上行人很少，都行色匆匆向前赶路。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "sanbuguan",
+    "northeast" : __DIR__ "wdroad7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

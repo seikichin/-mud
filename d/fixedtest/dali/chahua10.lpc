@@ -1,0 +1,18 @@
+// chahua10 —— 由 nitan/d/dali/chahua10.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19061,-6821,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "茶花苑");
+  set("long", @LONG
+大理茶花冠绝天下，镇南王府的茶花自然更非凡品。这里是府中
+的茶花苑，天下名品毕聚于此，你对着满苑茶花，心花怒放，看了一
+本，喜欢一本，实在不知道哪本茶花更好些。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "chahua7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

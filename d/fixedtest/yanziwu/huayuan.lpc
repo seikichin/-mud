@@ -1,0 +1,20 @@
+// huayuan —— 由 nitan/d/yanziwu/huayuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "花园");
+  set("long", @LONG
+这个花园虽然不大，但整理的井井有条，看的出主人下了一番功
+夫，丫环常来这里嬉戏。沿着弯弯曲曲的花径，可以同向各处。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "jiashan",
+    "west" : __DIR__ "dannuo",
+    "east" : __DIR__ "biheqiao",
+    "north" : __DIR__ "changlang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

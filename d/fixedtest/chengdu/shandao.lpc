@@ -1,0 +1,19 @@
+// shandao —— 由 nitan/d/chengdu/shandao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15070,-1820,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山道");
+  set("long", @LONG
+这是一条樵夫乡农践踏出来的山道，偶而可见一两个江湖中人背着
+包袱，别着刀剑走过。北面是一片蓊郁的山林，南边就是有名的白帝城
+了。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shennongjia",
+    "south" : __DIR__ "baidicheng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

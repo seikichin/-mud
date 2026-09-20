@@ -1,0 +1,89 @@
+// midong —— 由 nitan/d/gumu/midong.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "河底密洞");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_lianxi", "lianxi");
+        add_action("do_jump", "jump");
+        add_action("do_open", "open");
+}
+
+int do_lianxi(string arg)
+{
+
+        object me=this_player();
+        int swordskill=(int)me->query_skill("sword", 1);
+        int wumingskill=(int)me->query_skill("wuming-jianfa", 1);
+        int exp=(int)me->query("combat_exp");
+
+        if( me->query("jing")<me->query("max_jing")/5 )
+                return notify_fail("你已经没有精力练习了！\n");
+
+        if( !me->query_temp("wuming_onbed") )
+        {
+                message_vision("$N手捏剑诀，照着壁上的图形比划了几次，只觉得一阵口干舌燥。\n", me);
+        }
+        else
+        {
+                message_vision("$N手捏剑诀照着壁上图形的姿势比划了几次，脑中灵光一闪似乎领悟到了什么。\n", me);
+                if (wumingskill>300)
+                        return notify_fail("你照着壁上图形比划了两下，觉得似乎没什么可领悟的了。\n");
+                if (exp <= (wumingskill*wumingskill*wumingskill)/10)
+                {
+                        me->receive_damage("qi", 30);
+                        return notify_fail("但是你的经验不够，始终不能从图中领悟到什么。\n");
+                }
+                if (wumingskill >150 && swordskill>150 )
+                {
+                        me->improve_skill("wuming-jianfa", (int)(me->query_int()));
+                        tell_object(me, "你似乎从中领悟出一些无名剑法方面的窍门。\n");
+                }
+                else
+                {
+                        tell_object(me, "你的功夫太低了，还不能领会图形所载的练功法门。\n");
+                }
+        }
+        me->receive_damage("jing", 30);
+        return 1;
+}
+
+int do_jump(string arg)
+{
+        object me=this_player();
+
+        if( !arg ||! (arg =="bed" || arg =="up" || arg =="down"))
+                return 0;
+
+        if( arg =="up"||arg=="bed")
+        {
+                if( me->query_temp("wuming_onbed") )
+                        return notify_fail("你已经在床上了，再跳就碰到洞顶了。\n");
+                me->set_temp("wuming_onbed", 1);
+                message_vision("$P轻轻一纵跳上了石床，坐了下来。\n", me);
+                tell_object(me, "你只觉得一丝丝凉气从身下传来，顿绝精神一振。\n");
+        }
+
+        if( arg =="down"){
+                if( !me->query_temp("wuming_onbed") )
+                        return notify_fail("你已经在地下了，乱蹦乱跳成何体统？\n");
+                me->delete_temp("wuming_onbed");
+                message_vision("$P从石床上跳了下来。\n", me);
+        }
+        return 1;
+}
+
+int valid_leave (object me, string dir)
+{
+        if( me->query_temp("wuming_onbed") )
+                return notify_fail("先下床再走，连走路也不会吗？\n");
+        return 1;
+}

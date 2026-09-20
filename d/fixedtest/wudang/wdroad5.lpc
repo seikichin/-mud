@@ -1,0 +1,22 @@
+// wdroad5 —— 由 nitan/d/wudang/wdroad5.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石大道");
+  set("long", @LONG
+你走在一条青石大道上，四周静悄悄的。四周是浓密的树
+林，阴森森的十分怕人。西北方不远就是陕鄂的边界了。北边
+却是一片草地。你抬头向远方眺望，隐隐约约能够看到武当山
+的影子，只令人想飞奔而上。
+LONG );
+  set("exits", ([
+    "southdown" : "/d/fixedtest/jingzhou/4/8/0",
+    "east" : __DIR__ "wdroad4",
+    "northwest" : __DIR__ "wdroad6",
+    "north" : "/d/fixedtest/xiangyang/caodi6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

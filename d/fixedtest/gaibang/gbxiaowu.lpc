@@ -1,0 +1,18 @@
+// gbxiaowu —— 由 nitan/d/gaibang/gbxiaowu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(71,61,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "林间小屋");
+  set("long", @LONG
+你走进了一间小屋。四周墙壁都由青竹篾编成，窗外是一望无际的
+竹林。屋里的桌椅、床铺均为竹制。但一阵扑鼻而来的狗肉香味，却显
+得与这清雅的气氛格格不入。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "gbandao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

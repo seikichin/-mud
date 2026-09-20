@@ -1,0 +1,19 @@
+// chahua5 —— 由 nitan/d/dali/chahua5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19061,-6861,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "茶花园");
+  set("long", @LONG
+大理茶花冠绝天下，镇南王府的茶花自然更非凡品。你站在茶花
+园中，发现几朵娇嫩欲滴的茶花，你不禁多看了两眼。西面是一个小
+湖，湖面碧绿如玉，暖风吹来，曛曛入醉。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "chahua3",
+    "southwest" : __DIR__ "chahua4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

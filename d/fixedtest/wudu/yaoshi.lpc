@@ -1,0 +1,19 @@
+// yaoshi —— 由 nitan/d/wudu/yaoshi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(80,40,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "药室");
+  set("long", @LONG
+这里是五毒教存放药品的地方，你只见十多个黑漆木柜一字排开，
+上面开着数百个的小抽屉，每个抽屉上面都整整齐齐的贴着一行标签。
+这里存放着各种珍贵药材，其中大多数是有毒的。旁边一个案上放着
+几束刚采来的草药。 
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "8/4/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

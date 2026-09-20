@@ -1,0 +1,22 @@
+// hong-damen —— 由 nitan/d/suzhou/hong-damen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(210,-200,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "红娘庄大门");
+  set("long", @LONG
+眼前是一座气势雄伟的大庄庭，门廊高大、朱墙黄瓦，竟有些与
+皇宫相似的味道，只是大门两边立的不是麒麟、狮兽，而是笑眯眯的
+喜财童子童女，而且大门敞开，任人随意进入，正中上面一块巨大的
+乌木匾牌
+            红    娘    庄
+
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "hong-zoulang",
+    "west" : __DIR__ "8/12/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

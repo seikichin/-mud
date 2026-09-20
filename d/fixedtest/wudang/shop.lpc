@@ -1,0 +1,17 @@
+// shop —— 由 nitan/d/wudang/shop.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-360,-250,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小吃店");
+  set("long", @LONG
+这里是石梁边的一间小吃店，卖些简单的饮食，专门赚那些游客
+的钱。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "shiliang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

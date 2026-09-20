@@ -1,0 +1,18 @@
+// fumoquan —— 由 nitan/d/shaolin/fumoquan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(140,70,120)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "金刚伏魔圈");
+  set("long", @LONG
+三棵大松树的树干上各挖了个可容身一人的大洞，有个洞口露出
+黑色僧袍一角，似乎住得有人。中央是一片大草坪，中心处光秃秃的，
+似乎经常受大力击打，以致寸草不生。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "qyping",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

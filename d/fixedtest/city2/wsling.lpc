@@ -1,0 +1,19 @@
+// wsling —— 由 nitan/d/city2/wsling.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", BLK"乌石岭"NOR);
+  set("long", @LONG
+这里就是乌石岭了，据说得名于满地的乌岩所致，具体的原因就
+无从考究了，近年来大宋和蒙古连年战火，边境早已民不聊生，这里
+早就成了人迹罕至之地了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "shanlu1",
+    "north" : __DIR__ "shanlu2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

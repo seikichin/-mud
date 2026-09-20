@@ -1,0 +1,39 @@
+// santan —— 由 nitan/d/hangzhou/santan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(4130,-1440,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "三潭印月");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_enter", "enter");
+}
+
+int do_enter ( string arg )
+{
+        object ob ;
+        string dir;
+        if( !arg || arg !="zhou" ) 
+        {
+                tell_object(this_player() , "你要 enter 哪儿？\n" ) ;
+                return 1 ;
+        }
+        ob = this_player () ;
+        message_vision("梢公一见有人上船，轻摇木桨，小舟西行。\n", ob);
+        ob ->move(__DIR__"xihu") ;
+        tell_object(ob, HIG "你在湖面穿行，轻风徐来，满面生暖。\n" NOR ) ;
+        call_out("tostyy", 10 , ob );
+        return 1 ;
+}
+
+void tostyy(object ob )
+{
+        tell_object(ob , "小舟轻轻靠上苏堤。你走下船来。\n" ) ;
+        ob->move ("/d/fixedtest/hangzhou/3/4/0") ;
+}

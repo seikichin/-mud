@@ -1,0 +1,20 @@
+// fu-houyuan —— 由 nitan/d/hanzhong/fu-houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12240,770,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后院");
+  set("long", @LONG
+这里是后院。走到这里，花香味更加浓烈了。你仔细一看，
+东南边有一道圆形门，似乎花香是从那里传出来的。从这里再往
+南走，就是侯员外的卧室了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "fu-woshi",
+    "southeast" : __DIR__ "houhuayuan",
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

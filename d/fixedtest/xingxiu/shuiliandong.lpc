@@ -1,0 +1,18 @@
+// shuiliandong —— 由 nitan/d/xingxiu/shuiliandong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(130,10,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "水帘洞");
+  set("long", @LONG
+这里群峰高耸，沿曲径入幽林，峰回路转，石壁中露出有拱形洞窟，洞内
+水锈青苔，红绿班驳，乱石穿孔。雨季山顶飞流直下如水帘，因有此名。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "xianrenya",
+    "northeast" : __DIR__ "6/0/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

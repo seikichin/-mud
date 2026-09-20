@@ -1,0 +1,14 @@
+// dukou2 —— 由 nitan/d/huanghe/dukou2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1500,2000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "龙门渡口");
+  set("long", " ");
+  set("exits", ([
+    "southwest" : __DIR__ "1/40/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

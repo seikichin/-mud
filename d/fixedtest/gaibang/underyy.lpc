@@ -1,0 +1,18 @@
+// underyy —— 由 nitan/d/gaibang/underyy.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1420,-2250,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "井底密道");
+  set("long", @LONG
+这是岳阳城内丐帮总舵大院内的古井下的洞里。四周丢满了各种杂
+物，还有丐帮弟子收集的破铜烂铁等。从这里通往丐帮的秘密通道。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "yyandao2",
+    "out" : "/d/fixedtest/yueyang/gaibangyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

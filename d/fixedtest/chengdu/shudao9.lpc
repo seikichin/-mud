@@ -1,0 +1,18 @@
+// shudao9 —— 由 nitan/d/chengdu/shudao9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15070,-1830,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山顶");
+  set("long", @LONG
+这里是一座高山的山顶，临江一面是陡峭的悬崖，仔细望去，有
+一些石窝可以落脚，西看去，只见云雾中有好象有几栋房子。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "shudao8",
+    "west" : __DIR__ "shudao10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

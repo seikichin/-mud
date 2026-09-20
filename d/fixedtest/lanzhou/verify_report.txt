@@ -1,0 +1,14 @@
+==== 验证 lanzhou ====
+  地图 L,M,H = 5,9,2    非空格 = 23
+  ENTRY = 3,2,0   EXIT = 0,4,0   entry_dir = down
+  不可达房间数 = 0   (0 = 从入口全连通)
+  check_maze_map 错误数 = 1
+  出口集差异数 = 0
+  原文同格同向多候选 = 4（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格3,2,0 方向south: /d/fixedtest/lanzhou/caoyuan 或 /d/fixedtest/lanzhou/lanzhou/3/1/0
+    同格同向多候选 格3,2,0 方向north: /d/fixedtest/lanzhou/caoyuan 或 /d/fixedtest/lanzhou/lanzhou/3/3/0
+    同格同向多候选 格3,0,0 方向west: /d/fixedtest/lanzhou/caoyuan 或 /d/fixedtest/lanzhou/lanzhou/2/0/0
+    同格同向多候选 格3,1,0 方向north: /d/fixedtest/lanzhou/caoyuan 或 /d/fixedtest/lanzhou/lanzhou/3/2/0
+  入格原房间总数 = 26
+  ---- check_maze_map 错误 ----
+    (0,4,0) up 指向空格

@@ -1,0 +1,21 @@
+// zhulin3 —— 由 nitan/d/yanziwu/zhulin3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "竹林");
+  set("long", @LONG
+凤尾森森，龙吟细细，竿竿青竹纵横交错，遮蔽天日。这里人迹
+罕至，微风拂过竹林，发出沙沙之声，你心中不免惴惴不安起来。林
+中一道道石子铺成的羊肠小道向前延伸。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zhulin2",
+    "north" : __DIR__ "qingzong",
+    "east" : __DIR__ "zhulin3",
+    "west" : __DIR__ "zhulin4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

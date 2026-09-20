@@ -1,0 +1,19 @@
+// qinggate —— 由 nitan/d/heimuya/qinggate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(30,60,110)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青龙堂大门");
+  set("long", @LONG
+这里是日月神教下第三大堂青龙堂的大门，门前摆放着两座石狮，
+镇守着朱漆大门。大门两旁站着数名轻装弟子，双手握着钢刀，警惕
+地注视着周围的一切。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "1/6/11",
+    "northdown" : __DIR__ "1/7/10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

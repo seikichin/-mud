@@ -1,0 +1,21 @@
+// lin5 —— 由 nitan/d/xiakedao/lin5.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+这是一片茂密的树林，好象被人设计了一种阵，一走进来，你仿佛迷失了方向。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "lin5",
+    "west" : __DIR__ "lin5",
+    "northwest" : __DIR__ "lin6",
+    "south" : __DIR__ "lin5",
+    "east" : __DIR__ "lin4",
+    "north" : __DIR__ "lin5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

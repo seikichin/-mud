@@ -1,0 +1,18 @@
+// caopo —— 由 nitan/d/dali/caopo.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19160,-6780,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "村外草坡");
+  set("long", @LONG
+一大片山坡长满青草，正是放牧牛羊的好地方。这里地势甚高，
+天空呈深蓝色，附近山岭树木已经甚少，基本上都是低矮灌木或草地。
+不少附近的村民在此放牧。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "wumeng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

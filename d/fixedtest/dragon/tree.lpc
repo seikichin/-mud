@@ -1,0 +1,15 @@
+// tree —— 由 nitan/d/dragon/tree.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,20,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树上");
+  set("long", "这是人参果树上。枝叶遮天蔽日，一点一点的金光在树叶间闪烁。仔\n"
+"细看看，原来是象一个个小孩子的果子，天地的至宝——人参果！\n");
+  set("exits", ([
+    "down" : __DIR__ "5/2/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

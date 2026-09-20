@@ -1,0 +1,18 @@
+// htqmen —— 由 nitan/d/mingjiao/htqmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(350,60,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厚土旗门");
+  set("long", @LONG
+这是厚土旗的洞门，门洞里进进出出的厚土旗众，身上挂满了锹，
+铲，短刀，谁也不理你。门边两面短杆镶黄边飞龙旗，绣着厚土二字。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "htqdating",
+    "south" : __DIR__ "tohtq7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,220 @@
+# nitan 批量转换报告
+
+成功 0 个：
+失败 2 个：hasake, shaolin
+hasake       L,M,H=8,11,2  格=26  入格房=26  合并格=0  独立房=14  LINK=49
+             入口=senlin(0,4,0) 出口=senlin1(0,3,0) entry_dir=up  coor基准=(1,0,0)
+   [warn] [丢弃动态出口] senlin.north -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin.west -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin.east -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin1.north -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin1.south -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin2.north -> __DIR__"senlin"+a4
+   [warn] [丢弃动态出口] senlin2.south -> __DIR__"senlin"+a3
+   [warn] [丢弃动态出口] senlin2.east -> __DIR__"senlin"+a1
+   [warn] [丢弃动态出口] senlin2.west -> __DIR__"senlin"+a2
+   [warn] [丢弃动态出口] senlin3.north -> __DIR__"senlin"+a4
+   [warn] [丢弃动态出口] senlin3.south -> __DIR__"senlin"+a3
+   [warn] [丢弃动态出口] senlin3.east -> __DIR__"senlin"+a1
+   [warn] [丢弃动态出口] senlin3.west -> __DIR__"senlin"+a2
+   [warn] [丢弃动态出口] senlin4.north -> __DIR__"senlin"+a4
+   [warn] [丢弃动态出口] senlin4.south -> __DIR__"senlin"+a3
+   [warn] [丢弃动态出口] senlin4.east -> __DIR__"senlin"+a1
+   [warn] [丢弃动态出口] senlin4.west -> __DIR__"senlin"+a2
+   [warn] 第 1 轮：剔除 14 个零位格房间，重新建图
+   [warn] [丢弃动态出口] senlin.north -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin.west -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin.east -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin1.north -> __DIR__"senlin"+(1+random(4))
+   [warn] [丢弃动态出口] senlin1.south -> __DIR__"senlin"+(1+random(4))
+   地图 L,M,H = 8,11,2    非空格 = 26
+   ENTRY = 0,4,0   EXIT = 0,3,0   entry_dir = up
+   不可达房间数 = 2   (0 = 从入口全连通)
+   check_maze_map 错误数 = 1
+   出口集差异数 = 5
+   原文同格同向多候选 = 0（已由生成器消解，见 build_report 的冲突记录）
+   入格原房间总数 = 26
+   ---- check_maze_map 错误 ----
+   (0,4,0)->(0,3,0) south 不互反
+   ---- 出口集差异 ----
+   缺失 格0,4,0     出口 west       期望 /d/fixedtest/hasake/hasake/0/4/0               实际 null
+   缺失 格0,4,0     出口 east       期望 /d/fixedtest/hasake/hasake/0/4/0               实际 null
+   缺失 格0,4,0     出口 north      期望 /d/fixedtest/hasake/hasake/0/4/0               实际 null
+   缺失 格0,3,0     出口 south      期望 /d/fixedtest/hasake/hasake/0/4/0               实际 null
+   缺失 格0,3,0     出口 north      期望 /d/fixedtest/hasake/hasake/0/4/0               实际 null
+   [ERROR] 路径异常 12 条
+      senlin2.lpc : .__DIR__ "senlin"
+      senlin2.lpc : .__DIR__ "senlin"
+      senlin2.lpc : .__DIR__ "senlin"
+      senlin2.lpc : .__DIR__ "senlin"
+      senlin3.lpc : .__DIR__ "senlin"
+      senlin3.lpc : .__DIR__ "senlin"
+      senlin3.lpc : .__DIR__ "senlin"
+      senlin3.lpc : .__DIR__ "senlin"
+      senlin4.lpc : .__DIR__ "senlin"
+      senlin4.lpc : .__DIR__ "senlin"
+      senlin4.lpc : .__DIR__ "senlin"
+      senlin4.lpc : .__DIR__ "senlin"
+
+shaolin      L,M,H=29,13,11  格=119  入格房=119  合并格=0  独立房=55  LINK=39
+             入口=zhonglou1(20,0,0) 出口=bamboo1(3,12,2) entry_dir=south  coor基准=(1,0,1)
+   [warn] [丢弃动态出口] bamboo1.southeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo1.northeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo1.northwest -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo10.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo10.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo10.north -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo11.north -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo11.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo11.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo12.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo12.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo12.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo13.southwest -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo13.northeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo13.southeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo14.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo14.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo14.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo2.northeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo2.northwest -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo2.southeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo3.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo3.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo3.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo4.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo4.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo4.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo5.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo5.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo5.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo6.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo6.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo6.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo7.north -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo7.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo7.east -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo8.north -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo8.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo8.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo9.north -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo9.south -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo9.west -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] rukou.south -> __DIR__"wuxing"+random(5)
+   [warn] [丢弃动态出口] shulin1.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin1.east -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin14.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin14.east -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin2.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin2.south -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin3.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin3.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin4.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin4.south -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin5.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin5.east -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin6.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin6.south -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin7.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin7.south -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin8.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin8.south -> __DIR__"shulin"+(random(10)+2)
+   [warn] 第 1 轮：剔除 36 个零位格房间，重新建图
+   [warn] [丢弃动态出口] bamboo1.southeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo1.northeast -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] bamboo1.northwest -> __DIR__"bamboo"+(random(13)+1)
+   [warn] [丢弃动态出口] rukou.south -> __DIR__"wuxing"+random(5)
+   [warn] [丢弃动态出口] shulin3.north -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin3.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin4.west -> __DIR__"shulin"+(random(10)+2)
+   [warn] [丢弃动态出口] shulin4.south -> __DIR__"shulin"+(random(10)+2)
+   地图 L,M,H = 29,13,11    非空格 = 119
+   ENTRY = 20,0,0   EXIT = 3,12,2   entry_dir = south
+   不可达房间数 = 31   (0 = 从入口全连通)
+   check_maze_map 错误数 = 0
+   出口集差异数 = 8
+   原文同格同向多候选 = 0（已由生成器消解，见 build_report 的冲突记录）
+   入格原房间总数 = 119
+   ---- 出口集差异 ----
+   缺失 格28,0,1    出口 south      期望 /d/fixedtest/shaolin/wuxing                    实际 null
+   缺失 格3,12,2    出口 southeast  期望 /d/fixedtest/shaolin/bamboo                    实际 null
+   缺失 格3,12,2    出口 northeast  期望 /d/fixedtest/shaolin/bamboo                    实际 null
+   缺失 格3,12,2    出口 northwest  期望 /d/fixedtest/shaolin/bamboo                    实际 null
+   缺失 格12,7,10   出口 south      期望 /d/fixedtest/shaolin/shulin                    实际 null
+   缺失 格12,7,10   出口 west       期望 /d/fixedtest/shaolin/shulin                    实际 null
+   缺失 格12,8,10   出口 west       期望 /d/fixedtest/shaolin/shulin                    实际 null
+   缺失 格12,8,10   出口 north      期望 /d/fixedtest/shaolin/shulin                    实际 null
+   [ERROR] 路径异常 73 条
+      bamboo10.lpc : .__DIR__ "bamboo"
+      bamboo10.lpc : .__DIR__ "bamboo"
+      bamboo10.lpc : .__DIR__ "bamboo"
+      bamboo11.lpc : .__DIR__ "bamboo"
+      bamboo11.lpc : .__DIR__ "bamboo"
+      bamboo11.lpc : .__DIR__ "bamboo"
+      bamboo12.lpc : .__DIR__ "bamboo"
+      bamboo12.lpc : .__DIR__ "bamboo"
+      bamboo12.lpc : .__DIR__ "bamboo"
+      bamboo13.lpc : .__DIR__ "bamboo"
+      bamboo13.lpc : .__DIR__ "bamboo"
+      bamboo13.lpc : .__DIR__ "bamboo"
+      bamboo14.lpc : .__DIR__ "bamboo"
+      bamboo14.lpc : .__DIR__ "bamboo"
+      bamboo14.lpc : .__DIR__ "bamboo"
+      bamboo2.lpc : .__DIR__ "bamboo"
+      bamboo2.lpc : .__DIR__ "bamboo"
+      bamboo2.lpc : .__DIR__ "bamboo"
+      bamboo3.lpc : .__DIR__ "bamboo"
+      bamboo3.lpc : .__DIR__ "bamboo"
+      bamboo3.lpc : .__DIR__ "bamboo"
+      bamboo4.lpc : .__DIR__ "bamboo"
+      bamboo4.lpc : .__DIR__ "bamboo"
+      bamboo4.lpc : .__DIR__ "bamboo"
+      bamboo5.lpc : .__DIR__ "bamboo"
+      bamboo5.lpc : .__DIR__ "bamboo"
+      bamboo5.lpc : .__DIR__ "bamboo"
+      bamboo6.lpc : .__DIR__ "bamboo"
+      bamboo6.lpc : .__DIR__ "bamboo"
+      bamboo6.lpc : .__DIR__ "bamboo"
+      bamboo7.lpc : .__DIR__ "bamboo"
+      bamboo7.lpc : .__DIR__ "bamboo"
+      bamboo7.lpc : .__DIR__ "bamboo"
+      bamboo8.lpc : .__DIR__ "bamboo"
+      bamboo8.lpc : .__DIR__ "bamboo"
+      bamboo8.lpc : .__DIR__ "bamboo"
+      bamboo9.lpc : .__DIR__ "bamboo"
+      bamboo9.lpc : .__DIR__ "bamboo"
+      bamboo9.lpc : .__DIR__ "bamboo"
+      shulin1.lpc : .__DIR__ "shulin"
+      shulin1.lpc : .__DIR__ "shulin"
+      shulin10.lpc : .__DIR__ "shulin"
+      shulin10.lpc : .__DIR__ "shulin"
+      shulin10.lpc : .__DIR__ "shulin"
+      shulin10.lpc : .__DIR__ "shulin"
+      shulin11.lpc : .__DIR__ "shulin"
+      shulin11.lpc : .__DIR__ "shulin"
+      shulin11.lpc : .__DIR__ "shulin"
+      shulin11.lpc : .__DIR__ "shulin"
+      shulin12.lpc : .__DIR__ "shulin"
+      shulin12.lpc : .__DIR__ "shulin"
+      shulin12.lpc : .__DIR__ "shulin"
+      shulin12.lpc : .__DIR__ "shulin"
+      shulin13.lpc : .__DIR__ "shulin"
+      shulin13.lpc : .__DIR__ "shulin"
+      shulin13.lpc : .__DIR__ "shulin"
+      shulin13.lpc : .__DIR__ "shulin"
+      shulin14.lpc : .__DIR__ "shulin"
+      shulin14.lpc : .__DIR__ "shulin"
+      shulin2.lpc : .__DIR__ "shulin"
+      shulin2.lpc : .__DIR__ "shulin"
+      shulin5.lpc : .__DIR__ "shulin"
+      shulin5.lpc : .__DIR__ "shulin"
+      shulin6.lpc : .__DIR__ "shulin"
+      shulin6.lpc : .__DIR__ "shulin"
+      shulin7.lpc : .__DIR__ "shulin"
+      shulin7.lpc : .__DIR__ "shulin"
+      shulin8.lpc : .__DIR__ "shulin"
+      shulin8.lpc : .__DIR__ "shulin"
+      shulin9.lpc : .__DIR__ "shulin"
+      shulin9.lpc : .__DIR__ "shulin"
+      shulin9.lpc : .__DIR__ "shulin"
+      shulin9.lpc : .__DIR__ "shulin"

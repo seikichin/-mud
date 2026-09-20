@@ -1,0 +1,18 @@
+// bianhou —— 由 nitan/d/gumu/bianhou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3200,10,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIB"匾后"NOR);
+  set("long", @LONG
+这里就是古墓中堂匾额之后，黑漆漆的什么都看不清楚。匾下石室
+里点着烛火，一片晕黄。里面似乎还有一条通道。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "4/7/12",
+    "enter" : __DIR__ "4/8/13",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

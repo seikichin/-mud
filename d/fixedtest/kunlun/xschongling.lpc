@@ -1,0 +1,19 @@
+// xschongling —— 由 nitan/d/kunlun/xschongling.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-90050,10010,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雪山丛林");
+  set("long", @LONG
+这是一个很大的丛林，树木枝叶上挂满了冰雪，雪白的一大片，奇
+美无比。丛林向山上延伸，直至山顶。在丛林中微露出一条小道，依稀
+可认，你走在小道上，雪地中留下一行长长的足印。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "xschongling1",
+    "eastdown" : __DIR__ "shanxi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

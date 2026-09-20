@@ -1,0 +1,21 @@
+// changlang —— 由 nitan/d/yanziwu/changlang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长廊");
+  set("long", @LONG
+只见红栏碧瓦，一派富贵气象，不时有几只燕子灵巧的从廊见飞
+过，长廊的尽头有一座大花园。长廊上似乎还有一层，你忍不住想爬
+上去看看。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "huayuan",
+    "north" : __DIR__ "shijian",
+    "east" : __DIR__ "huizhen",
+    "west" : __DIR__ "lixiang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

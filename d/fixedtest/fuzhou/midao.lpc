@@ -1,0 +1,15 @@
+// midao —— 由 nitan/d/fuzhou/midao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1820,-6311,-10)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密道");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "well",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/enter", __DIR__"mishi");
+}

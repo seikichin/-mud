@@ -1,0 +1,18 @@
+// gudao1 —— 由 nitan/d/yanping/gudao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1100,-6200,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "闽赣古道");
+  set("long", @LONG
+进入江西，还是不尽的山坎和密林幽谷，终日不见天光。放眼山中
+毒虫猛兽出没无常，行路艰辛。一到这里就闻到一股腥风扑鼻而来。
+LONG );
+  set("exits", ([
+    "northwest" : "/d/fixedtest/henshan/13/4/1",
+    "eastup" : __DIR__ "gudao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

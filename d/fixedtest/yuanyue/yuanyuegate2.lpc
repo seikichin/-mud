@@ -1,0 +1,13 @@
+// yuanyue 出口房：梨园·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "梨园" NOR);
+  set("long", "梨园。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

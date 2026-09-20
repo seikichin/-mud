@@ -1,0 +1,18 @@
+// chaotiangong —— 由 nitan/d/wudang/chaotiangong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-370,150)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "朝天宫");
+  set("long", @LONG
+这里已近武当绝顶，只见石梯直耸，危蹬高悬，两旁辅以索链、
+铁拦勾连。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "huixianqiao",
+    "northdown" : __DIR__ "hutouyan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// neitang —— 由 nitan/d/yanziwu/neitang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "内堂");
+  set("long", @LONG
+这是一间雅致的内堂，布置简单而典雅。里面站着个一身淡绿的
+女郎，向着你似笑非笑。似乎是江南灵秀造了这样一个小美人。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "qinyun",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

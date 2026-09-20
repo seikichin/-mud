@@ -1,0 +1,20 @@
+// wanghuating —— 由 nitan/d/luoyang/wanghuating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7021,2149,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "花厅");
+  set("long", @LONG
+你走进王家花厅，才领会到在洛阳，怎样才叫姹紫嫣红，什么样才
+叫春色无边。花厅中，小小花径纵横蜿蜒，草色连壁。花厅中央是个石
+亭，那里就是王家闲来讲经论武之所。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "wangxiangfang",
+    "south" : __DIR__ "wanglianwu",
+    "north" : __DIR__ "wangdatang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

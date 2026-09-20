@@ -1,0 +1,19 @@
+// zoulang —— 由 nitan/d/heimuya/zoulang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(150,30,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "走廊");
+  set("long", @LONG
+这是成德殿内的一条木制的走廊，红漆地面很是光滑，整个走廊
+被打整得一尘不染。你不时能够看到几个成德殿的侍女在此走动，忙
+碌个不停。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "13/3/10",
+    "north" : __DIR__ "13/4/10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

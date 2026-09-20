@@ -1,0 +1,17 @@
+==== 验证 lingzhou ====
+  地图 L,M,H = 11,16,3    非空格 = 50
+  ENTRY = 6,13,1   EXIT = 10,10,1   entry_dir = up
+  不可达房间数 = 18   (0 = 从入口全连通)
+  check_maze_map 错误数 = 1
+  出口集差异数 = 0
+  原文同格同向多候选 = 7（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格3,9,1 方向west: /d/fixedtest/lingzhou/lingzhou/2/9/1 或 /d/fixedtest/lingzhou/lingzhou/3/9/1
+    同格同向多候选 格5,13,1 方向east: /d/fixedtest/lingzhou/lingzhou/5/13/1 或 /d/fixedtest/lingzhou/lingzhou/6/13/1
+    同格同向多候选 格5,13,1 方向west: /d/fixedtest/lingzhou/lingzhou/4/13/1 或 /d/fixedtest/lingzhou/lingzhou/5/13/1
+    同格同向多候选 格6,11,1 方向north: /d/fixedtest/lingzhou/lingzhou/6/12/1 或 /d/fixedtest/lingzhou/lingzhou/5/12/1
+    同格同向多候选 格9,10,1 方向west: /d/fixedtest/lingzhou/lingzhou/9/10/1 或 /d/fixedtest/lingzhou/lingzhou/8/10/1
+    同格同向多候选 格9,9,1 方向south: /d/fixedtest/lingzhou/lingzhou/9/8/1 或 /d/fixedtest/lingzhou/lingzhou/8/7/1
+    同格同向多候选 格6,12,1 方向south: /d/fixedtest/lingzhou/lingzhou/6/12/1 或 /d/fixedtest/lingzhou/lingzhou/6/11/1
+  入格原房间总数 = 62
+  ---- check_maze_map 错误 ----
+    (10,10,1) down 指向空格

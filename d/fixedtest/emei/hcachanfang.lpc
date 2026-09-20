@@ -1,0 +1,19 @@
+// hcachanfang —— 由 nitan/d/emei/hcachanfang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "禅房");
+  set("long", @LONG
+这里便是峨嵋华藏庵的禅房。地下散乱地放着许多蒲团木鱼等，
+此处正是本派弟子打坐修行之所。几位年轻师太和俗家女弟子正肃容
+入定。禅房后面有一道门通往华藏庵休息室，北边的走廊通向广场。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "hcaxiuxishi",
+    "north" : __DIR__ "hcawest2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// shulin3 —— 由 nitan/d/jianzhong/shulin3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-400,-470,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+这是树林深处，暗无天日，朦胧中只感觉到左右前后到处
+都是树影。一条小溪蜿蜒蛇行，静静地流淌着。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "shulin1",
+    "west" : __DIR__ "shulin2",
+    "east" : __DIR__ "shulin3",
+    "north" : __DIR__ "shulin4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

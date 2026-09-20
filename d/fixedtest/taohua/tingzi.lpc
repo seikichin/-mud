@@ -1,0 +1,18 @@
+// tingzi —— 由 nitan/d/taohua/tingzi.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "试剑亭");
+  set("long", @LONG
+这里是一个用白玉石砌成的亭子，亭子砌得小巧玲珑，十
+分精巧。亭子的北面是一片桃花林，南面则是桃花山庄的正门。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "tao_out",
+    "south" : __DIR__ "damen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

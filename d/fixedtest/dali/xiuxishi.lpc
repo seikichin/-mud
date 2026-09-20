@@ -1,0 +1,18 @@
+// xiuxishi —— 由 nitan/d/dali/xiuxishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厢房");
+  set("long", @LONG
+这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别无他物，
+只有中间放着几张收拾得舒舒服服的大床，看着就让人想睡觉。这里
+是休息的地方，有时候练功累了，段家弟子也会在这里休息。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "chahua1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// xianjing —— 由 nitan/d/binghuo/xianjing.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(180,10,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "陷阱");
+  set("long", @LONG
+深坑底窄口广，深达五丈，坑底周围插上削尖的木棒。更在坑边
+堆了不少大石，只待人落入坑中，便可投石砸打。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "inhole1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

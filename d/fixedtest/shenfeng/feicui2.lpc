@@ -1,0 +1,48 @@
+// feicui2 —— 由 nitan/d/shenfeng/feicui2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "翡翠池");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_zuan", "zuan");
+        add_action("do_climb", "climb");
+}
+
+int do_zuan(string arg)
+{
+        object me = this_player();
+
+        if (! arg || arg != "hole")
+                return notify_fail("你要钻什么？\n");
+
+        message("vision", HIC "只见" + me->name() + HIC "紧闭呼吸，一个猛子朝池底"
+                          "的洞钻去。\n" NOR, environment(me), ({me}) );
+        write(HIC "\n你朝池底的洞钻去，哪知突然一道暗流冲来，把你扯入旋涡中。\n\n" NOR);
+
+        me->move("/d/fixedtest/shenfeng/4/3/0");
+        message_vision(HIC "\n$N" HIC "被暗流从瀑布里抛了出来。\n\n" NOR, me);
+
+        return 1;
+}
+
+int do_climb(string arg)
+{
+            object me = this_player();
+
+            if (! arg || arg != "rattan")
+                return notify_fail("你要爬什么？\n");
+
+        message("vision", HIC "只见" + me->name() + HIC "顺着青藤爬了上去。\n" NOR,
+                          environment(me), ({me}));
+        me->move("/d/fixedtest/shenfeng/28/0/0");
+        message_vision(HIC "\n$N" HIC "顺着青藤水淋淋地爬了上来。\n\n" NOR, me);
+        return 1;
+}

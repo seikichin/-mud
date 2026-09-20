@@ -1,0 +1,19 @@
+// undergb —— 由 nitan/d/gaibang/undergb.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,60,-20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "破庙密室");
+  set("long", @LONG
+这是丐帮重要密道之一。由此上往，可直达破庙。四周光线昏暗，
+似乎有几个黑暗的洞口在你身边。脚下地上扔满了垃圾，踩上去悉悉
+索索地响。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "zlandao2",
+    "up" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

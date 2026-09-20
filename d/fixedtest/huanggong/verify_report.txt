@@ -1,0 +1,18 @@
+==== 验证 huanggong ====
+  地图 L,M,H = 7,8,2    非空格 = 57
+  ENTRY = 6,7,0   EXIT = 2,5,0   entry_dir = up
+  不可达房间数 = 0   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 10（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格4,3,0 方向west: /d/fixedtest/huanggong/huanggong/3/3/0 或 /d/fixedtest/huanggong/huanggong/2/0/0 或 /d/fixedtest/huanggong/huanggong/4/3/0
+    同格同向多候选 格4,3,0 方向east: /d/fixedtest/huanggong/huanggong/4/3/0 或 /d/fixedtest/huanggong/huanggong/4/0/0 或 /d/fixedtest/huanggong/huanggong/5/3/0
+    同格同向多候选 格4,3,0 方向north: /d/fixedtest/huanggong/huanggong/3/0/0 或 /d/fixedtest/huanggong/huanggong/4/4/0
+    同格同向多候选 格3,1,0 方向west: /d/fixedtest/huanggong/huanggong/2/1/0 或 /d/fixedtest/huanggong/huanggong/0/1/0
+    同格同向多候选 格3,1,0 方向north: /d/fixedtest/huanggong/huanggong/3/3/0 或 /d/fixedtest/huanggong/huanggong/3/2/0
+    同格同向多候选 格3,4,0 方向east: /d/fixedtest/huanggong/huanggong/6/4/0 或 /d/fixedtest/huanggong/huanggong/4/4/0
+    同格同向多候选 格4,0,0 方向west: /d/fixedtest/huanggong/huanggong/3/0/0 或 /d/fixedtest/huanggong/huanggong/4/3/0
+    同格同向多候选 格4,0,0 方向south: /d/fixedtest/huanggong/huanggong/5/6/0 或 /d/fixedtest/huanggong/wumen
+    同格同向多候选 格2,5,0 方向north: /d/fixedtest/huanggong/huanggong/2/6/0 或 /d/beijing/hgmen_n
+    同格同向多候选 格5,6,0 方向north: /d/fixedtest/huanggong/huanggong/4/0/0 或 /d/fixedtest/huanggong/huanggong/5/7/0
+  入格原房间总数 = 94

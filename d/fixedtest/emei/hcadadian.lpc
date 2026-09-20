@@ -1,0 +1,20 @@
+// hcadadian —— 由 nitan/d/emei/hcadadian.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大雄宝殿");
+  set("long", @LONG
+这是峨嵋山华藏庵的大雄宝殿。正中供奉着普贤菩萨。有群青衣
+小师太正在地上诵经。后面有道小门通往后殿。后殿是峨嵋派第三代
+掌门人灭绝师太传功的地方。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "hcahoudian",
+    "north" : __DIR__ "2/1/22",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/down", __DIR__"midao");
+}

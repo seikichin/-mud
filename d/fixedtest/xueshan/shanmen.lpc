@@ -1,0 +1,15 @@
+// shanmen —— 由 nitan/d/xueshan/shanmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-70000,-20000,120)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雪山寺山门");
+  set("long", " ");
+  set("exits", ([
+    "eastdown" : "/d/fixedtest/xuedao/0/5/1",
+    "north" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

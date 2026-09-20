@@ -1,0 +1,19 @@
+// xitou —— 由 nitan/d/luoyang/xitou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7040,2110,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西城根");
+  set("long", @LONG
+这里是洛阳内城南墙脚。很是冷清，几乎没有人会来这里，你的面前
+除了高大的城墙，满地的尘土和杂草就什么也没有了。但是，忽然你眼睛
+一花，有两个黑影从你的面前一闪而过，到底是发生了什么事情呢？
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "0/0/0",
+    "north" : __DIR__ "suishi10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

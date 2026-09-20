@@ -1,0 +1,18 @@
+// biheqiao —— 由 nitan/d/yanziwu/biheqiao.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "碧荷桥");
+  set("long", @LONG
+密密匝匝的荷叶上面，一条曲曲折折的小桥通向水中的一片小洲，
+洲上花红柳绿，似乎别有洞天。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "tingxiang",
+    "west" : __DIR__ "huayuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

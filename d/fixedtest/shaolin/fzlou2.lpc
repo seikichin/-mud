@@ -1,0 +1,17 @@
+// fzlou2 —— 由 nitan/d/shaolin/fzlou2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,80,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "方丈室");
+  set("long", @LONG
+方丈室陈设简洁，正中一几，一蒲团，一矮床。北面墙上写着大
+大的一个『禅』字。一位慈眉善目的灰衣老僧正端坐于蒲团上打坐。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "3/8/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

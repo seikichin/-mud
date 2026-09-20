@@ -1,0 +1,13 @@
+// huangshan 出口房：三叠泉·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "三叠泉" NOR);
+  set("long", "三叠泉。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

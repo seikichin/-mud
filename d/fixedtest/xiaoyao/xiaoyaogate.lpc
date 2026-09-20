@@ -1,0 +1,13 @@
+// xiaoyao 入口房：铜门·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "铜门" NOR);
+  set("long", "铜门。往 down 可进入迷宫。\n");
+  set("exits", ([
+    "down" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

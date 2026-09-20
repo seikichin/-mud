@@ -1,0 +1,18 @@
+// hutouyan —— 由 nitan/d/wudang/hutouyan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-360,140)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "虎头岩");
+  set("long", @LONG
+一块巨大的岩石看上去好象一个虎头正张大了血盆大口咆哮，虎
+身隐藏在草木丛中。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "chaotiangong",
+    "northdown" : __DIR__ "wulaofeng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

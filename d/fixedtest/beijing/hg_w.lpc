@@ -1,0 +1,17 @@
+// hg_w —— 由 nitan/d/beijing/hg_w.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-200,4100,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "皇宫偏殿");
+  set("long", @LONG
+这里便是紫禁城的正门的大殿，寻常百姓是到不了这里来的，如
+果你以不正当的途径到了这里，还是赶快离开为好。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "hg",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

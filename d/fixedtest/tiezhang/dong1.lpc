@@ -1,0 +1,20 @@
+// dong1 —— 由 nitan/d/tiezhang/dong1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,170,70)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", @LONG
+一个黑漆漆的山洞，黑沉沉的一眼望不到底。两侧的石壁上生满的
+苔藓，摸起来又湿又滑。这石洞似乎是人工开凿的，从四周的石壁上仍
+能看出斧凿的痕迹。你站在这里，一股恐惧由然而生，似乎身体随时都
+会被这片黑暗吞噬掉。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "dong2",
+    "out" : __DIR__ "3/17/7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

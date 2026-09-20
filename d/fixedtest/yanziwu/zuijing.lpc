@@ -1,0 +1,19 @@
+// zuijing —— 由 nitan/d/yanziwu/zuijing.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "缀锦楼");
+  set("long", @LONG
+地面铺着大红地毯，房中布置得珠光宝气，各种珠宝，古玩摆放
+得琳琅满目，你看了颇为心动，很想顺手拿走几件，但又有些不敢。
+角落里有一架红木楼梯。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "jiashan",
+    "west" : __DIR__ "canheju",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,16 @@
+// donghu —— 由 nitan/d/wuchang/donghu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1390,-2220,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东湖");
+  set("long", @LONG
+一面碧绿的湖水，浩淼连天，湖面烟波迷茫，一派江南好风景。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "huanghelou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

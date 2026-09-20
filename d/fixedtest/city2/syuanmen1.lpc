@@ -1,0 +1,22 @@
+// syuanmen1 —— 由 nitan/d/city2/syuanmen1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "辕门外"NOR);
+  set("long", @LONG
+这里就是「大宋」军营驻扎地了，远远地可以看见一面大旗，上
+面书着一个斗大的隶书「宋」字，再走近些就到军营了，寻常人还是
+不要靠近的好，省得被当成细作捉起来。西边一个石门通向箭楼，上
+面一个铁门通向城墙。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "sying5",
+    "west" : __DIR__ "sying6",
+    "east" : __DIR__ "conglin4",
+    "south" : __DIR__ "sying",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

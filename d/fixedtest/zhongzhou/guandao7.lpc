@@ -1,0 +1,17 @@
+// guandao7 —— 由 nitan/d/zhongzhou/guandao7.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "官道");
+  set("long", @LONG
+这是一条由官府铺设的道路，可容八马并驱。是南北交通
+要道。行人明显多了，不时还有骑马的和赶车的经过。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "1/9/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

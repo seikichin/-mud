@@ -1,0 +1,17 @@
+// inhole2 —— 由 nitan/d/binghuo/inhole2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(190,10,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "内洞");
+  set("long", @LONG
+内洞比外洞稍小。靠侧石壁边搭着一个木床，洞里不见天光，长
+年烧着松明子，一洞暖意融融。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "inhole1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

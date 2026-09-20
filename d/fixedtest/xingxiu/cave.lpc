@@ -1,0 +1,18 @@
+// cave —— 由 nitan/d/xingxiu/cave.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,130,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", @LONG
+黑黝黝的山洞里，有一股腥臭味。等眼睛适应了这里的弱光后，才
+发现地上有一条色彩斑斓的巨蟒。巨蟒旁有许多白惨惨的骨骇，令人胆
+寒。想必都是探险之人，误入山洞，为巨蟒所害。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "shanshi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

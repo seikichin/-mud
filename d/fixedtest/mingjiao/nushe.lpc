@@ -1,0 +1,18 @@
+// nushe —— 由 nitan/d/mingjiao/nushe.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,90,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "地门女舍");
+  set("long", @LONG
+走进这间女舍，一阵脂粉淡香扑面，似有似无，似茉莉，似丁香，
+似玫瑰，似夜来香，让人心神荡漾。几位姑娘斜倚阑窗，吟诗作画，
+全不似武林中人，谁能想到，她们都是叱咤江湖的巾帼女杰呢？
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "7/9/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

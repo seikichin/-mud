@@ -1,0 +1,20 @@
+// dong8 —— 由 nitan/d/yanziwu/dong8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1190,-1270,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "潮声洞");
+  set("long", @LONG
+洞里伸手不见五指。隐隐听到湖浪冲击巨岩，延绵不绝。你在洞里
+摸索前行，听着潮声引导，试图找到出洞的方向。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "46/59/1",
+    "north" : __DIR__ "46/60/1",
+    "east" : __DIR__ "47/59/1",
+    "south" : __DIR__ "46/58/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

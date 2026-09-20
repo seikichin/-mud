@@ -1,0 +1,14 @@
+// guanyuntai —— 由 nitan/d/wudang/guanyuntai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-340,-420,190)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "观云台");
+  set("long", " ");
+  set("exits", ([
+    "westdown" : __DIR__ "jinding",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

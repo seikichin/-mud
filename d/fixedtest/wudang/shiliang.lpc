@@ -1,0 +1,20 @@
+// shiliang —— 由 nitan/d/wudang/shiliang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-250,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石梁");
+  set("long", @LONG
+你走入山坞中，有一道石梁跨溪而建，这里是九渡涧的下流，各
+岭之水均在此交汇景色极佳。附近设有许多小吃店，游人至此，大多
+小住歇歇脚力。再往上就是陡峭的十八盘了。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "shop",
+    "southup" : __DIR__ "shibapan",
+    "northup" : __DIR__ "taizipo",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

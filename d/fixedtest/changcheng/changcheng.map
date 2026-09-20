@@ -1,0 +1,20 @@
+# changcheng —— nitan d/changcheng 映射区（2x1x2）
+# 由 nitan_build.aardio 自动生成，勿手改
+# coor = (格索引 + (-1001,800,4)) * 10
+# 位值: 1=E 2=W 4=S 8=N 16=D 32=UP | 64=NE 128=NW 256=SE 512=SW
+#       1024=NU 2048=SU 4096=EU 8192=WU 16384=ND 32768=SD 65536=ED 131072=WD
+# 数据行自 y=0 起（首行 = y 最小的那一行），第 n 列的 x = n-1
+# [LINK] x,y,z,方向,目标 —— 目标为 tx,ty,tz 则是本迷宫另一格，否则为对象路径
+
+[SIZE] 2,1,2
+[ENTRY] 1,0,0
+[EXIT] 0,0,1
+
+[LINK] 0,0,0,northwest,/d/fixedtest/changcheng/changcheng14
+[LINK] 1,0,0,north,/d/fixedtest/changcheng/changcheng12
+
+[Z=0]
+000021 000002
+
+[Z=1]
+000010 000000

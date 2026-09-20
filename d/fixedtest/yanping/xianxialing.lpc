@@ -1,0 +1,19 @@
+// xianxialing —— 由 nitan/d/yanping/xianxialing.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1500,-3000,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "仙霞岭");
+  set("long", @LONG
+这里就是闽浙分水的仙霞岭。向阳的坡面郁郁葱葱，长满了长长的
+马尾松。沿途的山路十分难行，来往的口音也渐渐带有闽音，越来越难
+以辩识了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "erbapu",
+    "northdown" : "/d/fixedtest/jiaxing/1/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// mtroad3 —— 由 nitan/d/motianya/mtroad3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,10,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气
+氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "1/1/0",
+    "north" : __DIR__ "mtroad3",
+    "east" : __DIR__ "mtroad2",
+    "west" : __DIR__ "mtroad3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

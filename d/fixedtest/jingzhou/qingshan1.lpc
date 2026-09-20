@@ -1,0 +1,17 @@
+// qingshan1 —— 由 nitan/d/jingzhou/qingshan1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-360,-190,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青山");
+  set("long", @LONG
+顺山而走，山势渐渐陡了起来，杂草荆棘丛生， 使你难以行走。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "road5",
+    "eastup" : __DIR__ "qingshan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

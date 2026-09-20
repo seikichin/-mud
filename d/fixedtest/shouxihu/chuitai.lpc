@@ -1,0 +1,15 @@
+// chuitai —— 由 nitan/d/shouxihu/chuitai.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "吹台");
+  set("long", "三星拱照");
+  set("exits", ([
+    "east" : __DIR__ "7/8/1",
+    "south" : __DIR__ "balongqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

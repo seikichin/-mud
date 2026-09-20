@@ -1,0 +1,19 @@
+// walln8 —— 由 nitan/d/xiangyang/walln8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7850,-720,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "北城头");
+  set("long", @LONG
+这里是襄阳的北城头。一些宋兵正在城头巡逻，一个牙将
+正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯
+着城下的动静。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "wallw7",
+    "eastdown" : __DIR__ "0/9/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

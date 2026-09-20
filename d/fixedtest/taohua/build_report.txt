@@ -1,0 +1,50 @@
+==== taohua ====
+  网格 L,M,H = 8,8,3   格数 = 33   入格原房间 = 43   合并格 = 8
+  原 coor 基准 (gx,gy,gz) = (897,-300,0)   => link_entry_room = (9010,-2960,40)
+  入口 = liangong2 格 3,6,0   出口 = beach 格 7,0,0   entry_dir = up
+  边：方向位 78  LINK 2（含自环 0 / 到独立房 1 / 到外部 0）  非标准方向 6  丢弃空出口 0
+  [LINK] 总行数 = 8   独立房间 = 38
+  ---- 警告 ----
+  第 1 轮：地图 405x101x3 超出上限 100，只保留最密集的 100^3 窗口（897,-300,0），裁掉 3 间房
+  第 2 轮：剔除 6 个零位格房间，重新建图
+  ---- 独立房间 ----
+    bingqi  (原文件无 coor)
+    boat  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    dahai  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    damen  (原文件无 coor)
+    daojufang  (原文件无 coor)
+    dating  (原文件无 coor)
+    didao  (原文件无 coor)
+    duchuan  (原文件无 coor)
+    grave  (原文件无 coor)
+    haitan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    houyuan  (原文件无 coor)
+    lantian  (原文件无 coor)
+    mudao  (原文件无 coor)
+    mushi  (原文件无 coor)
+    neidong  (原文件无 coor)
+    neidong2  (原文件无 coor)
+    qianyuan  (原文件无 coor)
+    road5  (原文件无 coor)
+    shijian  (原文件无 coor)
+    ship  (原文件无 coor)
+    shufang  (原文件无 coor)
+    siguoshi  (原文件无 coor)
+    tao0  (原文件无 coor)
+    tao_in  (原文件无 coor)
+    tao_out  (原文件无 coor)
+    thzhen1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    thzhen2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    thzhen3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    thzhen4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    thzhen5  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    thzhen6  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    tingzi  (原文件无 coor)
+    wuchang1  (原文件无 coor)
+    wuchang2  (原文件无 coor)
+    wuchang3  (原文件无 coor)
+    xiangzhong  (原文件无 coor)
+    xiaowu  (原文件无 coor)
+    zhoushan  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    zhoushan.west -> /d/jiaxing/nanhu1

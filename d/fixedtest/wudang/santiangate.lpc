@@ -1,0 +1,17 @@
+// santiangate —— 由 nitan/d/wudang/santiangate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-410,170)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "三天门");
+  set("long", @LONG
+这里是登山石阶的尽头三天门，再往上走就是武当绝顶了。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "jinding",
+    "northdown" : __DIR__ "ertiangate",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

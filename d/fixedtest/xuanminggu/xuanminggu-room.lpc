@@ -1,0 +1,99 @@
+// ============================================================
+//  xuanminggu-room.lpc  ——  nitan d/xuanminggu 映射区（8x8x5）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 xuanminggu.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (0,0,0)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "7,0,0" : ({ "小路", @LONG
+这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什
+么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光
+透下来照的你身上是斑斑驳驳的影子。
+LONG  }),  // coor(70,0,0)  xiaolu1
+  "6,0,1" : ({ "玄冥峰山脚", @LONG
+这是玄冥峰山脚，再往前走就是玄冥谷了。四周树木葱绿，绿草深
+长。山鸡野兔肆意奔跑。
+LONG  }),  // coor(60,0,10)  shanjiao
+  "5,1,1" : ({ "山路", @LONG
+这是玄冥峰的山路，四周树木高耸，走兽成群。
+LONG  }),  // coor(50,10,10)  shanlu1
+  "4,2,1" : ({ "小路", @LONG
+这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什
+么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光
+透下来照的你身上是斑斑驳驳的影子。
+LONG  }),  // coor(40,20,10)  xiaolu2
+  "3,2,2" : ({ "小路", @LONG
+这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什
+么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光
+透下来照的你身上是斑斑驳驳的影子。
+LONG  }),  // coor(30,20,20)  xiaolu3
+  "2,2,3" : ({ "翠竹林", @LONG
+这是玄冥峰山腰的一片翠竹林，四处青翠掩映，鸟语花香。
+LONG  }),  // coor(20,20,30)  zulin1
+  "1,3,3" : ({ "山路", @LONG
+这是玄冥峰的山路，四周树木高耸，走兽成群。
+LONG  }),  // coor(10,30,30)  shanlu2
+  "1,5,3" : ({ "玄冥谷", " " }),  // coor(10,50,30)  xuanminggu
+  "0,6,3" : ({ "山路", @LONG
+这是玄冥峰的山路，四周树木高耸，走兽成群。
+LONG  }),  // coor(0,60,30)  shanlu4
+  "1,2,4" : ({ "翠竹林", @LONG
+这是玄冥峰山腰的一片翠竹林，四处青翠掩映，鸟语花香。
+此处比之竹林入口处景色更佳，竹子的幽香气息扑鼻而来。实在
+是练武静思之宝地。
+LONG  }),  // coor(10,20,40)  zulin2
+  "1,4,4" : ({ "山路", @LONG
+这是玄冥峰的山路，四周树木高耸，走兽成群。
+LONG  }),  // coor(10,40,40)  shanlu3
+  "0,7,4" : ({ "玄冥峰", @LONG
+这里便是玄冥峰了，只见四周白雪覆盖，远处群山却是葱
+绿一片。举目四望，但见不远处玄冥谷中炊烟了了，偶有猴子
+松鼠之类小生灵忽而跃出，而后又隐没与群山之间。
+LONG  }),  // coor(0,70,40)  xuanmingfeng
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

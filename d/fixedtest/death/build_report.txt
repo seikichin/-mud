@@ -1,0 +1,32 @@
+==== death ====
+  网格 L,M,H = 14,11,21   格数 = 43   入格原房间 = 43   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (1,0,0)   => link_entry_room = (80,50,220)
+  入口 = yellow3 格 2,2,1   出口 = yinyangta18 格 13,4,20   entry_dir = down
+  边：方向位 74  LINK 4（含自环 1 / 到独立房 6 / 到外部 0）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 11   独立房间 = 19
+  ---- 警告 ----
+  第 1 轮：剔除 15 个零位格房间，重新建图
+  ---- 独立房间 ----
+    baihuxue  (原文件无 coor)
+    block  (原文件无 coor)
+    emptyroom  (原文件无 coor)
+    god1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    god2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan5  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan6  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan7  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hantan8  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    inn1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    inn2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    jimiesi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    lunhuisi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    lunhuisi_road1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    qinglongtan  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    baihuxue.south -> /d/fixedtest/death/heisenlin/exit
+    god1.down -> /d/city/wumiao
+    jimiesi.north -> /d/fixedtest/death/heisenlin/entry

@@ -1,0 +1,13 @@
+// gaoli 入口房：哨卡·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "哨卡" NOR);
+  set("long", "哨卡。往 south 可进入迷宫。\n");
+  set("exits", ([
+    "south" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

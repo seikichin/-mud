@@ -1,0 +1,20 @@
+// road3 —— 由 nitan/d/yanping/road3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1450,-6190,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石街");
+  set("long", @LONG
+这是一条青石铺就的长街。延平府依山傍水而建，这条石街便也起
+伏跌宕不休。北边是西山，爬上高高的石街，便是州学所在了。东边通
+往府衙，西边便是西门。南边紧邻高厚冰冷的青砖城墙。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "xishan",
+    "east" : __DIR__ "6/0/0",
+    "west" : __DIR__ "ximen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// sanbuguan —— 由 nitan/d/wudang/sanbuguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-330,-160,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "三不管");
+  set("long", @LONG
+这里是四川、湖北与陕西的交界，俗称三不管。小土路的两旁有
+疏疏落落的农舍耕田，几只牛羊正在吃草。路上行人很少，都匆匆赶
+路。
+LONG );
+  set("exits", ([
+    "southwest" : "/d/fixedtest/emei/24/17/0",
+    "east" : __DIR__ "wdroad8",
+    "southeast" : __DIR__ "wdroad9",
+    "north" : "/d/fixedtest/yuanyue/shandao1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

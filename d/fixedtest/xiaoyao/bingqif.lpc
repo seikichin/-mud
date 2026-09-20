@@ -1,0 +1,18 @@
+// bingqif —— 由 nitan/d/xiaoyao/bingqif.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,-490,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "打铁屋");
+  set("long", @LONG
+这里是树林深处的一间小石屋，看来是打造兵器的，屋子中有个大
+火炉好烫的呢，屋中还有一张石几，上面摆放着一些早就已经打造好的
+兵器。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "xiaodao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

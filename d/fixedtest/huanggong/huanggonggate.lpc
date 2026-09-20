@@ -1,0 +1,13 @@
+// huanggong 入口房：景阳宫·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "景阳宫" NOR);
+  set("long", "景阳宫。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,14 @@
+// jiao1 —— 由 nitan/d/ruzhou/jiao1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "花轿");
+  set("long", @LONG
+你正坐在一顶大花轿里，里面空间不大，上衬绫绸、下垫软毯，人在
+里面只觉一颠一颠地摇晃着，分明是在行走之中。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,66 @@
+// ============================================================
+//  qilindong-room.lpc  ——  nitan d/qilindong 映射区（1x2x1）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 qilindong.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (1,0,0)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "0,0,0" : ({ HIR "麒麟窟" NOR, HIR "\n\n" 
+"这是麒麟窟。进来顿觉一股热浪扑面而来，冲得你差点晕了\n"
+"过去。四周一片通红，地面上冒着丝丝白气，脚底剧烈的炙痛\n"
+"使你几乎立脚不住。热风带着隆隆巨响冲击着耳鼓，令你觉得\n"
+"置身洪炉之中，全身的水分都在被一滴滴地烤干。你感到生命\n" 
+"正离你而去·！\n\n" NOR }),  // coor(10,0,0)  dong2
+  "0,1,0" : ({ HIR "麒麟窟" NOR, HIR "\n\n" 
+"这是麒麟窟。进来顿觉一股热浪扑面而来，冲得你差点晕了\n"
+"过去。四周一片通红，地面上冒着丝丝白气，脚底剧烈的炙痛\n"
+"使你几乎立脚不住。热风带着隆隆巨响冲击着耳鼓，令你觉得\n"
+"置身洪炉之中，全身的水分都在被一滴滴地烤干。你感到生命\n" 
+"正离你而去·！\n\n" NOR }),  // coor(10,10,0)  dong3
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

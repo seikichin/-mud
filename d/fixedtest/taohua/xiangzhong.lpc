@@ -1,0 +1,29 @@
+// xiangzhong —— 由 nitan/d/taohua/xiangzhong.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "香冢");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+  set("exits/enter", __DIR__"didao");
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_push", "push");
+}
+
+
+void close_door()
+{
+
+        if (((int)query_temp("left")!=3) || ((int)query_temp("right")!=3)) 
+                return;
+
+          delete("exits/enter");
+          delete_temp("left");
+          delete_temp("right");
+}

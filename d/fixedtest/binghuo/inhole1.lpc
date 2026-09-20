@@ -1,0 +1,19 @@
+// inhole1 —— 由 nitan/d/binghuo/inhole1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(180,10,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "外洞");
+  set("long", @LONG
+山洞极是宽敞，有八九丈纵深，中间透入一线天光，宛似天窗一
+般。洞里陶盆、瓷碗、石凳、木桌、竹帚，自有一番情趣。石洞中套
+洞，里头还有一个里洞。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "inhole2",
+    "out" : __DIR__ "0/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

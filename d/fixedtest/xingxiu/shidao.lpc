@@ -1,0 +1,19 @@
+// shidao —— 由 nitan/d/xingxiu/shidao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,100,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石道");
+  set("long", @LONG
+这是一条两旁点缀花卉的小径。花儿发出的香味多多少少冲淡了周
+围弥漫着沼泽的瘴气。来来往往都是星宿弟子，而且都是男的，哼着小
+曲。西边有一山洞，洞里不时传来嬉笑声，其中也夹杂了哭叫求饶声。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "xiaojing",
+    "enter" : __DIR__ "xiaoyao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

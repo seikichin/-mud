@@ -1,0 +1,19 @@
+// lvzhou —— 由 nitan/d/hasake/lvzhou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,100,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "回疆绿洲" NOR);
+  set("long", @LONG
+在戈壁的尽头出现了一个绿洲。这里有口水井，可是已经干涸了。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "gebi3",
+    "northeast" : __DIR__ "gebi4",
+    "southeast" : __DIR__ "gebi2",
+    "northwest" : __DIR__ "gebi1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

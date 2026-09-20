@@ -1,0 +1,18 @@
+// jingzhuang3 —— 由 nitan/d/dali/jingzhuang3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,29)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第三层");
+  set("long", @LONG
+雕绕绫坐像四座，坐像间之四面各雕佛及菩萨一组。识者谓北面
+多臂观音，南面为地藏菩萨。合神佛面目和蔼，雕刻精细，造形优美。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "jingzhuang2",
+    "up" : __DIR__ "jingzhuang4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

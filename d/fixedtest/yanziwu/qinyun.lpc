@@ -1,0 +1,19 @@
+// qinyun —— 由 nitan/d/yanziwu/qinyun.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "琴韵小筑");
+  set("long", @LONG
+这是一间小巧玲珑的房舍，颇为精雅。周围稀稀落落的四五间小
+房屋，建造在一个不知是小岛还是半岛上。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "neitang",
+    "east" : __DIR__ "xiaoting",
+    "westdown" : __DIR__ "muti",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

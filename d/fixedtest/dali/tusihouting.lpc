@@ -1,0 +1,19 @@
+// tusihouting —— 由 nitan/d/dali/tusihouting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19141,-6881,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后厅");
+  set("long", @LONG
+议事厅后是后厅，是一楼一底的中式建筑。屋角雕刻细密，纹饰
+精美，各种图案和禽兽花木的雕刻，栩栩如生，纹路新颖。这是云南
+十八座土司府中保留最好的一座。
+LONG );
+  set("exits", ([
+    "down" : "/d/fixedtest/xueshan/5/3/2",
+    "south" : __DIR__ "tusimentang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

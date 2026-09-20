@@ -1,0 +1,17 @@
+// yideng12 —— 由 nitan/d/dali/yideng12.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-38000,-79990,500)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "庙后石室");
+  set("long", @LONG
+竹林深处的石室清雅幽静，窗外满眼是幽幽碧竹，正是禅宗参禅
+之妙所。室中小几上点着一炉檀香，几旁一位老僧端坐在蒲团上。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "yideng11",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

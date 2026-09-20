@@ -1,0 +1,19 @@
+// hong-zoulang —— 由 nitan/d/suzhou/hong-zoulang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(220,-200,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "红娘庄走廊");
+  set("long", @LONG
+走廊两边是红漆金粉的廊柱雕栏，高低错落地挑着两排红灯笼。
+地上铺着厚厚的大红地毯，急待结婚的新人们进来踩在上面，一股喜
+庆幸福之感自心底油然而生。前面是一个不大的门厅。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "hongniang-zhuang",
+    "west" : __DIR__ "hong-damen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

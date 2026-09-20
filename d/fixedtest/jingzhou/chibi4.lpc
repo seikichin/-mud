@@ -1,0 +1,18 @@
+// chibi4 —— 由 nitan/d/jingzhou/chibi4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-230,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长江岸边");
+  set("long", @LONG
+这里是长江北岸，江水在你身边哗哗的流淌，不时可以看见有山
+木从上游漂来，在水中打了个圈，向下游漂去。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "chibi3",
+    "west" : __DIR__ "chibi5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

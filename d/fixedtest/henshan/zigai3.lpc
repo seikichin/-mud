@@ -1,0 +1,16 @@
+// zigai3 —— 由 nitan/d/henshan/zigai3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "水莲洞内");
+  set("long", @LONG
+这里四周空旷，比起外面来却没有那么潮湿，路到这里却没有了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zigai2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// xiaren —— 由 nitan/d/zhongzhou/xiaren.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9080,-970,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西厢房");
+  set("long", @LONG
+这是县太爷府里供下人居住的地方。屋内没什么东西，只
+有一张桌子和几张竹凳。屋角的盆里放着一大堆的衣服。有几
+个丫鬟没事正在绣花。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "huayuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

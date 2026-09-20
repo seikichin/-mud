@@ -1,0 +1,18 @@
+// wenquan —— 由 nitan/d/jingzhou/wenquan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7130,-2070,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "温泉井");
+  set("long", @LONG
+你看到一眼温泉呈现在你的面前，汩汩往外冒着热气和泉水，温
+泉虽不大，但足以使人想到下去泡一泡，据说还可以疗伤治病。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "lydao2",
+    "eastup" : __DIR__ "lydao3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

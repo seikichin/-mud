@@ -1,0 +1,18 @@
+// changlang —— 由 nitan/d/dali/changlang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19101,-6851,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长廊");
+  set("long", @LONG
+这里是镇南王府的长廊，两边都是大圆柱。边上假山小湖应有尽
+有，显得十分秀丽。北面是一座大建筑，南边是一个小庭院。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "tingyuan",
+    "north" : __DIR__ "tingfang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

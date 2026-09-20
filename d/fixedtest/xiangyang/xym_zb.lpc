@@ -1,0 +1,18 @@
+// xym_zb —— 由 nitan/d/xiangyang/xym_zb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大  门");
+  set("long", @LONG
+这里是侠义盟襄阳总部的大门，一面大旗迎风招展，上书『锄恶
+务尽』四个大字。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xym_dating",
+    "west" : __DIR__ "5/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

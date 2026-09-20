@@ -1,0 +1,19 @@
+// shanlu1 —— 由 nitan/d/heizhao/shanlu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-1500,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密林矮树");
+  set("long", @LONG
+这里荒无人烟，举步踏到的尽是矮树长草，哪里有路可寻？每
+走一步，荆棘都钩刺到小腿，也不觉疼痛，走了一阵，四周林木渐
+密，你一步一步走得很慢，只恐一个踏空，跌入山沟陷坑之中。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/henshan/6/4/1",
+    "west" : __DIR__ "maze1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -44,8 +44,20 @@
  *
  *       位值（见 include/vrm.h）:
  *         1=E(东,+x)  2=W(西,-x)  4=S(南,-y)  8=N(北,+y)  16=D(下,-z)  32=UP(上,+z)
+ *         64=NE(东北)  128=NW(西北)  256=SE(东南)  512=SW(西南)
+ *         1024=NU(北边高处)  2048=SU(南边高处)  4096=EU(东边高处)  8192=WU(西边高处)
+ *         16384=ND(北边低处)  32768=SD(南边低处)  65536=ED(东边低处)  131072=WD(西边低处)
+ *       每格十六进制，1~8 位均可解析（斜向位全开时是 5 位）；00 = 无房间。
  *       数据行自 y=0 起（首行为 y=0），第 n 列的 x = n-1；格与格之间用空格分隔。
+ *       斜向出口与基础方向一样要求「互反」（A 的 NE 位对应 B 的 SW 位），
+ *       check_maze_map() 会逐位检查。
  *       '#' 开头为注释；空行忽略；'[' 开头的行不得缩进。
+ *
+ *       [LINK] x,y,z,方向,目标   # 可选；特殊出口（enter/out 等非网格方向）
+ *         目标为 "tx,ty,tz" → 本迷宫内的另一格
+ *         目标为其它字符串  → 直接作为对象路径（可指向迷宫外的房间）
+ *         例: [LINK] 5,3,0,enter,5,4,0
+ *         不受方向位的互反/相邻约束；校验器只检查格间目标必须非空。
  *
  * 【修改约定】
  *   同 vrm_dungeon.lpc：先父后子 update
@@ -63,6 +75,13 @@ int map_enter_set;
 int map_enter_x, map_enter_y, map_enter_z;
 int map_exit_set;
 int map_exit_x, map_exit_y, map_exit_z;
+
+// 特殊出口（enter/out 等非网格方向）
+// key = "x,y,z"，值 = ({ ({方向名, 目标}), ... })
+// 目标是 "tx,ty,tz" 形式 → 本迷宫内的另一格；否则视为对象路径
+mapping maze_links;
+int map_link_count;
+
 string entry_back_dir;     // 入口房返回外面的方向
 string exit_back_dir;      // 出口房通向外面的方向
 string maze_owner_key;     // 固定区域的实例键（强制覆盖请求路径里的 owner）
@@ -75,6 +94,8 @@ void set_maze_map(string f) {
   map_lines = 0;
   map_meta_done = 0;
   map_broken = 0;
+  maze_links = ([]);
+  map_link_count = 0;
 }
 
 // 地图改动后重新读取
@@ -82,6 +103,8 @@ void reload_maze_map() {
   map_lines = 0;
   map_meta_done = 0;
   map_broken = 0;
+  maze_links = ([]);
+  map_link_count = 0;
 }
 
 void set_entry_back_dir(string d) {
@@ -166,6 +189,68 @@ string map_arg(string line) {
   e = strsrch(line, "]");
   if (e < 0 || e + 1 >= strlen(line)) return "";
   return line[e+1..];
+}
+
+// 前置声明（fluffos 要求先声明后用）
+string *query_map_lines();
+
+// ---------- 特殊出口（[LINK] 段） ----------
+// 语法： [LINK] x,y,z,方向,目标
+//   目标为 "tx,ty,tz"  → 本迷宫内的另一格
+//   目标为其它字符串  → 直接作为对象路径（可指向迷宫外的房间）
+// 用途：表达 enter / out / 爬 / 钻 等非网格方向，以及任意跨格连线。
+// 说明：这些出口不参与方向位掩码，因而不受互反/相邻约束；
+//       校验器只检查"格间目标"必须是本迷宫里的非空格。
+void parse_maze_links() {
+  string *lines, *parts;
+  string line, tag, arg, key, dir, tgt;
+  int i, n, k, nparts, x, y, z, tx, ty, tz;
+
+  maze_links = ([]);
+  map_link_count = 0;
+
+  lines = query_map_lines();
+  n = sizeof(lines);
+
+  for (i = 0; i < n; i++) {
+    line = lines[i];
+    if (!stringp(line) || line == "") continue;
+    if (line[0] != '[') continue;
+
+    tag = map_tag(line);
+    if (!stringp(tag) || tag != "LINK") continue;
+
+    arg = map_arg(line);
+    if (!stringp(arg) || arg == "") continue;
+    if (sscanf(arg, "%s", key) != 1) continue;
+    if (!stringp(key) || key == "") continue;
+
+    parts = explode(key, ",");
+    nparts = sizeof(parts);
+    if (nparts < 5) continue;
+
+    x = to_int(parts[0]);
+    y = to_int(parts[1]);
+    z = to_int(parts[2]);
+    dir = parts[3];
+    if (!stringp(dir) || dir == "") continue;
+
+    if (nparts >= 7) {
+      tx = to_int(parts[4]);
+      ty = to_int(parts[5]);
+      tz = to_int(parts[6]);
+      tgt = sprintf("%d,%d,%d", tx, ty, tz);
+    } else {
+      tgt = parts[4];
+      for (k = 5; k < nparts; k++) tgt += "," + parts[k];
+    }
+    if (!stringp(tgt) || tgt == "") continue;
+
+    key = sprintf("%d,%d,%d", x, y, z);
+    if (!arrayp(maze_links[key])) maze_links[key] = ({});
+    maze_links[key] += ({ ({ dir, tgt }) });
+    map_link_count++;
+  }
 }
 
 // 读地图文件（缓存）
@@ -305,7 +390,7 @@ void fill_maze_from_map() {
     for (x = 0; x < sizeof(cells); x++) {
       if (x >= l) break;
       v = cells[x];
-      if (v < 0 || v > ALL) {
+      if (v < 0 || v > ALL_DIRS) {
         bad++;
         v = 0;
       }
@@ -358,6 +443,7 @@ void build_maze() {
     for (j = 0; j < m; j++) all[i][j] = allocate(h);
 
   fill_maze_from_map();
+  parse_maze_links();
 
   enter = new(class coordinate);
   if (map_enter_set) {
@@ -435,6 +521,32 @@ mixed query_maze_mark_ob(mixed who) {
   return owner;
 }
 
+// 覆盖基类的房间回调钩子：先走房间模板，再补上 [LINK] 特殊出口。
+// 调用时机在 vrm_dungeon::create_maze() 内部——此时方向位出口都已 set 完，
+// 因此 [LINK] 若用了同名方向，会覆盖方向位出口。
+void setup_room_callbacks(mixed f, object ob, int l, int m, int h, int x, int y, int z) {
+  mixed *ls;
+  string tgt;
+  int i, n, tx, ty, tz;
+
+  ::setup_room_callbacks(f, ob, l, m, h, x, y, z);
+
+  if (!mapp(maze_links)) return;
+  ls = maze_links[sprintf("%d,%d,%d", x, y, z)];
+  if (!arrayp(ls)) return;
+
+  n = sizeof(ls);
+  for (i = 0; i < n; i++) {
+    if (!arrayp(ls[i]) || sizeof(ls[i]) < 2) continue;
+    tgt = ls[i][1];
+    if (!stringp(tgt) || tgt == "") continue;
+    // "tx,ty,tz" 三整数形式 = 本迷宫内的另一格 → 换算成房间路径
+    if (sscanf(tgt, "%d,%d,%d", tx, ty, tz) == 3)
+      tgt = mroom_fname(tx, ty, tz);
+    ob->set(sprintf("exits/%s", ls[i][0]), tgt);
+  }
+}
+
 // 入口房：补一条通往区域外的普通出口（固定区域不走 out 动作）
 void setup_entry_room_extra(object ob) {
   string d;
@@ -460,33 +572,15 @@ void setup_exit_room_extra(object ob) {
 string *check_maze_map() {
   string *errs = ({});
   int x, y, z, k, v, nx, ny, nz, cnt, enter_bit, leave_bit;
-  int *bit = ({ 1, 2, 4, 8, 16, 32 });
-  int *opp = ({ 2, 1, 8, 4, 32, 16 });
-  int *dx = ({ 1, -1, 0, 0, 0, 0 });
-  int *dy = ({ 0, 0, -1, 1, 0, 0 });
-  int *dz = ({ 0, 0, 0, 0, -1, 1 });
+  // 方向位/坐标偏移/反向位统一取 vrm_dungeon 的 18 向表（6 基础向 + 12 斜向）
 
   if (!arrayp(all) || l < 2 || m < 2 || h < 1)
     return ({ "迷宫未建立（地图可能加载失败）" });
 
   // 入口格/出口格各有一个位是「指向迷宫外」的（分别指向 entry / exit 房间），
   // 这是引擎设计（查询房间时会被覆盖），校验时须放行。
-  switch (entry_dir) {
-    case "east": enter_bit = E; break;
-    case "west": enter_bit = W; break;
-    case "south": enter_bit = S; break;
-    case "north": enter_bit = N; break;
-    case "up": enter_bit = UP; break;
-    case "down": enter_bit = D; break;
-  }
-  switch (reverse_dir[entry_dir]) {
-    case "east": leave_bit = E; break;
-    case "west": leave_bit = W; break;
-    case "south": leave_bit = S; break;
-    case "north": leave_bit = N; break;
-    case "up": leave_bit = UP; break;
-    case "down": leave_bit = D; break;
-  }
+  enter_bit = dir_bit(entry_dir);
+  leave_bit = dir_bit(reverse_dir[entry_dir]);
 
   cnt = 0;
   for (x = 0; x < l; x++)
@@ -495,22 +589,45 @@ string *check_maze_map() {
         v = all[x][y][z];
         if (!v) continue;
         cnt++;
-        for (k = 0; k < 6; k++) {
-          if (!(v & bit[k])) continue;
-          nx = x + dx[k]; ny = y + dy[k]; nz = z + dz[k];
+        for (k = 0; k < sizeof(dir_bits); k++) {
+          if (!(v & dir_bits[k])) continue;
+          nx = x + dir_dx[k]; ny = y + dir_dy[k]; nz = z + dir_dz[k];
           if (nx < 0 || nx >= l || ny < 0 || ny >= m || nz < 0 || nz >= h) {
-            if ((x == enter->x && y == enter->y && z == enter->z && bit[k] == enter_bit)
-             || (x == leave->x && y == leave->y && z == leave->z && bit[k] == leave_bit))
+            if ((x == enter->x && y == enter->y && z == enter->z && dir_bits[k] == enter_bit)
+             || (x == leave->x && y == leave->y && z == leave->z && dir_bits[k] == leave_bit))
               continue;
-            errs += ({ sprintf("(%d,%d,%d) 方向位 %d 指向越界", x, y, z, bit[k]) });
+            errs += ({ sprintf("(%d,%d,%d) 方向 %s 指向越界", x, y, z, dir_names[k]) });
             continue;
           }
           if (!all[nx][ny][nz])
-            errs += ({ sprintf("(%d,%d,%d) 方向位 %d 指向空房间", x, y, z, bit[k]) });
-          else if (!(all[nx][ny][nz] & opp[k]))
-            errs += ({ sprintf("(%d,%d,%d) 与 (%d,%d,%d) 出口不互反", x, y, z, nx, ny, nz) });
+            errs += ({ sprintf("(%d,%d,%d) 方向 %s 指向空房间", x, y, z, dir_names[k]) });
+          else if (!(all[nx][ny][nz] & dir_opp[k]))
+            errs += ({ sprintf("(%d,%d,%d) 与 (%d,%d,%d) 出口不互反（%s）", x, y, z, nx, ny, nz, dir_names[k]) });
         }
       }
+
+  // 特殊出口（[LINK]）校验：格间目标必须是本迷宫里的非空格
+  parse_maze_links();
+  {
+    string *ks = keys(maze_links);
+    int ii, jj, nn, lx, ly, lz;
+    mixed *ls, *one;
+    for (ii = 0; ii < sizeof(ks); ii++) {
+      if (sscanf(ks[ii], "%d,%d,%d", lx, ly, lz) != 3) continue;
+      ls = maze_links[ks[ii]];
+      if (!arrayp(ls)) continue;
+      nn = sizeof(ls);
+      for (jj = 0; jj < nn; jj++) {
+        one = ls[jj];
+        if (!arrayp(one) || sizeof(one) < 2) continue;
+        if (sscanf(one[1], "%d,%d,%d", nx, ny, nz) != 3) continue;
+        if (nx < 0 || nx >= l || ny < 0 || ny >= m || nz < 0 || nz >= h)
+          errs += ({ sprintf("(%d,%d,%d) 特殊出口 %s 目标越界", lx, ly, lz, one[0]) });
+        else if (!all[nx][ny][nz])
+          errs += ({ sprintf("(%d,%d,%d) 特殊出口 %s 指向空房间", lx, ly, lz, one[0]) });
+      }
+    }
+  }
 
   if (cnt < 1) errs += ({ "地图里没有任何房间" });
 
@@ -542,12 +659,10 @@ int check_maze_reachable() {
   int *q = ({});
   int *seen = ({});
   int i, x, y, z, k, v, nx, ny, nz, cnt, idx, key, total;
-  int *bit = ({ 1, 2, 4, 8, 16, 32 });
-  int *dx = ({ 1, -1, 0, 0, 0, 0 });
-  int *dy = ({ 0, 0, -1, 1, 0, 0 });
-  int *dz = ({ 0, 0, 0, 0, -1, 1 });
+  // 方向位/坐标偏移统一取 vrm_dungeon 的 18 向表
 
   if (!arrayp(all) || l < 2 || m < 2 || h < 1) return -1;
+  parse_maze_links();
 
   total = 0;
   for (x = 0; x < l; x++)
@@ -573,9 +688,9 @@ int check_maze_reachable() {
     z = key2 / (l * m);
 
     v = all[x][y][z];
-    for (k = 0; k < 6; k++) {
-      if (!(v & bit[k])) continue;
-      nx = x + dx[k]; ny = y + dy[k]; nz = z + dz[k];
+    for (k = 0; k < sizeof(dir_bits); k++) {
+      if (!(v & dir_bits[k])) continue;
+      nx = x + dir_dx[k]; ny = y + dir_dy[k]; nz = z + dir_dz[k];
       if (nx < 0 || nx >= l || ny < 0 || ny >= m || nz < 0 || nz >= h) continue;
       if (!all[nx][ny][nz]) continue;
       key = nx + ny * l + nz * l * m;
@@ -584,7 +699,77 @@ int check_maze_reachable() {
       q += ({ key });
       cnt++;
     }
+
+    // 特殊出口（[LINK]）：按有向边计入连通性
+    {
+      mixed *ls = maze_links[sprintf("%d,%d,%d", x, y, z)];
+      int ii, tx, ty, tz;
+      if (arrayp(ls))
+        for (ii = 0; ii < sizeof(ls); ii++) {
+          if (!arrayp(ls[ii]) || sizeof(ls[ii]) < 2) continue;
+          if (sscanf(ls[ii][1], "%d,%d,%d", tx, ty, tz) != 3) continue;
+          if (tx < 0 || tx >= l || ty < 0 || ty >= m || tz < 0 || tz >= h) continue;
+          if (!all[tx][ty][tz]) continue;
+          key = tx + ty * l + tz * l * m;
+          if (seen[key]) continue;
+          seen[key] = 1;
+          q += ({ key });
+          cnt++;
+        }
+    }
   }
 
   return total - cnt;
+}
+
+// =====================================================================
+//  虚拟路径（覆盖 vrm_dungeon 的默认实现）
+//
+//  默认实现： mroom_fname = <区域对象路径>/<owner>/x/y/z
+//  固定区域的 owner 由 set_maze_owner_key() 指定，恒等于区域名，
+//  于是路径里出现三段重复的区名：
+//      /d/fixedtest/<区>/<区>/<区>/<x>/<y>/<z>
+//  当 owner 与区域对象自身的文件名相同时，owner 段是冗余的，这里把它去掉：
+//      格房   /d/fixedtest/<区>/<x>/<y>/<z>
+//      入口房 /d/fixedtest/<区>/entry
+//      出口房 /d/fixedtest/<区>/exit
+//
+//  注意：owner 与区域文件名不同的区域（例如 /d/fixedtest/test/ 下的
+//  fixed1(pub)、big6(pub6) 等测试区）会退化为默认实现，保持原路径不变，
+//  以免同一目录下的多个区域互相撞名。
+//  /adm/daemons/virtuald 的 compile_object 已同步支持该短路径。
+// =====================================================================
+
+// owner 段是否为冗余（owner == 区域对象文件名）
+int query_maze_owner_redundant() {
+  string b;
+  int i;
+
+  b = base_name(this_object());
+  i = strsrch(b, "/", -1);
+  b = (i >= 0) ? b[i + 1..] : b;
+  return (stringp(owner) && owner != "" && b == owner);
+}
+
+// 虚拟房间的路径前缀
+string query_maze_pathbase() {
+  string b;
+  int i;
+
+  b = base_name(this_object());
+  if (!query_maze_owner_redundant()) return b;
+  i = strsrch(b, "/", -1);
+  return (i > 0) ? b[0..i - 1] : b;
+}
+
+string mroom_fname(int x, int y, int z) {
+  if (query_maze_owner_redundant())
+    return sprintf("%s/%d/%d/%d", query_maze_pathbase(), x, y, z);
+  return sprintf("%s/%s/%d/%d/%d", query_maze_pathbase(), owner, x, y, z);
+}
+
+string maze_link_fname(string what) {
+  if (query_maze_owner_redundant())
+    return sprintf("%s/%s", query_maze_pathbase(), what);
+  return sprintf("%s/%s/%s", query_maze_pathbase(), owner, what);
 }

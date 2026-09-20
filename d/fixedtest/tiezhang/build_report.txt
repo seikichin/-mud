@@ -1,0 +1,23 @@
+==== tiezhang ====
+  网格 L,M,H = 11,21,11   格数 = 61   入格原房间 = 61   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (0,0,0)   => link_entry_room = (50,100,120)
+  入口 = shijie-3 格 10,5,4   出口 = zzfeng 格 3,20,10   entry_dir = down
+  边：方向位 112  LINK 1（含自环 10 / 到独立房 5 / 到外部 2）  非标准方向 1  丢弃空出口 1
+  [LINK] 总行数 = 19   独立房间 = 8
+  ---- 警告 ----
+  [丢弃未解析目标] hunanroad1.east -> "d/xiangyang/caodi6"
+  第 1 轮：剔除 8 个零位格房间，重新建图
+  [丢弃未解析目标] hunanroad1.east -> "d/xiangyang/caodi6"
+  ---- 独立房间 ----
+    dong1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    dong2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    dong3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    kedian3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shanlu-2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    sslu-2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    trdx  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    shanlu-2.south -> /d/fixedtest/tiezhang/shanlu-1.c
+    shanlu-2.north -> /d/fixedtest/tiezhang/guangchang.c
+    sslu-2.eastup -> /d/fixedtest/tiezhang/sslu-3.c

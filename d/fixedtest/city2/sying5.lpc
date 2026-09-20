@@ -1,0 +1,16 @@
+// sying5 —— 由 nitan/d/city2/sying5.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城墙上");
+  set("long", @LONG
+这里就是「大宋」军营前城墙。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "syuanmen1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

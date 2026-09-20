@@ -1,0 +1,17 @@
+// liang —— 由 nitan/d/fuzhou/liang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1820,-6312,10)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密室房梁");
+  set("long", @LONG
+你现在在密室的房梁上四下观瞧，周围都是些烂木头破砖瓦。突然
+你瞟见犄角旮旯处有一件袈裟。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "mishi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

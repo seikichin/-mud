@@ -1,0 +1,13 @@
+// moon 出口房：芳草地·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "芳草地" NOR);
+  set("long", "芳草地。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

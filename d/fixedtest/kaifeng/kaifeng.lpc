@@ -1,0 +1,41 @@
+// kaifeng —— nitan d/kaifeng 固定地图映射区（vrm_fixed）
+//
+//   kaifeng.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   kaifeng-room.lpc    格房描述（改文字即可改每格 look）
+//   kaifenggate.lpc / kaifenggate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/kaifeng/kaifeng/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = kaifeng）
+// 格索引 -> 原 coor： coor = (格索引 + (-510,209,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "kaifeng-room");
+  set_maze_map(__DIR__ "kaifeng");
+  set_maze_spacing(10);
+  set_maze_owner_key("kaifeng");
+
+  // 入口 = tonanyang（格 11,13,0），出口 = shanlu2（格 2,18,0）
+  set_entry_dir("up");
+  set_link_entry_room(__DIR__ "kaifenggate");
+  set_link_exit_room(__DIR__ "kaifenggate2");
+  set_entry_back_dir("up");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-5030);
+  set_link_entry_room_y(2180);
+  set_link_entry_room_z(40);
+
+  set_entry_short(HIW "官道" NOR);
+  set_entry_desc("官道，从这里可以进入迷宫（up）。\n");
+  set_exit_short(HIY "山路" NOR);
+  set_exit_desc("山路，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 kaifeng-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("官道");
+  set_maze_room_desc("nitan d/kaifeng 映射区。");
+}

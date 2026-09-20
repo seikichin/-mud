@@ -1,0 +1,14 @@
+// pmc —— 由 nitan/d/foshan/pmc.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "英雄会馆后厅");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "9/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

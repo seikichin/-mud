@@ -1,0 +1,19 @@
+// guandaow2 —— 由 nitan/d/luoyang/guandaow2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3580,1090,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直，尘土飞扬的大官道，它连接了东都长安和西都洛
+阳。官道很是宽广，足可容得下十马并驰。往西直达长安的东门，而东边
+则是洛阳古城。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "guandaow1",
+    "west" : __DIR__ "guandaow3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

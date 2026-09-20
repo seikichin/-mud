@@ -1,0 +1,61 @@
+// mishi —— 由 nitan/d/huanggong/mishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-190,5280,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗室");
+  set("long", @LONG
+这是康熙与心腹大臣密谋大事的地方, 寻常人是进不来的.
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_open", "open");
+        add_action("do_open", "unlock");
+}
+
+void close_gate()
+{
+        object room;
+
+        if(!( room = find_object("/d/fixedtest/huanggong/4/3/0")) )
+                room = load_object("/d/fixedtest/huanggong/4/3/0");
+        if(objectp(room))
+        {
+                delete("exits/south");
+                message("vision","只听乒地一声，暗门自动关了起来。\n", this_object());
+                message("vision","你脑海中闪过一个念头：坏了！出不去了！\n", this_object());
+                room->delete("exits/north");
+                message("vision","只听乒地一声，暗门自动关了起来。\n",room);
+                message("vision","你脑海中闪过一个念头：哎哟！又进不去了！\n", room );
+        }
+}
+
+int do_open(string arg)
+{
+        object room;
+
+        if (query("exits/south"))
+                return notify_fail("暗门已经是开着了。\n");
+
+        if (!arg || (arg != "door" && arg != "south"))
+                return notify_fail("你要开什么？\n");
+
+        if(!( room = find_object("/d/fixedtest/huanggong/4/3/0")) )
+                room = load_object("/d/fixedtest/huanggong/4/3/0");
+
+        if(objectp(room))
+        {
+                set("exits/south", "/d/fixedtest/huanggong/4/3/0");
+                message_vision("$N使劲把暗门打了开来。\n",this_player());
+                room->set("exits/north", __FILE__);
+                message("vision","里面有人把暗门打开了。\n",room);
+                remove_call_out("close_gate");
+                call_out("close_gate", 10);
+        }
+        return 1;
+}

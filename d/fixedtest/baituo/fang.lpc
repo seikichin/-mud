@@ -1,0 +1,20 @@
+// fang —— 由 nitan/d/baituo/fang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49970,20040,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "练功房");
+  set("long", @LONG
+这里是白驼山弟子的练功房。里面有几个单间，是练功室。第子
+们在里边砌磋武艺，绝对不允许外人打搅。
+LONG );
+  set("exits", ([
+    "1" : __DIR__ "room1",
+    "2" : __DIR__ "room2",
+    "3" : __DIR__ "room3",
+    "west" : __DIR__ "4/4/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

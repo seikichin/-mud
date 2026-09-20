@@ -1,0 +1,19 @@
+// mangdangshan —— 由 nitan/d/yanping/mangdangshan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1480,-6110,40)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "茫荡山");
+  set("long", @LONG
+茫荡山清凉世界，风物绝佳。步移景异，所见或石壁陡峭、或深谷
+悬崖；山涧小溪忽在道旁潺潺低唱，忽而在断崖前跌落为瀑布；那远近
+林中不时传出的鸟叫声和那宛啭不绝的蝉鸣更是增添了幽静、深远的感
+觉。举目四顾，但见风烟俱静，天山共色，顿觉心胸开阔、神清气爽。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "gubao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

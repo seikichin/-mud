@@ -1,0 +1,21 @@
+// dating —— 由 nitan/d/xiakedao/dating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3080,-22110,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大厅");
+  set("long", @LONG
+这是『侠客岛』的大厅，四周点满了牛油蜡烛，南面放着一个
+大屏风。洞内摆着一百来张桌子，宾客正络绎进来，数百名黄衣汉
+子穿索般来去，引导宾客入座。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "wuqiku",
+    "east" : __DIR__ "shufang",
+    "north" : __DIR__ "shidong5",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/south", __DIR__"yongdao3");
+}

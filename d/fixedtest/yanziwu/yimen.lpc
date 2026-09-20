@@ -1,0 +1,21 @@
+// yimen —— 由 nitan/d/yanziwu/yimen.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "仪门");
+  set("long", @LONG
+一扇朱漆的雕花大门，一块醒目的牌子挂于门上，上镌黑色小篆
+写的 "仪门" 二字，给人一种庄严威武的感觉。东面就是燕子坞门人
+休息的地方，向西则是慕容家人用饭的啖糯厅。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "canheju",
+    "north" : __DIR__ "longfeng",
+    "east" : __DIR__ "dannuo",
+    "west" : __DIR__ "qinfang1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

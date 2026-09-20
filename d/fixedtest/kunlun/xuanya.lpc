@@ -1,0 +1,18 @@
+// xuanya —— 由 nitan/d/kunlun/xuanya.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-100030,20010,70)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY"悬崖"NOR);
+  set("long", @LONG
+你来到悬崖之上，突然在对而传来几声狼嗥，甚是凄厉可怖。只见
+对面几只大灰狼仰起头，向着你张牙舞爪的嗥叫，想是要食之果腹，只
+是之间有一条深不见底的万丈峡谷，无法过来。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "xschongling1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// qingmu_fang2 —— 由 nitan/d/beijing/qingmu_fang2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2830,7610,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青木堂");
+  set("long", @LONG
+这里是一间看似很普通的民居，不过却要比通常的民居大了数倍。
+房间正中一张长桌，天地会的青木堂的群豪围桌而坐，大声喧谈。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

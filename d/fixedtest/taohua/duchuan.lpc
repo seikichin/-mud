@@ -1,0 +1,14 @@
+// duchuan —— 由 nitan/d/taohua/duchuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "海船");
+  set("long", @LONG
+一艘海船，大概能载十七、八个人。几名健硕的水手正在船头船尾忙
+来忙去。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

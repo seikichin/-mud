@@ -1,0 +1,18 @@
+// mtxiaowu —— 由 nitan/d/xiakedao/mtxiaowu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2090,-1700,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "木屋");
+  set("long", @TEXT
+这里是一个很小的木屋，室中放着一些乱七八遭的家具，墙角
+边还有一张破烂的小床，有一个英俊的少年在屋内走来走去，似乎
+有什么心事，不时的发出几声长叹...... 
+TEXT );
+  set("exits", ([
+    "west" : __DIR__ "mtdating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

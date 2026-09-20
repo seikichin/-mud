@@ -1,0 +1,17 @@
+// kuihua_1 —— 由 nitan/d/huashan/kuihua_1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,60,140)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山崖");
+  set("long", @LONG
+这是华山后山的陡峭山崖，左上方便是华山派掌门岳不群的居室，
+居室的窗户正对着你的头顶。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "songlin4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// anhe1 —— 由 nitan/d/gumu/anhe1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-50,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR"暗河"NOR);
+  set("long", @LONG
+原来这正是一条地下暗河，此处水声已是轰轰，声势极为骇人。你
+脚下一处踏空，便有水流直冲咽喉。此潜流不知来自何处，更不知通往
+何方。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "shishi6",
+    "eastdown" : __DIR__ "25/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// xilang —— 由 nitan/d/wudang/xilang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-380,-300,90)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西厢走廊");
+  set("long", @LONG
+你走在一条走廊上，东边是大殿，北边是一座楼阁。西面楼上传
+来阵阵打斗声。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "caolianfang",
+    "east" : __DIR__ "0/4/0",
+    "northup" : __DIR__ "cangjingge",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

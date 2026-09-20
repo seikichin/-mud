@@ -1,0 +1,18 @@
+// jiudian —— 由 nitan/d/baituo/jiudian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49970,19970,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "酒店");
+  set("long", @LONG
+这里是一家独具特色的酒店，由于地处白驼山下，酒店可以供应
+风味食品。许多中原来客都爱来尝尝鲜，所以酒店生意兴隆。酒店还
+经营打散装酒的业务。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xijie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

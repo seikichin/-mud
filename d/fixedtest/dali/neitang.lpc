@@ -1,0 +1,17 @@
+// neitang —— 由 nitan/d/dali/neitang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6811,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "内堂");
+  set("long", @LONG
+这里是镇南王府的内堂。十分宽阔明亮。正面墙上挂着一幅水墨
+画，两边各有一个窗子，透过窗户可以看见外面的青山绿水。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "yongdao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// gaibanggate —— 由 nitan/d/yueyang/gaibanggate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6210,-3000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大门");
+  set("long", @LONG
+你来到一栋大屋前，大门口进进出出的都是一身乞丐打扮，于是你
+突然醒悟，这里就是江湖中的丐儿帮吧。大门破破旧旧的，久经风雨的
+横梁发黑开裂，长上了绿苔，只有两个铜门环磨蹭得金光闪闪。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "xijie",
+    "north" : __DIR__ "gaibangyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

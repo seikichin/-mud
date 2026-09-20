@@ -1,0 +1,19 @@
+// andao3 —— 由 nitan/d/shaolin/andao3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(320,0,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗道");
+  set("long", @LONG
+这是一个阴暗潮湿的地道，四壁用粗糙的片岩垒垛而成，一颗颗
+水珠沿着墙壁滚下来，溅在地上。也许是因为长时间无人通行的缘故，
+整个地道弥漫着一股腐尸般的恶臭。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "bagua0",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/up", "/d/fixedtest/shaolin/20/0/0");
+}

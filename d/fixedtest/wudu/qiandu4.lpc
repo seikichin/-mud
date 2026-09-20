@@ -1,0 +1,18 @@
+// qiandu4 —— 由 nitan/d/wudu/qiandu4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,50,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR "千毒窟" NOR);
+  set("long", @LONG
+这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟
+乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽
+然传来一阵“咝咝”的声音。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "5/5/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

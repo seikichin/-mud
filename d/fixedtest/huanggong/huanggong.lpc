@@ -1,0 +1,41 @@
+// huanggong —— nitan d/huanggong 固定地图映射区（vrm_fixed）
+//
+//   huanggong.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   huanggong-room.lpc    格房描述（改文字即可改每格 look）
+//   huanggonggate.lpc / huanggonggate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/huanggong/huanggong/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = huanggong）
+// 格索引 -> 原 coor： coor = (格索引 + (-284,771,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "huanggong-room");
+  set_maze_map(__DIR__ "huanggong");
+  set_maze_spacing(10);
+  set_maze_owner_key("huanggong");
+
+  // 入口 = gong8（格 6,7,0），出口 = jingshan（格 2,5,0）
+  set_entry_dir("up");
+  set_link_entry_room(__DIR__ "huanggonggate");
+  set_link_exit_room(__DIR__ "huanggonggate2");
+  set_entry_back_dir("up");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-2810);
+  set_link_entry_room_y(7751);
+  set_link_entry_room_z(30);
+
+  set_entry_short(HIW "景阳宫" NOR);
+  set_entry_desc("景阳宫，从这里可以进入迷宫（up）。\n");
+  set_exit_short(HIY "景山" NOR);
+  set_exit_desc("景山，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 huanggong-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("景阳宫");
+  set_maze_room_desc("nitan d/huanggong 映射区。");
+}

@@ -1,0 +1,15 @@
+// northboat4 —— 由 nitan/d/binghuo/northboat4.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "破帆船");
+  set("long", @LONG
+帆船在海流中无助地漂流着，没有帆，也没有桨。你无奈地看着
+它越漂越北。船上水米皆尽，船体破碎支离，惨不忍睹，没一块完整
+的地方了。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

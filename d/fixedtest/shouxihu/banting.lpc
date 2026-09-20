@@ -1,0 +1,14 @@
+// banting —— 由 nitan/d/shouxihu/banting.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "寒竹风松");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "7/7/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

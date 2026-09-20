@@ -1,0 +1,19 @@
+// shanlu3 —— 由 nitan/d/dali/shanlu3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19170,-6860,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+一条的山路蜿蜒穿行在茂密的森林中，向东不远可达大理国的中
+心--大理城，西去则进入深山。由于接近大理中心，这条路修整的相
+当平整，尽管山势崎岖，行路并不困难。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/11/2",
+    "west" : __DIR__ "0/8/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

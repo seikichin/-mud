@@ -1,0 +1,18 @@
+// tohtq7 —— 由 nitan/d/mingjiao/tohtq7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(330,50,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", @LONG
+山洞中似乎深不可测，洞壁上点着几盏松明，照得洞内一派光亮。
+洞内虽然感到十分潮湿，可洞壁干燥坚实，大异平常。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "33/5/8",
+    "north" : __DIR__ "tohtq7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

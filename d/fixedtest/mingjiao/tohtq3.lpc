@@ -1,0 +1,18 @@
+// tohtq3 —— 由 nitan/d/mingjiao/tohtq3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(350,40,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+山路掩在土层下，前面似乎没有路了。满山树林密集，鸦鸟群集，
+林中烟雾飘荡，不知所之。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "11/7/2",
+    "enter" : __DIR__ "33/4/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

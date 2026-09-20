@@ -1,0 +1,19 @@
+// jinshedong —— 由 nitan/d/shiliang/jinshedong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1600,-1980,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石室");
+  set("long", @LONG
+这里是个不大的石室，有个人盘坐在地上，旁边点了盏如豆
+的油灯，借着这光线，你看见石壁上有几百幅用利器刻成的简陋
+人形，每个人形均不相同，举手投足，似在练武。你挨次看去，
+密密麻麻都是图形，心中甚为不解。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "1/2/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// biaojucyf —— 由 nitan/d/fuzhou/biaojucyf.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-111,-6171,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "签押房");
+  set("long", @LONG
+这里是福威镖局签押房。镖局和官府交情既深，与江湖上的同道自
+也不免也是瓜葛重重。这些局子里大面上的迎来送往，都由这里招呼。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "biaojudy",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

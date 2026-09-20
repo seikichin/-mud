@@ -1,0 +1,19 @@
+// nanheqiaos —— 由 nitan/d/chengdu/nanheqiaos.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15220,-1870,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南河桥");
+  set("long", @LONG
+这里是成都南门外南河桥。府河和南河夹城流过，成为天然的护
+城河，滋润着这个天府之国的川中首府。向北就进城了，向南又是一
+条小路。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "2/0/0",
+    "south" : "/d/fixedtest/xuedao/4/3/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

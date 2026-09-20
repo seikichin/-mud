@@ -1,0 +1,20 @@
+// wangdayuan —— 由 nitan/d/luoyang/wangdayuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7021,2169,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大院");
+  set("long", @LONG
+你走进王家大院，院里栽着几丛老梅，枝干甚是虬劲。院角门内小
+庭院内，少不了身在洛阳的标志：几盆挺名贵的牡丹。院子中停了不少
+车马，每一匹牲口都是鞍辔鲜明。“金刀王家”在洛阳的声势果是不凡。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "1/7/0",
+    "west" : __DIR__ "wangxiaoyuan",
+    "south" : __DIR__ "wangdatang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

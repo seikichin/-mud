@@ -1,0 +1,18 @@
+// road5 —— 由 nitan/d/jingzhou/road5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-200,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青山");
+  set("long", @LONG
+山中树木茂密，花开万朵，倾耳细听，可以听见山溪流水的声音，
+风吹树页的声音，如同一首大自然的乐曲，美妙动听。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "road6",
+    "northeast" : __DIR__ "qingshan1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

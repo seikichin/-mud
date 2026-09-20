@@ -1,0 +1,20 @@
+// tianroad2 —— 由 nitan/d/xingxiu/tianroad2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,70,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "天山山路");
+  set("long", @LONG
+这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路边是一片
+草原。路尽头松林下一位壮汉正在长啸练功。北上就是人人害怕的灵鹫
+宫了。
+LONG );
+  set("exits", ([
+    "northdown" : __DIR__ "xxh",
+    "northup" : "/d/fixedtest/lingjiu/6/1/0",
+    "south" : __DIR__ "tianroad1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

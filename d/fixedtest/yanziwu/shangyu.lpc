@@ -1,0 +1,18 @@
+// shangyu —— 由 nitan/d/yanziwu/shangyu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "赏鱼台");
+  set("long", @LONG
+站在台上，你可以看见一片荷花菱角，不时有几尾金鱼跃出水面，
+有的甚至还跳你眼前，仿佛一伸手就可以抓住。透过荷叶隐约可以看
+到船坞，你不知是否有把握能跳过去。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shuwu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

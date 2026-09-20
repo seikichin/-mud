@@ -1,0 +1,18 @@
+// kedian3 —— 由 nitan/d/hangzhou/kedian3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(839,-2071,9)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "天外天客店二楼");
+  set("long", @LONG
+天外天客店果然名不虚传，好大的一间客房，一张精致的床，窗外
+是美丽的西湖，无边的宜人景致。暖暖的风吹得你昏昏欲睡，这里正是
+睡觉的好地方。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "8/4/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

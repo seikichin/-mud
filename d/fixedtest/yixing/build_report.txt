@@ -1,0 +1,18 @@
+==== yixing ====
+  网格 L,M,H = 7,5,1   格数 = 12   入格原房间 = 12   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (23,-104,0)   => link_entry_room = (260,-1020,20)
+  入口 = shanlu2 格 6,2,0   出口 = yixing 格 0,2,0   entry_dir = up
+  边：方向位 22  LINK 0（含自环 0 / 到独立房 1 / 到外部 3）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 4   独立房间 = 11
+  ---- 独立房间 ----
+    clbajiaoting  (coor 不是 10 的倍数)
+    clchaifang  (coor 不是 10 的倍数)
+    cldating  (coor 不是 10 的倍数)
+    clhuayuan  (coor 不是 10 的倍数)
+    clshishi  (coor 不是 10 的倍数)
+    clwoshi  (coor 不是 10 的倍数)
+    clxiaoting  (coor 不是 10 的倍数)
+    clxiaowu  (coor 不是 10 的倍数)
+    clyongdao  (coor 不是 10 的倍数)
+    clzoulang1  (coor 不是 10 的倍数)
+    clzoulang2  (coor 不是 10 的倍数)

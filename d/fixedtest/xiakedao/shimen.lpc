@@ -1,0 +1,20 @@
+// shimen —— 由 nitan/d/xiakedao/shimen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3080,-22130,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石门");
+  set("long", @LONG
+这里已是甬道尽头，面前一道厚重的石门。门上刻着三个斗大的
+古篆：「侠客行」。年深日久，那笔划的凹下之处都积满了青苔，越
+发显得沧桑，你心中的敬意油然而生。
+    里面是一块大石壁，在石壁下好象有很多人。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "2/60/0",
+    "north" : __DIR__ "yongdao3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

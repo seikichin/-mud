@@ -1,0 +1,19 @@
+// road4 —— 由 nitan/d/jingzhou/road4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-330,-190,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青山");
+  set("long", @LONG
+山中树木茂密，花开万朵，这里风景秀美，小鸟在喳喳地叫着，
+阳光从树页的缝隙中照进来，形成五彩的斑斓，你的心情不由的高兴
+起来，跟着小鸟的歌声，向前走去。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "qingshan2",
+    "northeast" : __DIR__ "road3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

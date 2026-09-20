@@ -1,0 +1,33 @@
+// thzhen2 —— 由 nitan/d/taohua/thzhen2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(9000,-2600,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃花林");
+  set("long", @LONG
+这桃林似乎无穷无尽一般，其中小径更却是纵横交错，匪夷所思。你
+拼命想离开原地，但几个转折又回到了原地。一连几次，似乎只是在同一
+个地方兜圈子。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "thzhen2",
+    "west" : __DIR__ "thzhen2",
+    "southeast" : __DIR__ "thzhen2",
+    "south" : __DIR__ "thzhen2",
+    "southwest" : __DIR__ "thzhen2",
+    "northeast" : __DIR__ "thzhen2",
+    "east" : __DIR__ "thzhen2",
+    "north" : __DIR__ "thzhen2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        this_player()->set_temp("die_reason", "误入桃花迷阵被桃花瓣射死");
+        this_player()->receive_damage("qi", 15);
+        this_player()->receive_wound("qi",  15);
+        message_vision(HIR "突然一阵桃花瓣象雨点般疾射$N！\n" NOR, this_player());
+}

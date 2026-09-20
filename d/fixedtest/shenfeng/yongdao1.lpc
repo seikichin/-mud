@@ -1,0 +1,16 @@
+// yongdao1 —— 由 nitan/d/shenfeng/yongdao1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+这个山洞里伸手不见五指，黑沉沉的甚么也瞧不见。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "shenfengroom",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

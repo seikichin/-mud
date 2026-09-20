@@ -1,0 +1,20 @@
+// wangxiangfang —— 由 nitan/d/luoyang/wangxiangfang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7031,2149,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厢房");
+  set("long", @LONG
+这里是王家的厢房。进门处是一扇雕花门，门扇上镂空雕着三国故
+事：一边是千里走单骑，正合王家绝技。一边是定军山老黄忠，也是个
+刀显威风的场面。房内一张大床，堆着枕席，甚是精洁。房角小几上摆
+着茶具，壁上挂着一口单刀。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "wanghuating",
+    "north" : __DIR__ "wangzhangfang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

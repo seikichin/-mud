@@ -1,0 +1,15 @@
+// entrance —— 由 nitan/d/gaochang/entrance.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "高昌大门");
+  set("long", " ");
+  set("exits", ([
+    "southdown" : __DIR__ "1/2/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/down", "/d/fixedtest/gaochang/1/5/3");
+}

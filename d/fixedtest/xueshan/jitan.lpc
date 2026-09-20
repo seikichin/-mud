@@ -1,0 +1,18 @@
+// jitan —— 由 nitan/d/xueshan/jitan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-70050,-19910,120)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雪山祭坛");
+  set("long", @LONG
+这里是雪山寺雪山祭坛，中间一个高台，青石砌就。周围摆满了木
+柴和酥油，旁边一个盛水的颅钵搁着一只法铃。一些痛苦和可怜的亡灵
+可以在这里获得超度。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

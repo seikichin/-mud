@@ -1,0 +1,19 @@
+// ershuiqiao —— 由 nitan/d/dali/ershuiqiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19170,-6840,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "洱水桥");
+  set("long", @LONG
+一座长百余步的青石桥。此桥横跨洱水，连接下关城和大理城，
+桥下清澈的洱水滚滚东去。桥北正是下关城的城门，桥南一路南行十
+数里即可到大理城。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "0/12/2",
+    "north" : __DIR__ "xiaguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

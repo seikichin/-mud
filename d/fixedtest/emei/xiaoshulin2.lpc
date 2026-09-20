@@ -1,0 +1,18 @@
+// xiaoshulin2 —— 由 nitan/d/emei/xiaoshulin2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小树林");
+  set("long", @LONG
+这是峨嵋山金顶华藏庵外的一片小树林。林中没有路，但地上依
+稀有些足迹，似乎刚有人走过。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xiaoshulin1",
+    "south" : __DIR__ "xiaoshulin3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

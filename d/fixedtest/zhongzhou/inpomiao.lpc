@@ -1,0 +1,18 @@
+// inpomiao —— 由 nitan/d/zhongzhou/inpomiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9071,-981,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "丐帮中州分舵");
+  set("long", @LONG
+这里是丐帮设在中州府的分舵。破庙角落中散放着一些稻
+草和破棉被，正中的神像早已被人搬走，如今被一帮叫化子占
+了地方，几只破瓦罐散落在庙中各处，原来是盛滴水的。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "guandimiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

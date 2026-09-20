@@ -1,0 +1,19 @@
+// mishi1 —— 由 nitan/d/lingjiu/mishi1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,80,60)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密室");
+  set("long", @LONG
+这是个阴暗的密室，墙上的油灯发出昏暗的黄光。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "5/8/5",
+    "north" : __DIR__ "2/3/6",
+    "east" : __DIR__ "2/3/6",
+    "south" : __DIR__ "4/3/6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

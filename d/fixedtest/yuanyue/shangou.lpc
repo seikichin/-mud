@@ -1,0 +1,17 @@
+// shangou —— 由 nitan/d/yuanyue/shangou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-630,250,90)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山沟");
+  set("long", @LONG
+这里是圆月山庄后园的一个山沟，旁边是一片密密的松木林，四
+周一片寂静。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

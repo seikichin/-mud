@@ -1,0 +1,17 @@
+// chufang —— 由 nitan/d/dali/chufang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19111,-6841,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厨房");
+  set("long", @LONG
+这是镇南王府的厨房，中央有个大桌子，周围则放着几个圆凳，
+这里是段家弟子用餐的地方。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "tingfang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// zhuang6 —— 由 nitan/d/beijing/zhuang6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(100,4730,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "庄府大厅");
+  set("long", @LONG
+这是一间灵堂，堂上供了七八个牌位。看来一座灵堂上供的是一
+家死人。一阵阴风吹过，蜡烛突然灭了。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "zhuang5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

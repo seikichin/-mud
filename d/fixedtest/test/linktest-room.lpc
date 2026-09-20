@@ -1,0 +1,15 @@
+// linktest 房间模板
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  room->set("short", sprintf("测试格(%d,%d,%d)", x, y, z));
+  room->set("long", sprintf("这是 [LINK] 特殊出口测试房间，格坐标 (%d,%d,%d)。", x, y, z));
+  room->setup();
+}
+
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) { return; }
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

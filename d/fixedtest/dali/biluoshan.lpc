@@ -1,0 +1,18 @@
+// biluoshan —— 由 nitan/d/dali/biluoshan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19190,-6900,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "碧罗山下");
+  set("long", @LONG
+此间正处碧罗山脚下，几层梯田沿山坡而上，土地看来一点也不
+肥沃，作物较稀疏。乌夷地区农业颇落后，行换季轮耕，村民在不同
+的季节耕作不同的田地，许多附近的梯田正荒芜着无人耕作。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "yixibu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// erbapu —— 由 nitan/d/yanping/erbapu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1500,-4000,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "廿八铺");
+  set("long", @LONG
+廿八铺高居仙霞岭上，四望群山连绵，长风振岗，十分爽利。这里
+是个很小的小村落，虽然南来北往的客商繁多，可是也只有一家小小客
+店，店门书着一联：“到来福地非为福，出得仙霞始为仙”。极言闽道
+之艰。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "kedian",
+    "southdown" : __DIR__ "shandao1",
+    "north" : __DIR__ "xianxialing",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

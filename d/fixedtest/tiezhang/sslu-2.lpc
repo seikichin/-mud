@@ -1,0 +1,18 @@
+// sslu-2 —— 由 nitan/d/tiezhang/sslu-2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,110,70)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "碎石路");
+  set("long", @LONG
+你走在一条用碎石铺成的小路上。两旁山势低缓，长满了翠绿的毛竹，
+阵阵微风吹过，耳旁便响起一片沙沙声。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "4/11/6",
+    "eastup" : "/d/fixedtest/tiezhang/6/11/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

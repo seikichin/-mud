@@ -1,0 +1,18 @@
+// hcahoudian —— 由 nitan/d/emei/hcahoudian.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "华藏庵后殿");
+  set("long", @LONG
+这是峨嵋山华藏庵的后殿。是峨嵋派掌门人传教弟子功夫的地方。
+这里供有一尊普贤菩萨像。两旁靠墙放着几张太师椅地上放着几个蒲
+团。掌门人正在向几个女弟子传授武功。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "hcadadian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

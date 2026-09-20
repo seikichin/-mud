@@ -1,0 +1,17 @@
+// biaojunz —— 由 nitan/d/fuzhou/biaojunz.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-111,-6161,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "内宅");
+  set("long", @LONG
+福威镖局内宅装点的十分华贵。花梨木桌上放着一尊精致的振鬃长
+嘶的玉马，右首太师椅上好大一张豹皮把整张椅子遮得严严实实。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "biaojuzt",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// tusimentang —— 由 nitan/d/dali/tusimentang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19141,-6891,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "门堂");
+  set("long", @LONG
+门堂以及其他一些附属建筑，如谷仓，厨房，坚狱，外有二米多
+高重修的围墙。主体建筑是规模最大的议事厅，三层大屋系三重蟾歇
+山顶干栏式建筑，长六十尺，宽四十有五，高三十尺。二楼是宣抚召
+集大小头领议会地点，也是审判室。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "2/8/0",
+    "up" : __DIR__ "tusiyishi",
+    "north" : __DIR__ "tusihouting",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

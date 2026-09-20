@@ -1,0 +1,20 @@
+// qyping —— 由 nitan/d/shaolin/qyping.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(130,70,120)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青云坪");
+  set("long", @LONG
+这里便是少室绝顶。极目望去，只见白云缕缕，如苍龙绕岭；嵩
+山拔翠，似金刚擎天。山腰五道瀑布飞泻而下，石级蜿延曲折，宛若
+一条长虫，游人纷纷其上，已如蚁蛭。面前的平地上寸草不生，正中
+三棵巨松围成一圈，圈中央似乎有什么东西在闪闪发光。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "fumoquan",
+    "southdown" : __DIR__ "shulin14",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

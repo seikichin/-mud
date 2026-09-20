@@ -1,0 +1,20 @@
+// shanlu —— 由 nitan/d/hanzhong/shanlu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12260,820,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+从汉中西门出来，路势变急了，这是一条用石块铺成的山路。路
+两旁光秃秃的，没有什么树木，全是一块块的大石头。这条路好象通
+往前面的终南山上。北面有一个小村庄，村中正升起冉冉的炊烟。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "ximen",
+    "eastup" : "/d/fixedtest/quanzhen/4/1/0",
+    "northup" : __DIR__ "xiaocun",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// guandaoe1 —— 由 nitan/d/luoyang/guandaoe1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直，尘土飞扬的大官道，足可容得下十马并驰。往东
+通向函谷关可以达扬州城，往西不远便是东都洛阳古城的东城边了。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "11/5/0",
+    "east" : __DIR__ "guandaoe2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

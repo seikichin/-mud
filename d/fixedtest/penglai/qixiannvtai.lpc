@@ -1,0 +1,18 @@
+// qixiannvtai —— 由 nitan/d/penglai/qixiannvtai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,30,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "七仙女台");
+  set("long", @LONG
+这里是一处高耸的平台，传说，七仙女常在这里修炼仙法。放
+眼望去，天际之处，一道彩虹划空而过，七位美貌无比的仙女正翩
+翩起舞，舞姿婀娜，如此美景，令人留恋忘返。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

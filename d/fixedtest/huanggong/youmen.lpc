@@ -1,0 +1,19 @@
+// youmen —— 由 nitan/d/huanggong/youmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2790,7690,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "右阙门");
+  set("long", @LONG
+这是通往各部官员朝房的右门. 东庑房设的是吏、户、礼三部.
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "libu2",
+    "north" : __DIR__ "libu",
+    "east" : __DIR__ "hubu",
+    "west" : __DIR__ "dianwai",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

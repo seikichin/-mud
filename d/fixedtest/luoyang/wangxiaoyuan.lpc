@@ -1,0 +1,18 @@
+// wangxiaoyuan —— 由 nitan/d/luoyang/wangxiaoyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7031,2169,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小庭院");
+  set("long", @LONG
+穿过挂着“幽径天姿成独秀，古园国色冠群芳”的角门，便是一个
+十分秀巧的小园。园中小小的池塘中，浅浅的水里，养着一些细细的游
+鱼，也养护着池塘边盛放的牡丹。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "wangdayuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

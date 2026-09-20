@@ -1,0 +1,22 @@
+// diagtest 区域档（测试 vrm_fixed 的 12 个斜向方向位）
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "diagtest-room");
+  set_maze_map(__DIR__ "diagtest");
+  set_maze_spacing(10);
+  set_maze_owner_key("diagtest");
+
+  set_entry_dir("north");
+  set_link_entry_room("/d/fixedtest/diagtestgate");
+  set_link_exit_room("/d/fixedtest/diagtestgate2");
+
+  set_entry_short(HIW "diagtest入口" NOR);
+  set_entry_desc("diagtest 斜向测试迷宫的入口。");
+  set_exit_short(HIY "diagtest出口" NOR);
+  set_exit_desc("diagtest 斜向测试迷宫的出口。");
+
+  set_maze_room_short(HIB "斜向测试格" NOR);
+  set_maze_room_desc("diagtest 斜向测试迷宫的房间。");
+}

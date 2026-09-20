@@ -1,0 +1,17 @@
+// liufueast —— 由 nitan/d/henshan/liufueast.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "刘府东厢房");
+  set("long", @LONG
+这儿是东厢房，这儿整理得干干净净，窗外露出点绿绿的枝叶，
+家具上一尘不染，地上铺着很大块的青砖，一点灰尘也不沾。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "liufudating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

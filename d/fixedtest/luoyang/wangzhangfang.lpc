@@ -1,0 +1,18 @@
+// wangzhangfang —— 由 nitan/d/luoyang/wangzhangfang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7031,2159,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "帐房");
+  set("long", @LONG
+这里是王家的账房。满四壁都是帐簿架，堆满了陈年老帐，更有一
+些帐簿堆在地下。一个师爷一脸酒气，正在收拾破烂帐。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "wangdatang",
+    "south" : __DIR__ "wangxiangfang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// bingying4 —— 由 nitan/d/xiangyang/bingying4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7850,-760,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "兵营");
+  set("long", @LONG
+这里是兵营，密密麻麻到处都是官兵，有的在武将的指挥下列队
+操练，有的独自在练功，有的坐着、躺着正在休息。南墙下坐着主帅，
+不动声色地巡视着四周。看到你进来，他们全都瞪大眼睛盯着你。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "westjie3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

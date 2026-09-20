@@ -1,0 +1,18 @@
+// midao3 —— 由 nitan/d/emei/midao3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密道");
+  set("long", @LONG
+这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到处积满
+了灰尘，结满了蛛网，也不知道通往何处。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "midao4",
+    "south" : __DIR__ "midao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

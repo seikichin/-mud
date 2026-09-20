@@ -1,0 +1,16 @@
+// room1 —— 由 nitan/d/baituo/room1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49970,20040,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "练功室");
+  set("long", @LONG
+这里是白驼山弟子的练功室。有几个制作精致的木人陪你练功。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "fang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

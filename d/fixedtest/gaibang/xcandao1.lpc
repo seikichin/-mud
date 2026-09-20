@@ -1,0 +1,17 @@
+// xcandao1 —— 由 nitan/d/gaibang/xcandao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-300,100,-20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗道");
+  set("long", @LONG
+这是丐帮极其秘密的地下通道，乃用丐帮几辈人之心血掘成。 
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "undertre",
+    "north" : __DIR__ "xcandao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

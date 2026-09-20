@@ -1,0 +1,17 @@
+// wuchang2 —— 由 nitan/d/taohua/wuchang2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "修行场");
+  set("long", @LONG
+这里是桃花岛弹指山庄修行的场所，大部分的桃花岛弟子
+武功有了一定的根基以后就在这里苦修，领悟上乘武学。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "houyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// bieyuan —— 由 nitan/d/xueshan/bieyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-210,4000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雪山别院");
+  set("long", @LONG
+这里是雪山寺的分部，当年贡唐仓大喇嘛不远万里进京面圣，被封
+为国师，就在此处宣扬佛法。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/beijing/road5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

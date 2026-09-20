@@ -1,0 +1,18 @@
+// out —— 由 nitan/d/baihuagu/out.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-400,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林外");
+  set("long", @LONG
+眼前一片光明，比起树林里的黑暗，简直有点刺眼。南边是一
+片阴森森的大树林，相信你是不敢再进去了。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "0/0/1",
+    "south" : __DIR__ "tree",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

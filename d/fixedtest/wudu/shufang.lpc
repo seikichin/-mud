@@ -1,0 +1,17 @@
+// shufang —— 由 nitan/d/wudu/shufang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,50,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "书房");
+  set("long", @LONG
+这里便是教主平时日内看书的地方，房间不大，只靠窗摆着一张
+书案，案边放了几本书，看来是教主经常翻看的。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "9/5/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// hcazhaitang —— 由 nitan/d/emei/hcazhaitang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "斋堂");
+  set("long", @LONG
+这里便是峨嵋华藏庵的斋堂。斋堂里摆满了长长的餐桌和长凳，
+几位小师太正来回忙碌着布置素斋。桌上摆了几盆豆腐，花生，青菜
+以及素鸭等美味素食。斋堂后面有一道门通往华藏庵储物间，北边的
+走廊通向广场。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "hcaeast2",
+    "south" : __DIR__ "chuwujian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// zz2 —— 由 nitan/d/moon/zz2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-20,1000,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "阳关大道");
+  set("long", @LONG
+一条笔直的大路，向着西方蔓延着，看来是通向遥远的边疆的。
+可惜前方好象还在修路，行人纷纷折返。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "3/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// wanglianwu —— 由 nitan/d/luoyang/wanglianwu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7021,2139,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "练武厅");
+  set("long", @LONG
+据说，王家威震豫鄂的武功，就是在这个练武厅里练出来的。可你
+看见的也只不过是一个很寻常的屋子而已，唯一突出的，不过是东墙上
+挂满的一壁单刀罢了。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "wanghuating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

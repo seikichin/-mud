@@ -1,0 +1,13 @@
+// xiangyang 入口房：草地·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "草地" NOR);
+  set("long", "草地。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

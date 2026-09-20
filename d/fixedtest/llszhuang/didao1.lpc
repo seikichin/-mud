@@ -1,0 +1,15 @@
+// didao1 —— 由 nitan/d/llszhuang/didao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(110,10,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "地道");
+  set("long", "黑漆漆的地道，你不知道要爬多久才能出去，仿佛前面有些亮光。回\n"
+"头看来却看不道回去的路。\n");
+  set("exits", ([
+    "westup" : __DIR__ "didao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

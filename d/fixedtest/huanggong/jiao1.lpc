@@ -1,0 +1,19 @@
+// jiao1 —— 由 nitan/d/huanggong/jiao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2780,7700,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城角");
+  set("long", @LONG
+这里是内城的一角, 头上的天空只能见方方的一角. 上面有座漂亮
+的角楼.
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "lou1",
+    "west" : __DIR__ "dao1",
+    "north" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

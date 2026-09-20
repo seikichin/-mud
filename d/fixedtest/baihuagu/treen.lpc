@@ -1,0 +1,16 @@
+// treen —— 由 nitan/d/baihuagu/treen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-400,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+丛林中一片黑暗，你瞪大眼睛，只发现到处都是树。你迷路了！
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "tree",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

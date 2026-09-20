@@ -1,0 +1,18 @@
+// kefang —— 由 nitan/d/dali/kefang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19162,-6912,8)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "客房");
+  set("long", @LONG
+这是一间客房，靠墙放了一张梨木大床，上面的被褥尽是苏
+绣，工美绝伦。正中放了一张八仙桌，几个奇服南人正在高谈阔
+论。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "zoulang2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

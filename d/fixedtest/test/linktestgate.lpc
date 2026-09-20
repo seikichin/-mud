@@ -1,0 +1,10 @@
+// linktest 入口房
+inherit ROOM;
+#include <ansi.h>
+void create() {
+  set("short", HIW "linktest入口(测试)" NOR);
+  set("long", "往下走进入 [LINK] 测试迷宫。");
+  set("exits", ([ "down" : "/d/fixedtest/linktest/linktest/entry" ]));
+  set("no_fly", 1);
+  setup();
+}

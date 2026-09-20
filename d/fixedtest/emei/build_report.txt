@@ -1,0 +1,38 @@
+==== emei ====
+  网格 L,M,H = 25,18,23   格数 = 66   入格原房间 = 73   合并格 = 7
+  原 coor 基准 (gx,gy,gz) = (-58,-34,0)   => link_entry_room = (-460,-250,240)
+  入口 = wdroad 格 24,17,0   出口 = qsjie2 格 21,14,0   entry_dir = up
+  边：方向位 136  LINK 15（含自环 0 / 到独立房 7 / 到外部 4）  非标准方向 10  丢弃空出口 0
+  [LINK] 总行数 = 35   独立房间 = 29
+  ---- 独立房间 ----
+    bgschanfang  (原文件无 coor)
+    cangjingge  (原文件无 coor)
+    cangjinglou  (原文件无 coor)
+    chuwujian  (原文件无 coor)
+    dxdian  (原文件无 coor)
+    hcachanfang  (原文件无 coor)
+    hcadadian  (原文件无 coor)
+    hcaeast1  (原文件无 coor)
+    hcaeast2  (原文件无 coor)
+    hcahoudian  (原文件无 coor)
+    hcawest2  (原文件无 coor)
+    hcaxiuxishi  (原文件无 coor)
+    hcazhaitang  (原文件无 coor)
+    lengsl4  (原文件无 coor)
+    midao  (原文件无 coor)
+    midao2  (原文件无 coor)
+    midao3  (原文件无 coor)
+    midao4  (原文件无 coor)
+    midao5  (原文件无 coor)
+    qinggong  (原文件无 coor)
+    ssyb  (原文件无 coor)
+    st0  (原文件无 coor)
+    st1  (原文件无 coor)
+    st2  (原文件无 coor)
+    xiaoshulin1  (原文件无 coor)
+    xiaoshulin2  (原文件无 coor)
+    xiaoshulin3  (原文件无 coor)
+    xiaoshulin4  (原文件无 coor)
+    yunufeng  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    midao5.up -> /d/chengdu/qingyanggong

@@ -1,0 +1,14 @@
+// ontree2 —— 由 nitan/d/henshan/ontree2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "古树顶");
+  set("long", " ");
+  set("exits", ([
+    "down" : __DIR__ "ontree",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

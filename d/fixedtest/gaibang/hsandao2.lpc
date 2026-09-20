@@ -1,0 +1,17 @@
+// hsandao2 —— 由 nitan/d/gaibang/hsandao2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-500,100,-20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗道");
+  set("long", @LONG
+这是丐帮极其秘密的地下通道，乃用丐帮几辈人之心血掘成。 
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "hsandao1",
+    "northwest" : __DIR__ "underhs",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

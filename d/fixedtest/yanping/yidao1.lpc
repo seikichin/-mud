@@ -1,0 +1,20 @@
+// yidao1 —— 由 nitan/d/yanping/yidao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1500,-6000,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "闽浙驿道");
+  set("long", @LONG
+自古入闽无敞途。往来货运全靠肩挑背扛，逶迤入闽，车马不通。
+古驿道沿建溪溪流南下，山岩交叠，茅草相簇，飞蠓毛虫一路陪同，艰
+苦万状。好在山该青处皆清，碧水清澈爽口，巨树修竹插天，虽然一路
+而来，口音渐变，倒也另有一番情趣。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "yidao2",
+    "northdown" : __DIR__ "shandao1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

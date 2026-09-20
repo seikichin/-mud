@@ -1,0 +1,19 @@
+// clbajiaoting —— 由 nitan/d/yixing/clbajiaoting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(289,-1001,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "八角亭");
+  set("long", @LONG
+这是花园中一个小巧的亭子，供赏花时休息之用。亭中石桌石凳
+俱全，石桌上还摆放着几盘点心。院中花卉暗香浮动。几个假山做得
+甚是别致。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "clzoulang1",
+    "north" : __DIR__ "clhuayuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

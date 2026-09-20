@@ -1,0 +1,20 @@
+==== kunming ====
+  网格 L,M,H = 13,12,3   格数 = 44   入格原房间 = 44   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (-1688,-727,0)   => link_entry_room = (-16820,-7210,40)
+  入口 = yunnan1 格 12,11,0   出口 = htroad3 格 4,0,0   entry_dir = up
+  边：方向位 86  LINK 0（含自环 0 / 到独立房 0 / 到外部 3）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 3   独立房间 = 11
+  ---- 独立房间 ----
+    qiao  (原文件无 coor)
+    qiao2  (原文件无 coor)
+    qiao3  (原文件无 coor)
+    road1  (原文件无 coor)
+    road2  (原文件无 coor)
+    road3  (原文件无 coor)
+    road4  (原文件无 coor)
+    road5  (原文件无 coor)
+    road6  (原文件无 coor)
+    road7  (原文件无 coor)
+    yunnan  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    road1.north -> /d/jingzhou/nanshilu1

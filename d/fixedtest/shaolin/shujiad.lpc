@@ -1,0 +1,18 @@
+// shujiad —— 由 nitan/d/shaolin/shujiad.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(0,100,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "书架顶");
+  set("long", @LONG
+书架顶上积满了厚厚的一层灰尘，书架顶和房梁还有三尺多高的
+距离由于不经常打扫，这里步满了蜘蛛丝，书架顶的浮尘上还能依稀
+见到一些爬虫留下的痕迹有时候有些小鸟也会在这里筑巢。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "0/10/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

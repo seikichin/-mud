@@ -1,0 +1,18 @@
+// xuanya —— 由 nitan/d/huashan/xuanya.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,50,130)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "悬崖");
+  set("long", @LONG
+这是华山上悬崖上的一片平台，地势险恶。平台旁便是万丈深渊，
+低头望下，只见一天云海。华山弟子多在此练剑打坐，借天时地势，
+勤练武功。平时华山掌门也在此指点及考教门下弟子。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "4/4/13",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

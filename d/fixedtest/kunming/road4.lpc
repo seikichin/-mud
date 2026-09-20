@@ -1,0 +1,18 @@
+// road4 —— 由 nitan/d/kunming/road4.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "乱石滩");
+  set("long", @LONG
+这里怪石林立，路极不好走，不小心就要摔个跟斗，过了
+这片石滩，就是长江岸边。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "road3",
+    "south" : __DIR__ "road5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

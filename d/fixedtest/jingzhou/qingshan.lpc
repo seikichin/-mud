@@ -1,0 +1,20 @@
+// qingshan —— 由 nitan/d/jingzhou/qingshan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-190,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山顶");
+  set("long", @LONG
+爬上山顶，只觉空气清新，登高望远，心旷神怡。向东望去，只
+见扬洲城有如一个小小的黑点，极目向西，却茫茫而不见。南面，只
+见一条大江如彩带一般，那就是长江了。
+LONG );
+  set("exits", ([
+    "southdown" : __DIR__ "chibi1",
+    "westdown" : __DIR__ "qingshan1",
+    "north" : __DIR__ "0/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

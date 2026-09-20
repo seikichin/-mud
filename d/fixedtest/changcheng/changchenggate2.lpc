@@ -1,0 +1,13 @@
+// changcheng 出口房：烽火台·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "烽火台" NOR);
+  set("long", "烽火台。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

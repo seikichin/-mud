@@ -1,0 +1,18 @@
+// xxroad4 —— 由 nitan/d/xingxiu/xxroad4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,90,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小路");
+  set("long", @LONG
+你走在一条在山壁上人工开凿出来崎岖的小路上，这里寒风凛冽，
+西面是望不见底的深涧。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xxroad5",
+    "southdown" : __DIR__ "tianroad3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

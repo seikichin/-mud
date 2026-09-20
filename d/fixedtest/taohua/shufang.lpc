@@ -1,0 +1,18 @@
+// shufang —— 由 nitan/d/taohua/shufang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "书房");
+  set("long", @LONG
+这是一间干干净净的书房。当中一个大檀木桌，桌上放着
+不少书籍。靠墙的地方还有一个书架，架上满满的全是各种封
+装的书。其中不少书看上去古意盎然，显然年代已久。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "daojufang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

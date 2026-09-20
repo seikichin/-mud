@@ -1,0 +1,16 @@
+// zhanglao —— 由 nitan/d/dragon/zhanglao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(0,10,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长老室");
+  set("long", "[1;32m这是精灵长老所在的房间，一个白胡子的精灵族老人正坐在\n"
+"窗前沉思着什么。\n");
+  set("exits", ([
+    "southeast" : __DIR__ "xiuxishi",
+    "west" : __DIR__ "village",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

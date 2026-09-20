@@ -1,0 +1,17 @@
+// sushe —— 由 nitan/d/mingjiao/sushe.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,50,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雷门宿舍");
+  set("long", @LONG
+走进这间宿舍，满目异国情调。雷门教众似乎不大理睬你。许是
+言语不通，你也不想在此多留。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "3/5/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// undersl —— 由 nitan/d/gaibang/undersl.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-20,720,-20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "屋角边");
+  set("long", @LONG
+这是老乔家厨房大木柴堆下面。里面破破烂烂的，丢满了各种杂
+物，还有丐帮弟子收集的破铜烂铁等。从这里通往丐帮的秘密通道。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "slandao2",
+    "up" : "/d/fixedtest/shaolin/11/2/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

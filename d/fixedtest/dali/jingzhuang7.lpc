@@ -1,0 +1,17 @@
+// jingzhuang7 —— 由 nitan/d/dali/jingzhuang7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,69)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第七层");
+  set("long", @LONG
+这里是经幢的顶部，圆弧形顶篷，向徵天穹。上面刻有诸天神佛，
+飞天力士等。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "jingzhuang6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

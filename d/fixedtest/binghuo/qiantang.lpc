@@ -1,0 +1,14 @@
+// qiantang —— 由 nitan/d/binghuo/qiantang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(4080,-1800,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "钱塘江畔");
+  set("long", " ");
+  set("exits", ([
+    "westup" : "/d/fixedtest/hangzhou/qiantang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

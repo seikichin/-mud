@@ -1,0 +1,25 @@
+// thzhen1 —— 由 nitan/d/taohua/thzhen1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(9000,-2500,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃花林");
+  set("long", @LONG
+你一走进桃林，看见东一簇桃花，西一丛桃树，你顿时目眩神迷，迷
+失了方向。你慌乱中刚想退出，回头一瞧，来路已在花丛中消失得无影无
+踪，看来只有硬着头皮往前走了。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "thzhen3",
+    "west" : __DIR__ "thzhen1",
+    "southeast" : __DIR__ "thzhen3",
+    "south" : __DIR__ "thzhen1",
+    "southwest" : __DIR__ "thzhen3",
+    "northeast" : __DIR__ "thzhen3",
+    "east" : __DIR__ "thzhen1",
+    "north" : __DIR__ "thzhen1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

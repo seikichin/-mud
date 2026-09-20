@@ -1,0 +1,18 @@
+// liangong —— 由 nitan/d/xiaoyao/liangong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,-490,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石屋");
+  set("long", @LONG
+这是树林中的一间石屋，屋内显得什么清净和简朴，房间中除了一
+副棋盘外，并没有什么特别的摆设在这里，不会受到任何东西的骚扰，
+是个修炼内功的好地方。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "xiaodao4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

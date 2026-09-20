@@ -1,0 +1,15 @@
+// kuhanlou —— 由 nitan/d/kunlun/kuhanlou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-119900,40130,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "苦寒楼");
+  set("long", " ");
+  set("exits", ([
+    "enter" : __DIR__ "4/7/0",
+    "west" : __DIR__"shanlin"+(random(5)+1),
+  ]));
+  set("no_fly", 1);
+  setup();
+}

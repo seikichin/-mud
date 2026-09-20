@@ -1,0 +1,18 @@
+// toutiangate —— 由 nitan/d/wudang/toutiangate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-390,150)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "头天门");
+  set("long", @LONG
+只见有石梯无数通往山巅，一座石坊上写着头天门三个大字，这
+是攀登武当绝顶天柱峰的起点。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "ertiangate",
+    "north" : __DIR__ "huixianqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

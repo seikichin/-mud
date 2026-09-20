@@ -1,0 +1,18 @@
+// chufang —— 由 nitan/d/guanwai/chufang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厨房");
+  set("long", @LONG
+炊烟缭绕，蒸汽腾腾，香味扑鼻而来。靠墙有一个灶台，支着一
+口大锅，里面煮着香喷喷的米粥，旁边的一个火上蒸着白面馒头。一
+个老仆人聚精会神的整理着厨房里面物什。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "shizilu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

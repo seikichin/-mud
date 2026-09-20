@@ -1,0 +1,19 @@
+// gebi1 —— 由 nitan/d/huijiang/gebi1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50000,9000,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "戈壁");
+  set("long", @LONG
+焦热的阳光晒着茫茫的戈壁，天地之间只剩下黄色的沙，连绵起伏
+的沙丘一眼望不到边。前面不远的沙地上微微随风而动的是沙漠中的铁
+草，耐旱，看来你快走出这片沙漠了。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "7/0/0",
+    "northeast" : "/d/fixedtest/xingxiu/shanjiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

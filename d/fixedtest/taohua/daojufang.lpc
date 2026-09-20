@@ -1,0 +1,20 @@
+// daojufang —— 由 nitan/d/taohua/daojufang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "道具房");
+  set("long", @LONG
+这是一间道具房。摆着一些桃花弟子们常用的东西。房里
+好象黑乎乎的，靠窗处有一张斑驳长桌和一把靠背椅，虽是白
+天还点着小油灯。哑仆看到你进来，就使劲瞪着你，虽然口不
+能言，可你还是心中惴惴。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "shufang",
+    "west" : __DIR__ "dating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,48 @@
+// yideng2 —— 由 nitan/d/dali/yideng2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-38000,-80010,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "瀑布下");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_jump", "jump");
+        add_action("do_lift", "lift");
+}
+
+int do_jump(string arg)
+{
+        object me = this_player();
+
+        if ( !arg || arg != "bank" )
+                return notify_fail( "什么？\n");
+
+        message_vision("$N纵身往岸上跳去。\n", me);
+        me->move(__DIR__"yideng1");
+        return 1;
+}
+
+int do_lift(string arg)
+{   
+        object me = this_player();
+
+        if ( !arg || arg != "stone" )
+                return notify_fail( "什么？\n");
+
+        message_vision("$N伸手向大石下抬去。\n", me);
+        if ( me->query_str() < 26 ) {
+                message_vision("$N伸手掀了几掀，但大石纹风不动。\n", me);
+                
+        }
+        else {
+                message_vision("$N运足气力推去，那巨石受水力与掌力夹击，摇晃了几下，擦过$N\n身旁，蓬蓬隆隆，滚落下面深渊中去了，响声在山谷间激荡发出回音，\n轰轰然良久不绝。\n... ...\n\n", me);
+                me->move(__DIR__"yideng3");
+        }
+        return 1;
+} 

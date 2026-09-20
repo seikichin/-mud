@@ -1,0 +1,13 @@
+// xuanminggu 入口房：小路·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "小路" NOR);
+  set("long", "小路。往 down 可进入迷宫。\n");
+  set("exits", ([
+    "down" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// tree —— 由 nitan/d/baihuagu/tree.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-400,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+丛林中一片黑暗，你瞪大眼睛，觉得到处都是路，又好象到处
+都不是路。若是在丛林中迷失了方向，这辈子就别想活着走出去了。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "treew",
+    "south" : __DIR__ "trees",
+    "out" : __DIR__ "ent",
+    "east" : __DIR__ "treee",
+    "north" : __DIR__ "treen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

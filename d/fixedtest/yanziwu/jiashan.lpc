@@ -1,0 +1,19 @@
+// jiashan —— 由 nitan/d/yanziwu/jiashan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "假山");
+  set("long", @LONG
+怪石堆叠，巨石参差，你有些头晕目眩，那么多山洞你不知该钻
+哪一个。个个山洞都昏暗曲折，实在不知通向什么地方。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "huayuan",
+    "east" : __DIR__ "shuiyun",
+    "west" : __DIR__ "zuijing",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

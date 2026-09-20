@@ -1,0 +1,14 @@
+// outlet —— 由 nitan/d/dragon/outlet.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青木林出口");
+  set("long", HIG @LONG
+突然无数棵参天大树中出现了一条小径，似乎是出口！?
+LONG );
+  set("no_fly", 1);
+  setup();
+  set("exits/out", __DIR__ "spirit3");
+}

@@ -1,0 +1,15 @@
+// xiuxishi —— 由 nitan/d/songshan/xiuxishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,910,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "休息室");
+  set("long", @LONG
+这是间整洁的厢房，是嵩山弟子休息起居的地方。因为门窗常年闭
+着，房间难免昏暗。房里靠窗处摆设桌椅，里边靠墙放着一张收拾得舒
+舒服服的大床，看着就让人想睡觉。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

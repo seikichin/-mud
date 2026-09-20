@@ -1,0 +1,21 @@
+// shulin1 —— 由 nitan/d/shaolin/shulin1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,90,110)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松树林");
+  set("long", @LONG
+这是一片松树林。几十丈高的大松树簇在一块，密实的枝叶象一
+蓬蓬巨伞恒伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上，
+一脚踩下去，半天拔不出来。
+LONG );
+  set("exits", ([
+    "north" : __DIR__"shulin"+(random(10)+2),
+    "west" : __DIR__ "14/9/10",
+    "east" : __DIR__"shulin"+(random(10)+2),
+    "south" : __DIR__ "shulin2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

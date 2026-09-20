@@ -1,0 +1,19 @@
+// neitang —— 由 nitan/d/meizhuang/neitang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(40,40,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "偏房");
+  set("long", @LONG
+这是一间没有任何东西的房子，四壁空荡荡的，好象是一间刚修
+好的，还没有来得及进行装饰的房间，正中的墙上画着一幅壁画，相
+当的醒目，画着九天十万神魔歃血为盟，十万滴魔血化做了一只鲜红
+的鹦鹉，鹦鹉的眼睛竟然是用非常罕见的朱雀石做成的。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "2/3/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,41 @@
+// tangmen —— nitan d/tangmen 固定地图映射区（vrm_fixed）
+//
+//   tangmen.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   tangmen-room.lpc    格房描述（改文字即可改每格 look）
+//   tangmengate.lpc / tangmengate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/tangmen/tangmen/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = tangmen）
+// 格索引 -> 原 coor： coor = (格索引 + (0,1,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "tangmen-room");
+  set_maze_map(__DIR__ "tangmen");
+  set_maze_spacing(10);
+  set_maze_owner_key("tangmen");
+
+  // 入口 = didao4（格 6,10,0），出口 = tsqianz（格 17,0,4）
+  set_entry_dir("north");
+  set_link_entry_room(__DIR__ "tangmengate");
+  set_link_exit_room(__DIR__ "tangmengate2");
+  set_entry_back_dir("north");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(90);
+  set_link_entry_room_y(80);
+  set_link_entry_room_z(120);
+
+  set_entry_short(HIW "地道" NOR);
+  set_entry_desc("地道，从这里可以进入迷宫（north）。\n");
+  set_exit_short(HIY "唐氏钱庄" NOR);
+  set_exit_desc("唐氏钱庄，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 tangmen-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("地道");
+  set_maze_room_desc("nitan d/tangmen 映射区。");
+}

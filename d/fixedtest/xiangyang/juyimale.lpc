@@ -1,0 +1,17 @@
+// juyimale —— 由 nitan/d/xiangyang/juyimale.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7850,-800,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "男客房");
+  set("long", @LONG
+这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别无他物，
+只有两边放着几张收拾得舒舒服服的大床，看着就让人想睡觉。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

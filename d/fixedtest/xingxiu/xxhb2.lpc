@@ -1,0 +1,19 @@
+// xxhb2 —— 由 nitan/d/xingxiu/xxhb2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,130,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "星宿海");
+  set("long", @LONG
+这里是星宿海边。说是海，其实是片湖泊和沼泽，地形十分险恶。
+这里通向星宿海的深处。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "xxhb3",
+    "southeast" : __DIR__ "riyuedong1",
+    "west" : __DIR__ "xxhb4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

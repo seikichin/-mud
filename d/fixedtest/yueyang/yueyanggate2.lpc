@@ -1,0 +1,13 @@
+// yueyang 出口房：射蛟台·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "射蛟台" NOR);
+  set("long", "射蛟台。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

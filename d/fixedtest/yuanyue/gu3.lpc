@@ -1,0 +1,19 @@
+// gu3 —— 由 nitan/d/yuanyue/gu3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(100,10,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "精舍前");
+  set("long", @LONG
+此处一片空旷，浅草如茵，整齐如剪。一片新绿之上，罗列着十
+数件白玉色的琴几，玉墩，棋案之属。红尘间的烟火喧嚷，似乎早以
+被群山所阻。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "gu4",
+    "eastup" : __DIR__ "gu2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

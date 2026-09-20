@@ -1,0 +1,114 @@
+// ============================================================
+//  newbie-room.lpc  ——  nitan d/newbie 映射区（10x4x1）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 newbie.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (0,0,0)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "4,0,0" : ({ "杂货铺", " " }),  // coor(40,0,0)  zahuopu
+  "5,0,0" : ({ "休息室", " " }),  // coor(50,0,0)  xiuxishi
+  "9,0,0" : ({ "乱坟岗", @LONG
+这里一片都是坟墓，不知道埋了多少英雄好汉，多少巨奸
+大恶，让人不禁生出了人生不过如此的悲凉之意。不过如烟火
+一样，即便是短暂也能发出眩目的光彩，一念及此，你不由收
+起悲观的念头，热血澎湃，恨不得立即投身江湖快意恩仇，去
+争取名垂青史。
+LONG  }),  // coor(90,0,0)  luanfengang
+  "0,1,0" : ({ "村口", " " }),  // coor(0,10,0)  cunkou
+  "1,1,0" : ({ "田埂小道", @LONG
+这是一条向东的田间小道，两旁是一片片绿油油的水田和悠闲的
+牧童。
+LONG  }),  // coor(10,10,0)  road1
+  "2,1,0" : ({ "村间小路", @LONG
+这是一条向东的青石大道，两边是一排排的乡间小屋。
+LONG  }),  // coor(20,10,0)  road
+  "3,1,0" : ({ HIG "世界之树" NOR, " " }),  // coor(30,10,0)  shijiezhishu
+  "4,1,0" : ({ "青石小路", @LONG
+这是一条向东的青石大道，两边是一排排的乡间小屋。
+LONG  }),  // coor(40,10,0)  road2
+  "5,1,0" : ({ "练武场", @LONG
+这是古村的练武场，一个露天的场地里摆满了练武用的沙袋和
+木人，几个年轻小伙正在一位老者的知道下呼呼生风地挥动着拳脚。
+LONG  }),  // coor(50,10,0)  lianwuchang
+  "6,1,0" : ({ "后村小路", @LONG
+这是一条蜿蜒的青石铺就的小路，是通向后山的唯一的道
+路，路两旁开满不知名的野花，阵阵花香飘过，真是一片美丽
+的田园风光。
+LONG  }),  // coor(60,10,0)  houcun-road
+  "7,1,0" : ({ "后村山路", @LONG
+这是一条蜿蜒的泥土小路，是通向后山的唯一的道路，路
+两旁开满不知名的野花，阵阵花香飘过，真是一片美丽的田园
+风光。但随着山势越来越高，路也渐渐难走起来。
+LONG  }),  // coor(70,10,0)  houcun-shanlu
+  "8,1,0" : ({ "乱石岗", @LONG
+山路渐渐爬到了尽头，眼前突然出现一片难见的开阔地来。
+这是一片怪石林立的小山岗，只见那些石头千姿百态，除了有
+点荒凉外，倒是有种诡异的美丽。
+LONG  }),  // coor(80,10,0)  luanshigang
+  "3,2,0" : ({ "厨房", " " }),  // coor(30,20,0)  chufang
+  "4,2,0" : ({ HIG "村长家" NOR, @LONG
+这里是古村村长的家，屋内却是颇为朴素，墙边靠着几个农具，
+墙角一张竹床，与普通村民家没什么区别。
+LONG  }),  // coor(40,20,0)  cunzhangjia
+  "5,2,0" : ({ "兵器室", " " }),  // coor(50,20,0)  bingqishi
+  "8,2,0" : ({ "竹林", @LONG
+这里是一片苍翠的竹林，轻风吹过，竹影摇动。竟让人心里格外
+安宁。
+LONG  }),  // coor(80,20,0)  zhulin
+  "9,2,0" : ({ "南树林", @LONG
+这里长满了高大的树木，尽是碗口般粗大的树木，
+在树木的掩映下，光线也昏暗下来。各种小动物在林
+间跳来跳去，使这里充满了勃勃生机。
+LONG  }),  // coor(90,20,0)  shulin
+  "4,3,0" : ({ HIG "卧室" NOR, " " }),  // coor(40,30,0)  woshi
+  "9,3,0" : ({ "北树林", @LONG
+这里生长的尽是几人合抱的大树，几乎都看不倒路了，光线更加
+昏暗。各种动物在林间跳来跳去，使这里充满了勃勃生机。
+LONG  }),  // coor(90,30,0)  beishulin
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

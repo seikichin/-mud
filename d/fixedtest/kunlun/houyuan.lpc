@@ -1,0 +1,15 @@
+// houyuan —— 由 nitan/d/kunlun/houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-119980,40160,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后院");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "3/8/0",
+    "out" : __DIR__ "4/11/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

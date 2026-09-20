@@ -1,0 +1,18 @@
+// shanlu3 —— 由 nitan/d/hangzhou/shanlu3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(750,-2100,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+小溪横过山路，跨溪有一座小石桥。溪边农家小孩在嬉戏玩乐。                    
+南上便到了上天竺。北下就是中天竺。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "faxisi",
+    "northdown" : __DIR__ "fajinsi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

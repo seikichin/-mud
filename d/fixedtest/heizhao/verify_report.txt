@@ -1,0 +1,9 @@
+==== 验证 heizhao ====
+  地图 L,M,H = 11,31,6    非空格 = 19
+  ENTRY = 8,26,4   EXIT = 7,29,5   entry_dir = down
+  不可达房间数 = 9   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 1（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格8,23,3 方向down: /d/fixedtest/heizhao/heizhao/8/23/3 或 /d/fixedtest/heizhao/heizhao/8/23/2
+  入格原房间总数 = 20

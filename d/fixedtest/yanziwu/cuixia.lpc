@@ -1,0 +1,20 @@
+// cuixia —— 由 nitan/d/yanziwu/cuixia.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "翠霞堂");
+  set("long", @LONG
+古朴庄严，气度非凡，你一进门就不由的惊叹。好大一座厅堂！
+ 西边仿佛有一间小厅，东边则是一片竹林，南面有一道穿堂，不知通
+向什么地方。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "chuantang",
+    "east" : __DIR__ "zhulin1",
+    "west" : __DIR__ "xiaoting",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

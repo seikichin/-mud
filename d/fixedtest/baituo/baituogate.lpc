@@ -1,0 +1,13 @@
+// baituo 入口房：蛇谷荒地·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "蛇谷荒地" NOR);
+  set("long", "蛇谷荒地。往 north 可进入迷宫。\n");
+  set("exits", ([
+    "north" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

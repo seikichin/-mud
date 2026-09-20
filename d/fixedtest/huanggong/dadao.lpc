@@ -1,0 +1,19 @@
+// dadao —— 由 nitan/d/huanggong/dadao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2860,7720,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大道");
+  set("long", @LONG
+这是通往宫中的大道. 北边远远能望见先农坛. 西边有一片猎场, 
+是皇家的上林囿. 每年皇上都会去狩猎. 平时就比较冷清, 倒是那些动
+物们, 乐得个安闲.
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "humen",
+    "west" : __DIR__ "lie1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

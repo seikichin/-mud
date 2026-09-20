@@ -1,0 +1,41 @@
+// changcheng —— nitan d/changcheng 固定地图映射区（vrm_fixed）
+//
+//   changcheng.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   changcheng-room.lpc    格房描述（改文字即可改每格 look）
+//   changchenggate.lpc / changchenggate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/changcheng/changcheng/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = changcheng）
+// 格索引 -> 原 coor： coor = (格索引 + (-1001,800,4)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "changcheng-room");
+  set_maze_map(__DIR__ "changcheng");
+  set_maze_spacing(10);
+  set_maze_owner_key("changcheng");
+
+  // 入口 = changcheng13（格 1,0,0），出口 = fenghuotai2-2（格 0,0,1）
+  set_entry_dir("down");
+  set_link_entry_room(__DIR__ "changchenggate");
+  set_link_exit_room(__DIR__ "changchenggate2");
+  set_entry_back_dir("down");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-10000);
+  set_link_entry_room_y(8000);
+  set_link_entry_room_z(70);
+
+  set_entry_short(HIW "长城" NOR);
+  set_entry_desc("长城，从这里可以进入迷宫（down）。\n");
+  set_exit_short(HIY "烽火台" NOR);
+  set_exit_desc("烽火台，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 changcheng-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("长城");
+  set_maze_room_desc("nitan d/changcheng 映射区。");
+}

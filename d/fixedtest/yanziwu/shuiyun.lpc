@@ -1,0 +1,18 @@
+// shuiyun —— 由 nitan/d/yanziwu/shuiyun.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "水云轩");
+  set("long", @LONG
+湖心的一座小小的亭台，四面环水，只有西侧有一条曲桥与岸上
+相连。轩中清风拂面，水波微扬，一群群游鱼清晰可见，别有一番诗
+情画意。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "jiashan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

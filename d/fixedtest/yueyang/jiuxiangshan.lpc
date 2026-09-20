@@ -1,0 +1,21 @@
+// jiuxiangshan —— 由 nitan/d/yueyang/jiuxiangshan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1780,2290,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "酒香山");
+  set("long", @LONG
+传说山上有美酒，喝了能成仙。想长生不老的汉武帝听说后，便派
+文士栾巴到君山求酒。酒求回后，便被东方朔给抢先喝了，后来闹出一
+场笑话。大抵是汉武帝大怒，欲斩东方朔。东方朔辩称，如自己被赐而
+死，则仙酒无长生功效，自然不是真仙酒；仙酒既然不真则朔不当死。
+汉武帝两难之间，无法可施。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "yangyaozai",
+    "south" : __DIR__ "jiuxiangting",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

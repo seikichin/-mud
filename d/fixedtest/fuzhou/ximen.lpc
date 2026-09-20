@@ -1,0 +1,18 @@
+// ximen —— 由 nitan/d/fuzhou/ximen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-120,-6180,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西门");
+  set("long", @LONG
+这里是福州西门。一条笔直的官道向西延伸，直到西边闽江大拐弯
+处，官道便转入北岸山坳处，直达中原。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "xixiaojie",
+    "west" : "/d/fixedtest/yanping/guandao1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

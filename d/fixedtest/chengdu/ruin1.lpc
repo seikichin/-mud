@@ -1,0 +1,20 @@
+// ruin1 —— 由 nitan/d/chengdu/ruin1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15250,-1840,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "破旧大宅");
+  set("long", @LONG
+这里是一间破旧大宅的前院，大厅已经崩塌了一半，焦黑的梁柱挡
+住了你的去路，庭院里杂草丛生，看来已经很久没有人住了，据说这里
+晚上有鬼魂出现，但是倒也从没听说过有人被害，因此附近的居民仍然
+照常生活。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/2/0",
+    "west" : __DIR__ "ruin2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

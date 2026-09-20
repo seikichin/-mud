@@ -1,0 +1,18 @@
+// xiaodao5 —— 由 nitan/d/xiaoyao/xiaodao5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(80,-510,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "林间小道");
+  set("long", @LONG
+这是一条从南到北的林间小道，沿途风景极之清幽，参天古树，拔
+地而起，两旁百花争艳。令人留连忘返。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "qingcaop",
+    "south" : __DIR__ "muwu1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

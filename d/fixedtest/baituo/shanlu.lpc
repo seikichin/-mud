@@ -1,0 +1,18 @@
+// shanlu —— 由 nitan/d/baituo/shanlu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49990,19980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+这里是白驼山庄广场西边的一条小路，寻常百姓平时都是经过这
+条小路上山。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "guangchang",
+    "north" : __DIR__ "2/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

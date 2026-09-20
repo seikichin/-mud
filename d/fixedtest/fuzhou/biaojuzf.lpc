@@ -1,0 +1,19 @@
+// biaojuzf —— 由 nitan/d/fuzhou/biaojuzf.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-91,-6161,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "账房");
+  set("long", @LONG
+这里是福威镖局的账房，地上铺着大红地毯，壁上字画高悬。上首
+一张红木交椅，上坐一个老先生。一古木书案横于椅前，上面整齐的堆
+着一卷卷镖局押镖的货票。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "biaojuhc",
+    "west" : __DIR__ "biaojuzt",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

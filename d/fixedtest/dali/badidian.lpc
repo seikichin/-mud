@@ -1,0 +1,20 @@
+// badidian —— 由 nitan/d/dali/badidian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19210,-6870,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "巴的甸");
+  set("long", @LONG
+这里就是大理西部要镇巴的甸，是乌夷的重要治府，多个乌夷部
+落分布在附近。坐于东泸水谷地正中，巴的甸四周多农田，以此为中
+心，道路四通八达连接各方的部落。
+LONG );
+  set("exits", ([
+    "eastup" : __DIR__ "lushuieast",
+    "south" : __DIR__ "lushui",
+    "north" : __DIR__ "zhenxiong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

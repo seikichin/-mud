@@ -1,0 +1,18 @@
+// dingduan —— 由 nitan/d/meizhuang/dingduan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,10,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "书架顶部");
+  set("long", @LONG
+你现在在书架的顶部，从这里你可以看见整个密室的情况，除了
+几具白骨以外，确实没有什么值得你怀疑的东西，但你发现书架的顶
+部非常不合适的铺着一块红绸。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "mishi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

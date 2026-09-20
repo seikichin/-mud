@@ -1,0 +1,19 @@
+// road9 —— 由 nitan/d/luoyang/road9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6870,2140,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直的官道，足可容得下十马并驰。路上尘土飞扬，
+将道边的绿树染上一层黄灰。大道往东通向脂粉之都的扬州，而西面则
+是通往洛阳城。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "road8",
+    "west" : __DIR__ "road10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

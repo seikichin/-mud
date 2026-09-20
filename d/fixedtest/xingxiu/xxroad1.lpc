@@ -1,0 +1,18 @@
+// xxroad1 —— 由 nitan/d/xingxiu/xxroad1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(180,0,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石大道");
+  set("long", @LONG
+你走在一条青石大道上，尘土飞扬。东面是一座大城池，看城墙上
+旗帜飘扬，好象就是兰州了。西面望去一片黄土和荒野。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/lanzhou/0/4/0",
+    "west" : __DIR__ "xxroad2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

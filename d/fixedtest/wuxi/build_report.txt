@@ -1,0 +1,11 @@
+==== wuxi ====
+  网格 L,M,H = 14,17,3   格数 = 60   入格原房间 = 64   合并格 = 4
+  原 coor 基准 (gx,gy,gz) = (98,-81,0)   => link_entry_room = (1050,-730,40)
+  入口 = road4 格 13,8,0   出口 = taibomiao 格 3,2,0   entry_dir = up
+  边：方向位 126  LINK 0（含自环 1 / 到独立房 2 / 到外部 4）  非标准方向 0  丢弃空出口 1
+  [LINK] 总行数 = 7   独立房间 = 2
+  ---- 警告 ----
+  [丢弃未解析目标] majiu.up -> SHOP_DIR"wuxi_shop"
+  ---- 独立房间 ----
+    chongandadian  (coor 不是 10 的倍数)
+    kedian3  (coor 不是 10 的倍数)

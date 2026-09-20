@@ -1,0 +1,18 @@
+// road9 —— 由 nitan/d/changan/road9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-10800,1940,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "官道");
+  set("long", @LONG
+一条青石铺就的官道，向北通往兰州，往东南则到达长安。道路两
+旁是一片茂密的树林。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "road8",
+    "north" : "/d/fixedtest/lanzhou/caoyuan1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

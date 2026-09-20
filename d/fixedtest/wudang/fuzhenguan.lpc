@@ -1,0 +1,18 @@
+// fuzhenguan —— 由 nitan/d/wudang/fuzhenguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-360,-240,60)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "复真观五层楼");
+  set("long", @LONG
+复真观五层楼构造奇特，其间有十二根梁枋交叉重叠，下面仅用
+一柱支撑，即有名的「一柱十二梁」。在这里俯瞰群山烟云迷离，远
+望金顶，一柱擎天，为观景胜地。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "taizipo",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

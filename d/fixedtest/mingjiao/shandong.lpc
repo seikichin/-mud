@@ -1,0 +1,15 @@
+// shandong —— 由 nitan/d/mingjiao/shandong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(0,100,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "明教密洞");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "0/10/10",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/enter", "/d/fixedtest/mingjiao/19/4/8");
+}

@@ -1,0 +1,24 @@
+==== nanyang ====
+  网格 L,M,H = 4,5,2   格数 = 13   入格原房间 = 13   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (-695,76,0)   => link_entry_room = (-6930,780,30)
+  入口 = yidao3 格 1,4,0   出口 = shop 格 0,0,0   entry_dir = up
+  边：方向位 24  LINK 0（含自环 0 / 到独立房 1 / 到外部 2）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 3   独立房间 = 9
+  ---- 警告 ----
+  第 1 轮：地图 697x11x2 超出上限 100，只保留最密集的 100^3 窗口（-695,76,0），裁掉 3 间房
+  ---- 独立房间 ----
+    hanshui1  (原文件无 coor)
+    hanshui2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    hanshuim  (原文件无 coor)
+    hanshuis  (原文件无 coor)
+    nanmen  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    ruzhou  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yidao  (原文件无 coor)
+    yidao1  (原文件无 coor)
+    yidao2  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    ruzhou.north -> /d/huanghe/huanghe3
+    ruzhou.northwest -> /d/kaifeng/tonanyang
+    ruzhou.west -> /d/songshan/taishique
+    yidao.south -> /d/city/beimen
+    yidao2.east -> /d/room/xiaoyuan

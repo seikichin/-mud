@@ -1,0 +1,18 @@
+// shanlu1 —— 由 nitan/d/wuliang/shanlu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-70000,-80000,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+这是一条通向深山的小路。两边都是茂密的长草和树林。偶尔有
+小鸟飞过。林间时而传出一阵野兽的嘶嚎或呦呦的鹿鸣。
+LONG );
+  set("exits", ([
+    "eastdown" : "/d/fixedtest/dali/0/7/0",
+    "westup" : __DIR__ "0/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,16 @@
+// liangonge —— 由 nitan/d/guanwai/liangonge.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东练功房");
+  set("long", @LONG
+这里是东面的练功房，屋中立着一些练武者常用的木人。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "liangong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

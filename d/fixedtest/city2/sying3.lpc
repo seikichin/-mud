@@ -1,0 +1,18 @@
+// sying3 —— 由 nitan/d/city2/sying3.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW"马军大营"NOR);
+  set("long", @LONG
+这里就是「大宋」马军大营，营内军马嘶鸣，尘土飞扬，为了应
+对蒙古精锐的骑兵，大宋早已开始了骑兵的训练，较场中央指挥的将
+领虽然早已汗流浃背，可是丝毫也不敢懈怠。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "sying1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

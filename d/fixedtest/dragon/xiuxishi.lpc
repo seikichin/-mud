@@ -1,0 +1,16 @@
+// xiuxishi —— 由 nitan/d/dragon/xiuxishi.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "休息室");
+  set("long", " ");
+  set("exits", ([
+    "west" : __DIR__ "liechang",
+    "east" : __DIR__ "spirit4",
+    "north" : __DIR__ "spirit5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

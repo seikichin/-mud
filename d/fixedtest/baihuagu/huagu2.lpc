@@ -1,0 +1,20 @@
+// huagu2 —— 由 nitan/d/baihuagu/huagu2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-360,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR"百花谷"NOR);
+  set("long", HIG"来到此处，你突然眼前一亮，但觉青青翠谷，点缀着或红或紫，
+或黄或白的鲜花，竟是换了一个世界。道旁有一株桃树，开得正艳。\n"NOR);
+  set("exits", ([
+    "enter" : __DIR__ "huagu2",
+    "out" : __DIR__ "0/1/1",
+    "south" : __DIR__ "huagu2",
+    "west" : __DIR__ "huagu2",
+    "east" : __DIR__ "huagu3",
+    "north" : __DIR__ "huagu2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

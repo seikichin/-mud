@@ -1,0 +1,48 @@
+==== gumu ====
+  网格 L,M,H = 28,19,23   格数 = 70   入格原房间 = 78   合并格 = 7
+  原 coor 基准 (gx,gy,gz) = (-324,-6,-3)   => link_entry_room = (-3100,30,210)
+  入口 = mishi5 格 14,10,13   出口 = shanlu3 格 3,18,20   entry_dir = up
+  边：方向位 136  LINK 18（含自环 11 / 到独立房 4 / 到外部 2）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 32   独立房间 = 20
+  ---- 警告 ----
+  [丢弃动态出口] shishi1.north -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi1.south -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi1.east -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi1.west -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi2.north -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi2.south -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi2.east -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi2.west -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi3.north -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi3.south -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi3.east -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi3.west -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi4.north -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi4.south -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi4.east -> __DIR__"shishi"+(1+random(3))
+  [丢弃动态出口] shishi4.west -> __DIR__"shishi"+(1+random(3))
+  第 1 轮：剔除 16 个零位格房间，重新建图
+  出口格不在 down 方向的边界上：check_maze_map 会多报一条指向空格的提示（运行时不影响）
+  ---- 独立房间 ----
+    anhe1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    bianhou  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hedi  (原文件无 coor)
+    liangong3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    lingshi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    midong  (原文件无 coor)
+    mishi  (原文件无 coor)
+    mishi4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi7  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi8  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    qianliu3  (原文件无 coor)
+    rope  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shiguan  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi0  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi5  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shishi6  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    mishi8.out -> /d/city/guangchang

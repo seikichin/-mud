@@ -1,0 +1,17 @@
+// libailou —— 由 nitan/d/jingzhou/libailou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-180,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "饭馆");
+  set("long", @LONG
+这是一家湘西的小饭馆，布置颇为简易，顾客多是匆匆的行人，
+买点包子、鸡腿、米酒就赶路去了。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "4/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

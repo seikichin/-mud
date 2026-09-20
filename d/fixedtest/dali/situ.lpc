@@ -1,0 +1,17 @@
+// situ —— 由 nitan/d/dali/situ.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19131,-6851,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "司徒堂");
+  set("long", @LONG
+这里是大理国司徒堂。大理君臣勤政爱民，三公劳作自不带言。
+堂内无余物，奇怪的是地上角落还摆了些铁铲，孔明灯之类的物事。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "zonglichu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

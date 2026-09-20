@@ -1,0 +1,13 @@
+// xiaoyao 出口房：石级·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "石级" NOR);
+  set("long", "石级。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

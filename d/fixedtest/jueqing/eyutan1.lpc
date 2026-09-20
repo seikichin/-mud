@@ -1,0 +1,16 @@
+// eyutan1 —— 由 nitan/d/jueqing/eyutan1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "鄂鱼潭岸上");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{       
+        add_action("do_cross", ({ "cross" }));
+}

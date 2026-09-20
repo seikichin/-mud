@@ -1,0 +1,14 @@
+// wangyun —— 由 nitan/d/xiakedao/wangyun.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3110,-22150,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "望云台");
+  set("long", "望云台云海可怜松");
+  set("exits", ([
+    "northdown" : __DIR__ "road8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

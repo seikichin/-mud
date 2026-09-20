@@ -1,0 +1,14 @@
+// yinxie —— 由 nitan/d/shouxihu/yinxie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1,40,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "春草池塘");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "taohuawu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

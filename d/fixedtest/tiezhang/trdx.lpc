@@ -1,0 +1,14 @@
+// trdx —— 由 nitan/d/tiezhang/trdx.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,170,70)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR"天然洞穴"NOR);
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "dong3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

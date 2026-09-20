@@ -1,0 +1,18 @@
+// huixianqiao —— 由 nitan/d/wudang/huixianqiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-380,150)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "会仙桥");
+  set("long", @LONG
+这里地势稍平，一道山涧缓缓流过，一座窄窄的木桥横在涧上，
+只溶一人经过。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "toutiangate",
+    "north" : __DIR__ "chaotiangong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

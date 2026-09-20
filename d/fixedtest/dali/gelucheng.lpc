@@ -1,0 +1,20 @@
+// gelucheng —— 由 nitan/d/dali/gelucheng.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19210,-6850,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "葛鲁城");
+  set("long", @LONG
+此城是乌蛮族屈部的治府，屈部领葛鲁、昌州、德昌，面积颇大。
+附近多山地丛林，居民多狩猎为生，河谷内低地也多草皮，适合放牧
+牛羊。此去北和西皆入深山，东边平原上另有村镇。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "minadian",
+    "northup" : __DIR__ "shanlin",
+    "south" : __DIR__ "zhenxiong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

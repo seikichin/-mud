@@ -1,0 +1,19 @@
+// dating —— 由 nitan/d/dali/dating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19151,-6921,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "五华楼大厅");
+  set("long", @LONG
+这里是五华楼的前大厅，异常宽敞明亮，足有一里见方，全是云
+石铺地，黑白相间，足足可以容纳二、三千人。时时可见锦衣侍者手
+托美食来回行走。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "1/5/0",
+    "north" : __DIR__ "louti",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

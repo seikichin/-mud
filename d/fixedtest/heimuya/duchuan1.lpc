@@ -1,0 +1,15 @@
+// duchuan1 —— 由 nitan/d/heimuya/duchuan1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "渡船");
+  set("long", @LONG
+一叶小舟，一次就能载七、八个人。一名三十多岁日月教徒装扮
+的艄公手持长竹篙，正在船尾撑着船，这艄公臂力惊人，小舟在他的
+操控之下，一支箭般飞快地射向对岸。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

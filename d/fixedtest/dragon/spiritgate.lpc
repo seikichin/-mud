@@ -1,0 +1,16 @@
+// spiritgate —— 由 nitan/d/dragon/spiritgate.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "忘忧园");
+  set("long", "你处在一个植满茶花的花园里，虽然还不是开花的时节，但是那些生\n"
+"机勃勃的茶树，不禁让你感到心神清爽。草丛里有些小虫子正唧喁唧喁地\n"
+"叫得正欢。\n");
+  set("exits", ([
+    "south" : "/d/fixedtest/xingxiu/jiayuguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

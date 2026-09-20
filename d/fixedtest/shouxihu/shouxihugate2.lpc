@@ -1,0 +1,13 @@
+// shouxihu 出口房：欧阳祠·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "欧阳祠" NOR);
+  set("long", "欧阳祠。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

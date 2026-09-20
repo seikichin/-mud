@@ -1,0 +1,18 @@
+// hunanroad1 —— 由 nitan/d/xiangyang/hunanroad1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3590,-160,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "土路");
+  set("long", @LONG
+你走在湘鄂交界的土路上，偶尔会有人骑着马匆匆而过。这里已
+经是湖南地界，往北进入湖北境内。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "caodi6",
+    "southwest" : __DIR__ "hunanroad2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

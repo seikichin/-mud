@@ -1,0 +1,13 @@
+// dongling1 —— 由 nitan/d/taishan/dongling1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(390,780,190)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东灵后殿");
+  set("long", @LONG
+
+LONG );
+  set("no_fly", 1);
+  setup();
+}

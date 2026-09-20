@@ -1,0 +1,14 @@
+// inn2 —— 由 nitan/d/death/inn2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,50,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIB "【黑店】" NOR);
+  set("long", " ");
+  set("exits", ([
+    "west" : __DIR__ "2/5/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

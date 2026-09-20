@@ -1,0 +1,19 @@
+==== quanzhen ====
+  网格 L,M,H = 54,20,20   格数 = 109   入格原房间 = 109   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (-319,-1,1)   => link_entry_room = (-2920,90,220)
+  入口 = xiaolu11 格 53,15,16   出口 = shanlu1 格 4,1,0   entry_dir = up
+  边：方向位 228  LINK 5（含自环 19 / 到独立房 4 / 到外部 2）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 30   独立房间 = 7
+  ---- 警告 ----
+  第 1 轮：剔除 4 个零位格房间，重新建图
+  ---- 独立房间 ----
+    dajiaochang  (原文件无 coor)
+    flowers  (原文件无 coor)
+    milin  (原文件无 coor)
+    mishi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shandong  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shandong1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    taiyi2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    mishi.eastup -> /d/city/shilijie4
+    shandong1.southdown -> /d/gumu/anhe2

@@ -1,0 +1,18 @@
+// shang_road2 —— 由 nitan/d/ruzhou/shang_road2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "官道");
+  set("long", @LONG
+这里是一条尘土飞扬的大官道，它是连接汝州的主干道。官
+道很是宽广，足可容得下十马并驰。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "3/0/0",
+    "west" : __DIR__ "shang_road1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

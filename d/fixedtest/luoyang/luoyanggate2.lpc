@@ -1,0 +1,13 @@
+// luoyang 出口房：碎石路·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "碎石路" NOR);
+  set("long", "碎石路。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

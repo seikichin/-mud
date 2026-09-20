@@ -1,0 +1,13 @@
+// city 入口房：南门外
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "城南门外" NOR);
+  set("long", "城南门外。往南（down）穿过城门，就是城里的大街。\n");
+  set("exits", ([
+    "down" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// hubian2 —— 由 nitan/d/xueshan/hubian2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-30000,-8010,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "湖边小路");
+  set("long", @LONG
+这是圣湖边的小路。长草越径，虫鸣阵阵，偶尔有白色水禽掠湖点
+水，激起圈圈涟漪。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "hubian1",
+    "northeast" : __DIR__ "hubian3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

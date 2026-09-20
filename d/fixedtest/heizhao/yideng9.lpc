@@ -1,0 +1,20 @@
+// yideng9 —— 由 nitan/d/heizhao/yideng9.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "庙前");
+  set("long", @LONG
+这里是深山巅峰，平地上有一座小小寺院，庙前有一个荷塘，一
+座小桥横跨其上。旁边陡峭的山崖上有一条铁链和一些人工凿出来的
+台阶，似乎是一条上下山的捷径。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "8/20/3",
+    "northup" : __DIR__ "8/29/5",
+    "south" : __DIR__ "yideng8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

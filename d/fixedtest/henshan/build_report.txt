@@ -1,0 +1,31 @@
+==== henshan ====
+  网格 L,M,H = 14,26,9   格数 = 83   入格原房间 = 84   合并格 = 1
+  原 coor 基准 (gx,gy,gz) = (-699,-573,-1)   => link_entry_room = (-6920,-5600,90)
+  入口 = wangyuetai 格 6,25,4   出口 = hsroad2 格 13,4,1   entry_dir = west
+  边：方向位 166  LINK 0（含自环 0 / 到独立房 0 / 到外部 11）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 11   独立房间 = 24
+  ---- 独立房间 ----
+    furong  (原文件无 coor)
+    furong1  (原文件无 coor)
+    inhole  (原文件无 coor)
+    inhole1  (原文件无 coor)
+    inhole2  (原文件无 coor)
+    inhole3  (原文件无 coor)
+    inzhushendong  (原文件无 coor)
+    liufudating  (原文件无 coor)
+    liufudayuan  (原文件无 coor)
+    liufueast  (原文件无 coor)
+    liufuwest  (原文件无 coor)
+    ontree  (原文件无 coor)
+    ontree2  (原文件无 coor)
+    outzhushendong  (原文件无 coor)
+    outzigai  (原文件无 coor)
+    outzigai1  (原文件无 coor)
+    tianquan-hole  (原文件无 coor)
+    xuanya  (原文件无 coor)
+    xuanyadi  (原文件无 coor)
+    zigai1  (原文件无 coor)
+    zigai2  (原文件无 coor)
+    zigai3  (原文件无 coor)
+    zigai4  (原文件无 coor)
+    zigaihole  (原文件无 coor)

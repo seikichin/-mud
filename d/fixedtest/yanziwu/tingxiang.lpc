@@ -1,0 +1,18 @@
+// tingxiang —— 由 nitan/d/yanziwu/tingxiang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "听香水榭");
+  set("long", @LONG
+绿柳杏花丛中有八九间茅房，四周竹篱掩映，错落有致，这就是
+慕容公子的婢女阿朱的住所了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "shuiyun",
+    "west" : __DIR__ "biheqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

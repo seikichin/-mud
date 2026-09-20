@@ -1,0 +1,21 @@
+// guchang —— 由 nitan/d/hanzhong/guchang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12270,840,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "晒谷场");
+  set("long", @LONG
+这里是村庄中心的晒谷场，地方不大，不过村里也就五、六户人
+家，种的谷子也够晒了。现在正是收获的季节，谷场中堆满了谷子，
+几个男女童子正在场中嬉闹，不时地扬起一捧谷子相互撒去。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "minju4",
+    "northwest" : __DIR__ "minju3",
+    "southeast" : __DIR__ "xiaocun",
+    "north" : __DIR__ "cunzhangjia",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

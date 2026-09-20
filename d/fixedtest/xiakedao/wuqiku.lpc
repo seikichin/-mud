@@ -1,0 +1,17 @@
+// wuqiku —— 由 nitan/d/xiakedao/wuqiku.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3090,-22110,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "武器库");
+  set("long", @LONG
+这里是侠客岛的武器库，架上摆满了各种武器，任由来岛的武士
+们挑选。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "dating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

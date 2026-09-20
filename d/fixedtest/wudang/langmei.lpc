@@ -1,0 +1,14 @@
+// langmei —— 由 nitan/d/wudang/langmei.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "榔梅园");
+  set("long", " ");
+  set("exits", ([
+    "east" : "/d/fixedtest/wudang/wudanggate",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

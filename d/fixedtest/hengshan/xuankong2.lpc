@@ -1,0 +1,19 @@
+// xuankong2 —— 由 nitan/d/hengshan/xuankong2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "悬空寺南楼");
+  set("long", @LONG
+这里是悬空寺的南门楼，也是南碑亭。悬空寺于陡崖上凿石穴插悬
+梁为基，楼宇间栈桥相连。全寺面东座西，南北危楼对望，断崖分断，
+很是艰险。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "zhandao",
+    "north" : __DIR__ "zhanqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// mtroad2 —— 由 nitan/d/xiakedao/mtroad2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的
+气氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "mtroad3",
+    "south" : __DIR__ "mtroad2",
+    "east" : __DIR__ "mtroad1",
+    "west" : __DIR__ "mtroad2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

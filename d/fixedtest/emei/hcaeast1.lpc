@@ -1,0 +1,17 @@
+// hcaeast1 —— 由 nitan/d/emei/hcaeast1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "华藏庵东廊");
+  set("long", @LONG
+这里是峨嵋华藏庵东廊。走廊往南通往斋堂，西通往广场。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "2/1/22",
+    "south" : __DIR__ "hcaeast2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

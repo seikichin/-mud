@@ -1,0 +1,20 @@
+// badaling —— 由 nitan/d/changcheng/badaling.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1000,5000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "八达岭");
+  set("long", WHT@LONG
+八达岭为居庸关外口，关城建于两山之间。关城有二门，东门额题
+“居庸外镇”，西门额题“北门锁钥”。登上关楼，向西眺望，只见崇
+山峻岭，层峦叠嶂，群山之中只有八达岭城关这个缺口，大有“一夫当
+关，万夫莫开”的气势。
+LONG NOR);
+  set("exits", ([
+    "northeast" : __DIR__ "beisilou",
+    "west" : __DIR__ "juyongguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

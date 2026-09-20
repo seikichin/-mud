@@ -1,0 +1,18 @@
+// shandao8 —— 由 nitan/d/songshan/shandao8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-26,850,86)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "极顶山道");
+  set("long", @LONG
+你走在嵩山极顶山道，青松翠柏，山风岚雾，时来飘荡。远望山下
+犬吠鸡啼，顿起仙凡之感。西上就是封禅台了。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "shandao7",
+    "westup" : __DIR__ "fengchantai",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

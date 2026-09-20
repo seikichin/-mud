@@ -1,0 +1,19 @@
+// shijian —— 由 nitan/d/yanziwu/shijian.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "试剑台");
+  set("long", @LONG
+玉石栏杆围成的一座石台，慕容世家的弟子经常在此练习武技，
+台角放着刀枪剑戟等十八般兵器。 场中立着一些制作极为精妙的木人。
+东边则是慕容家弟子苦心修行的地方。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "kuxiu",
+    "south" : __DIR__ "changlang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

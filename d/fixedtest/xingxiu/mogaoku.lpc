@@ -1,0 +1,17 @@
+// mogaoku —— 由 nitan/d/xingxiu/mogaoku.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,40,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "莫高窟");
+  set("long", @LONG
+这里墙壁上绘制着与佛教相关的画面，有仙女飞天，还有反弹琵琶。
+洞中还有很多佛像和经书。你被这些瑰丽的文化之宝惊呆了。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "yueerquan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

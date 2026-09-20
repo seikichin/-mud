@@ -1,0 +1,17 @@
+// xrdong1 —— 由 nitan/d/xingxiu/xrdong1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,120,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "仙人洞");
+  set("long", @LONG
+这个洞高七尺，里面光线暗淡，你看不清是否洞里有任何器物，
+只有洞口堆着半尺来高的山羊粪。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "xrdong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

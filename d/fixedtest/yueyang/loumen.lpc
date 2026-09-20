@@ -1,0 +1,19 @@
+// loumen —— 由 nitan/d/yueyang/loumen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6220,-3000,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "岳阳楼门");
+  set("long", @LONG
+这里是岳阳楼的大门，门上是一幅黑底蓝字对联“洞庭天下水，岳
+阳天下楼”。岳阳楼建在岳阳城楼上，建筑精巧雄伟，与洪都滕王阁、
+武昌黄鹤楼并称江南三大名楼，
+LONG );
+  set("exits", ([
+    "southdown" : __DIR__ "ximen",
+    "west" : __DIR__ "huaiputing",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

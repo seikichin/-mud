@@ -1,0 +1,17 @@
+// dongxiang —— 由 nitan/d/jingzhou/dongxiang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "闺房");
+  set("long", @LONG
+这是凌小姐的闺房，一股幽香扑面而来。一张绣榻放在墙角，垂
+着细纱。凌小姐正对着一盆菊花在沉思。北面是座花园。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "3/2/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

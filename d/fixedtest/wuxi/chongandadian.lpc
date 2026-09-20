@@ -1,0 +1,18 @@
+// chongandadian —— 由 nitan/d/wuxi/chongandadian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1049,-721,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "崇安寺大殿");
+  set("long", @LONG
+殿内正中供着塑金佛象，僧人诵经之声不绝于耳。进出的香客显
+得十分地虔诚，四周一圈是五轮大藏佛像。高高的殿堂里，帏幔飘垂
+香火缭绕，显得特别地神秘。无锡人都说，在这里许愿十分地灵验。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "7/9/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

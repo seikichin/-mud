@@ -1,0 +1,19 @@
+// yanguan —— 由 nitan/d/zhongzhou/yanguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9050,-1020,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "鸦片馆");
+  set("long", @LONG
+一下楼梯走进一个大厅，原来这里是一个鸦片馆。大厅放
+着大约有几十张躺椅，几个烟鬼躺在躺椅上，旁边还有小
+姐帮他做鸦泡。三面靠墙都放着躺椅。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "danjian",
+    "up" : __DIR__ "0/2/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

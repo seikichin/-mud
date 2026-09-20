@@ -1,0 +1,19 @@
+// nanshanzhidian —— 由 nitan/d/penglai/nanshanzhidian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,20,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南山之颠");
+  set("long", @LONG
+南山之颠乃南山最高峰，不少仙者常来这里吸收天地的灵气以
+促进仙法的修炼。你站在高峰之上，远眺蓬莱仙岛，其景美不胜收，
+实在难以用人间任何语言来描述。俯瞰南山，依然是如此神秘，若
+隐若现，时高时低。翘首东望麒麟崖，更是令人充满无尽的遐思。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "6/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

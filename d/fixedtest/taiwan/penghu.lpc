@@ -1,0 +1,54 @@
+// penghu —— 由 nitan/d/taiwan/penghu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(2300,-6800,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "澎湖岛");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_enter", "enter");
+}
+
+int do_enter ( string arg )
+{
+        object ob = this_player () ;
+        string dir;
+        if( !arg || (arg !="chuan" && arg !="zhou"))
+        {
+                tell_object(this_player() , "你要 enter 哪儿？\n" ) ;
+                return 1 ;
+        }
+        if (arg == "chuan")
+        {
+                message_vision("船夫一见有人上船，忙叫了一声：开船喽！\n", ob);
+                message_vision("船夫升起帆，船就向西方顺风航行。\n", ob);
+                call_out("tdalu", 10 , ob );
+        }
+        else
+        {
+                message_vision("水兵一见有人上船，忙叫了一声：开船喽！\n", ob);
+                message_vision("水兵升起帆，船就向东方逆风航行。\n", ob);
+                call_out("ttaiwan", 10 , ob );
+        }
+        ob->move(__DIR__"dahai") ;
+        tell_object(ob, BLU "你在海上航行了很久很久.......\n" NOR ) ;
+        return 1 ;
+}
+
+void tdalu( object ob )
+{
+        tell_object(ob , "大船终于抵达了福建的一个繁华海港。你走下船来。\n" ) ;
+        ob->move("/d/fixedtest/quanzhou/7/3/1") ;
+}
+
+void ttaiwan( object ob )
+{
+        tell_object(ob , "战舟终于抵达了台湾的一个港口城市。你走下船来。\n" ) ;
+        ob->move("/d/fixedtest/taiwan/1/7/0") ;
+}

@@ -1,0 +1,15 @@
+// hongniang-zhuang —— 由 nitan/d/suzhou/hongniang-zhuang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(230,-200,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "红娘堂");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "yinyuan-tang",
+    "west" : __DIR__ "hong-zoulang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

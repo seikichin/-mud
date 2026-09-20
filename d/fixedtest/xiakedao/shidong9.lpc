@@ -1,0 +1,19 @@
+// shidong9 —— 由 nitan/d/xiakedao/shidong9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3100,-22070,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石洞");
+  set("long", @LONG
+这是一个很小的石洞，两边点着红烛，光线虽暗，却也能辩得
+出方向。走着走着，你隐约看见在前面有一个身影，只见他身穿青
+色长衫，眼视前方，一副唯我独尊的样子。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "yadi",
+    "west" : __DIR__ "shidong10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

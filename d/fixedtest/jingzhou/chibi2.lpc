@@ -1,0 +1,18 @@
+// chibi2 —— 由 nitan/d/jingzhou/chibi2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-210,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小路");
+  set("long", @LONG
+这是一条通向江边的小路，路十分的陡，走起来得小心一点，四
+周静悄悄的，只闻的鸟儿歌唱的声音。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "chibi1",
+    "southdown" : __DIR__ "chibi3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

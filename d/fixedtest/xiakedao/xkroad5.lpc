@@ -1,0 +1,20 @@
+// xkroad5 —— 由 nitan/d/xiakedao/xkroad5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1390,-9000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "渔村晒网场");
+  set("long", @LONG
+小村不大，却有个好大的晒网场。几个小孩在场中无忧地玩耍，
+声音喧闹。靠南海边上，有个渔夫面向大海，悠然垂钓。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "xkroad4",
+    "south" : __DIR__ "xkroad5-south",
+    "east" : __DIR__ "xkroad5-east",
+    "north" : __DIR__ "xkroad6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

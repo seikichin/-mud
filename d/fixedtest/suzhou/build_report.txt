@@ -1,0 +1,33 @@
+==== suzhou ====
+  网格 L,M,H = 13,18,4   格数 = 85   入格原房间 = 102   合并格 = 14
+  原 coor 基准 (gx,gy,gz) = (103,-117,0)   => link_entry_room = (1090,-1080,50)
+  入口 = road1 格 8,16,0   出口 = road5 格 8,0,0   entry_dir = up
+  边：方向位 204  LINK 6（含自环 0 / 到独立房 5 / 到外部 4）  非标准方向 0  丢弃空出口 1
+  [LINK] 总行数 = 14   独立房间 = 18
+  ---- 警告 ----
+  第 1 轮：地图 95x101x4 超出上限 100，只保留最密集的 100^3 窗口（80,-120,0），裁掉 4 间房
+  [丢弃未解析目标] majiu.up -> SHOP_DIR"suzhou_shop"
+  第 2 轮：剔除 2 个零位格房间，重新建图
+  [丢弃未解析目标] majiu.up -> SHOP_DIR"suzhou_shop"
+  ---- 独立房间 ----
+    bishuiting  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    cangjingge  (coor 不是 10 的倍数)
+    dxbdian  (coor 不是 10 的倍数)
+    hanshidian  (coor 不是 10 的倍数)
+    hong-damen  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    hong-zoulang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    hongniang-zhuang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    houtang  (coor 不是 10 的倍数)
+    huzhongdao  (coor 不是 10 的倍数)
+    jiao1  (原文件无 coor)
+    jiao2  (原文件无 coor)
+    kedian3  (coor 不是 10 的倍数)
+    liang  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    onroad  (原文件无 coor)
+    sdhyuan  (原文件无 coor)
+    xlm_zb  (原文件无 coor)
+    yinyuan-tang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zhengdian  (coor 不是 10 的倍数)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    sdhyuan.east -> /d/fixedtest/suzhou/wuwangjing
+    sdhyuan.west -> /d/fixedtest/suzhou/zhijijing

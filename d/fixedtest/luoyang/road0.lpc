@@ -1,0 +1,18 @@
+// road0 —— 由 nitan/d/luoyang/road0.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6900,2140,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直的官道，足可容得下十马并驰。往东通向脂粉之
+都的扬州，而西面则是号称“扼九州”的虎牢关了。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "road11",
+    "northwest" : __DIR__ "road2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

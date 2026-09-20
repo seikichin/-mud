@@ -1,0 +1,14 @@
+// xiuxishi —— 由 nitan/d/huijiang/xiuxishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50070,9130,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "休息室");
+  set("long", @LONG
+这是间整洁的厢房，房里别无他物，只有中间放着一张收拾得舒舒
+服服的大床，看着就让人想睡觉。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

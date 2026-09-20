@@ -1,0 +1,13 @@
+// shenfeng 出口房：戈壁·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "戈壁" NOR);
+  set("long", "戈壁。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

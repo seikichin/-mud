@@ -1,0 +1,18 @@
+// pingtai —— 由 nitan/d/shouxihu/pingtai.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "平台石栏");
+  set("long", @LONG
+平台中二具铁镬，以太湖石为座，夏植荷花于镬内，成为绝大盆景。
+铁镬直径六七尺，厚二寸，高与人肩齐，相传为萧梁时镇水之物。仪征
+焦汝霖《铁镬记》碑石立于其侧。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "taohuawu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

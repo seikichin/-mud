@@ -1,0 +1,15 @@
+// xishan —— 由 nitan/d/yanping/xishan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西山");
+  set("long", " ");
+  set("exits", ([
+    "northup" : __DIR__ "zhouxue",
+    "southdown" : __DIR__ "road3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// shidao1 —— 由 nitan/d/heimuya/shidao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,60,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石道");
+  set("long", @LONG
+一路往北行，中间仅有一道宽约五尺的石道，两边石壁如墙，一
+路上都有日月教徒模样的人物在走动，对往来的路人都严密监视。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "1/7/10",
+    "north" : __DIR__ "1/6/9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

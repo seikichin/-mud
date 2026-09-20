@@ -1,0 +1,15 @@
+// zoulangw —— 由 nitan/d/gaochang/zoulangw.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "走廊");
+  set("long", " ");
+  set("exits", ([
+    "southeast" : __DIR__ "0/7/3",
+    "northeast" : __DIR__ "zoulangc",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

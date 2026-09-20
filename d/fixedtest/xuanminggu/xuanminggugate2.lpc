@@ -1,0 +1,13 @@
+// xuanminggu 出口房：玄冥峰·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "玄冥峰" NOR);
+  set("long", "玄冥峰。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

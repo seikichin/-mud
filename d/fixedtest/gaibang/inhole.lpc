@@ -1,0 +1,15 @@
+// inhole —— 由 nitan/d/gaibang/inhole.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,-10,-10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树洞内部");
+  set("long", " ");
+  set("exits", ([
+    "out" : "/d/fixedtest/city/7/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/down", __DIR__"undertre");
+}

@@ -1,0 +1,15 @@
+// chunliuting —— 由 nitan/d/shouxihu/chunliuting.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "春柳亭");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "changdi2",
+    "south" : __DIR__ "changdi1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

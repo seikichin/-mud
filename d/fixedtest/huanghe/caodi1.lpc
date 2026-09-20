@@ -1,0 +1,19 @@
+// caodi1 —— 由 nitan/d/huanghe/caodi1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-100,100,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "草地");
+  set("long", @LONG
+这里是一片绿茵茵的草地，像是一方绿色的毯子铺在地上。草丛中
+开着一些不知名的小花，有红的、黄的，还有紫的。花瓣上、草叶上的
+露珠闪着晶莹的光。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/city/7/10/0",
+    "west" : __DIR__ "caodi2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// pubu —— 由 nitan/d/heizhao/pubu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5020,-1280,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "瀑布");
+  set("long", @LONG
+你快步走近瀑布，只见柳树下那人头戴斗笠，身披蓑衣，坐在
+一块石上，正自垂钓。这瀑布水势湍急异常，一泻如注，水中哪里
+有鱼？纵然有鱼，又哪有余暇吞饵？看那人时，见他双目一动不动
+的凝视水中。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "8/20/3",
+    "enter" : __DIR__ "8/22/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

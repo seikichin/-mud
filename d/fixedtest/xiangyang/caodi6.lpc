@@ -1,0 +1,18 @@
+// caodi6 —— 由 nitan/d/xiangyang/caodi6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7820,-830,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "草地");
+  set("long", @LONG
+这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进城了，
+虽然蒙古兵没来到南门，但肃杀氛围丝毫不减。
+LONG );
+  set("exits", ([
+    "south" : "/d/fixedtest/wudang/wdroad5",
+    "north" : __DIR__ "southgate2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

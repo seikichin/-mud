@@ -1,0 +1,20 @@
+// huanghe_3 —— 由 nitan/d/huanghe/huanghe_3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5000,450,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄河");
+  set("long", @LONG
+葛水过了古浪，和源于酒泉西北的洪水河于新城合流。到了这里，
+河水的去势逐渐加强，挟带着千万吨的高原泥沙，势不可挡地向西南奔
+去。由于此处水流湍急，这里的鱼大多肉厚脂丰。名扬天下的黄河大鲤
+鱼即产于此。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "huanghe_2",
+    "northwest" : "/d/fixedtest/yongdeng/2/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

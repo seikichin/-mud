@@ -1,0 +1,13 @@
+// qingcheng 出口房：厨房·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "厨房" NOR);
+  set("long", "厨房。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

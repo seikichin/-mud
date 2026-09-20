@@ -1,0 +1,18 @@
+// xiaowu —— 由 nitan/d/xuanminggu/xiaowu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,50,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "休息室");
+  set("long", @LONG
+这里是玄冥谷中的一间茅草屋，供平时休息之用。此处虽
+然简陋了点，但也还算景色宜人，比之豪华的卧房更有一分清
+新脱俗的感觉。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "1/5/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

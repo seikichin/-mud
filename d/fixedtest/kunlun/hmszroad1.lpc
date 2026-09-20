@@ -1,0 +1,18 @@
+// hmszroad1 —— 由 nitan/d/kunlun/hmszroad1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-90010,10010,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+这是一条昆仑山上到处可见的山路。只是这里已到处可见梅树，梅
+花盛开时到处一片火红，花香飘溢。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "hmszroad2",
+    "southeast" : __DIR__ "bayankala",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

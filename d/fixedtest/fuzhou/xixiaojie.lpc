@@ -1,0 +1,20 @@
+// xixiaojie —— 由 nitan/d/fuzhou/xixiaojie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-110,-6180,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西小街");
+  set("long", @LONG
+青石板路笔直地伸展出去，直通西门。街北望去，好一片的潋滟水
+色，街南却是一片丛林，佛号钟呤，悠远传音。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "xichansi",
+    "north" : __DIR__ "xihu",
+    "east" : __DIR__ "0/5/0",
+    "west" : __DIR__ "ximen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

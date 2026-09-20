@@ -1,0 +1,13 @@
+// shaolin 入口房：钟楼一层·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "钟楼一层" NOR);
+  set("long", "钟楼一层。往 south 可进入迷宫。\n");
+  set("exits", ([
+    "south" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

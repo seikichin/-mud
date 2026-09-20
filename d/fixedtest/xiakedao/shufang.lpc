@@ -1,0 +1,18 @@
+// shufang —— 由 nitan/d/xiakedao/shufang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3070,-22110,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "书房");
+  set("long", @LONG
+这里是书房，靠墙是一排书架，摆满了当今武林各个门派的武功
+密藉。石洞中间放着石桌和几个石凳，侠客岛龙木二岛主常常在这里
+读书。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "dating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

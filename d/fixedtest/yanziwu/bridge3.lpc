@@ -1,0 +1,19 @@
+// bridge3 —— 由 nitan/d/yanziwu/bridge3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1220,-1210,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "十二回栏");
+  set("long", @LONG
+十二回栏是一座通往莲韵塘中倦心亭的十二曲桥。桥墩和栏杆均为
+石砌，桥面却是圆木铺张着。透过数指宽的木间隙，可以看到桥下清清
+的水、红红的荷、和跳动着的蛙。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "juanxin",
+    "north" : __DIR__ "48/64/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

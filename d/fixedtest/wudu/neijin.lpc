@@ -1,0 +1,18 @@
+// neijin —— 由 nitan/d/wudu/neijin.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(180,20,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "客房");
+  set("long", @LONG
+这里是一间客房，靠墙布着一溜通铺，行人累可以在这里随意休
+息。窗边摆着一个破破烂烂的木桌，一个游方道人正坐在这里的桌边
+上喝茶。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "xiaodian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

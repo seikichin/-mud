@@ -1,0 +1,17 @@
+// cemen —— 由 nitan/d/kunlun/cemen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-119991,40130,90)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "侧门");
+  set("long", @LONG
+绕过三圣堂的后花园，经过一条曲曲折折的花径，又穿入许多厅堂
+之中。但见屋宇连绵，门户复叠，到了昆仑派的侧门。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "3/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

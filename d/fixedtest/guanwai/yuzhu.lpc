@@ -1,0 +1,18 @@
+// yuzhu —— 由 nitan/d/guanwai/yuzhu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "玉柱峰");
+  set("long", @LONG
+白云峰西南，有峰高耸挺秀，多峰突起，形如玉柱。东麓泻出一水，悬
+流如线，注入天池，就是古籍所载的“金线泉”了。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "baiyun",
+    "north" : __DIR__ "tiyun",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

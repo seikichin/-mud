@@ -1,0 +1,19 @@
+// beimen —— 由 nitan/d/yueyang/beimen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6200,-2990,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "岳阳北门");
+  set("long", @LONG
+这里是岳阳城的北门。青石筑成两层楼台坚固异常，巍峨宽阔的拱
+形城门上方，镂着「岳阳」两个红漆大字。北面是一条黄土路，直通江
+陵。
+LONG );
+  set("exits", ([
+    "northwest" : "/d/fixedtest/jingzhou/tulu2",
+    "south" : __DIR__ "beijie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// shejingdong —— 由 nitan/d/shenlong/shejingdong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(800,0,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蛇精洞");
+  set("long", @LONG
+此处乃蛇精洞，洞内幽深恐怖，四处可见黑色的骸骨，周围尽是
+毒蛇，洞顶不时地滴下发臭的液体，置身此地，心中有一种莫名的恐
+惧，据说，九头蛇精就藏在此洞深处。
+
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "79/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,14 @@
+// undertan —— 由 nitan/d/jueqing/undertan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(180,0,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "潭底石窟");
+  set("long", " ");
+  set("exits", ([
+    "enter" : __DIR__ "22/1/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

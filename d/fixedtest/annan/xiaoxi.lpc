@@ -1,0 +1,18 @@
+// xiaoxi —— 由 nitan/d/annan/xiaoxi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,170,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小溪");
+  set("long", @LONG
+这里是条小溪。溪水清澈见底，还有几条鱼在游来游去。这里风景
+秀丽，山水如画，空气清新。地上有很多漂亮的野花、蒲公英等植物。
+不时有野兔从你的脚旁跳过。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "6/17/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

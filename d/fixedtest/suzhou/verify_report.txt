@@ -1,0 +1,9 @@
+==== 验证 suzhou ====
+  地图 L,M,H = 13,18,4    非空格 = 85
+  ENTRY = 8,16,0   EXIT = 8,0,0   entry_dir = up
+  不可达房间数 = 2   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 1（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格9,11,0 方向southwest: /d/fixedtest/suzhou/suzhou/8/10/0 或 /d/fixedtest/suzhou/suzhou/8/11/0
+  入格原房间总数 = 102

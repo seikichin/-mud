@@ -1,0 +1,37 @@
+==== meizhuang ====
+  网格 L,M,H = 9,9,3   格数 = 27   入格原房间 = 27   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (1,1,0)   => link_entry_room = (50,50,40)
+  入口 = didao5 格 4,2,0   出口 = houting 格 2,8,1   entry_dir = up
+  边：方向位 42  LINK 8（含自环 0 / 到独立房 7 / 到外部 0）  非标准方向 1  丢弃空出口 0
+  [LINK] 总行数 = 16   独立房间 = 18
+  ---- 警告 ----
+  [丢弃动态出口] senlin7.north -> __DIR__"senlin"+(random(8)+1)
+  [丢弃动态出口] senlin7.west -> __DIR__"senlin"+(random(8)+1)
+  [丢弃动态出口] senlin7.east -> __DIR__"senlin"+(random(8)+1)
+  [丢弃动态出口] senlin7.south -> __DIR__"senlin"+(random(8)+1)
+  第 1 轮：剔除 17 个零位格房间，重新建图
+  出口格不在 down 方向的边界上：check_maze_map 会多报一条指向空格的提示（运行时不影响）
+  ---- 独立房间 ----
+    didao6  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    dingduan  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hupan  (原文件无 coor)
+    lingmu  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    neitang  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin10  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin5  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin6  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin7  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin8  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    senlin9  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shijie  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    xiaowu  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    hupan.north -> /d/fixedtest/meizhuang/xiaolu.c
+    hupan.west -> /d/quanzhou/nanhu1
+    shijie.eastdown -> /d/hangzhou/gushan
+    shijie.north -> /d/fixedtest/meizhuang/xiaolu.c

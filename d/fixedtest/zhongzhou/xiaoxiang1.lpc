@@ -1,0 +1,19 @@
+// xiaoxiang1 —— 由 nitan/d/zhongzhou/xiaoxiang1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9060,-990,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小巷");
+  set("long", @LONG
+前面看起来好象要到小巷底了，巷中行人越发稀少。西北
+角上好象有一座破烂房子，远远望去烟雾弥漫，陈旧不堪，原
+来是座破庙。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "guandimiao",
+    "east" : __DIR__ "0/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

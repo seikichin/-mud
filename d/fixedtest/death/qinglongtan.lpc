@@ -1,0 +1,103 @@
+// qinglongtan —— 由 nitan/d/death/qinglongtan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", GRN "【青龙洞】" NOR);
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        object me;
+        int meqi, meneili, decqi, mq;
+        me = this_player();
+
+	if (! userp(me)) return;
+        add_action("do_move", "enter");
+        add_action("do_xun", "xun");
+
+       if( me->query("id") == "qing long"
+           || present("diyin xuemai", me))
+        {
+                tell_object(me, RED "你怀中的地阴血脉发出一阵阵热"
+                                "量，护住了周身的经脉！\n" NOR);
+                return 0;
+        }
+        tell_object(me, HIW "你身陷碧水寒潭，潭中寒冰削肉刮骨，你"
+                                "只觉浑身血液都被冻住一般！\n" NOR);
+        me->set_temp("die_reason", "在碧水寒潭给活活冻死了");
+        me->die();
+        return 0;
+}
+
+int do_xun(string arg)
+{
+        object me = this_player();
+        object ob;
+        object ob1;
+
+        if (objectp(present("qing long", environment(me))))
+                return notify_fail("青龙已经现身了，还寻什么呀，赶快战斗吧！\n");
+
+        if (query("qinglong") < 1)
+                return notify_fail("青龙已经被宰了，你再怎么寻也是寻不到的！\n");
+
+        if (me->is_busy())
+                return notify_fail("你现在正忙着呢。\n");
+       
+        if( me->query("jing")<100 )
+                return notify_fail("你太累了，稍微休息一下吧。\n");
+
+        if( me->query("qi")<100 )
+                return notify_fail("你太累了，稍微休息一下吧。\n");
+
+        message_vision(HIC "\n$N" HIC "在洞内四处游走，不放过半点蛛"
+                       "丝马迹，仔细的搜寻着洞穴内的一切。\n" NOR, me); 
+        remove_call_out("xun"); 
+        call_out("xun", 5, me);
+        me->start_busy(5);
+        return 1;
+}
+
+
+int do_move(string arg)
+{
+        object ob, paper,
+        me = this_player();
+
+        if (! arg || arg == "")
+                return 0;
+
+        if (arg == "xuanwo")
+        {
+                if ( objectp(present("qing long", environment(me))))
+                {
+                        write(HIW "\n青龙一声怒嚎，龙尾直扫而出，劈打在你"
+                              "身旁的岩壁上，石屑飞绽，挡住了去路。\n" NOR);
+                        return 1;
+                }
+                message_vision(HIW "\n$N" HIW "你一纵身，跳进了寒流旋涡……\n"
+                               NOR, me);
+                me->move("/d/fixedtest/death/12/0/3");
+                message_vision(HIW "\n只见$N" HIW "被奈河桥下的寒流旋涡抛到空"
+                                   "中，然后重重的跌落在奈河桥上。\n" NOR, me);
+                me->set("neili", 0);
+                me->set("jingli", 0);
+                me->set("qi", 10);
+                me->set("eff_qi", 10);
+                me->set("jing", 10);
+                me->set("eff_jing", 10);
+                tell_object(me, HIR "你被跌得头晕目旋，两耳轰鸣，“哇”的喷出"
+                                "一大口鲜血。\n" NOR);
+                if( objectp(ob = present("diyin xuemai", me)) )
+                        destruct(ob);
+                tell_object(me, HIC "\n你怀中的" NOR + RED "地阴血脉" NOR +
+                                HIC "耗尽能源，化作了一屡气体飘出。\n" NOR);
+                return 1;
+        }
+        return 0;
+}

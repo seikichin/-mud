@@ -1,0 +1,16 @@
+// jingxiu —— 由 nitan/d/guanwai/jingxiu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "静修室");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "houyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/south", __DIR__"xiuxishi");
+  set("exits/north", __DIR__"xiuxishi");
+}

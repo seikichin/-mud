@@ -1,0 +1,15 @@
+// shandong1 —— 由 nitan/d/quanzhen/shandong1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3160,-10,-10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", " ");
+  set("exits", ([
+    "southdown" : "/d/fixedtest/gumu/27/1/1",
+    "out" : __DIR__ "3/1/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,13 @@
+// taohua 入口房：练功房·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "练功房" NOR);
+  set("long", "练功房。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

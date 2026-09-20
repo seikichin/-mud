@@ -1,0 +1,17 @@
+// liangong3 —— 由 nitan/d/dali/liangong3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19111,-6801,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "练武场");
+  set("long", @LONG
+这里摆着一些铜人，他们比木人更加结实，也就不容易坏，因此
+也是高手修炼上乘绝艺的地方。向南一直走穿过练功场就是王府内院。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "liangong2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

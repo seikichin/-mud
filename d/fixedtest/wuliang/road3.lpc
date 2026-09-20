@@ -1,0 +1,18 @@
+// road3 —— 由 nitan/d/wuliang/road3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-71010,-79890,100)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+这里是剑湖宫内的甬道。东通正厅，西面是通往后山的小路。甬
+道廊檐边看下去，就是无量山景形胜了。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/11/7",
+    "west" : __DIR__ "road5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

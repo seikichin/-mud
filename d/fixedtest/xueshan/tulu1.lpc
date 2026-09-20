@@ -1,0 +1,18 @@
+// tulu1 —— 由 nitan/d/xueshan/tulu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-30010,-8030,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "土路");
+  set("long", @LONG
+这是一条不起眼的土路，不宽却也不窄，松散的浮尘显露出来往行
+商的频繁。它是连接雪山寺与中原的必经之路。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "caoyuan",
+    "west" : __DIR__ "tulu2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

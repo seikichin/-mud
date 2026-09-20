@@ -1,0 +1,21 @@
+// clzoulang2 —— 由 nitan/d/yixing/clzoulang2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(279,-991,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "走廊");
+  set("long", @LONG
+这里往来的人少了些，西面不断传来阵阵吵闹之声，有时还夹杂着
+怒骂和尖叫。空中弥漫着烟酒的气味。地上显得甚是肮脏，抛弃着一些
+油腻的残羹剩菜。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "clxiaoting",
+    "south" : __DIR__ "clzoulang1",
+    "east" : __DIR__ "clhuayuan",
+    "west" : __DIR__ "clxiaowu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

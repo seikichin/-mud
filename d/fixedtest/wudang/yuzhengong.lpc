@@ -1,0 +1,20 @@
+// yuzhengong —— 由 nitan/d/wudang/yuzhengong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-200,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "遇真宫");
+  set("long", @LONG
+这里是进入武当山的第一道宫宇遇真宫，宽敞无比，可容千人食
+宿，是进香客的一大歇脚处。三丰真人曾在此结庵修炼，因此宫中供
+着张三丰真人像。由于张真人闭关已久，外人不知其是否仍在人间，
+民间传说他已得道仙逝，立像膜拜。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "wdbl",
+    "northdown" : __DIR__ "shijie1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

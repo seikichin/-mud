@@ -1,0 +1,21 @@
+// nanyan0 —— 由 nitan/d/wudang/nanyan0.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南岩宫地下室");
+  set("long", @LONG
+这是一个干燥洁净的地下室，四壁用光滑的大理石砌就而成，十
+数支松明照得这里通明透亮。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "1/1/1",
+    "west" : __DIR__ "nanyan2",
+    "south" : __DIR__ "nanyan3",
+    "east" : __DIR__ "nanyan1",
+    "north" : __DIR__ "nanyan4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

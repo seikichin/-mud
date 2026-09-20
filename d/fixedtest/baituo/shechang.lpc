@@ -1,0 +1,19 @@
+// shechang —— 由 nitan/d/baituo/shechang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49960,20110,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蛇场");
+  set("long", @LONG
+这是欧阳世家所建的蛇场，从蛇谷捕捉来的毒蛇都在此饲养，四
+周围以丈许来高的灰色圆墙，墙脚砌成圆弧形，光滑无缝。场里建了
+许多蛇窝，由欧阳世家中的蛇奴负责管理，许多剧毒的怪蛇就是在此
+杂交而得。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "4/11/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

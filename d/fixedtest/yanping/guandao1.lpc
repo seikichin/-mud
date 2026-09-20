@@ -1,0 +1,20 @@
+// guandao1 —— 由 nitan/d/yanping/guandao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1800,-6300,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "官道");
+  set("long", @LONG
+这里密迩城郊，来往行人也渐渐多了起来。福州的官话听起来刺耳
+难懂，可是抑扬顿挫，别有一番风味。
+    北面有股青烟冒起，似乎有家野店。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "guandao2",
+    "east" : "/d/fixedtest/fuzhou/ximen",
+    "north" : __DIR__ "jiusi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

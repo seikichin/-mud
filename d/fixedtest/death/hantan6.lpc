@@ -1,0 +1,26 @@
+// hantan6 —— 由 nitan/d/death/hantan6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,70,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIB "【碧水寒潭】" NOR);
+  set("long", HIB @LONG
+
+                    碧     水     寒     潭
+
+    这里便是阴司的碧水寒潭，传说四神兽之首的青龙常常出没于此潭
+中。潭中冰水中幽暗无比，四周似乎有几处出口，但实在看不清是通向
+何处。水中冰冷刺骨，令人难以忍受，你只觉得气力在一点一点消失。
+
+
+LONG NOR);
+  set("exits", ([
+    "north" : __DIR__ "hantan1",
+    "south" : __DIR__ "hantan7",
+    "east" : __DIR__ "hantan1",
+    "west" : __DIR__ "hantan3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// xiaoyan —— 由 nitan/d/changan/xiaoyan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-10730,1860,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小雁塔");
+  set("long", @LONG
+小雁塔建于景龙年间，因比大雁塔小，故称小雁塔。塔高十五级，
+双塔连理为一塔，形体秀丽美观。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "road5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

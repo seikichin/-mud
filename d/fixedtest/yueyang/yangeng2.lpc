@@ -1,0 +1,20 @@
+// yangeng2 —— 由 nitan/d/yueyang/yangeng2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1800,2270,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "岩梗");
+  set("long", @LONG
+这是香炉山通往酒香山上酒香亭的岩梗小道。香炉山与君山本是一
+脉相通，不可分割，冬春水枯季节，一条数十丈的岩埂由君山直通香炉
+山。这条岩埂原是一条小山脊，横跨于两山之间，后经千百年湖水冲洗
+荡涤，山脊泥土逐渐被浪涛洗尽，以至岩埂裸露，非水枯不可往来。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "xianglushan",
+    "north" : __DIR__ "yangeng1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

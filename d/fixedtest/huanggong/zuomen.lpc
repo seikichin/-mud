@@ -1,0 +1,19 @@
+// zuomen —— 由 nitan/d/huanggong/zuomen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2810,7690,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "左阙门");
+  set("long", @LONG
+这是通往各部官员朝房的左门. 西庑房设的是兵、刑、工三部.
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "gongbu",
+    "north" : __DIR__ "bingbu",
+    "east" : __DIR__ "dianwai",
+    "west" : __DIR__ "xingbu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

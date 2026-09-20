@@ -1,0 +1,20 @@
+// road1 —— 由 nitan/d/hangzhou/road1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(740,-2060,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石大道");
+  set("long", @LONG
+大道上挤满了来灵隐寺上香和上飞来峰的游客。北边过了小溪就
+是灵隐寺了。南边是上飞来峰的路。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "feilaifeng",
+    "northeast" : __DIR__ "road2",
+    "northwest" : "/d/fixedtest/jiaxing/1/8/0",
+    "north" : __DIR__ "lingyinsi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

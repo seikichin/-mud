@@ -1,0 +1,270 @@
+// jiuguan —— 由 nitan/d/guiyun/jiuguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(290,-870,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小酒馆");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_quit", "quit");
+        add_action("do_buy", "buy");
+        add_action("do_pay", "pay");
+        add_action("do_pay", "jiezhang");
+        add_action("do_eat", "eat");
+        add_action("do_eat", "chi");
+        add_action("do_drink", "drink");
+        add_action("do_drink", "he");
+        add_action("do_order", "order");
+        add_action("do_order", "dian");
+        add_action("do_stand", "stand");
+        add_action("do_stand", "zhan");
+        add_action("do_sit", "sit");
+        add_action("do_sit", "zuo");
+}
+
+
+
+int do_sit(string arg)
+{
+        object me = this_player();
+
+        if (me->is_busy() || me->is_fighting())
+                return notify_fail("你正忙着呢！\n");
+        if (arg == "table" || arg == "zhuozi")
+                return notify_fail("你要坐在桌子上？那先把你煮熟了再端上来吧。\n");        
+        if ( !arg || (arg != "chair" && arg != "yizi") )
+                return notify_fail("你要坐在地板上？有个性！不过这样的话恐怕你会被轰出酒馆了。\n");        
+        if( me->query_temp("marks/sit") )
+                return notify_fail("你已经坐在座位上了。\n");        
+        if( me->query_temp("total_pay") )
+                return notify_fail("先把旧帐结清了！\n");        
+        remove_call_out("check_payed");
+        message_vision("$N找了个空位座下，准备吃饭。\n", me);        
+        if (query_temp("serve") == "无")
+        {
+                message_vision("酒保走过来对$N说：“对不起您哪，现在不是用餐时间。”\n", me);        
+                message_vision("$N无奈地又站了起来。\n", me);        
+                return 1;
+        }
+        me->set_temp("marks/sit", 1);
+        return 1;
+}
+
+int do_stand()
+{
+        object me = this_player();
+
+        if( !me->query_temp("marks/sit") )
+                return notify_fail("你已经站着了，是不是站久了有点发昏啊？\n");        
+        if( me->query_temp("total_pay") )
+                return notify_fail("没付钱(pay)就想走吗？\n");        
+        message_vision("$N拍拍屁股，站了起来。\n", me);        
+        me->delete_temp("marks/sit");
+        return 1;
+}
+
+
+int do_eat(string arg)
+{
+        object me = this_player();
+        int i, count, remaining;
+
+        if (!arg) return 0;
+                        
+        if( !(count=me->query_temp("cai_count")))return 0;
+        for (i = 0; i < count; i++)
+                if( me->query_temp("cai_"+i+"/type") == "food" && 
+                        (arg == me->query_temp("cai_"+i+"/name") || 
+                        arg == me->query_temp("cai_"+i+"/short")) )
+                        break;
+        if (i == count) return 0;
+        if( !me->query_temp("marks/sit") )
+        {
+                write( "酒保用好象瞧见一个怪物一样的眼神打量着你：“站着吃喝？有位子不坐，您不嫌累呀？”\n");
+                return 1;
+        }
+        if (me->is_busy()) {
+                write("你上一个动作还没有完成。\n");
+                return 1;
+        }
+        if( me->query("food") >= me->max_food_capacity() )
+        {
+                write("你已经吃太饱了，再也塞不下任何东西了。\n");
+                return 1;
+        }
+
+        me->add("food", me->query_temp("cai_"+i+"/supply"));
+        if (me->is_fighting()) me->start_busy(2);
+
+        message_vision("$N端起一"+me->query_temp("cai_"+i+"/unit")+me->query_temp("cai_"+i+"/name")+"，吃了两口。\n",me);
+        remaining=me->query_temp("cai_"+i+"/remaining");
+        remaining--;
+        if (remaining == 0)
+        {
+                message_vision("$N将一"+me->query_temp("cai_"+i+"/unit")+me->query_temp("cai_"+i+"/name")+"吃得一干二净。\n",me);
+                for (; i < count - 1; i++)
+                {
+                        me->set_temp("cai_"+i+"/name", query_temp("cai_"+(i+1,  me)+"/name"));
+                        me->set_temp("cai_"+i+"/short", query_temp("cai_"+(i+1,  me)+"/short"));
+                        me->set_temp("cai_"+i+"/unit", query_temp("cai_"+(i+1,  me)+"/unit"));
+                        me->set_temp("cai_"+i+"/remaining", query_temp("cai_"+(i+1,  me)+"/remaining"));
+                        me->set_temp("cai_"+i+"/supply", query_temp("cai_"+(i+1,  me)+"/supply"));
+                        me->set_temp("cai_"+i+"/type", query_temp("cai_"+(i+1,  me)+"/type"));
+                }
+                me->add_temp("cai_count", -1);
+        }
+        else
+                me->set_temp("cai_"+i+"/remaining", remaining);
+        return 1;
+}
+
+int do_drink(string arg)
+{
+        object me = this_player();
+        int i, count, remaining;
+
+        if (!arg) return 0;
+                        
+        if( !(count=me->query_temp("cai_count")))return 0;
+        for (i = 0; i < count; i++)
+                if( me->query_temp("cai_"+i+"/type") == "liquid" && 
+                        (arg == me->query_temp("cai_"+i+"/name") || 
+                        arg == me->query_temp("cai_"+i+"/short")) )
+                        break;
+        if (i == count) return 0;
+        if( !me->query_temp("marks/sit") )
+        {
+                write( "酒保用好象瞧见一个怪物一样的眼神打量着你：“站着吃喝？有位子不坐，您不嫌累呀？”\n");
+                return 1;
+        }
+        if (me->is_busy())
+        {
+                write("你上一个动作还没有完成。\n");
+                return 1;
+        }
+        if( me->query("water") >= me->max_water_capacity() )
+        {
+                write("你已经喝太饱了，再也灌不下任何东西了。\n");
+                return 1;
+        }
+
+        me->add("water", me->query_temp("cai_"+i+"/supply"));
+        if (me->is_fighting()) me->start_busy(2);
+
+        message_vision("$N端起一"+me->query_temp("cai_"+i+"/unit")+me->query_temp("cai_"+i+"/name")+"，喝了两口。\n",me);
+        remaining=me->query_temp("cai_"+i+"/remaining");
+        remaining--;
+        if (remaining == 0)
+        {
+                message_vision("$N将一"+me->query_temp("cai_"+i+"/unit")+me->query_temp("cai_"+i+"/name")+"喝得一干二净。\n",me);
+                for (; i < count - 1; i++)
+                {
+                        me->set_temp("cai_"+i+"/name", query_temp("cai_"+(i+1,  me)+"/name"));
+                        me->set_temp("cai_"+i+"/short", query_temp("cai_"+(i+1,  me)+"/short"));
+                        me->set_temp("cai_"+i+"/unit", query_temp("cai_"+(i+1,  me)+"/unit"));
+                        me->set_temp("cai_"+i+"/remaining", query_temp("cai_"+(i+1,  me)+"/remaining"));
+                        me->set_temp("cai_"+i+"/supply", query_temp("cai_"+(i+1,  me)+"/supply"));
+                        me->set_temp("cai_"+i+"/type", query_temp("cai_"+(i+1,  me)+"/type"));
+                }
+                me->add_temp("cai_count", -1);
+        }
+        else me->set_temp("cai_"+i+"/remaining", remaining);
+        return 1;
+}
+
+int do_pay()
+{
+        object me = this_player();
+        int pay;
+
+        if( !(pay=me->query_temp("total_pay")) )
+                return notify_fail("掌柜赔笑道：“您是来做善事是吗？不吃也付帐？”\n");
+        if( me->query_temp("marks/sit") )
+        {
+                message_vision("$N站起身来，走到柜台前结帐。\n", me);
+                message_vision("掌柜翻出菜单，拨打了一阵算盘后告诉$N：“一共" + MONEY_D->price_str(pay) + "。”\n", me);
+                message_vision("掌柜冲着酒保嚷道：把这位客官桌子上的剩菜收拾干净。\n", me);
+        }
+        else
+        {
+                message_vision("$N向掌柜问道：“还差多少？”\n", me);
+                message_vision("掌柜翻了翻白眼，说道：“还差" + MONEY_D->price_str(pay) + "。”\n", me);
+        }
+        me->delete_temp("marks/sit");
+        me->delete_temp("cai_count");
+        me->set_temp("to_pay", 1);
+        return 1;
+}
+
+int do_buy()
+{
+        write("酒保说道：“本店不外卖，请坐下来(sit)点菜(order)。”\n");
+        return 1;
+}
+
+int do_quit()
+{
+        if( this_player()->query_temp("total_pay") )
+        {
+                write("吃饱喝足了不付钱就想退出？！\n");
+                return 1;
+        }
+        return 0;
+}
+
+
+string look_table()
+{
+        object me = this_player();
+        int i, j, num, count;
+        string name;
+
+        if( !(count=me->query_temp("cai_count")) )
+        {
+                write("桌子上是空的。\n");
+                return "";
+        }
+        write("你面前的桌子上放着：\n");
+        for (i = 0; i < count; i++)
+        {
+                name=me->query_temp("cai_"+i+"/name");
+                num = 1;
+                for (j = 0; j < count; j++)
+                {
+                        if (j == i) continue;
+                        if( name == me->query_temp("cai_"+j+"/name") )
+                        {
+                                if (j < i)
+                                {
+                                        num = 0;
+                                        break;
+                                }
+                                num++;
+                        }
+                }
+                if (!num) continue;
+                write(""+chinese_number(num)+me->query_temp("cai_"+i+"/unit")+name+"("+me->query_temp("cai_"+i+"/short")+")。\n");
+        }
+        return "";
+}
+
+int valid_leave(object me, string dir)
+{
+        if( me->query_temp("marks/sit") )
+                return notify_fail("你打算连椅子也搬出去？\n");        
+        if( me->query_temp("total_pay") )
+                return notify_fail("酒保拦住你说：“不付钱就想溜？找扁啊！”\n");        
+        me->delete_temp("cai_count");
+        me->delete_temp("cai_1");
+        me->delete_temp("cai_2");
+        me->delete_temp("cai_3");
+        me->delete_temp("cai_4");
+        me->delete_temp("cai_5");
+        return ::valid_leave(me, dir);
+}

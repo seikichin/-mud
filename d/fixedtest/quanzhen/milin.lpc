@@ -1,0 +1,14 @@
+// milin —— 由 nitan/d/quanzhen/milin.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "0/17/9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

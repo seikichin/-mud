@@ -1,0 +1,20 @@
+// lixiang —— 由 nitan/d/yanziwu/lixiang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "梨香苑");
+  set("long", @LONG
+慕容家的后院也与众不同，圆形院门上刻有「梨香苑」三字，院
+中雪白的梨花开满了枝头。西侧就是接待贵宾的龙凤厅了，东侧有一
+条精美的长廊。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "longfeng",
+    "east" : __DIR__ "changlang",
+    "north" : __DIR__ "chuantang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

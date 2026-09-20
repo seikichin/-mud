@@ -1,0 +1,61 @@
+// ============================================================
+//  gaibang-room.lpc  ——  nitan d/gaibang 映射区（3x1x1）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 gaibang.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (6,6,0)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "0,0,0" : ({ "兽舍", " " }),  // coor(60,60,0)  shoushe
+  "1,0,0" : ({ "土地庙", " " }),  // coor(70,60,0)  pomiao
+  "2,0,0" : ({ "蛇园", @LONG
+这里是丐帮弟子的蛇园。丐帮弟子生活俭朴，随地坐卧，不免常
+受蛇虫侵犯。日久天长，渐渐摸索出驯养之道。这里遍地是蛇，墙上
+也巴着蛇，屋檐上也向下垂着蛇，树枝上也盘绕着蛇，不由你不心惊。
+LONG  }),  // coor(80,60,0)  sheyuan
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

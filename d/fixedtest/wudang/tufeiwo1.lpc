@@ -1,0 +1,20 @@
+// tufeiwo1 —— 由 nitan/d/wudang/tufeiwo1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-320,-190,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "林中小路");
+  set("long", @LONG
+你走在一条僻静的林中小路上，两旁是阴森森的树林。只见左右
+前后，到处都是铺天盖地的松树林。几十丈高的大松树簇在一块，密
+实的枝叶象一蓬蓬巨伞恒伸向天空，把阳光遮得丝毫也无。据说这里
+经常有土匪出没，不可久留。
+LONG );
+  set("exits", ([
+    "northdown" : __DIR__ "wdroad10",
+    "south" : __DIR__ "tufeiwo2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,22 @@
+// dong9 —— 由 nitan/d/qilindong/dong9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,0,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR "麒麟窟" NOR);
+  set("long", HIR "\n\n" 
+"这是麒麟窟。进来顿觉一股热浪扑面而来，冲得你差点晕了\n"
+"过去。四周一片通红，地面上冒着丝丝白气，脚底剧烈的炙痛\n"
+"使你几乎立脚不住。热风带着隆隆巨响冲击着耳鼓，令你觉得\n"
+"置身洪炉之中，全身的水分都在被一滴滴地烤干。你感到生命\n" 
+"正离你而去·！\n\n" NOR);
+  set("exits", ([
+    "north" : __DIR__ "dong1",
+    "west" : __DIR__ "qilindongroom",
+    "east" : __DIR__ "dong1",
+    "south" : __DIR__ "0/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

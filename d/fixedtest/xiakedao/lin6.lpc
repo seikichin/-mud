@@ -1,0 +1,21 @@
+// lin6 —— 由 nitan/d/xiakedao/lin6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-21000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "树林");
+  set("long", @LONG
+这是一片茂密的树林，好象被人设计了一种阵，一走进来，你仿佛迷失了方向。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "lin5",
+    "west" : __DIR__ "lin6",
+    "northwest" : __DIR__ "lin6",
+    "south" : __DIR__ "lin6",
+    "east" : __DIR__ "lin7",
+    "north" : __DIR__ "lin6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

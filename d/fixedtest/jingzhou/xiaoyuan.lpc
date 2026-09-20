@@ -1,0 +1,18 @@
+// xiaoyuan —— 由 nitan/d/jingzhou/xiaoyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7091,-2101,-11)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "卉园");
+  set("long", @LONG
+这里是一处幽静的环境所在，偶尔听到外面竹林中传来几声清脆
+的鸟叫，园子里种着各式各样的珍奇花草。有绿菊，兰花，杜鹃、牡
+丹……
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "zizhulin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

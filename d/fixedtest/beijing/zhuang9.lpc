@@ -1,0 +1,17 @@
+// zhuang9 —— 由 nitan/d/beijing/zhuang9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,4740,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小房间");
+  set("long", @LONG
+这是一个小房间，桌上点着蜡烛。房中只有一桌一床，陈设简单，
+却十分干净。床上铺着被褥。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zhuang8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

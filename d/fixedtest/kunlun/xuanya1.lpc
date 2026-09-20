@@ -1,0 +1,35 @@
+// xuanya1 —— 由 nitan/d/kunlun/xuanya1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-100040,20010,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "悬崖");
+  set("long", @LONG
+你向西爬行，这边的山势十分凶险，直爬了半个时辰，眼前再无出
+路了。你不禁临崖浩叹，怔怔的呆了良久。
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_pa","pa");
+}
+
+int do_pa(string arg)
+{
+        object me;
+        me=this_player();
+        if (!(arg||arg=="east"||arg=="west")) return 0;
+        if (arg=="east")
+        {
+                message("vision",me->name()+"你向东面的松树爬去。\n",environment(me),me);
+                write("你向东面的松树年爬去。\n");
+                me->move(__DIR__"songshu");
+                message("vision",me->name()+"小心翼翼的爬上了松树。\n",environment(me),me);
+                return 1;
+        }
+        return 1;
+}

@@ -1,0 +1,15 @@
+// pine_road1 —— 由 nitan/d/wudang/pine_road1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松林小路");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "pine_road",
+    "north" : __DIR__ "pine_forest0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// zhangfang —— 由 nitan/d/dali/zhangfang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19131,-6861,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "帐房");
+  set("long", @LONG
+这里是镇南王府的帐房，王府每天的银米出入，往来消耗，全由
+这里经手，包括家丁下人的薪俸赏赐，在在都是麻烦多多。这里却从
+来没出过差错。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "wfdating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// midao —— 由 nitan/d/baituo/midao.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密道");
+  set("long", @LONG
+这是漆黑的密道，当年白驼山弟子为了直达中原而挖凿的。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/city/7/7/0",
+    "up" : __DIR__ "2/6/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

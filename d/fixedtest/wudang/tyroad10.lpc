@@ -1,0 +1,22 @@
+// tyroad10 —— 由 nitan/d/wudang/tyroad10.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-290,-310,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃园小路");
+  set("long", @LONG
+眼前豁然开朗，你轻松地走在桃园边的小路上。两边是桃树林，
+树上盛开着粉红的桃花，红云一片，望不到边。不时有蜜蜂「嗡嗡」
+地飞过，消失在在花丛中；几只猴子在树上互相追逐着，叽叽喳喳地
+争抢桃子。南北方向是通向桃园的入口。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "tygate2",
+    "north" : __DIR__ "tygate1",
+    "east" : __DIR__ "tyroad11",
+    "west" : __DIR__ "tyroad9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

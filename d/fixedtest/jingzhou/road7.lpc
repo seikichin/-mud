@@ -1,0 +1,18 @@
+// road7 —— 由 nitan/d/jingzhou/road7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-390,-200,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小路");
+  set("long", @LONG
+一条崎岖的黄土小路，路旁杂草丛生，西边可以看见荆州的官道，
+向东去则可一到达武昌。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "road6",
+    "west" : __DIR__ "10/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

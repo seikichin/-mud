@@ -1,0 +1,13 @@
+// wuxi 出口房：泰伯庙·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "泰伯庙" NOR);
+  set("long", "泰伯庙。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

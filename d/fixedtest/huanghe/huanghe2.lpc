@@ -1,0 +1,19 @@
+// huanghe2 —— 由 nitan/d/huanghe/huanghe2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-500,520,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄河岸边");
+  set("long", @LONG
+这里是黄河岸边。黄河流淌到这里，已经泥沙浑浊了。黄色的河水
+在河床里翻滚着，咆哮着，卷起一个个巨大的漩涡。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "huanghe1",
+    "east" : __DIR__ "huanghe3",
+    "south" : __DIR__ "82/21/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

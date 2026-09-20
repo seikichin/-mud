@@ -1,0 +1,20 @@
+// mishi —— 由 nitan/d/mingjiao/mishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(200,80,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石室");
+  set("long", @LONG
+这间石室极大，顶上垂下钟乳，显是天然的石洞。走了几步，突
+见地下倒着两具骷髅。骷髅身上衣服尚未烂尽，着得出是一男一女。
+走近两具骷髅，只见那女子右手抓着一柄晶光闪亮的匕首，插在她自
+己胸口。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "neishi",
+    "south" : __DIR__ "19/4/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// shandong —— 由 nitan/d/huashan/shandong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(30,110,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", @LONG
+这里是一个不大的山洞，奔腾的瀑布成了它的门帘，阳光轻易就
+可以的透过水帘射进来，因此这里白天并不阴暗。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "2/11/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

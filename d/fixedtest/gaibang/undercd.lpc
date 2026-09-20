@@ -1,0 +1,18 @@
+// undercd —— 由 nitan/d/gaibang/undercd.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-8080,-3040,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "破床底下");
+  set("long", @LONG
+这是成都城一个偏僻大院的破床下。四周丢满了各种杂物，还有丐
+帮弟子收集的破铜烂铁等。从这里通往丐帮的秘密通道。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "cdandao2",
+    "out" : "/d/fixedtest/chengdu/ruin2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

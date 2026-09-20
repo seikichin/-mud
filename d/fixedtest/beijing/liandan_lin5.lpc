@@ -1,0 +1,18 @@
+// liandan_lin5 —— 由 nitan/d/beijing/liandan_lin5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2850,7700,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城西后林");
+  set("long", @LONG
+这是一片茂密的树林。很多棵几十丈高的大树聚在一块，象一把
+把琼天大伞，连日月都被遮蔽得黯然无光。树林中还不时可以听到大
+自然发出的声响。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "liandan_lin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

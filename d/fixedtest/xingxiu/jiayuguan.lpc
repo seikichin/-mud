@@ -1,0 +1,22 @@
+// jiayuguan —— 由 nitan/d/xingxiu/jiayuguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(160,10,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "嘉峪关");
+  set("long", @LONG
+这是长城最西的关隘。岁月沧桑，仍掩不住它的风采。群山环抱之
+下，更显它的雄浑。由于西域安定，久无战事，边关守军已大为减少。
+一条大道向东延伸通向中原，万里长城由此往东北方蜿蜒而去。出关向
+西，便是著名的“丝绸之路”。
+LONG );
+  set("exits", ([
+    "up" : "/d/fixedtest/changcheng/jiayuguan",
+    "eastup" : __DIR__ "xxroad3",
+    "west" : __DIR__ "silk1",
+    "north" : "/d/fixedtest/dragon/spiritgate",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

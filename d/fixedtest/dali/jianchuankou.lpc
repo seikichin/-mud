@@ -1,0 +1,20 @@
+// jianchuankou —— 由 nitan/d/dali/jianchuankou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19180,-6800,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "剑川山口");
+  set("long", @LONG
+这里是苍山北麓的一个乌夷城镇。此地正处山口，两边崇山峻岭
+耸立，几乎无路可行，唯有穿此镇可入苍山，因此是从蜀中至大理的
+军事要冲，大理国在此修有刁楼箭塔，常年驻军。有官兵在镇口站岗
+巡逻，盘察过往行人。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "jianchuan",
+    "north" : __DIR__ "shanlu1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

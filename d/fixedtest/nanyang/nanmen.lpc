@@ -1,0 +1,18 @@
+// nanmen —— 由 nitan/d/nanyang/nanmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6940,750,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南城门");
+  set("long", @LONG
+这里是南阳南门。南阳处南阳盆地内，水土肥沃，物产丰饶。再往
+南就是汉水了，偶尔有渔夫在河上张网捕鱼。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "hanshui2",
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

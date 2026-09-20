@@ -1,0 +1,18 @@
+// htqdating —— 由 nitan/d/mingjiao/htqdating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(360,60,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "厚土旗大厅");
+  set("long", @LONG
+这里是厚土旗的大厅，厅中刀枪如林，黄旗招展，教众穿着铁甲
+钢盔，腰间别着锹铲锤钻，一个个精神抖擞。正中端坐着个矮墩汉子，
+就是厚土旗掌旗使颜垣。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "htqmen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

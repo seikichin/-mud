@@ -1,0 +1,18 @@
+// mishi —— 由 nitan/d/quanzhen/mishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2730,100,140)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密室");
+  set("long", @LONG
+这里是全真教弟子为了直达中原修建的密室，这里的光线非常
+昏暗，也许已经身处地下了。
+LONG );
+  set("exits", ([
+    "eastup" : "/d/fixedtest/city/citygate",
+    "up" : __DIR__ "46/11/16",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

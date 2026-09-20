@@ -1,0 +1,41 @@
+// jueqing —— nitan d/jueqing 固定地图映射区（vrm_fixed）
+//
+//   jueqing.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   jueqing-room.lpc    格房描述（改文字即可改每格 look）
+//   jueqinggate.lpc / jueqinggate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/jueqing/jueqing/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = jueqing）
+// 格索引 -> 原 coor： coor = (格索引 + (0,0,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "jueqing-room");
+  set_maze_map(__DIR__ "jueqing");
+  set_maze_spacing(10);
+  set_maze_owner_key("jueqing");
+
+  // 入口 = shanjiao（格 12,0,0），出口 = jueqing（格 0,8,4）
+  set_entry_dir("down");
+  set_link_entry_room(__DIR__ "jueqinggate");
+  set_link_exit_room(__DIR__ "jueqinggate2");
+  set_entry_back_dir("down");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(110);
+  set_link_entry_room_y(40);
+  set_link_entry_room_z(60);
+
+  set_entry_short(HIW "绝情谷山脚" NOR);
+  set_entry_desc("绝情谷山脚，从这里可以进入迷宫（down）。\n");
+  set_exit_short(HIY "绝情峰" NOR);
+  set_exit_desc("绝情峰，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 jueqing-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("绝情谷山脚");
+  set_maze_room_desc("nitan d/jueqing 映射区。");
+}

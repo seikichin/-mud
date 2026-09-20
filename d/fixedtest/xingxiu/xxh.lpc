@@ -1,0 +1,22 @@
+// xxh —— 由 nitan/d/xingxiu/xxh.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,80,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "星宿海");
+  set("long", @LONG
+这里是天山脚下的星宿海海边。因方圆几百里都是一望无际的湖泊
+和沼泽，地形十分险恶。当地牧羊人称之为“海”。一旦有几只离群的
+羊走迷在“海”里，便再也找不着了。臭名昭著的星宿派总坛便设在海
+中央。
+    南面有一条捷径可通往白驼山。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "tianroad2",
+    "westup" : __DIR__ "tianroad3",
+    "north" : __DIR__ "xxh1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

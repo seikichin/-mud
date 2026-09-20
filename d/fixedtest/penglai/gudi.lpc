@@ -1,0 +1,48 @@
+// gudi —— 由 nitan/d/penglai/gudi.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "麒麟崖底");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init ()
+{        
+        add_action("do_pa", "pa");
+        
+        if( !this_player()->query_temp("apply/xianshu-lingwei") )
+        {
+                if( !this_player()->query("penglai/go_quest/ok") )
+                {
+                        this_player()->start_busy(3);
+                        tell_object(this_player(), NOR + WHT "你到了此处，四周仙气缭绕令你一时间难以辨别方向。\n" NOR);
+                }
+                else
+                {
+                        if (random(2))
+                        {
+                                this_player()->start_busy(1);
+                                tell_object(this_player(), NOR + WHT "你到了此处，四周仙气缭绕令你一时间难以辨别方向。\n" NOR);                
+                        }
+                }
+        }
+}
+
+int do_pa(string arg)
+{
+        object me = this_player();
+        
+        if (me->is_busy() || me->is_fighting())
+                return notify_fail("你正在忙着呢。\n");
+        
+        message_vision(HIY "$N" HIY "施展轻功，顺着树藤及仙气的浮力，轻松地爬上麒麟崖 ……\n", me);
+        
+        me->move("/d/fixedtest/penglai/12/1/1");
+        
+        return 1;
+                
+}

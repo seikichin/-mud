@@ -1,0 +1,18 @@
+// mishi —— 由 nitan/d/hangzhou/mishi.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "秘室");
+  set("long", @LONG
+这是酒馆碗橱之後的一座秘室，只有五六尺见方，里面放了一座
+铁床，一只大铁箱，但却丝毫不现得局促，空气也十分清新，闻不到
+一点霉味。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "jiudian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

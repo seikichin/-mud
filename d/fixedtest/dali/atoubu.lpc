@@ -1,0 +1,20 @@
+// atoubu —— 由 nitan/d/dali/atoubu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19210,-6890,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "阿头部");
+  set("long", @LONG
+阿头部是乌杂蛮的部落，和附近的乌蛮一样，也属于乌夷。这里
+山高林密，不熟的人轻率进山，很容易迷路丧命。深山对乌夷猎人来
+说却是聚宝盆，山中野物皆是美味。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "yixibu",
+    "westup" : __DIR__ "gaolishan1",
+    "north" : __DIR__ "lushui",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

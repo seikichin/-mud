@@ -1,0 +1,16 @@
+// yelin1 —— 由 nitan/d/huashan/yelin1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "荒山野林");
+  set("long", @LONG
+这是华山后山的一片荒山野林，四周都是一株株高巨无比的大树。
+大树茂密的枝叶，互相交织着，是以阳光难以渗透，使人有不辨天日
+之感。右侧是一面石壁，长满了迷迷麻麻的山藤。但仔细一看，山藤
+缝隙间隐约露出空间，似乎是个山洞。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// gudao4 —— 由 nitan/d/yanping/gudao4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1400,-6200,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "闽赣古道");
+  set("long", @LONG
+福建境内数不尽的山坎相连。密林幽谷相继，终日不见天光。山中
+毒虫猛兽出没无常，行路艰辛。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "gudao3",
+    "northeast" : __DIR__ "ximen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

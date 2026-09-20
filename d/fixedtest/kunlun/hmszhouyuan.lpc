@@ -1,0 +1,19 @@
+// hmszhouyuan —— 由 nitan/d/kunlun/hmszhouyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-90020,10020,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIG"后院"NOR);
+  set("long", @LONG
+这里是山庄的后院。此庄号称“红梅”，当有应有其根源。院子里
+就长着许多梅树。每逢春天梅花盛开之时，到处一片火红，分外美丽，
+梅花飘香更是令人心旷神怡。北边是“灵獒宫”。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "hmszdating",
+    "north" : __DIR__ "linggong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

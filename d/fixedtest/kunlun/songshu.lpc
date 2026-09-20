@@ -1,0 +1,44 @@
+// songshu —— 由 nitan/d/kunlun/songshu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-100030,20010,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松树");
+  set("long", @LONG
+这是一株长于峭壁上的松树。向上而望，不能看见悬之上之物，刚
+才从上而跳下之时，回想起来你自不禁心悸，额头冷汗涔涔而下，一看
+四下形势，向上而攀援是绝不可能，脚下深不见底。便算到了底下，十
+之八九也是没有出路，唯有沿着山壁斜坡，慢慢的爬行出去。
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_pa","pa");
+}
+
+int do_pa(string arg)
+{
+        object me;
+        me=this_player();
+        if (!(arg||arg=="east"||arg=="west")) return 0;
+        if (arg=="east"){
+                message("vision",me->name()+"向着太阳升起的地方爬去。\n",environment(me),me);
+                write("你向东面的雪山斜坡爬去。\n");
+                me->move(__DIR__"xsxiepo1");
+                message("vision",me->name()+"从松树爬了过来。\n",environment(me),me);
+                return 1;
+        }
+        if (arg=="west")
+        {
+                message("vision",me->name()+"向西边爬去。\n",environment(me),me);
+                write("你向西面的悬崖爬去。\n");
+                me->move(__DIR__"xuanya1");
+                message("vision",me->name()+"从松树爬了过来。\n",environment(me),me);
+                return 1;
+        }
+        return 1;
+}

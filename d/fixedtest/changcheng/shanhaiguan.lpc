@@ -1,0 +1,19 @@
+// shanhaiguan —— 由 nitan/d/changcheng/shanhaiguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(5000,5000,80)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山海关城楼");
+  set("long", WHT@LONG
+你登上山海关城楼，北望巍峨的角山，长城在山脊上奔腾，渐渐消
+失在黛色的群山之中。关下，沉沉一线穿南北；南面，烟波万顷，横无
+际涯。大明元帅徐达以此处“枕山襟海，实辽蓟咽喉”，故筑此关。
+LONG NOR);
+  set("exits", ([
+    "northwest" : __DIR__ "changcheng23",
+    "down" : "/d/fixedtest/guanwai/0/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

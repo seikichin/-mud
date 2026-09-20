@@ -1,0 +1,19 @@
+// clxiaoting —— 由 nitan/d/yixing/clxiaoting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(279,-981,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小厅");
+  set("long", @LONG
+这是帮主及总管商讨机密大事的所在，正中是一张太师椅，门上吊
+着半旧的红绸软帘。墙上附庸风雅地挂着几张山水字画，一望可知均是
+俗手之作。窗前几盆菊花倒是十分繁茂。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "clwoshi",
+    "south" : __DIR__ "clzoulang2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

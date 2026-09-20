@@ -1,0 +1,8 @@
+==== 验证 changcheng ====
+  地图 L,M,H = 2,1,2    非空格 = 3
+  ENTRY = 1,0,0   EXIT = 0,0,1   entry_dir = down
+  不可达房间数 = 0   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 0（已由生成器消解，见 build_report 的冲突记录）
+  入格原房间总数 = 3

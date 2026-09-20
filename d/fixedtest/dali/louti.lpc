@@ -1,0 +1,19 @@
+// louti —— 由 nitan/d/dali/louti.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19151,-6911,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "楼梯");
+  set("long", @LONG
+这就是通往二楼“迎宾斋”的楼梯，楼梯高有五十余级，上面铺
+了鲜红的毛毡，楼梯两侧站了一些素衣卫士，楼上则是贵宾休息的地
+方。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "dating",
+    "up" : __DIR__ "zoulang1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

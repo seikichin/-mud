@@ -1,0 +1,13 @@
+// taishan 出口房：大驿道·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "大驿道" NOR);
+  set("long", "大驿道。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

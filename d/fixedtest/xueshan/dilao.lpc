@@ -1,0 +1,17 @@
+// dilao —— 由 nitan/d/xueshan/dilao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-70040,-19890,110)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "地牢");
+  set("long", @LONG
+这是一个阴暗、潮湿的牢房。你感到奇怪的是怎麽会不时听到一点
+怪声却怎么也找不到人呢? 
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "1/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

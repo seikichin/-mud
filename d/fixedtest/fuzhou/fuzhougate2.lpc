@@ -1,0 +1,13 @@
+// fuzhou 出口房：莆仙平原·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "莆仙平原" NOR);
+  set("long", "莆仙平原。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

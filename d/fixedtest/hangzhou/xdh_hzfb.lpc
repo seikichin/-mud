@@ -1,0 +1,14 @@
+// xdh_hzfb —— 由 nitan/d/hangzhou/xdh_hzfb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小刀会");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "1/9/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

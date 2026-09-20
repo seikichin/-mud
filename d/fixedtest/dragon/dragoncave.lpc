@@ -1,0 +1,30 @@
+// dragoncave —— 由 nitan/d/dragon/dragoncave.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,10,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "龙潭");
+  set("long", "[1;31m这里就是龙潭，一只巨龙盘踞在这里，看见有人进来，发出\n"
+"一声震天巨吼，然后便发起了攻击。听说它守护着精灵王留下来的宝藏。\n"
+"有空的话，搜索(search)一下或许会有收获。\n");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+  add_action ("do_search","search"); 
+  add_action ("do_quit","train");}
+
+int do_quit(string arg){
+        write(this_player()->query("name")+"，龙也是可以驯的么？！\n");
+        return 1;
+} 
+
+
+void reset()
+{
+        ::reset();
+        delete("exits/north");
+}

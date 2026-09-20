@@ -1,0 +1,19 @@
+// sanxia3 —— 由 nitan/d/chengdu/sanxia3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15060,-1830,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "瞿塘峡");
+  set("long", @LONG
+这里是长江三峡中的瞿塘峡，河水由东流来，进入此峡谷，河道
+变窄，水流变急，两岸的高山中间夹着一条河流，就好象一条丝带一
+般，蜿蜒而行。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "sanxia2",
+    "west" : __DIR__ "shudao11",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

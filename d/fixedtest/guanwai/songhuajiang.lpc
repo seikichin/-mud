@@ -1,0 +1,14 @@
+// songhuajiang —— 由 nitan/d/guanwai/songhuajiang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松花江面");
+  set("long", @LONG
+这里是松花江的江面，冰面早已解冻，清澈的江水涛涛北去，两岸是如
+烟如雾松支，柳条。船夫悠闲地在船尾把着舵。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

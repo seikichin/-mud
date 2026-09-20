@@ -1,0 +1,19 @@
+// wuyiminju2 —— 由 nitan/d/dali/wuyiminju2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19170,-6790,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "乌夷民居");
+  set("long", @LONG
+这是一所乌夷族的房屋。乌夷民居的建地和走向讲究依傍四面山
+势，一般以石为墙和基，以木为梁，结构大致和汉人房屋相仿，皆是
+平房，石砌围墙。这家院内有一排木架，挂了些山鸡、野鸭、羚羊等
+猎物，一个猎人正在给猎物剥皮开膛。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "wumeng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

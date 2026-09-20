@@ -1,0 +1,19 @@
+// shijie —— 由 nitan/d/meizhuang/shijie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(90,10,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "孤山石级");
+  set("long", @LONG
+你向孤山边的石级上行去，一路欣赏着湖边长曳的杨柳。不知不
+觉地转了几个弯，却见遍地都是梅树，老干横斜，枝叶茂密，想像初
+春梅花盛开之日，香雪如海，定然观赏不尽。
+LONG );
+  set("exits", ([
+    "eastdown" : "/d/fixedtest/hangzhou/5/8/0",
+    "north" : "/d/fixedtest/meizhuang/8/1/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

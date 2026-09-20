@@ -1,0 +1,17 @@
+// chenglouup —— 由 nitan/d/zhongzhou/chenglouup.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9080,-1000,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城楼二层");
+  set("long", @LONG
+一登上城楼，城外西面的一大片的开阔地尽收眼底，要是
+在这里布上弩兵，要是有谁想攻进城来简直比登天还难。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "chenglou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

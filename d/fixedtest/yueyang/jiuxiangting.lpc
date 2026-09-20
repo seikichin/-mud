@@ -1,0 +1,22 @@
+// jiuxiangting —— 由 nitan/d/yueyang/jiuxiangting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1780,2280,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "酒香亭");
+  set("long", @LONG
+酒香亭位于君山主峰酒香山顶，故老相传，当年汉武帝听说君山有
+美酒数坛，饮之可仙，便派童男童女去取，回报只闻酒香，不见酒迹，
+他只好作罢。从此，君山主峰才有了“酒香”之名，而建于其巅的多角
+观景亭，也以“酒香”命名。小亭呈四方形，掩映在翠竹藤蔓之中。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "shijie5",
+    "westdown" : __DIR__ "xiaolu9",
+    "south" : __DIR__ "shijie6",
+    "north" : __DIR__ "jiuxiangshan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

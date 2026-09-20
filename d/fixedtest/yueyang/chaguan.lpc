@@ -1,0 +1,19 @@
+// chaguan —— 由 nitan/d/yueyang/chaguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6190,-3020,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "巴陵茶馆");
+  set("long", @LONG
+你一走进来，就闻到一股茶香沁入心脾，精神为之一爽：那是洞庭
+春的味道啊。几个衙门胥吏模样的人也在茶馆里翘着二郎腿喝茶。一些
+打扮齐整的客商和汗流浃背的苦力各自自成一堆，或轻品，或驴饮，各
+具神态。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "dongjie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

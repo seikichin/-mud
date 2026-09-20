@@ -1,0 +1,19 @@
+// datang —— 由 nitan/d/jingzhou/datang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1489,-2030,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大堂");
+  set("long", @LONG
+这里是江陵知府的衙门大堂。两边是“肃静”、“回避”的牌子，
+十几个衙役齐刷刷地站着，手拿水火棍，虎视耽耽的。知府大人坐在案
+台后，冷冷地逼视着你。大堂上方挂一巨匾，上写“明镜高悬”四个大
+字。一个师爷打扮的人站在知府大人身后，不时俯身对大人耳语几句。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "yamen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

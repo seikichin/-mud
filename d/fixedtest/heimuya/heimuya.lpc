@@ -1,0 +1,41 @@
+// heimuya —— nitan d/heimuya 固定地图映射区（vrm_fixed）
+//
+//   heimuya.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   heimuya-room.lpc    格房描述（改文字即可改每格 look）
+//   heimuyagate.lpc / heimuyagate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/heimuya/heimuya/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = heimuya）
+// 格索引 -> 原 coor： coor = (格索引 + (1,0,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "heimuya-room");
+  set_maze_map(__DIR__ "heimuya");
+  set_maze_spacing(10);
+  set_maze_owner_key("heimuya");
+
+  // 入口 = baigate1（格 2,8,9），出口 = chitang（格 0,5,10）
+  set_entry_dir("east");
+  set_link_entry_room(__DIR__ "heimuyagate");
+  set_link_exit_room(__DIR__ "heimuyagate2");
+  set_entry_back_dir("east");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(180);
+  set_link_entry_room_y(50);
+  set_link_entry_room_z(140);
+
+  set_entry_short(HIW "碎石小道" NOR);
+  set_entry_desc("碎石小道，从这里可以进入迷宫（east）。\n");
+  set_exit_short(HIY "池塘" NOR);
+  set_exit_desc("池塘，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 heimuya-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("碎石小道");
+  set_maze_room_desc("nitan d/heimuya 映射区。");
+}

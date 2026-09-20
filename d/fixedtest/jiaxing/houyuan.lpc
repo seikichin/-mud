@@ -1,0 +1,15 @@
+// houyuan —— 由 nitan/d/jiaxing/houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", GRN "后院" NOR);
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "mafang",
+    "south" : __DIR__ "yangjia",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

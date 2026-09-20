@@ -1,0 +1,18 @@
+// hongsheng4 —— 由 nitan/d/dali/hongsheng4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19151,-6821,49)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "宏圣寺塔");
+  set("long", @LONG
+这里是宏圣寺塔内部，四面墙壁上都辟有佛龛，龛内置佛像。西
+面塔壁由模印砖所砌，上面用梵，汉文刻了阴形文的『阿众佛灭正保
+咒』。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "hongsheng3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

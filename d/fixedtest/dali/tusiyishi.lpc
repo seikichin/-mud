@@ -1,0 +1,18 @@
+// tusiyishi —— 由 nitan/d/dali/tusiyishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19141,-6891,9)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "议事厅");
+  set("long", @LONG
+议事厅中央有神龛，龛下陈列着刀、叉、矛、戟等兵器。宽阔的
+大楼上下，柱梁粗实。厅堂宽敞，前后各有一长排坐栏，供人纳凉憩
+息。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "tusimentang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

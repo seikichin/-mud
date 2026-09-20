@@ -1,0 +1,18 @@
+// hongsheng1 —— 由 nitan/d/dali/hongsheng1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19151,-6821,19)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "塔基");
+  set("long", @LONG
+宏圣寺塔基座系用石板砌成，与千寻塔基为砖砌不同。基座西面
+有塔门，可入内攀登而上。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "hongsheng2",
+    "out" : __DIR__ "1/15/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// eastwuchang —— 由 nitan/d/songshan/eastwuchang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东武场");
+  set("long", @LONG
+这里是嵩山派的练武场。地面是用黄泥土拌杂砂石砸实的，看起来
+很结实的样子。练武场中间安着些器械，看来是练功用的。一些嵩山弟
+子正满头臭汗地刻苦练功。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "eastpath2",
+    "west" : __DIR__ "4/17/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

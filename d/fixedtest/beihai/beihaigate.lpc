@@ -1,0 +1,13 @@
+// beihai 入口房：石桥·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "石桥" NOR);
+  set("long", "石桥。往 east 可进入迷宫。\n");
+  set("exits", ([
+    "east" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

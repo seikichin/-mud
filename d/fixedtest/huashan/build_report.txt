@@ -1,0 +1,50 @@
+==== huashan ====
+  网格 L,M,H = 26,13,15   格数 = 75   入格原房间 = 75   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (0,0,0)   => link_entry_room = (130,60,160)
+  入口 = xiaojing2 格 2,9,0   出口 = songlin1 格 5,6,14   entry_dir = down
+  边：方向位 132  LINK 7（含自环 0 / 到独立房 6 / 到外部 3）  非标准方向 1  丢弃空出口 2
+  [LINK] 总行数 = 17   独立房间 = 31
+  ---- 警告 ----
+  [丢弃动态出口] songlin1.west -> __DIR__"songlin" + (random(4) + 1)
+  [丢弃动态出口] songlin1.north -> __DIR__"songlin" + (random(4) + 1)
+  [丢弃动态出口] songlin4.west -> __DIR__"songlin" + (random(4) + 1)
+  [丢弃动态出口] songlin4.east -> __DIR__"songlin" + (random(4) + 1)
+  [丢弃动态出口] songlin4.south -> __DIR__"songlin" + (random(4) + 1)
+  第 1 轮：剔除 8 个零位格房间，重新建图
+  [丢弃动态出口] songlin1.west -> __DIR__"songlin" + (random(4) + 1)
+  [丢弃动态出口] songlin1.north -> __DIR__"songlin" + (random(4) + 1)
+  ---- 独立房间 ----
+    chufang  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    doctorroom  (原文件无 coor)
+    huashanjueding  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    jianzhong  (原文件无 coor)
+    jinshedong  (原文件无 coor)
+    kuihua_1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    kuihua_2  (原文件无 coor)
+    lockroom1  (原文件无 coor)
+    lockroom2  (原文件无 coor)
+    lockroom3  (原文件无 coor)
+    lockroom4  (原文件无 coor)
+    lockroom5  (原文件无 coor)
+    lockroom6  (原文件无 coor)
+    lunjian  (原文件无 coor)
+    lunjian1  (原文件无 coor)
+    lunjian2  (原文件无 coor)
+    lunjian3  (原文件无 coor)
+    lunjian4  (原文件无 coor)
+    mishi  (原文件无 coor)
+    s  (原文件无 coor)
+    sgyhole1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shandong  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    songlin2  (原文件无 coor)
+    songlin3  (原文件无 coor)
+    songlin4  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    stone  (原文件无 coor)
+    x  (原文件无 coor)
+    xiaofang  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    xiuxishi  (原文件无 coor)
+    xuanya  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    yelin1  (原文件无 coor)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    doctorroom.east -> /d/fixedtest/huashan/road1
+    s.out -> /d/jianzhong/jianzhong

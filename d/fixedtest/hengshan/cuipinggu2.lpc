@@ -1,0 +1,19 @@
+// cuipinggu2 —— 由 nitan/d/hengshan/cuipinggu2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "翠屏谷");
+  set("long", @LONG
+这里峡谷幽深，石壁陡直，两崖壁立，一涧中流。就在这地势绝险
+的恒山山谷中，却有数十殿堂悬挂在翠屏山腰。它们上载危岩，下临深
+谷，错落有致，如玉宇琼楼自空中冉冉降落。那就是悬空寺了。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "1/5/0",
+    "up" : __DIR__ "cuiping1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

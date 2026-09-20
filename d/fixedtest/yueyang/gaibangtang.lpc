@@ -1,0 +1,18 @@
+// gaibangtang —— 由 nitan/d/yueyang/gaibangtang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6210,-2980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大屋");
+  set("long", @LONG
+这里是丐帮帮众聚会场所，地上横七竖八排着不少草蒲团。虽然看
+起来似乎很凌乱，其实却甚是合乎帮规：何人做何职司，前后顺序，一
+目了然。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "gaibangyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

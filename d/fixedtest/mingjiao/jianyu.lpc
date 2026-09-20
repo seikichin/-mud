@@ -1,0 +1,15 @@
+// jianyu —— 由 nitan/d/mingjiao/jianyu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "牢房");
+  set("long", @LONG
+这里漆黑一片，你细细摸索。不久便摸到石门的缝隙，以肩
+头推去，石门竟绝不摇晃，不知有多重实。一个脸色苍白的年轻
+人，垂头丧气地坐在地上。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

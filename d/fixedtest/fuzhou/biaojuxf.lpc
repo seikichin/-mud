@@ -1,0 +1,18 @@
+// biaojuxf —— 由 nitan/d/fuzhou/biaojuxf.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-91,-6151,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东厢房");
+  set("long", @LONG
+房间里布置很简单，只有一张小床，一个小几，和几张方凳。窗台
+上放着一个磁杯，杯里插着几枝无名小花。房间虽不大，但是给人整洁
+舒适的感觉。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "biaojuhy",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

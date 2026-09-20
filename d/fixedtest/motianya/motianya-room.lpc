@@ -1,0 +1,83 @@
+// ============================================================
+//  motianya-room.lpc  ——  nitan d/motianya 映射区（7x3x2）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 motianya.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (0,0,0)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "5,0,0" : ({ "崖底", " " }),  // coor(50,0,0)  mtyadi
+  "0,1,0" : ({ "树林", @LONG
+这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气
+氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。
+LONG  }),  // coor(0,10,0)  mtroad5
+  "1,1,0" : ({ "树林", @LONG
+这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气
+氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。
+LONG  }),  // coor(10,10,0)  mtroad4
+  "5,1,0" : ({ "山路", @LONG
+这是一条山路，两旁是茂盛的森林，有一个女孩在这眼望南边发
+呆，南边就是摩天崖了，一股阴森恐怖的气氛随之而来，你不禁告诉
+自己，还是快走吧。
+LONG  }),  // coor(50,10,0)  mtroad
+  "1,2,0" : ({ "树林", @LONG
+这里是森林中的一块小平地。长草没胫，野花浪漫，四周都是密
+密的森林。时不时传来阵阵野兽嘶叫，飞鸟啼鸣。西南有一高崖突兀
+而起，极是险峻。
+LONG  }),  // coor(10,20,0)  mtroad6
+  "5,0,1" : ({ "崖顶", @LONG
+这就是摩天崖了。上面光秃秃的，连一棵小树也没有，峰顶到也
+十分开阔，但身周云雾缭绕，当真是置身云端之中，使人心惊肉跳。
+东面有一个小木屋。
+LONG  }),  // coor(50,0,10)  mtdating
+  "6,0,1" : ({ "木屋", @LONG
+这里是一个很小的木屋，室中放着一些乱七八遭的家具，墙角边
+还有一张破烂的小床，有一个英俊的少年在屋内走来走去，似乎有什
+么心事，不时的发出几声长叹。。。。。。 
+LONG  }),  // coor(60,0,10)  mtxiaowu
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

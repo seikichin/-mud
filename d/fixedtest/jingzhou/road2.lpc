@@ -1,0 +1,18 @@
+// road2 —— 由 nitan/d/jingzhou/road2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-310,-170,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大道");
+  set("long", @LONG
+这是一条青石大道。东面隐约可以看到襄阳城的城墙。向西看去，
+只见群山起伏，青翠碧绿，不知通向哪里。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "road3",
+    "northeast" : __DIR__ "road1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

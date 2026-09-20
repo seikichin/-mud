@@ -1,0 +1,24 @@
+// shanlu3 —— 由 nitan/d/heizhao/shanlu3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-4000,-1500,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密林矮树");
+  set("long", @LONG
+黑森森的四下里都是树木，无法直行，林中小路东盘西曲，密
+林中难辨方向，忙跃上树去眺望，无论你往那边望，都找不到出路。
+欲待从树顶上踪跃过去，黑暗中却看不清落足之处。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "shanlu3",
+    "south" : __DIR__ "shanlu3",
+    "northwest" : __DIR__ "shanlu3",
+    "west" : __DIR__ "shanlu3",
+    "southwest" : __DIR__ "shanlu2",
+    "northeast" : __DIR__ "shanlu3",
+    "east" : __DIR__ "shanlu3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,13 @@
+// emei 出口房：青石阶·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "青石阶" NOR);
+  set("long", "青石阶。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

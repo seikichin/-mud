@@ -1,0 +1,20 @@
+// lie2 —— 由 nitan/d/huanggong/lie2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2870,7730,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "上林囿");
+  set("long", @LONG
+这是西苑的一片广袤的大猎场, 疾风吹劲草, 大有草枯鹰眼疾的非
+凡气派.
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "lie2",
+    "north" : __DIR__ "lie1",
+    "east" : __DIR__ "lie3",
+    "west" : __DIR__ "lie2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,14 @@
+// mumen —— 由 nitan/d/baituo/mumen.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "墓门");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "5/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

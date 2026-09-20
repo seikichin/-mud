@@ -1,0 +1,20 @@
+// jianchuan —— 由 nitan/d/dali/jianchuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19180,-6810,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "剑川镇");
+  set("long", @LONG
+这里是剑川的镇中心，镇子不大，居民绝大部分是乌夷族，几乎
+全都以狩猎为生。由于山高地寒，附近山林的野兽大多皮粗毛厚，有
+不少皮货商在这里和当地猎人交易。北出山口则属大理北疆，也是入
+蜀之途，南穿苍山则可抵大理内陆。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "cangshanzhong",
+    "north" : __DIR__ "jianchuankou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

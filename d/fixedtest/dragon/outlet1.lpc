@@ -1,0 +1,15 @@
+// outlet1 —— 由 nitan/d/dragon/outlet1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "白砂台");
+  set("long", "[1;32m白砂台约有一丈见方，上面有细沙铺就，整个台面非常的平\n"
+"整。台中央有一块大石头(stone)，堵住了泉眼。\n");
+  set("exits", ([
+    "east" : __DIR__ "spirit4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

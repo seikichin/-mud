@@ -1,0 +1,19 @@
+// road10 —— 由 nitan/d/luoyang/road10.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6880,2140,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直的官道，足可容得下十马并驰。道路两边，是一
+排排高树。树林之外，便是一片片的农田了。田地里传来农人的呼号，
+几头黄牛悠闲的趴卧着。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "road9",
+    "west" : __DIR__ "road11",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

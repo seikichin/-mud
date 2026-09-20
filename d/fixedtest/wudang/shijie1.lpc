@@ -1,0 +1,19 @@
+// shijie1 —— 由 nitan/d/wudang/shijie1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-190,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石阶");
+  set("long", @LONG
+你走在一条坚实的石阶上，不时地有进香客从你的身边走过。一
+边是峭壁，一边是悬崖，抬头隐约可见笼罩在云雾中的天柱峰，听着
+流水淙淙，令人心旷神怡。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "yuzhengong",
+    "northdown" : __DIR__ "xuanyuegate",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

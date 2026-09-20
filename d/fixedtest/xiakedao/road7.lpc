@@ -1,0 +1,19 @@
+// road7 —— 由 nitan/d/xiakedao/road7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3110,-22130,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "夹鳖石");
+  set("long", @LONG
+这里便是夹鳖石。此处山势陡峭，行人到此无不心惊胆颤，不
+敢大声说话，只求平安过去。登山的人一个不小心，很容易便会跌
+堕到崖谷之中。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "road8",
+    "northdown" : __DIR__ "road6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

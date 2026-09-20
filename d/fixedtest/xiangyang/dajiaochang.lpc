@@ -1,0 +1,19 @@
+// dajiaochang —— 由 nitan/d/xiangyang/dajiaochang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7850,-780,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大校场");
+  set("long", @LONG
+这是襄阳守军用来校阅军士的地方。只见校场正中巍巍搭着一座
+高台，台南排列着千余张椅子板凳。台前竖着两根旗杆，旗杆顶上有
+着硕大的旗斗。校场里聚集着数百个四袋以上的丐帮弟子。他们都是
+来竞选新任丐帮帮主的。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "westjie3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

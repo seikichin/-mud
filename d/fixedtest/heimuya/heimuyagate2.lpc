@@ -1,0 +1,13 @@
+// heimuya 出口房：池塘·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "池塘" NOR);
+  set("long", "池塘。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

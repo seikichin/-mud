@@ -1,0 +1,14 @@
+// shanshenmiao —— 由 nitan/d/guanwai/shanshenmiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(4019,9259,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山神庙");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "8/15/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

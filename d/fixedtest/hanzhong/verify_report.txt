@@ -1,0 +1,9 @@
+==== 验证 hanzhong ====
+  地图 L,M,H = 5,6,2    非空格 = 18
+  ENTRY = 4,3,0   EXIT = 0,0,0   entry_dir = up
+  不可达房间数 = 0   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 1（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格1,1,0 方向east: /d/fixedtest/hanzhong/hanzhong/1/1/0 或 /d/fixedtest/hanzhong/hanzhong/2/1/0
+  入格原房间总数 = 19

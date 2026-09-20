@@ -1,0 +1,17 @@
+// xichansi —— 由 nitan/d/fuzhou/xichansi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-110,-6190,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "西禅寺");
+  set("long", @LONG
+西禅寺始建于梁朝，寺中玉佛楼玉佛为整玉雕就，宝相庄严，从来
+香火不绝。香客往来，但有所求，多得灵验。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xixiaojie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

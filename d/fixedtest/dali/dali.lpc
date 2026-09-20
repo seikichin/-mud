@@ -1,0 +1,41 @@
+// dali —— nitan d/dali 固定地图映射区（vrm_fixed）
+//
+//   dali.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   dali-room.lpc    格房描述（改文字即可改每格 look）
+//   daligate.lpc / daligate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/dali/dali/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = dali）
+// 格索引 -> 原 coor： coor = (格索引 + (-1916,-697,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "dali-room");
+  set_maze_map(__DIR__ "dali");
+  set_maze_spacing(10);
+  set_maze_owner_key("dali");
+
+  // 入口 = piandian（格 3,14,0），出口 = road5（格 4,4,0）
+  set_entry_dir("up");
+  set_link_entry_room(__DIR__ "daligate");
+  set_link_exit_room(__DIR__ "daligate2");
+  set_entry_back_dir("up");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-19080);
+  set_link_entry_room_y(-6880);
+  set_link_entry_room_z(50);
+
+  set_entry_short(HIW "偏殿" NOR);
+  set_entry_desc("偏殿，从这里可以进入迷宫（up）。\n");
+  set_exit_short(HIY "黄土路" NOR);
+  set_exit_desc("黄土路，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 dali-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("偏殿");
+  set_maze_room_desc("nitan d/dali 映射区。");
+}

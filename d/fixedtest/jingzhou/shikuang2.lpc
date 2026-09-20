@@ -1,0 +1,14 @@
+// shikuang2 —— 由 nitan/d/jingzhou/shikuang2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石矿");
+  set("long", " ");
+  set("exits", ([
+    "northup" : __DIR__ "shikuang1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

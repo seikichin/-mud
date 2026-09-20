@@ -1,0 +1,15 @@
+// liuhe3 —— 由 nitan/d/hangzhou/liuhe3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(759,-2121,29)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "六和塔");
+  set("long", " ");
+  set("exits", ([
+    "down" : __DIR__ "liuhe2",
+    "up" : __DIR__ "liuhe4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

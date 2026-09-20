@@ -1,0 +1,19 @@
+// shishi4 —— 由 nitan/d/xiaoyao/shishi4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50010,-21030,-50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "地下石室");
+  set("long", @LONG
+这是一个地下的秘密石室，四面可以感觉得到的只有强烈的杀气，
+以及处身地底的一些难闻的气味。在微弱的灯光下，你竟然看到有个人
+站着那里。继续往下好象还有路。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "shishi5",
+    "up" : __DIR__ "1/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// shudao3 —— 由 nitan/d/chengdu/shudao3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-170,-180,-60)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "江边小路");
+  set("long", @LONG
+你走在长江边上的一条小路上，耳听着江水哗哗的流，心情也觉
+得好些，放眼向西看去，只见群山连绵，也不知道何处才是归途。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "shudao4",
+    "northeast" : __DIR__ "shudao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

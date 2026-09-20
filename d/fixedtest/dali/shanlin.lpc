@@ -1,0 +1,19 @@
+// shanlin —— 由 nitan/d/dali/shanlin.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19210,-6840,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山林");
+  set("long", @LONG
+你走在一片茂密的山林中，时而有飞禽走兽横过，百鸟在林间飞
+鸣，南边乌夷部落里的村民经常来此狩猎。山林北面不远传来隆隆水
+声，看来有大河流过，南边是一片低洼的河谷盆地，颇有人烟。
+LONG );
+  set("exits", ([
+    "southdown" : __DIR__ "gelucheng",
+    "northdown" : __DIR__ "hebian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

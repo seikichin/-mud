@@ -1,0 +1,17 @@
+// shexudong —— 由 nitan/d/hangzhou/shexudong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(720,-2060,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "射旭洞");
+  set("long", @LONG
+洞後侧穹顶上的石罅间可仰见一束天光，故又名“一线天”。东
+南边是下山的路。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "longhongdong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

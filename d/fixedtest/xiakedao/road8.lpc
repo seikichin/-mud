@@ -1,0 +1,19 @@
+// road8 —— 由 nitan/d/xiakedao/road8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3110,-22140,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "一线天");
+  set("long", @LONG
+这里便是一线天。此处山势甚是陡峭，两旁都是无底的深渊，
+中间是一条近似九十度的坡形山路。行人到此无不心惊胆颤，只盯
+着自己的脚，生怕一不小心掉下深渊。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "wangyun",
+    "northdown" : __DIR__ "road7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

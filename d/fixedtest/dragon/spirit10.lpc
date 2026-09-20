@@ -1,0 +1,16 @@
+// spirit10 —— 由 nitan/d/dragon/spirit10.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,20,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小屋里");
+  set("long", "[1;32m这是一间朴素的小木屋，屋中的摆设都是些简单必要的家具\n"
+"。窗下是一张小几，上面放着一些食物。一个精灵族的女子正在屋中忙碌\n"
+"着什么。\n");
+  set("exits", ([
+    "east" : __DIR__ "village",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

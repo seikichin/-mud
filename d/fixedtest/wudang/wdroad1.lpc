@@ -1,0 +1,19 @@
+// wdroad1 —— 由 nitan/d/wudang/wdroad1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石大道");
+  set("long", @LONG
+你走在一条青石大道上，人来人往非常繁忙，不时地有人
+骑着马匆匆而过。大道两旁有一些小货摊，似乎是集市。北边
+通向扬州城。东南是一大片树林。
+LONG );
+  set("exits", ([
+    "north" : "/d/fixedtest/city/7/3/0",
+    "south" : __DIR__ "wdroad2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

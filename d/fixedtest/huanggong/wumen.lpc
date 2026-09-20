@@ -1,0 +1,23 @@
+// wumen —— 由 nitan/d/huanggong/wumen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2800,7700,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "午门");
+  set("long", @LONG
+午门是紫禁城的正门，是皇帝送军出征和受降的地方。五丈高的暗
+红色城墙上，建有五座崇楼，因此俗称“五凤楼”。台上正中是个大门
+楼，进深五间，面阔九间，呈“九五”格局。下有五个门洞，重檐庑殿
+顶。城门主楼凹进，两翼张出，东西四座重檐四角攒顶式方形阙亭，以
+十三廊庑联接，辅翼着正楼，形如雁翅，气势巍峨。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "4/0/0",
+    "south" : __DIR__ "dianwai",
+    "east" : __DIR__ "dao1",
+    "west" : __DIR__ "dao10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// hmsznuange —— 由 nitan/d/kunlun/hmsznuange.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-90030,10030,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY"暖阁"NOR);
+  set("long", @LONG
+昆仑山中一向极为寒冷，但在此暖阁之中却温暖如春，可又不见何
+处生着炭火，此间取暖方法当真巧妙无比。阁中陈设辉煌灿烂，榻上椅
+上都铺着锦缎软垫，极是富丽豪华。南边是大厅。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "hmszdating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// humen —— 由 nitan/d/huanggong/humen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2850,7720,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "白虎门");
+  set("long", @LONG
+白虎门, 皇城西门. 由此西通狩场, 东往内城. 少有人来人往, 但
+依旧森严戒备. 前些年正是在这发生民乱, 险些让暴民闯进了内宫, 所
+以, 这儿的守备之严较其他各城门有过之而无不及.
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "0/1/0",
+    "west" : __DIR__ "dadao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

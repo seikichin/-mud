@@ -1,0 +1,17 @@
+// zahuopu —— 由 nitan/d/zhongzhou/zahuopu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9060,-990,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "杂货铺");
+  set("long", @LONG
+这里是中州城西的一家杂货铺，虽然店内的东西不少，可
+因为地处的比较偏僻，所以生意也是冷冷清清。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "yanling1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// yanling1 —— 由 nitan/d/zhongzhou/yanling1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9060,-1000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "延陵西路");
+  set("long", @LONG
+这里就是延陵东路，是中州的一条老街。两边的房屋看上
+去已经很陈旧了。街道上冷冷清清的，偶尔一两个人路过。再
+往前走，就能隐隐的看见中州的西城楼了。路北面有间杂货铺
+开在这偏僻的地方，估计生意不会太好。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "zahuopu",
+    "east" : __DIR__ "0/4/0",
+    "west" : __DIR__ "yanling2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

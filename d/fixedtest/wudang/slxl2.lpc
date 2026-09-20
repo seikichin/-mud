@@ -1,0 +1,17 @@
+// slxl2 —— 由 nitan/d/wudang/slxl2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-340,-180,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松林小路");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "songlin2",
+    "westup" : __DIR__ "jiejianyan",
+    "east" : __DIR__ "slxl1",
+    "south" : __DIR__ "songlin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

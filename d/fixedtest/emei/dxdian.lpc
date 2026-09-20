@@ -1,0 +1,19 @@
+// dxdian —— 由 nitan/d/emei/dxdian.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大雄殿");
+  set("long", @LONG
+这里是报国寺大雄殿。报国寺是峨嵋山最大寺院之一。大雄殿内
+供着金光灿灿的佛像，气宇轩昂。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "cangjinglou",
+    "west" : __DIR__ "bgschanfang",
+    "out" : __DIR__ "21/12/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

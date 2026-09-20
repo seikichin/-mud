@@ -1,0 +1,18 @@
+// xiayiting —— 由 nitan/d/huanghe/xiayiting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2020,520,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "侠义厅");
+  set("long", @LONG
+这是黄河帮议事的大厅，厅上挂着「侠义厅」三字匾额。厅里靠
+北朝南放着一张虎皮交椅，两边摆设着几副红木桌椅，非常有气派。
+墙上附庸风雅地挂了几幅丹青书法。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "guangchang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

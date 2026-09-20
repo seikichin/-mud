@@ -1,0 +1,21 @@
+// mtroad6 —— 由 nitan/d/xiakedao/mtroad6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1900,-1700,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山间平地");
+  set("long", @LONG
+这里是森林中的一块小平地。长草没胫，野花浪漫，四周都是
+密密的森林。时不时传来阵阵野兽嘶叫，飞鸟啼鸣。西南有一高崖
+突兀而起，极是险峻。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "mtroad4",
+    "north" : __DIR__ "mtroad4",
+    "east" : __DIR__ "mtroad4",
+    "west" : __DIR__ "mtroad4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,16 @@
+// shuwu —— 由 nitan/d/yanziwu/shuwu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "翰墨书屋");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "shangyu",
+    "east" : __DIR__ "lanyue",
+    "north" : __DIR__ "canheju",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

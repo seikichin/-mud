@@ -1,0 +1,19 @@
+// xuankong1 —— 由 nitan/d/hengshan/xuankong1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "悬空寺北楼");
+  set("long", @LONG
+这里是悬空寺的北门楼，也是北碑亭。登楼俯视，如临深渊，谷底
+仰望，如壁间丹凤。向南有悬空栈桥通往南楼。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "cuiping2",
+    "up" : __DIR__ "sanjiaodian",
+    "south" : __DIR__ "zhanqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

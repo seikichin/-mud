@@ -1,0 +1,19 @@
+// sanzuiting —— 由 nitan/d/yueyang/sanzuiting.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6240,-2990,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "三醉亭");
+  set("long", @LONG
+三醉亭，位于岳阳楼北侧，为主楼辅亭之一。四方形高三丈，二层
+二檐，歇山顶，碧瓦红柱华丽而庄重。传说八仙之一的吕洞宾曾三次到
+岳阳神游，为这里秀美的山、水所迷，每次均在楼内喝得酩酊大醉。亭
+内陈设淡雅，一楼厅内屏上绘制有吕洞宾醉酒图。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "yueyanglou1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

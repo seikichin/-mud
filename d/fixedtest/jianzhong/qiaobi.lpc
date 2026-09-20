@@ -1,0 +1,21 @@
+// qiaobi —— 由 nitan/d/jianzhong/qiaobi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-401,-421,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "峭壁");
+  set("long", @LONG
+这个峭壁有如一座极大的屏风，冲天而起，峭壁中央离
+地约二十余丈处，生着一块三四丈见方的大石，便似一个平
+台，石上隐隐刻得有字。极目望去，是「剑冢」二字。峭壁
+上每隔数尺就生着一丛青苔，不知道如何形成的。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "donghou1",
+    "east" : __DIR__ "donghou1",
+    "west" : __DIR__ "donghou1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

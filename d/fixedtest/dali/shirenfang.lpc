@@ -1,0 +1,18 @@
+// shirenfang —— 由 nitan/d/dali/shirenfang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19101,-6871,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石人房");
+  set("long", @LONG
+这里是镇南王府的庭院南端的石人房，房中摆着一些大理特产的
+石人，看起来栩栩如生。四壁开着小窗口，窗台上放着几钵小茶花，
+窗口栏杆也挡不住窗外四时不尽的绿色和芳香。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "tingyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

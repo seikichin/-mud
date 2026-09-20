@@ -1,0 +1,20 @@
+// ximen —— 由 nitan/d/yueyang/ximen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6220,-3010,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "岳阳西门");
+  set("long", @LONG
+这里是岳阳城楼的西门，门内也没有官兵看守，大概这里是丐帮的
+天下，岳阳府城的治安也就实质上给丐帮接管了。官府也不大关心如何
+如何的，反正只要丐帮合作，倒也路不拾遗、夜不闭户的。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "xijie",
+    "northup" : __DIR__ "loumen",
+    "westdown" : __DIR__ "shijie7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

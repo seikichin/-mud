@@ -1,0 +1,19 @@
+// huangdi —— 由 nitan/d/xingxiu/huangdi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,110,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山前荒地");
+  set("long", @LONG
+你站在石山前的荒地上。这儿人迹罕见，放眼望去，尽是枯树败草。
+朔风萧杀，令人心惊胆颤。路边有几个星宿弟子在练功，同时监视着行
+人一举一动。你没事，还是快回吧。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "riyuedong1",
+    "south" : __DIR__ "xxh2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

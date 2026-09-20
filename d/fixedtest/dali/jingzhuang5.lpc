@@ -1,0 +1,20 @@
+// jingzhuang5 —— 由 nitan/d/dali/jingzhuang5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,49)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第五层");
+  set("long", @LONG
+球状，无人像，四角挂有黄铜铸灵鹫。四只灵鹫，口角噙有一枚
+两头有孔的铜管，管内有金属簧片，鹫口、鹫颈、鹫腹皆是空心。每
+当劲风吹来，经鹫嘴内铜管，在鹫腹内空气回旋荡扬，便发出悦耳的
+鸣叫。不但凭增灵鹫的神密气氛，亦可想见能工巧匠们的精湛技艺。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "jingzhuang4",
+    "up" : __DIR__ "jingzhuang6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,15 @@
+// tyroad13 —— 由 nitan/d/wudang/tyroad13.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-260,-310,30)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃园");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "gyroad1",
+    "west" : __DIR__ "tyroad12",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

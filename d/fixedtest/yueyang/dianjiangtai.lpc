@@ -1,0 +1,18 @@
+// dianjiangtai —— 由 nitan/d/yueyang/dianjiangtai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6230,-3020,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "点将台");
+  set("long", @LONG
+下了石阶来到水边一个平台，此台便是三国大将鲁肃在此点兵发令
+的“点将台”。点将台南侧不远有一系铁链的大铁枷，这条硕大无朋的
+大铁枷据说是拦江御敌用的。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shijie7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

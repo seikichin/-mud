@@ -1,0 +1,18 @@
+// yuan —— 由 nitan/d/lingxiao/yuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(100,50,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "分天渊侧");
+  set("long", @LONG
+过了分天崖，回头望望，白云寥寥，云气弥漫，想想还有点
+后怕，但毕竟过来了。往前看，就是凌霄城了，这座武林中传说
+的名城，终于出现在你面前了，赶快进去看看吧。  
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "10/6/9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

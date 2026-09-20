@@ -1,0 +1,20 @@
+// shamo4 —— 由 nitan/d/huijiang/shamo4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50020,9020,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "沙漠");
+  set("long", @LONG
+淡黄色的沙堆连绵，在这死寂一片的世界中，天上不见飞鸟，地上
+不见走兽。只有沙漠中倒毙的骆驼尸骨提醒你，曾经有过生命的痕迹。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "shamo4",
+    "north" : __DIR__ "shamo3",
+    "east" : __DIR__ "shamo4",
+    "west" : __DIR__ "shamo4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

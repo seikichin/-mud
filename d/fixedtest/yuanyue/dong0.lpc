@@ -1,0 +1,18 @@
+// dong0 —— 由 nitan/d/yuanyue/dong0.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(150,0,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山隙中");
+  set("long", @LONG
+这是山壁间一条一尺多宽的山隙，被附生在壁上的蔓草藤萝遮掩，
+不加仔细探查很难发现。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "1/7/0",
+    "westdown" : __DIR__ "dong1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

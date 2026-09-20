@@ -1,0 +1,18 @@
+// zhailuo —— 由 nitan/d/baituo/zhailuo.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小宅落");
+  set("long", @LONG
+这里是一个树影婆娑的静谧的小宅落，当中放着一口乌黑发亮的
+大水缸。白驼山上常年积雪，这里的主人架起一条长长的竹渠，把清
+凉的雪水引到家中的水缸里来。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "4/4/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

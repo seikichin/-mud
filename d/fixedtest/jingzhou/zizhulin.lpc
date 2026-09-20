@@ -1,0 +1,18 @@
+// zizhulin —— 由 nitan/d/jingzhou/zizhulin.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7090,-2090,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "紫竹林");
+  set("long", @LONG
+你来到一片翠绿的紫竹林中，四周全被紫竹所包围，你仿似迷失
+了方向。耳旁不时传来一阵阵悦耳的鸟叫声，不禁让人感到心旷神怡。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "5/2/0",
+    "south" : __DIR__ "zizhulin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

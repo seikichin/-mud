@@ -1,0 +1,21 @@
+// yingbin —— 由 nitan/d/xiakedao/yingbin.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3080,-22080,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "迎宾馆");
+  set("long", @LONG
+这是一个石洞，地下的青石板铺得甚是整齐，两旁有一些木制家
+具，整个房间并无特殊之处，但收拾得干干净净，一尘不染。东面是
+一个小吃部，西面是休息室。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "dongmen",
+    "south" : __DIR__ "shidong2",
+    "east" : __DIR__ "xiaodian",
+    "west" : __DIR__ "xiuxis",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

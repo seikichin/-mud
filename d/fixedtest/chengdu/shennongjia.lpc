@@ -1,0 +1,20 @@
+// shennongjia —— 由 nitan/d/chengdu/shennongjia.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15070,-1810,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "神农架");
+  set("long", @LONG
+这是一片绵延不绝的山岭，方圆几千里。相传上古时神农氏曾在这
+里遍尝百草，因千峰陡峭，须搭架采药，故得“神农架”地名。这里冷
+杉、箭竹、香柏林立，古树参天密布，药草遍地，野果满缀，异兽时现。
+层峦叠嶂中，可见山峰云雾缭绕，似有积雪覆盖。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "longzhong",
+    "south" : __DIR__ "shandao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

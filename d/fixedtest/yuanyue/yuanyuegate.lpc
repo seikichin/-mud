@@ -1,0 +1,13 @@
+// yuanyue 入口房：金冠巨蟒洞·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "金冠巨蟒洞" NOR);
+  set("long", "金冠巨蟒洞。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

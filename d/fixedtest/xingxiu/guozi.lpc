@@ -1,0 +1,15 @@
+// guozi —— 由 nitan/d/xingxiu/guozi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,110,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "果子沟");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "ertai",
+    "northup" : __DIR__ "tianchi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

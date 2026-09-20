@@ -1,0 +1,18 @@
+// shiye —— 由 nitan/d/zhongzhou/shiye.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9060,-950,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "师爷处");
+  set("long", @LONG
+一走进师爷的屋子，就见师爷的桌子上零星的散落着一些
+糖和瓜果。北面的大墙上贴着一张大的告示，师爷悠闲的坐在
+太师椅上。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zoulang1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// pine_forest10 —— 由 nitan/d/wudang/pine_forest10.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIM"松中草地"NOR);
+  set("long", @LONG
+眼前霍豁然开朗，密林中露出一片空地，中间一条溪水潺潺流过。
+溪边奇花异草，长得特别鲜艳。
+LONG );
+  set("exits", ([
+    "east" : __DIR__"pine_forest"+(random(2)),
+    "west" : __DIR__"pine_forest"+(random(2)),
+  ]));
+  set("no_fly", 1);
+  setup();
+}

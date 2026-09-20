@@ -1,0 +1,18 @@
+// neishi —— 由 nitan/d/mingjiao/neishi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(200,80,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "明教内室");
+  set("long", @LONG
+这里是明教内室。小小桌前的窗外，望出去是连绵万里的巍巍昆
+仑。窗棂门扇均雕制得美仑美奂，精巧异常桌前端坐一个亮丽女孩，
+你乍一见惊异她的美貌，不禁轻轻叫出声来。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "12/11/8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

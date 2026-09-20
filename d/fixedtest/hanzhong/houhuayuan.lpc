@@ -1,0 +1,20 @@
+// houhuayuan —— 由 nitan/d/hanzhong/houhuayuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12230,760,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后花园");
+  set("long", @LONG
+这里是一个小花园，杂乱地种着各种花草，看来无人打理，
+杂草已经长得很高了。有一些红的，白的鲜花夹杂在草丛中，阵
+阵花香不断地飘过。东面有一道小门，南面是一座两层小楼。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "houhuayuan1",
+    "northwest" : __DIR__ "fu-houyuan",
+    "south" : __DIR__ "guanjinglou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

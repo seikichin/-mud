@@ -1,0 +1,18 @@
+// shanlu5 —— 由 nitan/d/dali/shanlu5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19170,-6910,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+一条山路，两边是茂密的树林，西面是延绵不绝的大山，道路两
+旁间或可见一些夷族的村镇。山路向南蜿蜒着。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "0/5/0",
+    "northeast" : __DIR__ "0/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

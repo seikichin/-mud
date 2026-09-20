@@ -1,0 +1,16 @@
+// xingbu —— 由 nitan/d/huanggong/xingbu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2820,7690,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "刑部公署");
+  set("long", @LONG
+这里是六部之五--刑部官员候朝的朝房.
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "zuomen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

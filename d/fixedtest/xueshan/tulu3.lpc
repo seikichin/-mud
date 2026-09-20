@@ -1,0 +1,18 @@
+// tulu3 —— 由 nitan/d/xueshan/tulu3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-30020,-8020,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "土路");
+  set("long", @LONG
+这是一条不起眼的土路。尘埃泛起的远方，北边波光潋滟的一大片
+幽蓝水光处，就是著名的圣湖。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shenghu",
+    "south" : __DIR__ "tulu2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

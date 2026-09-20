@@ -1,0 +1,17 @@
+// spirit5 —— 由 nitan/d/dragon/spirit5.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "演武台");
+  set("long", "[1;32m这里看上去象是一个比武场，十丈见方的场地上整整齐齐地\n"
+"铺着一圈彩色玛瑙石，架着香烟袅绕的四个巨大金银铜铁鼎，场地中间还\n"
+"铺着软松的皮绒织锦毯。在场边有一个书架似的摆饰(shelf)，在它旁边\n"
+"还有一张绢帛(note)。\n");
+  set("exits", ([
+    "south" : __DIR__ "xiuxishi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// jingzhuang6 —— 由 nitan/d/dali/jingzhuang6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,59)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第六层");
+  set("long", @LONG
+有神龛五座，内中雕有佛像浮雕二百余座。布局严密，层次分明；
+表情各异，比例协调；刀痕尤劲，备极精巧；线条流畅，栩栩如生；
+不愧是滇南石雕艺术的珍品。世代金文家皆赞『滇中艺术，此及品也
+』。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "jingzhuang5",
+    "up" : __DIR__ "jingzhuang7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

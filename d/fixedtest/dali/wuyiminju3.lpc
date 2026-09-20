@@ -1,0 +1,19 @@
+// wuyiminju3 —— 由 nitan/d/dali/wuyiminju3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19220,-6860,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "乌夷民居");
+  set("long", @LONG
+这是一所乌夷族的房屋。此间正处市镇，四周无山势可依，门口
+正对巷陌。青石大房，装修颇为不俗，大门是精心雕制的，刻有
+日、月、虎豹等精美的图案，看来这里是乌撒部的祭祀大屋。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "jisidawu1",
+    "east" : __DIR__ "zhenxiong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

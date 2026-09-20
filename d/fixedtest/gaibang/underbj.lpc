@@ -1,0 +1,18 @@
+// underbj —— 由 nitan/d/gaibang/underbj.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-190,4050,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "街边狗洞");
+  set("long", @LONG
+这是北京城一条偏僻街边的狗洞里。四周丢满了各种杂物，
+还有丐帮弟子收集的破铜烂铁等。从这里通往丐帮的秘密通道。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "bjandao2",
+    "out" : "/d/fixedtest/beijing/6/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

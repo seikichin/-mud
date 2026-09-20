@@ -1,0 +1,16 @@
+// midao8 —— 由 nitan/d/xiakedao/midao8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3090,-25000,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密道");
+  set("long", @LONG
+这是一条长长的密道，地面和石壁满是灰尘，好象很久没人来过了。
+LONG );
+  set("exits", ([
+    "southdown" : __DIR__ "midao7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

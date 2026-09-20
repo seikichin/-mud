@@ -1,0 +1,14 @@
+// quyuanfenghe —— 由 nitan/d/hangzhou/quyuanfenghe.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(779,-2031,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "曲院风荷");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "2/8/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

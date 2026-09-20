@@ -1,0 +1,18 @@
+// yunufeng —— 由 nitan/d/emei/yunufeng.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "玉女峰");
+  set("long", @LONG
+这是归云阁边的玉女峰，峰顶有一个四尺见方的小池，深亦四尺，
+四季不枯，传为天女沐浴之器。古时州刺史冯楫，曾在此结茅而居，
+发奋诵读「华严经」，不食人间烟火，于是玉女下凡，为他馈赠食物。
+LONG );
+  set("exits", ([
+    "northdown" : __DIR__ "16/11/5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

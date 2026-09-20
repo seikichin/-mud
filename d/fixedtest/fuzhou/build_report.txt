@@ -1,0 +1,38 @@
+==== fuzhou ====
+  网格 L,M,H = 8,8,2   格数 = 35   入格原房间 = 44   合并格 = 9
+  原 coor 基准 (gx,gy,gz) = (-10,-623,0)   => link_entry_room = (-60,-6190,30)
+  入口 = majiu 格 3,7,0   出口 = puxian 格 2,0,0   entry_dir = down
+  边：方向位 86  LINK 0（含自环 0 / 到独立房 4 / 到外部 1）  非标准方向 0  丢弃空出口 1
+  [LINK] 总行数 = 5   独立房间 = 25
+  ---- 警告 ----
+  第 1 轮：地图 195x16x4 超出上限 100，只保留最密集的 100^3 窗口（-10,-623,0），裁掉 12 间房
+  [丢弃未解析目标] majiu.up -> SHOP_DIR"fuzhou_shop"
+  出口格不在 up 方向的边界上：check_maze_map 会多报一条指向空格的提示（运行时不影响）
+  ---- 独立房间 ----
+    biaojucf  (coor 不是 10 的倍数)
+    biaojucyf  (coor 不是 10 的倍数)
+    biaojudy  (coor 不是 10 的倍数)
+    biaojuhc  (coor 不是 10 的倍数)
+    biaojuhy  (coor 不是 10 的倍数)
+    biaojunz  (coor 不是 10 的倍数)
+    biaojuxf  (coor 不是 10 的倍数)
+    biaojuxf1  (coor 不是 10 的倍数)
+    biaojuzf  (coor 不是 10 的倍数)
+    biaojuzt  (coor 不是 10 的倍数)
+    gongxiang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    houyuan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    jibixiang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    liang  (coor 不是 10 的倍数)
+    midao  (coor 不是 10 的倍数)
+    mishi  (coor 不是 10 的倍数)
+    nanhoujie6  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    nanhoujie7  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    well  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    well1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xichansi  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xihu  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    ximen  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xixiaojie  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zahuopu  (超出引擎地图边长上限 100（只保留最密集窗口）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    ximen.west -> /d/yanping/guandao1

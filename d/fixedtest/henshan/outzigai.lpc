@@ -1,0 +1,47 @@
+// outzigai —— 由 nitan/d/henshan/outzigai.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "水莲洞内");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{        
+        add_action("do_climb",({"climb","pa"}));
+        add_action("do_tiao",({"tiao","jump"}));
+}
+
+int do_tiao(string arg)
+{
+        object me = this_player();
+        
+        if (! arg || arg != "stone")
+                return notify_fail("你要往哪儿跳？\n");
+
+        message_vision(HIC "\n$N纵身往突石上一跳，不料上面却长满了青苔，"
+                        "$N一个不留神摔了下来，顿时晕了过去。\n\n" NOR,me);
+        
+        me->unconcious();
+
+        return 1;
+}
+
+int do_climb(string arg)
+{
+        object me = this_player();
+
+        if(! arg || arg != "stone")
+                return notify_fail("你要往哪儿爬？\n");
+
+        write(HIC "\n你走到洞壁旁，手拉上面突石，脚踩下面突石，"
+              "不一会而便到了高处。\n\n" NOR);
+
+        me->move(__DIR__"outzigai1");
+
+         return 1;
+}

@@ -1,0 +1,20 @@
+// neidong2 —— 由 nitan/d/taohua/neidong2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "清音洞");
+  set("long", @LONG
+这是清音洞内洞，潮湿异常，洞顶水珠颗颗坠下，滴在地面的小水洼
+中，叮咚做响。这里光线太暗，大概需要火折照明。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "neidong",
+    "west" : __DIR__ "neidong",
+    "east" : __DIR__ "neidong2",
+    "south" : __DIR__ "neidong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

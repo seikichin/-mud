@@ -1,0 +1,20 @@
+// hulaoguan —— 由 nitan/d/luoyang/hulaoguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6900,2150,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "虎牢关");
+  set("long", @LONG
+虎牢关又称汜水关、成皋关，因西周穆王在此牢虎而得名。历朝历
+代，无不在此设防。虎牢南连嵩岳，北濒黄河，山岭交错，自成天险。
+大有一夫当关，万夫莫开之势，为历代兵家必争之地，尤以三英战吕布
+更使其名声大震。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/zhongzhou/xijiao",
+    "west" : __DIR__ "road2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

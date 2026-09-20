@@ -1,0 +1,19 @@
+// shiji1 —— 由 nitan/d/xiaoyao/shiji1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50030,-21040,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石级");
+  set("long", @LONG
+这是一段长长的石级，四周由于缺乏光亮，难免有那么点阴森森的
+感觉，石级向着东西两面伸展，一眼望去，不可以望到尽头。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "fangjian1",
+    "east" : __DIR__ "0/2/0",
+    "west" : __DIR__ "shishi1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

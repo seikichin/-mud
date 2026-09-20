@@ -1,0 +1,17 @@
+// tiyun —— 由 nitan/d/guanwai/tiyun.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "梯云峰");
+  set("long", @LONG
+玉柱峰北，有一山峰，峰脊出梯河瀑布，远望如腾白如云，纵列如梯，
+故名梯云峰。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "yuzhu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

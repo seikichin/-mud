@@ -1,0 +1,22 @@
+// cangshanzhong —— 由 nitan/d/dali/cangshanzhong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19180,-6820,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "苍山中部");
+  set("long", @LONG
+你行走在苍山中部山颠，此间地形极险，两边山高入云，中间一
+条崎岖不平的山路。路西不远一条大河自北略偏西方向南流过，隆隆
+水声遥遥可闻，正是南诏名川--泸水。此路是自西川和土番入大理的
+必经之途，时有客商过往。由此向南穿越苍山可抵下关城，北面不远
+则是出苍山的山口。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "cangshanlu1",
+    "southeast" : __DIR__ "xiaguan",
+    "north" : __DIR__ "jianchuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

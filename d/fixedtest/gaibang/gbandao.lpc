@@ -1,0 +1,18 @@
+// gbandao —— 由 nitan/d/gaibang/gbandao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,61,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "暗道");
+  set("long", @LONG
+一条狭窄的地下秘密通道，笔直的朝东面延伸。通道的尽头有明亮
+的光线透进来。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "gbxiaowu",
+    "out" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

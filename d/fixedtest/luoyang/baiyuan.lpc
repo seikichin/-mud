@@ -1,0 +1,17 @@
+// baiyuan —— 由 nitan/d/luoyang/baiyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6970,2060,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "白园");
+  set("long", @LONG
+白园或称白冢，在东香山北端琵琶峰上。墓前石碑刻“唐少傅白公
+墓”六字。白居易晚年寓居香山，自号“香山居士”。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "longmen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

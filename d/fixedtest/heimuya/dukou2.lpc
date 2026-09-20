@@ -1,0 +1,14 @@
+// dukou2 —— 由 nitan/d/heimuya/dukou2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "龙门渡口");
+  set("long", " ");
+  set("exits", ([
+    "southwest" : "/d/fixedtest/huanghe/huanghe_1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

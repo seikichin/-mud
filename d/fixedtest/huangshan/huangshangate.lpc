@@ -1,0 +1,13 @@
+// huangshan 入口房：采石峰·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "采石峰" NOR);
+  set("long", "采石峰。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

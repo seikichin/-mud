@@ -1,0 +1,50 @@
+==== changcheng ====
+  网格 L,M,H = 2,1,2   格数 = 3   入格原房间 = 3   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (-1001,800,4)   => link_entry_room = (-10000,8000,70)
+  入口 = changcheng13 格 1,0,0   出口 = fenghuotai2-2 格 0,0,1   entry_dir = down
+  边：方向位 4  LINK 0（含自环 0 / 到独立房 2 / 到外部 0）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 2   独立房间 = 32
+  ---- 警告 ----
+  第 1 轮：地图 2301x1061x12 超出上限 100，只保留最密集的 100^3 窗口（-1001,800,4），裁掉 32 间房
+  ---- 独立房间 ----
+    badaling  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    beisilou  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng10  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng11  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng12  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng14  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng15  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng16  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng17  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng18  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng19  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng20  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng21  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng22  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng23  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng3  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng4  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng5  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng6  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng7  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng8  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    changcheng9  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    fenghuotai1-1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    fenghuotai1-2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    jiayuguan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    juyongguan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    nansilou  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    nroad1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    nroad2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    shanhaiguan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    changcheng5.eastdown -> /d/fixedtest/changcheng/changcheng4.c
+    changcheng5.west -> /d/fixedtest/changcheng/changcheng6.c
+    changcheng6.northwest -> /d/fixedtest/changcheng/changcheng7.c
+    changcheng6.east -> /d/fixedtest/changcheng/changcheng5.c
+    jiayuguan.down -> /d/xingxiu/jiayuguan
+    juyongguan.north -> /d/mobei/huanglu1
+    nroad1.south -> /d/beijing/anding
+    shanhaiguan.down -> /d/guanwai/shanhaiguan

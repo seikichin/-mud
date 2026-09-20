@@ -1,0 +1,19 @@
+// mtroad —— 由 nitan/d/xiakedao/mtroad.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2100,-1600,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+这是一条山路，两旁是茂盛的森林，有一个女孩在这眼望南边
+发呆，南边就是摩天崖了，一股阴森恐怖的气氛随之而来，你不禁
+告诉自己，还是快走吧。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "mtroad1",
+    "south" : __DIR__ "mtyadi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

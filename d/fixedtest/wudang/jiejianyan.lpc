@@ -1,0 +1,18 @@
+// jiejianyan —— 由 nitan/d/wudang/jiejianyan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-180,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "解剑岩");
+  set("long", @LONG
+这是武林中极负盛名的武当解剑岩，岩下解剑池水明澈照人。武
+林人士经此都自觉解剑，以示对武当派的尊敬。千百年来，概无例外。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "slxl2",
+    "westup" : __DIR__ "slxl3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

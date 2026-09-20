@@ -1,0 +1,12 @@
+==== quanzhou ====
+  网格 L,M,H = 10,29,5   格数 = 88   入格原房间 = 96   合并格 = 8
+  原 coor 基准 (gx,gy,gz) = (-94,-778,-1)   => link_entry_room = (-890,-7640,50)
+  入口 = shanlu3 格 4,22,0   出口 = gushaota 格 6,0,1   entry_dir = north
+  边：方向位 196  LINK 14（含自环 0 / 到独立房 3 / 到外部 2）  非标准方向 0  丢弃空出口 1
+  [LINK] 总行数 = 18   独立房间 = 3
+  ---- 警告 ----
+  [丢弃未解析目标] majiu.up -> SHOP_DIR"quanzhou_shop"
+  ---- 独立房间 ----
+    caoan  (coor 不是 10 的倍数)
+    kedian3  (coor 不是 10 的倍数)
+    neitang  (coor 不是 10 的倍数)

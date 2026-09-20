@@ -1,0 +1,13 @@
+// gaochang 出口房：西大殿·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "西大殿" NOR);
+  set("long", "西大殿。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

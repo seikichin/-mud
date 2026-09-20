@@ -1,0 +1,17 @@
+// rjqmidao —— 由 nitan/d/mingjiao/rjqmidao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(230,70,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密道");
+  set("long", @LONG
+这里是一条秘道的尽头，石墙之上嵌入两盏油灯，火苗倏忽，向
+前望去，黑暗中不知所往。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "rjqjiguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

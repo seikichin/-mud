@@ -1,0 +1,17 @@
+// yongdao —— 由 nitan/d/jingzhou/yongdao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1460,-2029,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+一条阴暗潮湿的甬道，东边尽头是一间牢房，是知府衙门用来关押
+朝廷重犯的地方。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "4/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

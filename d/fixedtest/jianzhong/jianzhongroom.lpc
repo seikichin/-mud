@@ -1,0 +1,21 @@
+// jianzhong —— 由 nitan/d/jianzhong/jianzhong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-401,-421,50)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "剑冢");
+  set("long", @LONG
+平台上大石「剑冢」两个大字之旁，尚有两行字体较小的石刻：
+        「剑魔独孤求败既无敌于天下，乃埋剑于斯。
+          呜呼！群雄束手，长剑空利，不亦悲夫！」
+大石之下，许多石块堆着一个大坟，背向山谷，俯仰空阔，占尽了
+形势。想剑魔文武全才，抱负非常，但恨生得晚了，无缘得见这位
+前辈英雄，你不禁仰天长叹，豪情万千。
+LONG );
+  set("exits", ([
+    "enter" : "/d/fixedtest/huashan/s",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

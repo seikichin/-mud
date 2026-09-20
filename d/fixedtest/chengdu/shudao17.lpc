@@ -1,0 +1,19 @@
+// shudao17 —— 由 nitan/d/chengdu/shudao17.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15140,-1830,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蜀道");
+  set("long", @LONG
+你走在以险著称天下的蜀道上，道路由东上山，异常难行。由西
+而下，然而上山容易下山难，也不见得好走，总之走在这样的路上非
+要格外小心，用尽全身气力才行。不多一会儿，你就觉得筋疲力尽了。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "9/3/0",
+    "eastdown" : __DIR__ "shudao16",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

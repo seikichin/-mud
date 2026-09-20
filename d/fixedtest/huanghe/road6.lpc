@@ -1,0 +1,19 @@
+// road6 —— 由 nitan/d/huanghe/road6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1010,300,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄土路");
+  set("long", @LONG
+你走在一条黄土路上。陕西的地面，就是看不尽的黄土。向南方望
+去，远远有高山插云，近处好象有个小小村落。隐隐传来犬吠鸡啼，给
+你长途的奔波带来一丝生气。
+LONG );
+  set("exits", ([
+    "southeast" : "/d/fixedtest/village/0/10/0",
+    "north" : __DIR__ "0/39/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

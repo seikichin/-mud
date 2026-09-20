@@ -1,0 +1,16 @@
+==== jueqing ====
+  网格 L,M,H = 23,9,5   格数 = 50   入格原房间 = 50   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (0,0,0)   => link_entry_room = (110,40,60)
+  入口 = shanjiao 格 12,0,0   出口 = jueqing 格 0,8,4   entry_dir = down
+  边：方向位 88  LINK 4（含自环 0 / 到独立房 3 / 到外部 1）  非标准方向 2  丢弃空出口 0
+  [LINK] 总行数 = 10   独立房间 = 7
+  ---- 警告 ----
+  第 1 轮：剔除 2 个零位格房间，重新建图
+  ---- 独立房间 ----
+    eyutan1  (原文件无 coor)
+    eyutan2  (原文件无 coor)
+    eyutan3  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    house  (原文件无 coor)
+    undertan  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    underya  (原文件无 coor)
+    underya2  (原文件无 coor)

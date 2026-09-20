@@ -1,0 +1,18 @@
+// shiguan —— 由 nitan/d/gumu/shiguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-40,70)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIB"石棺内"NOR);
+  set("long", @LONG
+棺盖内侧似乎写得有字，凝目瞧去，果见是十六个大字：「玉女心
+经，技压全真。重阳一生，不弱于人。」这十六个字以浓墨所书，笔力
+苍劲，字体甚大。其时棺盖只推开了一半，但斜眼看去，仍是清清楚楚。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "lingshi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

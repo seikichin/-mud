@@ -1,0 +1,18 @@
+// guandaos5 —— 由 nitan/d/luoyang/guandaos5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6990,2050,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直，尘土飞扬的大官道，足可容得下十马并驰。往南
+通可以达襄阳城，往北不远便是东都洛阳古城了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "guandaos6",
+    "north" : __DIR__ "guandaos4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

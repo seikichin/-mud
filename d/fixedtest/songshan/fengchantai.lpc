@@ -1,0 +1,19 @@
+// fengchantai —— 由 nitan/d/songshan/fengchantai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-30,850,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "封禅台");
+  set("long", @LONG
+峻极封禅台由大麻石所建，每块大石都凿得极是平整。地势甚为宽
+阔。这里独立天心，万峰在下，云开日朗，纤翳不生。极目北望，可遥
+见成皋玉门，黄河有如一线，西向隐隐见到洛阳伊阙，东南都是叠叠重
+山。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "shandao8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

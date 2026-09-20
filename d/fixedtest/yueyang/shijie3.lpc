@@ -1,0 +1,19 @@
+// shijie3 —— 由 nitan/d/yueyang/shijie3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1750,2280,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石道");
+  set("long", @LONG
+这是通往酒香山上酒香亭的青石小道。小道两边茶树连绵，竹响随
+人，真是个清幽所在。望山下，洞庭湖水簇拥君山，青碧一片，景色甚
+是怡人。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "0/0/0",
+    "westup" : __DIR__ "shijie4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

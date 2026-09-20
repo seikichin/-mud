@@ -1,0 +1,9 @@
+// linktest 出口房
+inherit ROOM;
+#include <ansi.h>
+void create() {
+  set("short", HIY "linktest出口(测试)" NOR);
+  set("long", "测试迷宫的出口。");
+  set("no_fly", 1);
+  setup();
+}

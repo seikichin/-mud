@@ -1,0 +1,20 @@
+// dongjie —— 由 nitan/d/baituo/dongjie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-49980,19980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东街");
+  set("long", @LONG
+这里是小镇的东街。南边有个打铁铺，里面传来丁丁当当的声音。
+东南方是荒凉的戈壁，东北方有条小路可上山。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "datiepu",
+    "northeast" : __DIR__ "4/0/0",
+    "southeast" : __DIR__ "gebi",
+    "west" : __DIR__ "xijie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

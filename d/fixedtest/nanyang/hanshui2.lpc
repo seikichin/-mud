@@ -1,0 +1,19 @@
+// hanshui2 —— 由 nitan/d/nanyang/hanshui2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6940,740,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "汉水北岸");
+  set("long", @LONG
+汉水北岸也是相当热闹，自北岸渡口往北，一条笔直的官道直通南
+阳。此地民风淳朴，路旁夹柳成阴，酒厮林立，且都有一面大大的「酒
+」旗迎风飘扬，蔚为壮观。也有不少小贩沿路叫买，语多难辨，却也令
+人盛情难却。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "nanmen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

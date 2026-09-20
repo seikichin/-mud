@@ -1,0 +1,19 @@
+// shanlu1 —— 由 nitan/d/wudang/shanlu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-230,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+你走在登山的路径上，路的左右各有一条大铁链，象两条长蛇向
+山上山下蜿蜒爬去。满眼是乔木夹道，如行于绿幕中。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "mozhenjing",
+    "southup" : __DIR__ "taizipo",
+    "northup" : __DIR__ "haohanpo",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

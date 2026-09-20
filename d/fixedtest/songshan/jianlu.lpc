@@ -1,0 +1,17 @@
+// jianlu —— 由 nitan/d/songshan/jianlu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,900,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "剑庐");
+  set("long", @LONG
+这是一间净室，室内一物不设。窗外偶尔光线斜入，映见正中梁顶
+似乎存放着一些物事。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "eastting",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

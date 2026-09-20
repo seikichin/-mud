@@ -1,0 +1,17 @@
+==== 验证 changan ====
+  地图 L,M,H = 17,15,3    非空格 = 124
+  ENTRY = 15,10,0   EXIT = 1,2,0   entry_dir = up
+  不可达房间数 = 3   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 9（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格12,7,0 方向west: /d/fixedtest/changan/changan/12/7/0 或 /d/fixedtest/changan/changan/11/7/0
+    同格同向多候选 格12,7,0 方向southwest: /d/fixedtest/changan/changan/11/6/0 或 /d/fixedtest/changan/changan/12/7/0
+    同格同向多候选 格12,7,0 方向east: /d/fixedtest/changan/changan/12/7/0 或 /d/fixedtest/changan/changan/13/7/0
+    同格同向多候选 格12,7,0 方向north: /d/fixedtest/changan/changan/12/8/0 或 /d/fixedtest/changan/changan/12/7/0
+    同格同向多候选 格12,8,0 方向southeast: /d/fixedtest/changan/changan/12/8/0 或 /d/fixedtest/changan/changan/13/7/0
+    同格同向多候选 格12,8,0 方向south: /d/fixedtest/changan/changan/12/7/0 或 /d/fixedtest/changan/changan/12/8/0
+    同格同向多候选 格12,8,0 方向west: /d/fixedtest/changan/changan/11/8/0 或 /d/fixedtest/changan/changan/12/8/0
+    同格同向多候选 格12,8,0 方向northeast: /d/fixedtest/changan/changan/12/8/0 或 /d/fixedtest/changan/changan/13/9/0
+    同格同向多候选 格5,2,0 方向west: /d/fixedtest/changan/changan/4/2/0 或 /d/fixedtest/changan/changan/4/1/0
+  入格原房间总数 = 151

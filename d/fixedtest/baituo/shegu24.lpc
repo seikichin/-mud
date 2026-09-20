@@ -1,0 +1,16 @@
+// shegu24 —— 由 nitan/d/baituo/shegu24.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50020,20210,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蛇谷树林");
+  set("long", " ");
+  set("exits", ([
+    "southwest" : __DIR__ "shegu23",
+    "east" : __DIR__ "shegu_maze2",
+    "northwest" : __DIR__ "shegu31",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

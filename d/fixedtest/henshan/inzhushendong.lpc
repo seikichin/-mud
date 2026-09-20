@@ -1,0 +1,14 @@
+// inzhushendong —— 由 nitan/d/henshan/inzhushendong.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "诸神仙洞内");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "outzhushendong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

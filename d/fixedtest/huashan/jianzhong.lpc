@@ -1,0 +1,54 @@
+// jianzhong —— 由 nitan/d/huashan/jianzhong.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "剑冢");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+
+string look_stone()
+{
+        string msg;
+
+        msg = NOR + WHT "只见大石上「剑冢」两个大字之旁，尚有两行字体较小的石刻：\n"
+              HIR "「剑魔独孤求败既无敌於天下，乃埋剑於斯。呜呼！群雄束手，长剑空"
+              "利，不亦悲夫！」 \n" NOR;
+
+        return msg;
+}
+
+
+
+
+int do_move(string arg)
+{
+        object me = this_player();
+        object ob;
+
+        if (me->is_busy() || me->is_fighting())
+              return notify_fail("你忙完了再说吧！\n");
+
+        if (! arg || arg != "big stone")
+              return notify_fail("你要干什么？\n");
+        
+        if (! ob = find_object(__FILE__));
+                 ob = load_object(__FILE__);
+
+        if( ob->query_temp("moved") )
+                 return notify_fail("上面的石头已经被移开了！\n");
+ 
+                
+        message_vision(HIG "$N" HIG "用力将剑冢上面的石头一块块地移开 ……\n", me);
+
+        ob->set_temp("moved", 1);
+ 
+        me->start_busy(1);
+      
+        return 1;
+}
+

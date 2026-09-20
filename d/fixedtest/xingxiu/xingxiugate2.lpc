@@ -1,0 +1,13 @@
+// xingxiu 出口房：丝绸之路·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "丝绸之路" NOR);
+  set("long", "丝绸之路。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

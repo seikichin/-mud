@@ -1,0 +1,20 @@
+// qinglindong —— 由 nitan/d/hangzhou/qinglindong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(750,-2070,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "清林洞");
+  set("long", @LONG
+又叫老虎洞。只见靠右雕有弭陀，观音，大势至三尊小佛。洞口
+东侧壁上还刻着一组“庐舍那佛会”浮雕，它上刻花头龛，中间坐着
+释迦牟尼，左右分列文殊，普贤，还有天王佛像。西边是下山的路。
+小路往上延伸向东。
+LONG );
+  set("exits", ([
+    "westdown" : __DIR__ "feilaifeng",
+    "eastup" : __DIR__ "cuiweiting",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,20 @@
+// suishilu1 —— 由 nitan/d/yuanyue/suishilu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-590,210,80)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "碎石小路");
+  set("long", @LONG
+这是一条通往大厅的碎石小路，路上生满了青苔，一不当心就会
+跌倒，两侧不知名的野花开得倒也茂盛，淡淡的散发着一种清新的花
+香。草窠中偶尔传来一两声蟋蟀的叫声。一抬头，可以看见几个或是
+蜈蚣状，或是老鹰状的风筝高高飞舞在蓝天白云中。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "3/0/0",
+    "out" : __DIR__ "damen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

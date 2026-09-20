@@ -1,0 +1,21 @@
+// baidicheng —— 由 nitan/d/chengdu/baidicheng.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15070,-1830,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "白帝城" NOR);
+  set("long", @LONG
+朝辞白帝彩云间，千里江陵一日还。两岸猿声啼不住，千舟以过
+万重山。这里就是有名的白帝城了，遥看四周，只见青山绿水，一片
+大好风景。庙内塑有刘备及孔明等一干名士的雕像，凭栏怀古，心潮
+汹涌，令人神怡。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "shandao",
+    "east" : __DIR__ "sanxia3",
+    "west" : __DIR__ "shudao10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

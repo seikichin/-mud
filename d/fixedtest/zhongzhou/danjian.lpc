@@ -1,0 +1,17 @@
+// danjian —— 由 nitan/d/zhongzhou/danjian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-9040,-1020,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "鸦片馆");
+  set("long", @LONG
+这是鸦片馆内的一个小单间，有几个人正在打麻将。看上
+去这个鸦片馆就是他们开的。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "yanguan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

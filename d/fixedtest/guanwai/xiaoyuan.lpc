@@ -1,0 +1,18 @@
+// xiaoyuan —— 由 nitan/d/guanwai/xiaoyuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小院子");
+  set("long", @LONG
+这是山间民居前的一座小院子，北面有一个小屋，而院中
+有一个老人正在打扫。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "xiaowu",
+    "south" : __DIR__ "baihe",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

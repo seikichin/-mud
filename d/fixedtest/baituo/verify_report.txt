@@ -1,0 +1,17 @@
+==== 验证 baituo ====
+  地图 L,M,H = 9,25,5    非空格 = 60
+  ENTRY = 2,21,2   EXIT = 4,0,1   entry_dir = north
+  不可达房间数 = 12   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 9（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格4,2,2 方向west: /d/fixedtest/baituo/baituo/4/2/2 或 /d/fixedtest/baituo/baituo/3/2/2
+    同格同向多候选 格4,8,3 方向west: /d/fixedtest/baituo/baituo/4/8/3 或 /d/fixedtest/baituo/baituo/3/8/3
+    同格同向多候选 格3,6,3 方向east: /d/fixedtest/baituo/baituo/4/6/3 或 /d/fixedtest/baituo/baituo/3/6/3
+    同格同向多候选 格3,6,3 方向west: /d/fixedtest/baituo/baituo/3/6/3 或 /d/fixedtest/baituo/baituo/2/6/3
+    同格同向多候选 格6,19,2 方向southwest: /d/fixedtest/baituo/baituo/6/19/2 或 /d/fixedtest/baituo/baituo/4/18/2
+    同格同向多候选 格6,19,2 方向northeast: /d/fixedtest/baituo/baituo/7/20/2 或 /d/fixedtest/baituo/baituo/6/19/2
+    同格同向多候选 格6,18,2 方向southwest: /d/fixedtest/baituo/baituo/4/18/2 或 /d/fixedtest/baituo/shegu_maze8
+    同格同向多候选 格6,18,2 方向northeast: /d/fixedtest/baituo/baituo/8/18/2 或 /d/fixedtest/baituo/shegu_maze9
+    同格同向多候选 格6,18,2 方向southeast: /d/fixedtest/baituo/baituo/7/17/2 或 /d/fixedtest/baituo/shegu_maze8
+  入格原房间总数 = 68

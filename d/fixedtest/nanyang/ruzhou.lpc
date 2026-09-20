@@ -1,0 +1,22 @@
+// ruzhou —— 由 nitan/d/nanyang/ruzhou.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,700,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "汝州城");
+  set("long", @LONG
+汝州城是本府的大城，历来是兵家必争之地。故州治在此驻
+扎重兵，盘查南来北往的行人，并负责翦灭附近山上的草寇。城
+内一队队官兵来来去去，一派森严气象。再折向西，就是五岳之
+一的嵩山。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "1/4/0",
+    "north" : "/d/fixedtest/huanghe/huanghe3",
+    "northwest" : "/d/fixedtest/kaifeng/11/13/0",
+    "west" : "/d/fixedtest/songshan/taishique",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// road6 —— 由 nitan/d/xiakedao/road6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3110,-22120,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+你走在一条岩石嶙峋的山道上，这是通向侠客岛望云台的唯一
+路径，旁边是万丈悬崖，抬头隐约可见笼罩在云雾中的山峰，一条
+山路环山而行。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "road7",
+    "northdown" : __DIR__ "road5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

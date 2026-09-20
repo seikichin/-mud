@@ -1,0 +1,14 @@
+// lingshi —— 由 nitan/d/gumu/lingshi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-40,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIC"灵室"NOR);
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "shishi5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

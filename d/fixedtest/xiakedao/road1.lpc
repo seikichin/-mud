@@ -1,0 +1,18 @@
+// road1 —— 由 nitan/d/xiakedao/road1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,-22020,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+走在青石铺成的小路上，脚步十分轻捷。两旁都是密林，枝叶遮
+天蔽日，阴沉沉的很不舒服。林中鸟雀叽喳，与呼呼的风声混成一片。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "road2",
+    "northdown" : __DIR__ "shanmen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// yunge —— 由 nitan/d/hengshan/yunge.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "云阁卧波");
+  set("long", @LONG
+过完栈道，就到云阁虹桥。前往恒山主峰见性峰，都要在这里跨过
+唐峪河。拱桥卧波，水天亮丽，倍觉胸襟舒畅。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "3/0/5",
+    "northdown" : __DIR__ "zhandao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

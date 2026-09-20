@@ -1,0 +1,22 @@
+// hexi —— 由 nitan/d/dali/hexi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19130,-6980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "河西镇");
+  set("long", @LONG
+此镇正处妃丽湖南，住的是阿藜蛮的休猎部。阿藜蛮属台夷，村
+民除了耕种沿湖的田地外，主要以捕鱼为生。临湖风光格外秀丽，北
+边不远就是渔船出入的小码头。南边山中有不少野兽，休猎部的男子
+经常前去狩猎。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zhulin2",
+    "northeast" : __DIR__ "4/0/0",
+    "north" : __DIR__ "3/0/0",
+    "west" : __DIR__ "yujia",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

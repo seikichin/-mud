@@ -1,0 +1,21 @@
+// didao6 —— 由 nitan/d/meizhuang/didao6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,20,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "梅庄密道");
+  set("long", @LONG
+这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的
+火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且
+画得相当难看，你加快脚步，想知道地道的尽头是什么地方。 
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "4/1/0",
+    "north" : __DIR__ "4/2/0",
+    "east" : __DIR__ "didao6",
+    "south" : __DIR__ "6/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

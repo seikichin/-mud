@@ -1,0 +1,18 @@
+// changchunqiao —— 由 nitan/d/shouxihu/changchunqiao.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长春桥");
+  set("long", @LONG
+长春桥以青石块堆砌，桥身亚于大虹桥，而形制相似，距虹桥约里
+许，置短板立柱桥栏。二桥南北相望，为陆行上蜀冈要道。
+LONG );
+  set("exits", ([
+    "eastup" : __DIR__ "changchunling",
+    "west" : __DIR__ "5/6/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// houyuan —— 由 nitan/d/heizhao/houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5020,-1000,50)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后院");
+  set("long", @LONG
+后院正中供奉着弥勒欢喜佛，佛像背面挺立着一个威猛的手持
+长杵的护法韦陀。房内蒲团上居中坐着一个老僧，银须垂胸，厚厚
+的僧衣直裹到面颊，正自低眉入定。有几名老和尚、小沙弥侍立两
+旁。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "zhulin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

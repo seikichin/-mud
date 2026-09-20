@@ -1,0 +1,17 @@
+// jinship —— 由 nitan/d/guiyun/jinship.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(300,-700,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "金国战船");
+  set("long", @LONG
+这里是大金国钦使的战船，船中旗杆上分明扯着旗号，飞扬跋
+扈已极。船舱内汉奸们一脸媚笑，金兵一个个都趾高气扬。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "ship",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

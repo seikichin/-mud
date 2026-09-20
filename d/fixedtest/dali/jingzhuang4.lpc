@@ -1,0 +1,18 @@
+// jingzhuang4 —— 由 nitan/d/dali/jingzhuang4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,39)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第四层");
+  set("long", @LONG
+雕有八坐佛，四隅略大，其中东、南两佛面目驳落，容不可辨。
+坐佛莲花座皆有梵文佛经。经文尾处刻有『慈济和尚--大理人』字样。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "jingzhuang3",
+    "up" : __DIR__ "jingzhuang5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

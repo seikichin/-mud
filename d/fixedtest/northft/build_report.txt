@@ -1,0 +1,9 @@
+==== northft ====
+  网格 L,M,H = 10,7,3   格数 = 13   入格原房间 = 13   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (0,0,0)   => link_entry_room = (50,30,40)
+  入口 = ftn7 格 1,6,0   出口 = ftn1 格 0,0,0   entry_dir = up
+  边：方向位 22  LINK 0（含自环 0 / 到独立房 0 / 到外部 2）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 2   独立房间 = 2
+  ---- 独立房间 ----
+    mine_room  (原文件无 coor)
+    no_mine_room  (原文件无 coor)

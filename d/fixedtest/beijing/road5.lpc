@@ -1,0 +1,21 @@
+// road5 —— 由 nitan/d/beijing/road5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2800,7600,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大驿道");
+  set("long", @LONG
+你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、行
+商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。不
+时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁是整整
+齐齐的杨树林。北边就是永定门了。
+LONG );
+  set("exits", ([
+    "west" : "/d/fixedtest/xueshan/bieyuan",
+    "southeast" : __DIR__ "road6",
+    "north" : __DIR__ "yongdingmen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

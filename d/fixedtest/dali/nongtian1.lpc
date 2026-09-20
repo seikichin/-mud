@@ -1,0 +1,18 @@
+// nongtian1 —— 由 nitan/d/dali/nongtian1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19150,-6980,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "农田");
+  set("long", @LONG
+一小片在山坡下的竹林里开垦出来的农田，临有溪流，种植着水
+稻。台夷生活很大程度上依靠农业，从事农业的却基本上是妇女。男
+子大都专司狩猎和捕鱼。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// shanjiao —— 由 nitan/d/xueshan/shanjiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-29990,-7980,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山脚");
+  set("long", @LONG
+这里是山脚下的一片平地，山上不远处，皑皑白雪映照下的一大片
+红墙金瓦处，就是远近闻名的雪山寺。
+LONG );
+  set("exits", ([
+    "westup" : "/d/fixedtest/xuedao/2/9/1",
+    "south" : __DIR__ "hubian4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

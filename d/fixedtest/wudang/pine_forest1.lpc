@@ -1,0 +1,19 @@
+// pine_forest1 —— 由 nitan/d/wudang/pine_forest1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松林");
+  set("long", @LONG
+这是松林深处，暗无天日，朦胧中只感觉到左右前后到处都是树影。
+地上有一两个死人骷髅，发着绿荧荧的磷光。你惊骇之间，一脚踩在钢
+针般的松针上！
+LONG );
+  set("exits", ([
+    "south" : __DIR__"pine_forest"+(2+random(4)),
+    "north" : __DIR__ "pine_road2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

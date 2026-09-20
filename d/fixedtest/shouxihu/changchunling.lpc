@@ -1,0 +1,24 @@
+// changchunling —— 由 nitan/d/shouxihu/changchunling.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "长春岭");
+  set("long", @LONG
+长春岭因形似镇江金山，俗称小金山。当时为使乾隆帝能坐船直抵
+平山堂，便开挖了莲花埂新河，挖出泥土堆积而成小金山。此岭四面环
+水，岭上遍植春梅、淡竹，香气四溢，故曰"梅岭春深"。李亚如撰联云：
+“借取西湖一角堪夸其瘦，移来金山半点何惜乎小”。一对参天银杏间
+陈列一款原形似山水盆景的钟乳石云盆。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "8/5/2",
+    "southdown" : __DIR__ "xiaohongqiao",
+    "northdown" : __DIR__ "balongqiao",
+    "east" : __DIR__ "8/6/2",
+    "westdown" : __DIR__ "changchunqiao",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

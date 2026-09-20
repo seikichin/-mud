@@ -1,0 +1,13 @@
+// lingzhou 出口房：林中空地·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "林中空地" NOR);
+  set("long", "林中空地。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

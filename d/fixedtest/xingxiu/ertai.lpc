@@ -1,0 +1,21 @@
+// ertai —— 由 nitan/d/xingxiu/ertai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(20,110,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "二台");
+  set("long", @LONG
+四季的景色，都在这一山之中。山顶上，白雪皑皑，尚在严冬；
+山腰里，苍松翠柏，秋色浓重；山坡上，山花烂漫，如值仲夏；而从
+那雪峰直垂下来的溪涧里，冰雪消融，春意盎然。二台以北，有一石
+洞，人称仙人洞。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "wuchang3",
+    "north" : __DIR__ "xrdong",
+    "west" : __DIR__ "guozi",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

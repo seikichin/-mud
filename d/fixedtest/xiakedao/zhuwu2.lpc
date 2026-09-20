@@ -1,0 +1,18 @@
+// zhuwu2 —— 由 nitan/d/xiakedao/zhuwu2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "竹屋");
+  set("long", @LONG
+这是竹屋内部，里面几乎没有什么摆设，倒是有一盏古灯燃着，
+映得旁边的一尊泥佛的影子不住的晃动。整个屋子布置得极其朴素，
+看来主人是能耐的清苦的人。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "zhuwu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

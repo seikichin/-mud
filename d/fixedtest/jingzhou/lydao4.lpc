@@ -1,0 +1,19 @@
+// lydao4 —— 由 nitan/d/jingzhou/lydao4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7110,-2070,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "林荫道");
+  set("long", @LONG
+这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石子，向
+东西两头延伸。东面就是热闹的南大街了。西边有几个小孩在玩耍，
+安静，和谐，微风吹来，使人忘却了江湖上的生死情仇。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "lydao3",
+    "eastup" : __DIR__ "4/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

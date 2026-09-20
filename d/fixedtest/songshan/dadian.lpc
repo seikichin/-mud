@@ -1,0 +1,18 @@
+// dadian —— 由 nitan/d/songshan/dadian.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "中岳大殿");
+  set("long", @LONG
+大殿面阔九间，进深五间，重檐庑殿式屋顶，座落在七尺高的台基
+上，气势雄伟。大殿中供奉岳神天中王。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "shandao1",
+    "south" : __DIR__ "chongsheng",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

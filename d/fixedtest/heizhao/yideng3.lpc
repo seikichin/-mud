@@ -1,0 +1,31 @@
+// yideng3 —— 由 nitan/d/heizhao/yideng3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-38000,-80010,-20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "瀑布下");
+  set("long", @LONG
+这里是瀑布水底，水流急冲直下，你双足使劲，以「千斤坠」的
+功夫牢牢站稳，恰似中流砥柱，崎立不动。
+LONG );
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        add_action("do_jump", "jump");
+}
+
+int do_jump(string arg)
+{
+        object me = this_player();
+
+        if ( !arg || arg != "bank" )
+                return notify_fail( "什么？\n");
+
+        message_vision("$N纵身往岸上跳去。\n", me);
+        me->move(__DIR__"yideng1");
+        return 1;
+}

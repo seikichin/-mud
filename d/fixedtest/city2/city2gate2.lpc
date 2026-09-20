@@ -1,0 +1,13 @@
+// city2 出口房：城外驿道·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "城外驿道" NOR);
+  set("long", "城外驿道。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

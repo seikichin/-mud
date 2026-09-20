@@ -1,0 +1,18 @@
+// shegu8 —— 由 nitan/d/baituo/shegu8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-50010,20170,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "蛇谷树林");
+  set("long", @LONG
+这是白驼山的蛇谷之中，林木葱郁，草丛中不时响起沙沙之声，
+似乎有什麽在草里来回窜动。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "2/18/2",
+    "west" : __DIR__ "shegu9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// wroad7 —— 由 nitan/d/luoyang/wroad7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7040,2180,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "武德道");
+  set("long", @LONG
+再往西就要到西内城门了，远远望去，可以看见守城的官兵正在检查
+排队出城的路人，也许是太靠近城门的缘故，这里的人已不如前面那么多
+了。北边有一家书店，名曰“老僧书店”，南边是一条幽静的碎石小路。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "xidoor",
+    "south" : __DIR__ "suishi12",
+    "east" : __DIR__ "0/8/0",
+    "north" : __DIR__ "shudian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// didao1 —— 由 nitan/d/heimuya/didao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(240,30,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "秘道");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "23/4/10",
+    "east" : __DIR__ "23/5/10",
+    "west" : __DIR__ "didao1",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/out", "/d/fixedtest/heimuya/13/4/10");
+}

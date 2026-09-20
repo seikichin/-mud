@@ -1,0 +1,42 @@
+==== zhongzhou ====
+  网格 L,M,H = 9,11,2   格数 = 50   入格原房间 = 58   合并格 = 8
+  原 coor 基准 (gx,gy,gz) = (-905,-104,0)   => link_entry_room = (-9010,-990,30)
+  入口 = eroad3 格 8,3,0   出口 = majiu 格 3,5,0   entry_dir = up
+  边：方向位 114  LINK 0（含自环 0 / 到独立房 8 / 到外部 2）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 10   独立房间 = 27
+  ---- 警告 ----
+  第 1 轮：地图 895x110x3 超出上限 100，只保留最密集的 100^3 窗口（-905,-104,0），裁掉 23 间房
+  ---- 独立房间 ----
+    chenglou  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    chenglouup  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    danjian  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    duchuan  (原文件无 coor)
+    eba  (coor 不是 10 的倍数)
+    gongyuan4  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    guandao7  (原文件无 coor)
+    guandimiao  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    huayuan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    huazhuang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    inpomiao  (coor 不是 10 的倍数)
+    nanmeng  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    shiye  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    taiyefu  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    to_zhongzhou2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    to_zhongzhou3  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    toyy  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xiaoxiang1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xiaren  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xijiao  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xiyuan1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yanguan  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yanling1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yanling2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zahuopu  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zoulang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zoulang1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    guandao7.north -> /d/fixedtest/zhongzhou/guandao6
+    to_zhongzhou2.north -> /d/fixedtest/zhongzhou/to_zhongzhou
+    toyy.southwest -> /d/xiangyang/eastgate2
+    toyy.north -> /d/fixedtest/zhongzhou/nroad
+    xijiao.west -> /d/luoyang/hulaoguan

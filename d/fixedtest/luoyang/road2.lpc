@@ -1,0 +1,23 @@
+// road2 —— 由 nitan/d/luoyang/road2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6910,2150,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条宽阔笔直的官道，足可容得下十马并驰。路边还开着些不
+入流的牡丹花，一看就知道是洛阳城的辖地。东面就是通往扬州的大官
+道，西面则是著名的洛阳城，而东北面则是著名的旅游胜地：白马寺。
+寺庙进香的游客很多，路边草地已经给踩得相当平了。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "11/5/0",
+    "south" : __DIR__ "road7",
+    "northeast" : __DIR__ "baimasi",
+    "east" : __DIR__ "hulaoguan",
+    "southeast" : __DIR__ "road0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

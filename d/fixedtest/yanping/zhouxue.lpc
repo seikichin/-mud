@@ -1,0 +1,15 @@
+// zhouxue —— 由 nitan/d/yanping/zhouxue.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1450,-6170,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "州学");
+  set("long", " ");
+  set("exits", ([
+    "eastdown" : __DIR__ "6/2/1",
+    "southdown" : __DIR__ "xishan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

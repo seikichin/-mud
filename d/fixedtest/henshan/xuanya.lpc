@@ -1,0 +1,14 @@
+// xuanya —— 由 nitan/d/henshan/xuanya.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "悬崖边");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "zigaihole",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

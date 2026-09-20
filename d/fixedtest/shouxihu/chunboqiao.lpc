@@ -1,0 +1,18 @@
+// chunboqiao —— 由 nitan/d/shouxihu/chunboqiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1,40,0)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "春波桥");
+  set("long", @LONG
+小红桥是一座木制拱桥，此桥西接桃花坞，东连四桥烟雨楼前南端
+小岛，与四桥烟雨楼相通。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "siqiaoyanyu",
+    "west" : __DIR__ "taohuawu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

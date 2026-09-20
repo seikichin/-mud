@@ -1,0 +1,18 @@
+// cunzhangjia —— 由 nitan/d/hanzhong/cunzhangjia.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12270,850,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "村长家");
+  set("long", @LONG
+这里是村长的家，堂屋里堆放着一些锄头、镰刀之类的农耕用
+具，有一些是村中村民家里坏了，来央求村长给修的。屋檐前吊着
+数十串鲜红的辣椒，还有一些风干的野味。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "guchang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

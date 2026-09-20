@@ -1,0 +1,54 @@
+// huapu1 —— 由 nitan/d/hudie/huapu1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "花圃");
+  set("long", @LONG
+这里是蝴蝶谷的花圃，是『见死不救』胡青牛用来种各种各样药
+材的，里面种满了诸般花草。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "huapu1",
+    "south" : __DIR__ "huapu1",
+    "east" : __DIR__ "huapu1",
+    "west" : __DIR__ "huapu1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        object ob;
+        int jing, jing_cost;
+
+        ob = this_player();
+        jing=ob->query("jing");
+        jing_cost=random(ob->query("kar"))*2+10;
+
+        ob->add("jing", -jing_cost);
+        if(jing < jing_cost)
+         ob->unconcious();
+}
+
+int valid_leave(object me, string dir)
+{
+        if (random(10) > 5)
+              me->add_temp("mark/steps", 1);
+        if (random(10) < 5)
+              me->add_temp("mark/steps", -1);
+        
+        if( me->query_temp("mark/steps") >= 5){
+            me->move("/d/fixedtest/hudie/2/6/0");
+            me->delete_temp("mark/steps");
+              return notify_fail("你乱走一气，忽然眼前一亮，来到一处草径。\n");
+        }  
+        if( me->query_temp("mark/steps") <= 0){
+            me->move("/d/fixedtest/hudie/2/5/0");
+            me->delete_temp("mark/steps");
+              return notify_fail("你累得半死，却颓然发现又走回了牛棚。\n");
+        }      
+        return ::valid_leave(me, dir);
+}

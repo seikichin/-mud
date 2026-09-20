@@ -1,0 +1,19 @@
+// xianrenya —— 由 nitan/d/xingxiu/xianrenya.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(140,0,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "仙人崖");
+  set("long", @LONG
+这里以传说有神仙出没而得名，每到盛夏夜，火光从崖面飞出，名
+曰仙人送灯。面山带水，群峰环峙，野草蒙茸，奇花异树，清幽险峻，
+令人绝俗。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "shuiliandong",
+    "northeast" : __DIR__ "silk1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

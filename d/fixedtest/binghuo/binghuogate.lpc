@@ -1,0 +1,13 @@
+// binghuo 入口房：大树林·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大树林" NOR);
+  set("long", "大树林。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

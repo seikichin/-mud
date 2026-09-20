@@ -1,0 +1,18 @@
+// shanlu2 —— 由 nitan/d/jianzhong/shanlu2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-420,-490,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+你走在一条山路上。路边的树木逐渐茂密起来，山路越发地窄了。
+LONG );
+  set("exits", ([
+    "northwest" : "/d/fixedtest/baihuagu/ent",
+    "east" : __DIR__ "shanlu3",
+    "west" : __DIR__ "shanlu1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

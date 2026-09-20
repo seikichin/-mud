@@ -1,0 +1,125 @@
+// underya —— 由 nitan/d/jueqing/underya.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "绝情谷底");
+  set("long", " ");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{       
+        add_action("do_jump", ({ "tiao", "jump" }));
+        add_action("do_climb", ({ "climb", "pa" }));
+        add_action("do_bao", ({ "bao" }));
+}
+
+int do_bao(string arg)
+{
+        object me = this_player();
+
+        if (! arg || arg != "stone")
+                return notify_fail("你要抱什么？\n");
+
+        if (me->is_busy())
+                return notify_fail("你现在正忙着呢！\n");
+
+        if (me->is_fighting())
+                return notify_fail("你还是先把你面前这个家伙解决了再说。\n");     
+
+        if( me->query_temp("marks/抱") )
+                return notify_fail("你已经抱了一块石头了。\n"); 
+
+        write(HIC "你将大石抱起，顿感异常沉重。\n" NOR);
+        
+        // 将石头抱住才可沉入寒潭中
+        me->set_temp("marks/抱", 1);
+
+        return 1;
+}
+
+int do_climb(string arg)
+{
+        object me = this_player();
+        object ob;
+
+
+        if (! arg || arg != "teng")
+                return notify_fail("你要做什么？\n");
+
+        if (me->is_busy())
+                return notify_fail("你现在正忙着呢！\n");
+
+        if (me->is_fighting())
+                return notify_fail("你还是先把你面前这个家伙解决了再说。\n");
+        
+        write(HIG "\n你拉着树藤向上爬去…\n" NOR);
+        write(HIC "\n爬了许久，你感觉疲惫之极，但终于达到了山峰。\n\n" NOR);
+
+        if (! ob = find_object(__DIR__"jueqing"))
+               ob = load_object(__DIR__"jueqing");
+
+        me->move(ob);
+       
+        return 1;
+
+}
+
+int do_jump(string arg)
+{
+        object me = this_player();
+        object ob;
+
+
+        if (! arg || arg != "tan")
+                return notify_fail("你要往哪儿跳？\n");
+
+        if (me->is_busy())
+                return notify_fail("你现在正忙着呢！\n");
+
+        if (me->is_fighting())
+                return notify_fail("你还是先把你面前这个家伙解决了再说。\n");
+       
+        if( me->query("tiao") )
+                return 1;
+
+        if( !me->query_temp("marks/抱") )
+        {                    
+                write(HIW "你长吸一口气，纵身入潭，直往深处潜去，那潭底越深越"
+                      "寒，潜\n了一会，四周蓝森森的都是玄冰。由于深处浮力太强"
+                      "，你用力冲\n了数次，也不过再潜下数丈，始终无法到底……\n" NOR);
+
+                call_out("out_water", 6, me);
+                me->set("tiao", 1);
+
+                return 1;
+        }
+         
+        // 抱住大石，能够潜入潭底
+        write(HIG "你纵身入潭，由于抱有大石头，身体急沉而下，猛地里眼前一\n"
+                  "亮，你心念一动，忙向光亮处游去，只觉一股急流卷着你的身\n"
+                  "子冲了过去，光亮处竟是一洞。你抛下大石，手脚齐划，那洞\n"
+                  "内却是一道斜斜向上的冰窖。你顺势而上，过不多时， “波”\n"
+                  "的一响，跃出了水面。\n" NOR);
+
+        if (! ob = find_object(__DIR__"underya2"))
+               ob = load_object(__DIR__"underya2");
+
+        me->move(ob);
+        me->delete_temp("marks/抱");
+        me->delete("tiao");
+       
+        return 1;
+
+}
+
+int out_water(object me)
+{      
+       write(HIY "此时你气息渐促，只好回到岸边。\n" NOR);
+       me->move(__DIR__"underya");
+       me->delete("tiao");
+       return 1;
+}

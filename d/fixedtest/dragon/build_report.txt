@@ -1,0 +1,31 @@
+==== dragon ====
+  网格 L,M,H = 17,3,3   格数 = 16   入格原房间 = 16   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (2,0,0)   => link_entry_room = (100,10,40)
+  入口 = hole 格 6,2,2   出口 = bamboo2 格 4,0,1   entry_dir = north
+  边：方向位 22  LINK 1（含自环 0 / 到独立房 2 / 到外部 0）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 3   独立房间 = 20
+  ---- 警告 ----
+  第 1 轮：剔除 6 个零位格房间，重新建图
+  ---- 独立房间 ----
+    boat  (原文件无 coor)
+    dragoncave  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    duchuan  (原文件无 coor)
+    entrance  (原文件无 coor)
+    liechang  (原文件无 coor)
+    outlet  (原文件无 coor)
+    outlet1  (原文件无 coor)
+    outlet2  (原文件无 coor)
+    spirit0  (原文件无 coor)
+    spirit10  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    spirit3  (原文件无 coor)
+    spirit4  (原文件无 coor)
+    spirit5  (原文件无 coor)
+    spiritgate  (原文件无 coor)
+    tree  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    underwater  (原文件无 coor)
+    village  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    xiuxishi  (原文件无 coor)
+    yashang  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    zhanglao  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    spiritgate.south -> /d/xingxiu/jiayuguan

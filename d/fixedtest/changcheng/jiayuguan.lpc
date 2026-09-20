@@ -1,0 +1,20 @@
+// jiayuguan —— 由 nitan/d/changcheng/jiayuguan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-18000,400,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "嘉峪关箭楼");
+  set("long", WHT @LONG
+你站在号称“天下第一雄关”的嘉峪关箭楼上，南面是终年积雪的
+祁连山，北面是连绵起伏的马鬃山，西望几十里地的一马平川，真不愧
+天下第一。长城在戈壁沙漠上的漫天黄沙中如苍龙蠕动，若隐若现，忽
+断忽续。
+LONG NOR);
+  set("exits", ([
+    "down" : "/d/fixedtest/xingxiu/jiayuguan",
+    "northeast" : __DIR__ "changcheng21",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

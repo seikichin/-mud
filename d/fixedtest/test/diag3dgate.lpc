@@ -1,0 +1,10 @@
+// diag3d 入口房
+inherit ROOM;
+#include <ansi.h>
+void create() {
+  set("short", HIW "diag3d入口(立体斜向测试)" NOR);
+  set("long", "往下走进入立体斜向测试迷宫。");
+  set("exits", ([ "down" : "/d/fixedtest/diag3d/diag3d/entry" ]));
+  set("no_fly", 1);
+  setup();
+}

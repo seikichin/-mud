@@ -1,0 +1,18 @@
+// wuyiminju4 —— 由 nitan/d/dali/wuyiminju4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19200,-6910,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "乌夷民居");
+  set("long", @LONG
+这是一座用木柴及兽皮搭成的乌夷民居。此地的村民主要从事耕
+作，由于实行换季轮耕，不得不经常迁徙，因而房舍都颇简陋，说是
+房舍，倒不如说更象帐篷，拆、建都甚方便。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "yixibu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

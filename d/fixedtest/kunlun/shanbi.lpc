@@ -1,0 +1,19 @@
+// shanbi —— 由 nitan/d/kunlun/shanbi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-99000,20050,50)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山壁");
+  set("long", @LONG
+这是一片陡峭的山壁，全为极为坚硬的岩石，滑不溜脚，稍微不小
+心就会滑倒。在山壁上划有六个大字：【张无忌埋经处】。往西而下是
+一片洞天，往东而下是一山沟。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "shangou",
+    "westdown" : __DIR__ "cuigu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

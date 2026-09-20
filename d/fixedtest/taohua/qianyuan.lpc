@@ -1,0 +1,21 @@
+// qianyuan —— 由 nitan/d/taohua/qianyuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "前院");
+  set("long", @LONG
+你现在正站在一个宽敞的院子中。院子原来是作为练武场
+用的。但自从桃花岛弟子被黄药师逐出岛外，就没人在此练武。
+东面是兵器室，西面是厨房，往南是桃花山庄正厅。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "2/7/0",
+    "south" : __DIR__ "dating",
+    "east" : __DIR__ "bingqi",
+    "north" : __DIR__ "damen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,19 @@
+// shijing —— 由 nitan/d/dali/shijing.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19111,-6861,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石径");
+  set("long", @LONG
+你走在大理镇南王府中的石径上。路边长木遮天，微风习习，十
+分凉爽。路南是一个碧绿透亮的小湖，水禽游鱼，映影其间。西边通
+向大厅，东面好象是个花园。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "tingyuan",
+    "west" : __DIR__ "wfdating",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// jiusi —— 由 nitan/d/yanping/jiusi.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1700,-6290,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "酒肆");
+  set("long", @LONG
+酒店门口一个酒招子半拉子挂着，店主人老蔡却不见了。两间茅屋
+的小店显得十分空落，只有一个青袍年轻汉子靠在酒炉上，一双眼睛冷
+冷地瞧着你。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "guandao1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

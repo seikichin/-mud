@@ -1,0 +1,20 @@
+// jingzhuang1 —— 由 nitan/d/dali/jingzhuang1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6871,9)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "第一层");
+  set("long", @LONG
+雕四大天王像，高约四尺，批甲戴胄，手持斧钺，威严庄重。三
+人足踏鬼奴。一鬼奴肌肉暴起，右手挽蛇，蛇嘴正触鬼奴下腭；另俩
+鬼奴戴镣。一天神足下三人，中间一人正以双手各托天王一足。天王
+之间遍刻梵文佛经。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "7/10/1",
+    "up" : __DIR__ "jingzhuang2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

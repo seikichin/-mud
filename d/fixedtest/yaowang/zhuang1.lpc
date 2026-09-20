@@ -1,0 +1,17 @@
+// zhuang1 —— 由 nitan/d/yaowang/zhuang1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(110,70,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "梅花桩一");
+  set("long", @LONG
+一人多高的梅花桩，向下望去真让人心惊胆颤。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "11/7/0",
+    "northwest" : __DIR__ "zhuang2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

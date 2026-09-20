@@ -1,0 +1,13 @@
+// lanzhou 入口房：大草原·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大草原" NOR);
+  set("long", "大草原。往 down 可进入迷宫。\n");
+  set("exits", ([
+    "down" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,41 @@
+// hengshan —— nitan d/hengshan 固定地图映射区（vrm_fixed）
+//
+//   hengshan.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   hengshan-room.lpc    格房描述（改文字即可改每格 look）
+//   hengshangate.lpc / hengshangate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/hengshan/hengshan/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = hengshan）
+// 格索引 -> 原 coor： coor = (格索引 + (-2,314,0)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "hengshan-room");
+  set_maze_map(__DIR__ "hengshan");
+  set_maze_spacing(10);
+  set_maze_owner_key("hengshan");
+
+  // 入口 = cangjingge（格 8,7,10），出口 = daziling（格 3,0,5）
+  set_entry_dir("north");
+  set_link_entry_room(__DIR__ "hengshangate");
+  set_link_exit_room(__DIR__ "hengshangate2");
+  set_entry_back_dir("north");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(20);
+  set_link_entry_room_y(3190);
+  set_link_entry_room_z(120);
+
+  set_entry_short(HIW "藏经阁" NOR);
+  set_entry_desc("藏经阁，从这里可以进入迷宫（north）。\n");
+  set_exit_short(HIY "大字岭" NOR);
+  set_exit_desc("大字岭，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 hengshan-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("藏经阁");
+  set_maze_room_desc("nitan d/hengshan 映射区。");
+}

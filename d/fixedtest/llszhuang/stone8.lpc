@@ -1,0 +1,16 @@
+// stone8 —— 由 nitan/d/llszhuang/stone8.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(130,20,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石屋");
+  set("long", "走着走着，秘道中忽然亮起了灯光。前面岩壁，已被凿成石灯的模样\n"
+"，灯蕊竟有十余条之多，互相连接。石室中一直是阴湿而黝暗，左面一张\n"
+"石床，右面一张石桌，几张石凳。\n");
+  set("exits", ([
+    "out" : __DIR__ "14/0/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

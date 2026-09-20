@@ -1,0 +1,19 @@
+// yongdao1 —— 由 nitan/d/xiakedao/yongdao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3100,-22060,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+这是一条长长的甬道，两边点着油灯，光线虽暗，却也可辨道
+路，外面隐约能听见瀑布的隆隆水声，洞口水花飞溅，地面甚是湿
+润。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "pubu",
+    "south" : __DIR__ "yongdao2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

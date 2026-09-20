@@ -1,0 +1,19 @@
+// kunlun2 —— 由 nitan/d/kunlun/kunlun2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "昆仑山麓");
+  set("long", @LONG
+    四下无声，只有风吹松涛，幽韵天成，仰视苍天，注视群山，令
+人不觉怆然而发思古之幽情！往前看，只见一道飞岩，下临绝崖，往
+下看，峭壁如刀削，云卷雾涌，深不见底。
+LONG );
+  set("exits", ([
+    "up" : __DIR__ "kunlun3",
+    "northeast" : __DIR__ "kunlun1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,16 @@
+// damen —— 由 nitan/d/taohua/damen.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃花山庄正门");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "tingzi",
+    "east" : __DIR__ "0/6/0",
+    "south" : __DIR__ "qianyuan",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

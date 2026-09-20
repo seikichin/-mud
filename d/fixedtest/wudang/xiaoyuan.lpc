@@ -1,0 +1,18 @@
+// xiaoyuan —— 由 nitan/d/wudang/xiaoyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-340,90)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "后山小院");
+  set("long", @LONG
+这里是武当后山的一座小院，布置简简单单，仅除了一床一桌、
+一椅、一蒲团，再也没有别的什物。比较引人注目的是墙上挂着一把
+剑。这里就是武当开山祖师张三丰的练功所在。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "0/1/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

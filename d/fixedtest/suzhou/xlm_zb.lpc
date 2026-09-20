@@ -1,0 +1,14 @@
+// xlm_zb —— 由 nitan/d/suzhou/xlm_zb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "修罗门总坛");
+  set("long", " ");
+  set("exits", ([
+    "out" : __DIR__ "11/13/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

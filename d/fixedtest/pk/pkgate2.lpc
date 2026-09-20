@@ -1,0 +1,13 @@
+// pk 出口房：诛人场·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "诛人场" NOR);
+  set("long", "诛人场。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

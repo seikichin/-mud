@@ -1,0 +1,15 @@
+// hu —— 由 nitan/d/yanziwu/hu.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "百曲湖");
+  set("long", @LONG
+这是一个支流众多的小河，四面都是菱叶。除了桨声和菱叶与船
+身相擦的沙沙轻声，四下一片寂静，湖上清风，夹着淡淡的花香，你
+不禁心想：  "就算这样一辈子，也好哇！"
+LONG );
+  set("no_fly", 1);
+  setup();
+}

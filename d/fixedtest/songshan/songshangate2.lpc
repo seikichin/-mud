@@ -1,0 +1,13 @@
+// songshan 出口房：启母阙·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "启母阙" NOR);
+  set("long", "启母阙。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

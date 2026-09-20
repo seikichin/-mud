@@ -1,0 +1,19 @@
+// cldating —— 由 nitan/d/yixing/cldating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(279,-1011,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大厅");
+  set("long", @LONG
+大厅中一股肃杀威严之气。厅堂极为宽大，能容下数十人之众。只
+见四周桌上点着明晃晃的巨烛，正中空着一张虎皮交椅。不时有帮众经
+过这里，都是屏息静气地低头走过。。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "clzoulang1",
+    "out" : __DIR__ "5/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,71 @@
+==== gaibang ====
+  网格 L,M,H = 3,1,1   格数 = 3   入格原房间 = 3   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (6,6,0)   => link_entry_room = (70,60,20)
+  入口 = pomiao 格 1,0,0   出口 = shoushe 格 0,0,0   entry_dir = up
+  边：方向位 4  LINK 0（含自环 0 / 到独立房 1 / 到外部 1）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 2   独立房间 = 48
+  ---- 警告 ----
+  第 1 轮：地图 4175x7509x14 超出上限 100，只保留最密集的 100^3 窗口（-50,-20,-2），裁掉 31 间房
+  第 2 轮：剔除 13 个零位格房间，重新建图
+  ---- 独立房间 ----
+    bjandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    bjandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    cdandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    cdandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    chuchang  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    dlandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    dlandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    fzandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    fzandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    gbandao  (coor 不是 10 的倍数)
+    gbxiaowu  (coor 不是 10 的倍数)
+    hsandao1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    hsandao2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    inhole  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    mishi  (原文件无 coor)
+    qzandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    qzandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    slandao1  (原文件无 coor)
+    slandao2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    underbj  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    undercd  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underdl  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underfz  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    undergb  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    underhs  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underqz  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    undersl  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    undertre  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    underwd  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underwx  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underxc  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underxs  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underxx  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    underyy  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    wdandao1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    wdandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    wxandao1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    wxandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xcandao1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    xcandao2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    xsandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xsandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xxandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    xxandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yyandao1  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    yyandao2  (超出引擎地图边长上限 100（只保留最密集窗口）)
+    zlandao1  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    zlandao2  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    inhole.out -> /d/city/guangchang
+    underbj.out -> /d/beijing/caroad_e1
+    undercd.out -> /d/chengdu/ruin2
+    underdl.out -> /d/dali/dahejieeast
+    underfz.out -> /d/fuzhou/nanmendou
+    underhs.out -> /d/huashan/sheshen
+    underqz.out -> /d/jiaxing/tieqiang
+    undersl.up -> /d/shaolin/chufang2
+    underwd.out -> /d/wudang/tufeiwo1
+    underwx.out -> /d/wuxi/dayifenduo
+    underxc.up -> /d/village/square
+    underyy.out -> /d/yueyang/gaibangyuan

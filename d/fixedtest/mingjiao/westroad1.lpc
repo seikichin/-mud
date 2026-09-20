@@ -1,0 +1,18 @@
+// westroad1 —— 由 nitan/d/mingjiao/westroad1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(100,110,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山路");
+  set("long", @LONG
+这是一条直通西方的山路，向西远望，群山巍峨，云雾飘渺，再
+往前不远，就要进入深山之中了。东面就是去中原的路。
+LONG );
+  set("exits", ([
+    "east" : "/d/fixedtest/xingxiu/3/1/0",
+    "west" : __DIR__ "westroad2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

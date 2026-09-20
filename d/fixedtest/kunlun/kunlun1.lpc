@@ -1,0 +1,19 @@
+// kunlun1 —— 由 nitan/d/kunlun/kunlun1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "昆仑山麓");
+  set("long", @LONG
+这一带树木丛生，山石嶙峋，行走甚是不便，山上积雪更厚，道
+路崎岖，行走自是费力。转过两个山坡，进了一座大松林。林中松树
+都是数百年的老树，枝柯交横。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "kunlun2",
+    "northeast" : __DIR__ "klshanlu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

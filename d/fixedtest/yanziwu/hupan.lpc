@@ -1,0 +1,14 @@
+// hupan —— 由 nitan/d/yanziwu/hupan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "太湖湖畔");
+  set("long", " ");
+  set("exits", ([
+    "northeast" : "/d/fixedtest/suzhou/8/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

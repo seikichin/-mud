@@ -1,0 +1,17 @@
+// shuifang —— 由 nitan/d/annan/shuifang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(30,50,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "睡房");
+  set("long", @LONG
+这里就是客栈的卧室了。只件这里已经横七竖八的躺了几个人。你
+来到这里，不禁感到困了，打了一个呵欠。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "4/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

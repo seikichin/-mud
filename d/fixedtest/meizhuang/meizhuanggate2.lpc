@@ -1,0 +1,13 @@
+// meizhuang 出口房：后厅·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "后厅" NOR);
+  set("long", "后厅。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

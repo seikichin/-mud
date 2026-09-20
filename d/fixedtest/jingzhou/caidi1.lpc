@@ -1,0 +1,19 @@
+// caidi1 —— 由 nitan/d/jingzhou/caidi1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7110,-2180,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "菜地");
+  set("long", @LONG
+这是一块菜地，但见一片青绿，都种满了空心菜。白色的蛾蝶在菜
+丛中上下飞舞。“空心菜”是湘西一带最寻常的蔬菜，粗生粗长，菜茎
+的心是空的。给人取了这个绰号，就是笑人直肚直肠，没半点心事的意
+思。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "maxipu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

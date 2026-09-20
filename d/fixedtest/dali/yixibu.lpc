@@ -1,0 +1,20 @@
+// yixibu —— 由 nitan/d/dali/yixibu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19200,-6900,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "易溪部");
+  set("long", @LONG
+易溪部也是乌夷族乌杂蛮的部落。这里处半坡地，附近有不少农
+田，但农业落后，需要换季轮耕，因而村民经常迁徙，镇子里除了祭
+祀大屋外，其它房屋都很简陋。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "biluoshan",
+    "northwest" : __DIR__ "atoubu",
+    "south" : __DIR__ "wuyiminju4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

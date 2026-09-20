@@ -1,0 +1,14 @@
+// majiu —— 由 nitan/d/lingzhou/majiu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6270,2910,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "马厩");
+  set("long", " ");
+  set("exits", ([
+    "west" : __DIR__ "5/5/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

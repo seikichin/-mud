@@ -1,0 +1,18 @@
+// yamen —— 由 nitan/d/gaoli/yamen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(80,80,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城防衙门");
+  set("long", @LONG
+这里是高丽的城防衙的官卫房，大概有三丈见方，中间有张长案，
+一位将军在这里办公，这里主要负责高丽城的防务安全，以及防盗，防
+火，捉拿逃犯等事物。 
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "8/8/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

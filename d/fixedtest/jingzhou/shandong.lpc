@@ -1,0 +1,19 @@
+// shandong —— 由 nitan/d/jingzhou/shandong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1640,-2210,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "山洞");
+  set("long", @LONG
+洞中有戚芳用黏土捏的泥人，狄云用来弹鸟的弹弓，捉山兔的扳机，
+戚芳放牛时吹的短笛，放在洞里的石上。那边是戚芳的针线篮。篮中的
+剪刀已生满了黄锈。针线篮中还有一本旧书，那是戚芳用来夹鞋样、绣
+花样的。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "dashandong",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

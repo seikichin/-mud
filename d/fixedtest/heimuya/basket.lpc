@@ -1,0 +1,15 @@
+// basket —— 由 nitan/d/heimuya/basket.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "竹篓");
+  set("long", @LONG
+这是一只大竹篓，足可装得十来石米。抬头上望，只见头顶有天
+风崖壁，这黑木崖着实高得厉害。
+LONG );
+  set("no_fly", 1);
+  setup();
+  set("exits/out", __DIR__ "up2");
+}

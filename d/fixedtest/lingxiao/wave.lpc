@@ -1,0 +1,20 @@
+// wave —— 由 nitan/d/lingxiao/wave.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,50,50)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "冰洞");
+  set("long", @LONG
+蛇！一条足有水桶粗的白蛇，正横卧在冰洞正中，望见有人
+进来，呼地一声直立起来，吐出血红的信子，径直扑了过来。带
+过来一股腥臭的味道。旁边一面冰壁很薄，隐约可见里面有什么
+东西。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "8/5/5",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/enter", __DIR__"yudong");
+}

@@ -1,0 +1,9 @@
+==== qingcheng ====
+  网格 L,M,H = 7,14,10   格数 = 35   入格原房间 = 35   合并格 = 0
+  原 coor 基准 (gx,gy,gz) = (-811,-95,0)   => link_entry_room = (-8080,-880,110)
+  入口 = qcroad1 格 6,0,0   出口 = chufang 格 2,12,9   entry_dir = down
+  边：方向位 68  LINK 0（含自环 0 / 到独立房 0 / 到外部 1）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 1   独立房间 = 2
+  ---- 独立房间 ----
+    kufang  (coor 不是 10 的倍数)
+    xiuxishi  (coor 不是 10 的倍数)

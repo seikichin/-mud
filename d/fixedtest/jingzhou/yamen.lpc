@@ -1,0 +1,17 @@
+// yamen —— 由 nitan/d/jingzhou/yamen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1490,-2030,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "知府衙门");
+  set("long", @LONG
+一座大厦，朱红的大门，门上钉着碗口大的铜钉，门外两盏大灯笼，
+一盏写着“荆州府正堂”，另一盏写着“凌府”。门前两座石狮子。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "datang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

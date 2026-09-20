@@ -50,20 +50,39 @@ object compile_object(string file) {
     return room;
   }
 
-  else if (strlen(file) > 3 && file[0..3] == "/vo/") {
-    string *str1;
-    object newob;
-    //用explode来区分出/vo/cloth/xxxxx
-    //把type找出来然后load一个基本type，然后去restore那个.o
+  // ------------------------------------------------------------------
+  //  vrm_fixed 固定区域：短路径
+  //    /d/fixedtest/<区>/<x>/<y>/<z> | /entry | /exit
+  //      → /d/fixedtest/<区>/<区>->query_maze_room("<区>/<x>/<y>/<z>|entry|exit")
+  //  （vrm_fixed 覆盖了 mroom_fname/query_maze_pathbase，虚拟格房路径
+  //    就是 <区目录>/x/y/z，不再带重复的区名段）
+  // ------------------------------------------------------------------
+  if (strlen(file) > 13 && file[0..12] == "/d/fixedtest/") {
+    string rest, area, tail, apath;
+    object ad, r;
+    int k, qx, qy, qz;
 
-    str1 = explode(file, "/");
-    newob = new("/std/vobase/" + str1[1]);
-    //这里我们只能替代一下，因为现在这个东西在return以前还不是vo所以直接restore不对
-    newob->restore_me(sprintf(DATA_DIR "vo/%s/%s", str1[1], str1[2]));
-    return newob;
-    //return (new ("/std/vobase/basic"));
+    rest = file[13..];
+    k = member_array('/', rest);
+    if (k > 0) {
+      area = rest[0..k - 1];
+      tail = rest[k + 1..];
+      if (tail == "entry" || tail == "exit" ||
+          sscanf(tail, "%d/%d/%d", qx, qy, qz) == 3) {
+        apath = "/d/fixedtest/" + area + "/" + area;
+        ad = find_object(apath);
+        if (!objectp(ad) && file_size(apath + ".lpc") >= 0)
+          ad = load_object(apath);
+        if (objectp(ad)) {
+          r = ad->query_maze_room(area + "/" + tail);
+          if (objectp(r)) {
+            r->set_virtual_flag();
+            return r;
+          }
+        }
+      }
+    }
   }
-
   while (1) {
     int idx = strsrch(pname, "/", -1);
 

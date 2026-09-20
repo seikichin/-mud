@@ -1,0 +1,14 @@
+// mj_center —— 由 nitan/d/mingjiao/mj_center.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIR"明教指挥中心"NOR);
+  set("long", " ");
+  set("exits", ([
+    "out" : "/d/fixedtest/city/6/9/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// road —— 由 nitan/d/gaochang/road.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-38000,10000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "沙丘小路");
+  set("long", "注意：由此处向北！将进入高昌迷宫地域，不知走法和没有作好准
+备的玩家请考虑清楚是否还要向北行。
+              
+                    "HIR"高   昌   迷   宫\n\n\n"NOR);
+  set("exits", ([
+    "south" : "/d/fixedtest/hasake/4/10/0",
+    "north" : __DIR__ "shulin1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,13 @@
+// wudu 出口房：村东口·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "村东口" NOR);
+  set("long", "村东口。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

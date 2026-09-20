@@ -1,0 +1,19 @@
+// liuheta —— 由 nitan/d/hangzhou/liuheta.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(760,-2120,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "六和塔底");
+  set("long", @LONG
+爬上月轮山，便来到了六和塔之前。六和塔亦名六合塔，“六和”
+之名来之佛家的六种规约，“六合”就是“天，地，四方”的意思。
+这座八角塔有十三层，在它的飞檐翘角上括有一百零四只大铁铃。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "qiantang",
+    "enter" : __DIR__ "liuhe1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

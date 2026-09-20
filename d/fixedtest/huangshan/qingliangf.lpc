@@ -1,0 +1,18 @@
+// qingliangf —— 由 nitan/d/huangshan/qingliangf.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-600,-990,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "清凉峰");
+  set("long", @LONG
+清凉台上行就是清凉峰，峰顶平坦，有一块著名巧石，形似猴子，
+云雾时节，云海茫茫，便是“猴子观海”了，一旦云开天朗时候，又叫
+“猴子望太平”。望太平，是因为猴子正前方是旧时的太平县。
+LONG );
+  set("exits", ([
+    "eastdown" : __DIR__ "2/10/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

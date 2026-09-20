@@ -1,0 +1,19 @@
+// xxhb1 —— 由 nitan/d/xingxiu/xxhb1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,130,20)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "星宿海");
+  set("long", @LONG
+这儿便是星宿海的尽头了。举目遥望, 周围是无际的湖泊和沼泽。
+虽是荒芜, 然阴暗潮湿, 毒虫繁殖甚富。星宿弟子常来此捕捉毒虫,以
+备练毒之用。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "riyuedong1",
+    "northwest" : __DIR__ "xxhb3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

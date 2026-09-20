@@ -1,0 +1,26 @@
+==== shouxihu ====
+  网格 L,M,H = 10,14,4   格数 = 44   入格原房间 = 45   合并格 = 1
+  原 coor 基准 (gx,gy,gz) = (-6,5,-1)   => link_entry_room = (-10,120,40)
+  入口 = pingtai3 格 5,5,0   出口 = ouyangci 格 2,13,3   entry_dir = down
+  边：方向位 88  LINK 4（含自环 0 / 到独立房 6 / 到外部 0）  非标准方向 0  丢弃空出口 0
+  [LINK] 总行数 = 10   独立房间 = 16
+  ---- 独立房间 ----
+    balongqiao  (原文件无 coor)
+    banting  (原文件无 coor)
+    changchunling  (原文件无 coor)
+    changchunqiao  (原文件无 coor)
+    changdi1  (原文件无 coor)
+    changdi2  (原文件无 coor)
+    chuitai  (原文件无 coor)
+    chunboqiao  (coor 不是 10 的倍数)
+    chunliuting  (原文件无 coor)
+    hepuxunfeng  (coor 不是 10 的倍数)
+    pingtai  (原文件无 coor)
+    qinshi  (coor 不是 10 的倍数)
+    siqiaoyanyu  (coor 不是 10 的倍数)
+    taohuawu  (原文件无 coor)
+    xiaohongqiao  (原文件无 coor)
+    yinxie  (coor 不是 10 的倍数)
+  ---- 悬空外部出口（原目标对象在 fy2005 不存在） ----
+    changdi1.south -> /d/city/hongqiao
+    qinshi.southeast -> /d/fixedtest/shouxihu/luqiao

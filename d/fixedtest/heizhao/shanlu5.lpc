@@ -1,0 +1,14 @@
+// shanlu5 —— 由 nitan/d/heizhao/shanlu5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5100,-1500,-5)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "泥沼");
+  set("long", " ");
+  set("exits", ([
+    "southeast" : __DIR__ "maze2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

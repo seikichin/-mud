@@ -1,0 +1,19 @@
+// to_zhongzhou3 —— 由 nitan/d/zhongzhou/to_zhongzhou3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-150,30,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "中州道");
+  set("long", @LONG
+这条连接中州和扬州的要道来往车马不断。南面是中州城
+的北门，再向北通向长江边的渡口。道路两边是一望无边的绿
+色沃野。好一片江南风光。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "1/9/0",
+    "north" : __DIR__ "to_zhongzhou2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

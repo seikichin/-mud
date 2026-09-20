@@ -1,0 +1,24 @@
+// diag3d 区域档（测试立体斜向位）
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "diag3d-room");
+  set_maze_map(__DIR__ "diag3d");
+  set_maze_spacing(10);
+  set_maze_owner_key("diag3d");
+
+  set_entry_dir("up");
+  set_link_entry_room("/d/fixedtest/diag3dgate");
+  set_link_exit_room("/d/fixedtest/diag3dgate2");
+  set_entry_back_dir("up");
+  set_exit_back_dir("out");
+
+  set_entry_short(HIW "diag3d入口" NOR);
+  set_entry_desc("diag3d 立体斜向测试迷宫的入口。");
+  set_exit_short(HIY "diag3d出口" NOR);
+  set_exit_desc("diag3d 立体斜向测试迷宫的出口。");
+
+  set_maze_room_short(HIB "立体斜向格" NOR);
+  set_maze_room_desc("diag3d 立体斜向测试迷宫的房间。");
+}

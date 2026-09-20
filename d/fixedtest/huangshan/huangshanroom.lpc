@@ -1,0 +1,18 @@
+// huangshan —— 由 nitan/d/huangshan/huangshan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄山剑庐");
+  set("long", @LONG
+好不容易过铁索，眼前一亮，居然有间茅屋，屋上居然也有牌匾上
+书“黄山剑庐”，屋内陈设简单，一张红木桌上放着几册经卷，笔筒中
+稀疏地插着几只狼毫，西墙一柄长剑，上书“苍穹”二字。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "tiesuo",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

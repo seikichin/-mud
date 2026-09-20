@@ -1,0 +1,13 @@
+// hangzhou 出口房：马厩·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "马厩" NOR);
+  set("long", "马厩。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

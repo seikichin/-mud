@@ -1,0 +1,18 @@
+// tomb —— 由 nitan/d/jingzhou/tomb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "坟墓内部");
+  set("long", @LONG
+你用力往墓碑一推，忽然眼前一黑，掉进了一个大坑，这里黑乎
+乎的，似乎看不见任何东西。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "4/9/0",
+    "south" : __DIR__ "sec1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

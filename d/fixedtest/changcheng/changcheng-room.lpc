@@ -1,0 +1,71 @@
+// ============================================================
+//  changcheng-room.lpc  ——  nitan d/changcheng 映射区（2x1x2）房间模板
+//  由 nitan_build.aardio 自动生成，可自由修改文字
+//
+//  数据表 maze_cell_desc 的键 = 格索引 ""x,y,z""（从 0 开始，与 changcheng.map 一致）
+//  值 = ({ 短描述, 长描述 })
+//  改这里的文字即可直接改变对应格子的 look 结果。
+//
+//  原 coor 与格索引的换算： coor = (格索引 + (-1001,800,4)) * 10
+//  一格多间房时：短描述取主房，长描述按房间拼接（源房名见行末注释）
+//
+//  short/long 保留 nitan 原文的 LPC 表达式（heredoc / 颜色宏），
+//  因此 ANSI 颜色（HIW / HIY / NOR 等）与原文完全一致。
+// ============================================================
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+// 格索引 -> ({ short, long })
+mapping maze_cell_desc = ([
+  "0,0,0" : ({ "烽火台", WHT @LONG
+这里是烽火台的内部，这里不是很亮，四周乱糟糟的放着一些杂物，
+但靠墙的兵器架上的兵器却擦的亮光闪闪，可见虽然生活很艰苦，但将
+士们却没有忘记自己的责任。
+LONG NOR }),  // coor(-10010,8000,40)  fenghuotai2-1
+  "1,0,0" : ({ "长城", WHT @LONG
+这里就是举世闻名的──长城。站在长城上，你可以看到山脉连绵
+起伏，山上已经很少看到树和灌木丛了。山上大片的地方光秃秃的，很
+多地方已经露出了大片的黄土，你脚下的长城蜿蜒的向北，向南延伸出
+去。站在这里，你已经可以感到迎面过来的大风中带着不少沙子，而长
+城厚厚的城墙也被侵蚀的七零八落，不远处的一段城墙已经倒塌。你只
+好向南绕过去。
+LONG NOR }),  // coor(-10000,8000,40)  changcheng13
+  "0,0,1" : ({ "烽火台", WHT @LONG
+这里是烽火台的二楼，站在这里你可以看的很远。戍边的将士们就
+是长年守卫在这里，防止匈奴的进攻，保卫边疆的安全。
+LONG NOR }),  // coor(-10010,8000,50)  fenghuotai2-2
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    room->set("short", info[0]);
+    room->set("long", info[1]);
+  } else {
+    // 表里没有的格子（地图新增格）的兜底描述
+    room->set("short", HIB "街巷" NOR);
+    room->set("long", "空旷的街巷，看不出有什么特别之处。\n");
+  }
+
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+// 预留：按坐标放怪物 / 物品
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

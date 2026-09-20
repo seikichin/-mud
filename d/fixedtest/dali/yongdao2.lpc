@@ -1,0 +1,20 @@
+// yongdao2 —— 由 nitan/d/dali/yongdao2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19091,-6821,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "甬道");
+  set("long", @LONG
+这是镇南王府的甬道。两边是密密的参天乔木，天光透过树叶，
+在地上洒下星星斑点。石砌的甬道路面两侧，是如茵的绿草，点缀着
+一星半点的小花，周围十分安静，偶尔虫鸣悠扬。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "yongdao1",
+    "east" : __DIR__ "chahua8",
+    "north" : __DIR__ "neitang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

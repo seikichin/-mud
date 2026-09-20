@@ -1,0 +1,18 @@
+// sec1 —— 由 nitan/d/jingzhou/sec1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "坟墓内部");
+  set("long", @LONG
+你试着继续往前走，远处似乎有老鼠吱吱的叫声，但有不是很真
+切。由于光线太暗你只能看到模模糊糊的东西。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "tomb",
+    "south" : __DIR__ "sec2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

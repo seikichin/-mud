@@ -1,0 +1,18 @@
+// minju4 —— 由 nitan/d/hanzhong/minju4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-12280,830,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "民居");
+  set("long", @LONG
+这间屋子你一进来就看见屋角大袋小袋地堆满了粮食，看得出来今
+年的收成确实不错。屋内坐着一位村民，正笑嘻嘻地看着自己的积粮，
+也许正在盘算这个冬天又不愁了。
+LONG );
+  set("exits", ([
+    "northeast" : __DIR__ "guchang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

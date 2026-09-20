@@ -1,0 +1,14 @@
+// qingmu_dating —— 由 nitan/d/beijing/qingmu_dating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2820,7610,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIG "大厅" NOR);
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "2/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

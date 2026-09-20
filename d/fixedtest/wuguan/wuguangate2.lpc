@@ -1,0 +1,13 @@
+// wuguan 出口房：郭府大门·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "郭府大门" NOR);
+  set("long", "郭府大门。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,15 @@
+// dxbdian —— 由 nitan/d/suzhou/dxbdian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1119,-1161,29)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大雄宝殿");
+  set("long", " ");
+  set("exits", ([
+    "north" : __DIR__ "cangjingge",
+    "out" : __DIR__ "9/1/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

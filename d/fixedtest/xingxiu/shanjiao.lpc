@@ -1,0 +1,23 @@
+// shanjiao —— 由 nitan/d/xingxiu/shanjiao.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,60,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "天山脚下");
+  set("long", @LONG
+这里是天山脚下，西面是高耸入云的天山。天晴的时候可以看到山
+顶上的冰川。一道天山将西域分为两半。北疆是西域各族的聚居区，南
+疆是无边的塔克拉马干大沙漠。西南是通向天山南路回疆大草原的戈壁
+沙漠。
+LONG );
+  set("exits", ([
+    "westup" : __DIR__ "tianroad1",
+    "southwest" : "/d/fixedtest/huijiang/gebi1",
+    "northeast" : __DIR__ "0/5/0",
+    "east" : "/d/fixedtest/hasake/0/3/0",
+    "southeast" : __DIR__ "0/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// mudao —— 由 nitan/d/taohua/mudao.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "墓道");
+  set("long", @LONG
+这是通往墓室的通道。通道十分宽敞，顶部悬挂着一颗大
+大的夜明珠，照得整个墓道如同白昼。墓道尽头便是墓室。
+LONG );
+  set("exits", ([
+    "down" : __DIR__ "mushi",
+    "up" : __DIR__ "0/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

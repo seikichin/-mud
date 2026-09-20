@@ -1,0 +1,21 @@
+// songlin5 —— 由 nitan/d/yubifeng/songlin5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(6100,5180,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大松林");
+  set("long", @LONG
+这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是
+数百年的老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，
+反而好走。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "songlin6",
+    "north" : __DIR__ "1/7/0",
+    "east" : __DIR__ "1/8/0",
+    "west" : __DIR__ "1/6/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

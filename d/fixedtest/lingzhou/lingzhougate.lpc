@@ -1,0 +1,13 @@
+// lingzhou 入口房：后宫·入口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "后宫" NOR);
+  set("long", "后宫。往 up 可进入迷宫。\n");
+  set("exits", ([
+    "up" : __DIR__ "entry",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

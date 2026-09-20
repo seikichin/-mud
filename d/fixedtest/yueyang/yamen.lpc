@@ -1,0 +1,19 @@
+// yamen —— 由 nitan/d/yueyang/yamen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6190,-3000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "衙门");
+  set("long", @LONG
+这里是岳阳府衙。两扇朱木大门紧紧关闭着，门上贴着“老爷丁忧”
+字样的字条，看来新官未至，这个门也就不用开了。“肃静”“回避”
+的牌子分放两头石狮子的旁边。门前侧面架子摆着个皮鼓，挂着一对木
+棰。显然是供小民鸣冤用的。几名衙役在门前巡逻。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "dongjie",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

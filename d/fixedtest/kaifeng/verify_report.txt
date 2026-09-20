@@ -1,0 +1,10 @@
+==== 验证 kaifeng ====
+  地图 L,M,H = 14,19,3    非空格 = 87
+  ENTRY = 11,13,0   EXIT = 2,18,0   entry_dir = up
+  不可达房间数 = 0   (0 = 从入口全连通)
+  check_maze_map 错误数 = 0
+  出口集差异数 = 0
+  原文同格同向多候选 = 2（已由生成器消解，见 build_report 的冲突记录）
+    同格同向多候选 格3,15,0 方向west: /d/fixedtest/kaifeng/kaifeng/4/16/0 或 /d/fixedtest/kaifeng/kaifeng/2/15/0
+    同格同向多候选 格4,16,0 方向east: /d/fixedtest/kaifeng/kaifeng/5/16/0 或 /d/fixedtest/kaifeng/kaifeng/3/15/0
+  入格原房间总数 = 94

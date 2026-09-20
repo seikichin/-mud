@@ -1,0 +1,20 @@
+// gu —— 由 nitan/d/yuanyue/gu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(130,0,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "洞口");
+  set("long", @LONG
+走出山洞，你的眼前豁然开朗。泉水叮咚，百鸟欢唱。时不时有
+少女的笑声传了过来。两边奇峰怪石，前面一大片翠绿的草地，开放
+着许多不知名的花草。香气传来，令人心情舒畅，你感到走入了世外
+桃源一般。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "dong1",
+    "west" : __DIR__ "gu0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

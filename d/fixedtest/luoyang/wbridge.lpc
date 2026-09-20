@@ -1,0 +1,19 @@
+// wbridge —— 由 nitan/d/luoyang/wbridge.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7060,2180,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "城西桥");
+  set("long", @LONG
+此桥高跨洛阳护城河之上，气势非凡。站在桥上向两侧望去，一条人
+工开掘的护城河将洛阳城围在当中，桥身以汉白玉造就，既美观又很坚固。
+桥上车水马龙，川流不息。桥下的护城河水清澈见底，时有游鱼跃起。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "xidoor",
+    "westdown" : __DIR__ "guandaow1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// wdroad4 —— 由 nitan/d/wudang/wdroad4.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "青石大道");
+  set("long", @LONG
+你走在一条青石大道上，四周静悄悄的。西边是一条大道，
+东边是好大的一片树林。往南还有一条大道，却掩映在了密密
+的树林中。
+LONG );
+  set("exits", ([
+    "southwest" : "/d/fixedtest/henshan/13/5/1",
+    "north" : __DIR__ "wdroad3",
+    "east" : "/d/fixedtest/xiaoyao/shulin3",
+    "west" : __DIR__ "wdroad5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

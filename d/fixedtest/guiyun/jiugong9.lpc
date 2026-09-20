@@ -1,0 +1,15 @@
+// jiugong9 —— 由 nitan/d/guiyun/jiugong9.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "九宫桃花阵");
+  set("long", "(无描述)");
+  set("exits", ([
+    "north" : __DIR__ "jiugong6",
+    "west" : __DIR__ "jiugong8",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

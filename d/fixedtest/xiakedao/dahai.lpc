@@ -1,0 +1,14 @@
+// dahai —— 由 nitan/d/xiakedao/dahai.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2000,-15000,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大海");
+  set("long", @LONG
+你正处在茫茫大海之中。你极目远望，只见海天一线，周围连
+个黑点都没有。耳边只有海浪的拍打声。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

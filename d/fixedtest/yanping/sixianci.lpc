@@ -1,0 +1,14 @@
+// sixianci —— 由 nitan/d/yanping/sixianci.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1420,-6180,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "四贤祠");
+  set("long", " ");
+  set("exits", ([
+    "south" : __DIR__ "ximen",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

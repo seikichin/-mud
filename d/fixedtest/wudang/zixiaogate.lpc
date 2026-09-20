@@ -1,0 +1,19 @@
+// zixiaogate —— 由 nitan/d/wudang/zixiaogate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-370,-280,80)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "紫霄宫大门");
+  set("long", @LONG
+你已走到了展旗峰下，前面就是武当山最为宏大的宫宇紫霄宫了。
+殿宇依山而筑，高低错落有致。周围古木森森，翠竹成林，景色清幽。
+这里是武当师徒的主要活动场所。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "0/5/0",
+    "northdown" : __DIR__ "shijie2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

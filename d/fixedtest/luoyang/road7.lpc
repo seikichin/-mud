@@ -1,0 +1,18 @@
+// road7 —— 由 nitan/d/luoyang/road7.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6910,2140,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "土路");
+  set("long", @LONG
+这是洛阳城郊的一条茅草土路。洛阳四塞之地，平原远处天际间，
+隐隐可见群山逶迤。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "dukang",
+    "north" : __DIR__ "road2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

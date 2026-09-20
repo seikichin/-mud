@@ -1,0 +1,19 @@
+// pindi —— 由 nitan/d/yanziwu/pindi.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "品笛庭");
+  set("long", @LONG
+只见墙上挂有萧管之类的乐器，桌上放有一沓乐谱，想是慕容世
+家演练乐曲的所在了。在向西就到了太湖岸边，向东则是慕容世家接
+待宾客的龙凤厅了。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "longfeng",
+    "west" : __DIR__ "bozhou",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

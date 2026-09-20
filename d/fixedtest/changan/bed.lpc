@@ -1,0 +1,17 @@
+// bed —— 由 nitan/d/changan/bed.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "床上");
+  set("long", @LONG
+一张白色的软榻，看上去极为精致，纱衾鸳枕之间散发出一丝丝
+幽香．
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "1/7/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

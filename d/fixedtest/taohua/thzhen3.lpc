@@ -1,0 +1,26 @@
+// thzhen3 —— 由 nitan/d/taohua/thzhen3.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(9000,-2700,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "桃花林");
+  set("long", @LONG
+你走了几步，忽然想到如果岛中有人，不如在原地静坐待变，如此乱
+闯终究不是个了局。说也奇怪，开始你无论如何也离不开原地，现在想觅
+路回去，却发现自己离原地好象越来越远了。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "thzhen3",
+    "west" : __DIR__ "thzhen3",
+    "southeast" : __DIR__ "thzhen3",
+    "south" : __DIR__ "thzhen3",
+    "southwest" : __DIR__ "thzhen3",
+    "northeast" : __DIR__ "thzhen3",
+    "east" : __DIR__ "thzhen3",
+    "north" : __DIR__ "thzhen3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）

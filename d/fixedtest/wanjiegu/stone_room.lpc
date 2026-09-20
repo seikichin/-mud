@@ -1,0 +1,18 @@
+// stone_room —— 由 nitan/d/wanjiegu/stone_room.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,40,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石屋");
+  set("long", @LONG
+一间用花岗岩砌成的房子，坚固无比。南面有一个小孔，西边有
+一张小床，屋内光线黑暗，又有些潮湿。一人女子正坐在床上不停地
+喘气，身上的衣服都被汗水湿透了。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "11/3/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

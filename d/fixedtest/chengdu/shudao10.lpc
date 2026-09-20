@@ -1,0 +1,19 @@
+// shudao10 —— 由 nitan/d/chengdu/shudao10.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15080,-1830,-40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "石阶");
+  set("long", @LONG
+一条小石阶，有点破破烂烂，青草从石头的缝隙中长了出来，有
+些地方的石阶由于年代久远，已经磨的光滑如镜。向上看去，只见云
+雾中有几座房子。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "shudao9",
+    "northwest" : __DIR__ "sanxia1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,16 @@
+// qilindong —— 由 nitan/d/qilindong/qilindong.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(0,30,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "麒麟洞");
+  set("long", "这里就是麒麟洞，一只火麒麟盘踞在这里，看见有人进来，发出\n"
+"一声震天巨吼，然后便发起了攻击。听说它守护着雄霸留下来的宝藏。\n"
+"有空的话，搜索(search)一下或许会有收获。\n");
+  set("exits", ([
+    "south" : __DIR__ "dong5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

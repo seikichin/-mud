@@ -1,0 +1,18 @@
+// ice11 —— 由 nitan/d/binghuo/ice11.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(10,0,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "冰海");
+  set("long", @LONG
+冰上甚是滑溜，你右足稍稍一沾，扑通一声，摔入了海中。寒冷
+的冰水冻得你全身僵直，好在离那火柱已很近了。那火柱乃北极附近
+的一座活火山，火焰喷射，烧得山旁海水暖了。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "1/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

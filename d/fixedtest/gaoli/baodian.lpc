@@ -1,0 +1,18 @@
+// baodian —— 由 nitan/d/gaoli/baodian.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(50,30,10)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大雄宝殿");
+  set("long", @LONG
+这里是灵静寺的大雄宝殿。有几个僧人正在这里诵经念佛。这里香
+气缭绕，一派庄严的气氛。有几个人正在这里跪拜佛祖，口中念念有词，
+不知是在祈祷平安还是在祈祷福运。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "6/3/1",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

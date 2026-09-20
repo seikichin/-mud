@@ -1,0 +1,9 @@
+// diagtest 出口房
+inherit ROOM;
+#include <ansi.h>
+void create() {
+  set("short", HIY "diagtest出口(斜向测试)" NOR);
+  set("long", "斜向测试迷宫的出口。");
+  set("no_fly", 1);
+  setup();
+}

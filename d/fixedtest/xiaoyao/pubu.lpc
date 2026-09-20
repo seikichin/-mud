@@ -1,0 +1,19 @@
+// pubu —— 由 nitan/d/xiaoyao/pubu.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-71020,-79870,110)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "玉壁瀑布");
+  set("long", @LONG
+循小路直往后山深处，猛听得水声响亮，轰轰隆隆，便如潮水大至
+一般，抬头一看，只见西北角上犹如银河倒悬，一条大瀑布从高崖上直
+泻下来。玉壁之前就是剑湖，湖西又是万丈深谷，云雾弥漫，望不到尽
+头。。。。
+LONG );
+  set("exits", ([
+    "southdown" : "/d/fixedtest/wuliang/road6",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

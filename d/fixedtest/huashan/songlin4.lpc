@@ -1,0 +1,20 @@
+// songlin4 —— 由 nitan/d/huashan/songlin4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,60,140)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "松树林");
+  set("long", @LONG
+这是一片松树林。几丈高的松树密密麻麻，遮得不见天日。地上
+落满松针，有不知名的野兔偷偷逃过。四周一片寂静。
+LONG );
+  set("exits", ([
+    "west" : __DIR__"songlin" + (random(4) + 1),
+    "north" : __DIR__ "5/6/14",
+    "east" : __DIR__"songlin" + (random(4) + 1),
+    "south" : __DIR__"songlin" + (random(4) + 1),
+  ]));
+  set("no_fly", 1);
+  setup();
+}

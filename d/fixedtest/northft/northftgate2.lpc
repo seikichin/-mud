@@ -1,0 +1,13 @@
+// northft 出口房：青石小路·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "青石小路" NOR);
+  set("long", "青石小路。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

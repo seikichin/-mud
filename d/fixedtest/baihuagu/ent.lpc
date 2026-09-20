@@ -1,0 +1,18 @@
+// ent —— 由 nitan/d/baihuagu/ent.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-450,-400,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小路");
+  set("long", @LONG
+这是一条羊肠小路，北边是浓郁的大森林，不知道你进去之后
+还能不能出来。你走着走着，不禁害怕起来。
+LONG );
+  set("exits", ([
+    "southeast" : "/d/fixedtest/jianzhong/shanlu2",
+    "north" : __DIR__ "tree",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,14 @@
+// xdh_dlfb —— 由 nitan/d/dali/xdh_dlfb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小刀会");
+  set("long", " ");
+  set("exits", ([
+    "up" : __DIR__ "4/6/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

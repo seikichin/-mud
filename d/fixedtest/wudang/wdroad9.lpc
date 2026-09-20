@@ -1,0 +1,18 @@
+// wdroad9 —— 由 nitan/d/wudang/wdroad9.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-320,-170,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄土路");
+  set("long", @LONG
+你走在一条尘土飞扬的黄土路上，两旁尽是阴森森的树林。这里
+是湖北境界，据说经常有土匪出没，不可久留。向东南去可至湖南。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "sanbuguan",
+    "south" : __DIR__ "wdroad10",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

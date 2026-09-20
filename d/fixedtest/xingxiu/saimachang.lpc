@@ -1,0 +1,19 @@
+// saimachang —— 由 nitan/d/xingxiu/saimachang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(70,100,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "赛马场");
+  set("long", @LONG
+这里是小镇的赛马场。场上正在举行维吾尔族的「姑娘追」表演。
+一个小伙子可以找一个姑娘并骑慢驰到一处折返点。去的路上小伙子可
+以对姑娘随便挑逗。回来时姑娘则可以用鞭子抽打小伙子。当然，如果
+姑娘喜欢这个小伙子，落鞭就会轻些。否则的话，有小伙子好受的。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "0/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

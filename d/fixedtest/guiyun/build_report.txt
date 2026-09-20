@@ -1,0 +1,23 @@
+==== guiyun ====
+  网格 L,M,H = 11,9,1   格数 = 42   入格原房间 = 44   合并格 = 1
+  原 coor 基准 (gx,gy,gz) = (23,-87,0)   => link_entry_room = (280,-830,20)
+  入口 = shulin6 格 8,6,0   出口 = chafang 格 1,0,0   entry_dir = up
+  边：方向位 86  LINK 0（含自环 0 / 到独立房 1 / 到外部 1）  非标准方向 2  丢弃空出口 0
+  [LINK] 总行数 = 4   独立房间 = 13
+  ---- 警告 ----
+  [丢弃未解析目标] jiuguan.north -> KICK_TO
+  第 1 轮：剔除 3 个零位格房间，重新建图
+  ---- 独立房间 ----
+    jinship  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    jiugong1  (原文件无 coor)
+    jiugong2  (原文件无 coor)
+    jiugong3  (原文件无 coor)
+    jiugong4  (原文件无 coor)
+    jiugong5  (原文件无 coor)
+    jiugong6  (原文件无 coor)
+    jiugong7  (原文件无 coor)
+    jiugong8  (原文件无 coor)
+    jiugong9  (原文件无 coor)
+    jiuguan  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    ship  (所属格无任何方向位（值为 0 = 引擎不生成房间）)
+    shushang  (原文件无 coor)

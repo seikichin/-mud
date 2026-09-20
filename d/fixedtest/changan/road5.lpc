@@ -1,0 +1,20 @@
+// road5 —— 由 nitan/d/changan/road5.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-10720,1870,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大官道");
+  set("long", @LONG
+这是一条青石铺就的宽阔笔直的官道，道旁种满了路树，足可容得
+下十马并驰。往东南通向大雁塔，往西南通向小雁塔。往北则直达长安
+城。
+LONG );
+  set("exits", ([
+    "southwest" : __DIR__ "xiaoyan",
+    "southeast" : __DIR__ "dayan",
+    "north" : __DIR__ "4/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

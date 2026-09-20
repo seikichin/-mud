@@ -1,0 +1,17 @@
+// yideng10 —— 由 nitan/d/heizhao/yideng10.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "禅房");
+  set("long", @LONG
+这里是一间内室禅房，一般是打坐入定的地方。偶尔也用来接待
+佛门高僧，探讨禅宗。
+LONG );
+  set("exits", ([
+    "out" : "/d/fixedtest/heizhao/yideng12",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,14 @@
+// ironboat2 —— 由 nitan/d/heizhao/ironboat2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-5020,-1240,20)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "铁舟");
+  set("long", @LONG
+这是一艘黑黝黝的小船，舟中放着两柄铁桨，铁舟很小至多只
+能乘坐二人。
+LONG );
+  set("no_fly", 1);
+  setup();
+}

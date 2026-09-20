@@ -1,0 +1,17 @@
+// caoyuan1 —— 由 nitan/d/lanzhou/caoyuan1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-15740,3770,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "大草原");
+  set("long", @LONG
+西北平原上的大草原，较之蒙古草原毫不逊色。绿油油的牧草直连
+天边。西北的蓝天绿地，比起东北的黑山白水来，别有一番风趣。
+LONG );
+  set("exits", ([
+    "south" : "/d/fixedtest/changan/road9",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

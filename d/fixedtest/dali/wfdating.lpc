@@ -1,0 +1,22 @@
+// wfdating —— 由 nitan/d/dali/wfdating.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19121,-6861,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "镇南王府大厅");
+  set("long", @LONG
+进了大厅，放眼看那大厅，只见正中一块，横匾，写着‘邦国柱
+石’四个大字，下首署着‘丁卯御笔’四个小字，楹柱中堂悬满了字
+画，一时也看不了这许多。向北是镇南王总理国务见人办公之处，西
+边是帐房，往东是一条石径通往内宅。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "4/11/0",
+    "north" : __DIR__ "zonglichu",
+    "east" : __DIR__ "shijing",
+    "west" : __DIR__ "zhangfang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

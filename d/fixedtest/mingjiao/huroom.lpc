@@ -1,0 +1,18 @@
+// huroom —— 由 nitan/d/mingjiao/huroom.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(130,50,30)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "医居");
+  set("long", @LONG
+你走进了烈火旗的大院后进，这里是个很宁静的小屋。四周摆了
+不少医学典籍，还有很多散落堆放的膏、丸、散等。一个老头在此呆
+呆出神，似乎有无限心事。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "12/4/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

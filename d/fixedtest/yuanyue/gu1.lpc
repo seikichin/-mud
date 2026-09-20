@@ -1,0 +1,19 @@
+// gu1 —— 由 nitan/d/yuanyue/gu1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(120,10,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "谷中");
+  set("long", @LONG
+溪流蜿蜒如带，朱栏横跨水上，几只乳燕在花林中飞旋来去。草
+坪上土墩间，斜坐着几个披发少女，或披轻纱，或着柔袍，都在盈盈
+浅笑，流眸低语。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "gu2",
+    "south" : __DIR__ "gu0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,21 @@
+// mishi4 —— 由 nitan/d/gumu/mishi4.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-3000,30,100)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "密室");
+  set("long", @LONG
+这里是古墓中的密室，四周密不透风，你只能借着墙上昏暗的灯光
+来勉强分辨方向。墙是用整块的青石砌合起来的，接合的甚是完美，你
+难以从中找出一丝缝隙。墙上好象雕有一些诗句。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "mishi4",
+    "north" : __DIR__ "mishi4",
+    "east" : __DIR__ "mishi4",
+    "west" : __DIR__ "14/9/13",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,17 @@
+// xsxiepo2 —— 由 nitan/d/kunlun/xsxiepo2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-100010,20010,40)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "雪山斜坡");
+  set("long", @LONG
+你手脚着地，沿着雪山斜坡，一步一步向着有阳沅之处爬去，但此
+峭壁本就极陡，加上冻结冰雪，更是滑溜无比，一不小心则会滑跌。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "pingtai",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

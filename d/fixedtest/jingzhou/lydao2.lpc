@@ -1,0 +1,18 @@
+// lydao2 —— 由 nitan/d/jingzhou/lydao2.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-7130,-2060,-10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "林荫道");
+  set("long", @LONG
+这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石子，向
+南北两头延伸。西面是高大的荆州城墙。南边好像有一眼温泉。
+LONG );
+  set("exits", ([
+    "southdown" : __DIR__ "wenquan",
+    "north" : __DIR__ "2/4/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// sima —— 由 nitan/d/dali/sima.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-19111,-6851,-1)  coor 不是 10 的倍数
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "司马堂");
+  set("long", @LONG
+这里是大理国司马堂。大理东北强宋，西北吐蕃，历年来边疆宁
+靖，皆司马劳顿之功。盖吐蕃垂涎大理已久，每每强辞胁迫，大理不
+得不重兵于西北。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "zonglichu",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

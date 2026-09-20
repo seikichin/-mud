@@ -1,0 +1,25 @@
+// nanyan2 —— 由 nitan/d/wudang/nanyan2.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "南岩迷宫");
+  set("long", @LONG
+你现在南岩宫地下密室中，高挂的腕粗的油烛照得满堂透亮。但
+周围静谧如夜，除了烛火闪烁的风声外，你什么也听不见。这里只有
+你一个人。你脚下缓缓而动，全神戒备，没有人能帮助你。
+LONG );
+  set("exits", ([
+    "northwest" : __DIR__ "nanyan4",
+    "west" : __DIR__ "nanyan3",
+    "southeast" : __DIR__ "nanyan1",
+    "south" : __DIR__ "nanyan2",
+    "southwest" : __DIR__ "nanyan0",
+    "northeast" : __DIR__ "nanyan3",
+    "east" : __DIR__ "nanyan1",
+    "north" : __DIR__ "nanyan4",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

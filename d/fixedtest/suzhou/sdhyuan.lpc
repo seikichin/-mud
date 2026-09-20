@@ -1,0 +1,14 @@
+// sdhyuan —— 由 nitan/d/suzhou/sdhyuan.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "花园");
+  set("long", " ");
+  set("exits", ([
+    "eastdown" : __DIR__ "10/1/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

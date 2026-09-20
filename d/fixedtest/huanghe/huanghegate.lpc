@@ -1,0 +1,21 @@
+// huanghegate —— 由 nitan/d/huanghe/huanghegate.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-2000,520,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "黄河帮寨门");
+  set("long", @LONG
+这是一所气势壮观的寨门，正中高挂着一面匾额—写着「黄河帮」
+三个大字。寨里旗帜高挂，规模不小。黄河帮是黄河沿岸的一个大帮会，
+平日飞扬跋扈，欺压百姓，作恶多端。帮主沙通天武功深湛，并与彭连
+虎、梁子翁和灵智上人等高手结交，因此声势浩大。据闻其与金人勾结，
+欲侵略中土。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "huanghe1",
+    "west" : __DIR__ "guangchang",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

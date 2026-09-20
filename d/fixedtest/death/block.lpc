@@ -1,0 +1,22 @@
+// block —— 由 nitan/d/death/block.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "空房间");
+  set("long", "你完了...\n");
+  set("no_fly", 1);
+  setup();
+}
+// [nitan-auto] 由原档补回的额外函数（恢复离开房间的行为）
+void init()
+{
+        if (!wizardp(this_player()))
+        add_action("block_cmd","",1);
+}
+
+int block_cmd()
+{
+        return 1;
+}

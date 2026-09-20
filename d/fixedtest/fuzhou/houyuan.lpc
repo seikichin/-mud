@@ -1,0 +1,15 @@
+// houyuan —— 由 nitan/d/fuzhou/houyuan.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1820,-6310,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "老宅后院");
+  set("long", " ");
+  set("exits", ([
+    "down" : __DIR__ "well",
+  ]));
+  set("no_fly", 1);
+  setup();
+  set("exits/south", "/d/fixedtest/fuzhou/0/4/0");
+}

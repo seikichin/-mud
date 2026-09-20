@@ -1,0 +1,13 @@
+// taiwan 出口房：打狗港·出口
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "打狗港" NOR);
+  set("long", "打狗港。往 enter 可离开迷宫。\n");
+  set("exits", ([
+    "enter" : __DIR__ "exit",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

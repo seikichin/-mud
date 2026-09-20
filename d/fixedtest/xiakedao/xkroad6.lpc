@@ -1,0 +1,18 @@
+// xkroad6 —— 由 nitan/d/xiakedao/xkroad6.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-1390,-8990,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "渔村小屋");
+  set("long", @LONG
+小村的渔民小屋十分简陋，几乎没什么家当，壁上挂满了早用旧
+了的渔具。大概大人都出海了，只有一个小孩在屋里，看到你进来一
+脸惊惶。
+LONG );
+  set("exits", ([
+    "south" : __DIR__ "xkroad5",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

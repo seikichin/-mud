@@ -1,0 +1,41 @@
+// gumu —— nitan d/gumu 固定地图映射区（vrm_fixed）
+//
+//   gumu.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   gumu-room.lpc    格房描述（改文字即可改每格 look）
+//   gumugate.lpc / gumugate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/gumu/gumu/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = gumu）
+// 格索引 -> 原 coor： coor = (格索引 + (-324,-6,-3)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "gumu-room");
+  set_maze_map(__DIR__ "gumu");
+  set_maze_spacing(10);
+  set_maze_owner_key("gumu");
+
+  // 入口 = mishi5（格 14,10,13），出口 = shanlu3（格 3,18,20）
+  set_entry_dir("up");
+  set_link_entry_room(__DIR__ "gumugate");
+  set_link_exit_room(__DIR__ "gumugate2");
+  set_entry_back_dir("up");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-3100);
+  set_link_entry_room_y(30);
+  set_link_entry_room_z(210);
+
+  set_entry_short(HIW "密室" NOR);
+  set_entry_desc("密室，从这里可以进入迷宫（up）。\n");
+  set_exit_short(HIY "山路" NOR);
+  set_exit_desc("山路，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 gumu-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("密室");
+  set_maze_room_desc("nitan d/gumu 映射区。");
+}

@@ -1,0 +1,20 @@
+// shandao1 —— 由 nitan/d/yanping/shandao1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1500,-5000,10)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "武夷山道");
+  set("long", @LONG
+你走在窄窄的武夷山小道上，山路崎岖，密林森森，常有长虫野兽
+出没。所谓“闽道更比蜀道难”，诚不相欺。西面隔着崇阳溪，就是奇
+秀甲于东南的武夷山了。
+LONG );
+  set("exits", ([
+    "northup" : __DIR__ "erbapu",
+    "southup" : __DIR__ "yidao1",
+    "west" : "/d/fixedtest/wuyi/8/5/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

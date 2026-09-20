@@ -1,0 +1,16 @@
+// doctorroom —— 由 nitan/d/huashan/doctorroom.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "郎中家");
+  set("long", @LONG
+这间屋子里住着一位郎中，号称仙医，据说无论遇到什么疑难杂
+症，只要到了他手里，都能手到病除。
+LONG );
+  set("exits", ([
+  ]));
+  set("no_fly", 1);
+  setup();
+}

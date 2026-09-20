@@ -1,0 +1,18 @@
+// jibixiang —— 由 nitan/d/fuzhou/jibixiang.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-80,-6250,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "吉庇巷");
+  set("long", @LONG
+俗呼“急避巷”。宋郑性之中状元衣锦还乡时，曾因以前他落魄而
+凌辱过他的人，自感亏心而急避，遂称“急避巷”。明代以谐音改巷名
+为“吉庇巷”，取吉祥如意、庇境安宁之意。
+LONG );
+  set("exits", ([
+    "west" : __DIR__ "nanhoujie7",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

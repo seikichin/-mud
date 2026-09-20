@@ -1,0 +1,17 @@
+// bgschanfang —— 由 nitan/d/emei/bgschanfang.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "禅房");
+  set("long", @LONG
+这儿是保国寺内的一间禅房，布局简单，供寺内和尚诵经修行之
+用。
+LONG );
+  set("exits", ([
+    "east" : __DIR__ "dxdian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

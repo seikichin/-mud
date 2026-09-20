@@ -1,0 +1,21 @@
+// dongjie —— 由 nitan/d/yueyang/dongjie.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-6190,-3010,0)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "东街");
+  set("long", @LONG
+这是一条又长又宽的青石大道，打扫得十分干净。屋檐下，偶有小
+孩淘气撒尿，立马就给大人拎着耳朵拖走。原来，北边就是府衙，西边
+虽然喧闹，这条街却十分安静。南边是一个茶馆。来来往往的客商常去
+歇脚，而公人也时有前去饮茶纳凉的。
+LONG );
+  set("exits", ([
+    "north" : __DIR__ "yamen",
+    "south" : __DIR__ "chaguan",
+    "west" : __DIR__ "zhongxin",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// room-ji1 —— 由 nitan/d/hasake/room-ji1.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(60,60,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "小屋");
+  set("long", @LONG
+小屋中陈设简陋，但桌椅整洁，打扫得乾乾净净。一位老人正做在毡
+子上整理着碗筷。四周放了些杂物，中间的小方木著上搁了几个瓦壶，飘
+出阵阵诱人的香气。
+LONG );
+  set("exits", ([
+    "out" : __DIR__ "5/7/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

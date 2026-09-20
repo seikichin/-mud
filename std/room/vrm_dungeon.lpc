@@ -31,7 +31,11 @@ inherit "/std/room/vrm_base";
 class coordinate { int x; int y; int z; }
 class coordinate * newpath = ({}), /*待处理队列*/ enter, /* 入口坐标 */ leave; /* 出口坐标 */
 
+// 入口方向（entry_dir）仍然只允许这 6 个基础方向：
+// 它决定整座迷宫相对 link_entry_room 的摆放位置（见 create_maze 里的坐标公式），
+// 斜向入场没有实际需求，保持 6 向可避免改变既有迷宫的地形与坐标。
 string *valid_dirs = ({ "south", "north", "west", "east", "up", "down", });
+
 mapping reverse_dir = ([
   "north": "south",
   "south": "north",
@@ -39,7 +43,74 @@ mapping reverse_dir = ([
   "east": "west",
   "down": "up",
   "up": "down",
+  "northeast": "southwest",
+  "northwest": "southeast",
+  "southeast": "northwest",
+  "southwest": "northeast",
+  "northup": "southdown",
+  "southup": "northdown",
+  "eastup": "westdown",
+  "westup": "eastdown",
+  "northdown": "southup",
+  "southdown": "northup",
+  "eastdown": "westup",
+  "westdown": "eastup",
 ]);
+
+// ---- 全部 18 个网格方向的统一表 ----
+// 所有按位解释方向的代码都应查这几张表，下标即「方向序号」，各表顺序必须一致。
+//   dir_bits[i]  : 该方向的位（见 include/vrm.h）
+//   dir_names[i] : 该方向的出口名（须与 cmds/std/go.lpc 的 default_dirs 一致）
+//   dir_dx/dy/dz : 相邻格坐标偏移（x 向东为正，y 向北为正，z 向上为正）
+//   dir_opp[i]   : 反向位（出口互反校验用）
+int *dir_bits = ({ E, W, S, N, D, UP,
+                   NE, NW, SE, SW,
+                   NU, SU, EU, WU,
+                   ND, SD, ED, WD });
+string *dir_names = ({ "east", "west", "south", "north", "down", "up",
+                       "northeast", "northwest", "southeast", "southwest",
+                       "northup", "southup", "eastup", "westup",
+                       "northdown", "southdown", "eastdown", "westdown" });
+int *dir_dx = ({ 1, -1, 0, 0, 0, 0,
+                 1, -1, 1, -1,
+                 0, 0, 1, -1,
+                 0, 0, 1, -1 });
+int *dir_dy = ({ 0, 0, -1, 1, 0, 0,
+                 1, 1, -1, -1,
+                 1, -1, 0, 0,
+                 1, -1, 0, 0 });
+int *dir_dz = ({ 0, 0, 0, 0, -1, 1,
+                 0, 0, 0, 0,
+                 1, 1, 1, 1,
+                 -1, -1, -1, -1 });
+// 反向位表（与 dir_bits 一一对应）
+//   0E→W  1W→E  2S→N  3N→S  4D→UP  5UP→D
+//   6NE→SW 7NW→SE 8SE→NW 9SW→NE
+//   10NU→SD 11SU→ND 12EU→WD 13WU→ED
+//   14ND→SU 15SD→NU 16ED→WU 17WD→EU
+// 修正：13 号（WU 西边高处）原本误写成 WU，应为 ED（东边低处）；
+//       否则 WU/ED 成对的出口会被 check_maze_map() 误判为「不互反」。
+int *dir_opp = ({ W, E, N, S, UP, D,
+                  SW, SE, NW, NE,
+                  SD, ND, WD, ED,
+                  SU, NU, WU, EU });
+
+// 方向名 → 位（未知方向返回 0）
+int dir_bit(string d) {
+  int i;
+
+  if (!stringp(d)) return 0;
+  i = member_array(d, dir_names);
+  return (i < 0) ? 0 : dir_bits[i];
+}
+
+// 位 → 方向名（未知位返回 0）
+string dir_name(int b) {
+  int i;
+
+  i = member_array(b, dir_bits);
+  return (i < 0) ? 0 : dir_names[i];
+}
 
 // 全迷宫出口阵列.
 
@@ -97,8 +168,22 @@ int query_maze_has_fixed_exit();
 int query_maze_shared();
 
 // 调试信息。
+// 虚拟格房 / 入口房 / 出口房的路径前缀。
+// 默认 = 区域对象自身的路径（base_name）。
+// 子类可覆盖以缩短路径：例如 vrm_fixed 的 owner 恒等于区名、属于冗余段，
+// 覆写后格房路径由 /d/x/<区>/<区>/<区>/x/y/z 变为 /d/x/<区>/x/y/z。
+string query_maze_pathbase() {
+  return base_name(this_object());
+}
+
+// 入口房 / 出口房（entry / exit）的虚拟路径。
+string maze_link_fname(string what) {
+  return sprintf("%s/%s/%s", query_maze_pathbase(), owner, what);
+}
+
+// 格房虚拟路径。
 string mroom_fname(int x, int y, int z) {
-  return sprintf("%s/%s/%d/%d/%d", base_name(this_object()), owner, x, y, z);
+  return sprintf("%s/%s/%d/%d/%d", query_maze_pathbase(), owner, x, y, z);
 }
 
 int query_maze_altitude() {
@@ -680,7 +765,6 @@ void paint_vrm_map() {
 }
 
 nomask int clean_up() {
-  string fname;
   int x, y, z;
   object *maze_objs = ({}), link_room;
 
@@ -689,15 +773,13 @@ nomask int clean_up() {
     return 0;
   }
 
-  fname = base_name(this_object());
-
-  if (objectp(link_room = find_object(sprintf("%s/%s/entry", fname, owner)))) {
+  if (objectp(link_room = find_object(maze_link_fname("entry")))) {
     link_room->clean_up();
     if (objectp(link_room))
       return 1;
   }
 
-  if (objectp(link_room = find_object(sprintf("%s/%s/exit", fname, owner)))) {
+  if (objectp(link_room = find_object(maze_link_fname("exit")))) {
     link_room->clean_up();
     if (objectp(link_room))
       return 1;
@@ -706,8 +788,8 @@ nomask int clean_up() {
   for (x = 0; x < l; x++)
     for (y = 0; y < m; y++)
       for (z = 0; z < h; z++)
-        if (objectp(find_object(sprintf("%s/%s/%d/%d/%d", fname, owner, x, y, z))))
-          maze_objs += ({ find_object(sprintf("%s/%s/%d/%d/%d", fname, owner, x, y, z)) });
+        if (objectp(find_object(mroom_fname(x, y, z))))
+          maze_objs += ({ find_object(mroom_fname(x, y, z)) });
 
   maze_objs->clean_up();
   maze_objs -= ({ 0 });
@@ -721,21 +803,20 @@ nomask int clean_up() {
 }
 
 void remove() {
-  string fname = base_name(this_object());
   object m_room;
   int x, y, z;
 
   for (x = 0; x < l; x++)
     for (y = 0; y < m; y++)
       for (z = 0; z < h; z++)
-        if (objectp(m_room = find_object(sprintf("%s/%s/%d/%d/%d", fname, owner, x, y, z))))
+        if (objectp(m_room = find_object(mroom_fname(x, y, z))))
           destruct(m_room);
-  if (objectp(m_room = find_object(sprintf("%s/%s/entry", fname, owner))))
+  if (objectp(m_room = find_object(maze_link_fname("entry"))))
     destruct(m_room);
 
-  //	log_file("debug.log", sprintf("%s/%s/exit",fname,owner));
+  //	log_file("debug.log", sprintf("%s/%s/exit", base_name(this_object()), owner));
 
-  if (objectp(m_room = find_object(sprintf("%s/%s/exit", fname, owner))))
+  if (objectp(m_room = find_object(maze_link_fname("exit"))))
     destruct(m_room);
 }
 
@@ -761,7 +842,6 @@ void refresh_maze() {
 }
 
 int has_player() {
-  string fname = base_name(this_object());
   object m_room;
   int x, y, z, n;
 
@@ -770,18 +850,18 @@ int has_player() {
   for (x = 0; x < l; x++) {
     for (y = 0; y < m; y++) {
       for (z = 0; z < h; z++) {
-        if (objectp(m_room = find_object(sprintf("%s/%s/%d/%d/%d", fname, owner, x, y, z))))
+        if (objectp(m_room = find_object(mroom_fname(x, y, z))))
           if (player_in(m_room))
             n++;
       }
     }
   }
 
-  if (objectp(m_room = find_object(sprintf("%s/%s/entry", fname, owner))))
+  if (objectp(m_room = find_object(maze_link_fname("entry"))))
     if (player_in(m_room))
       n++;
 
-  if (objectp(m_room = find_object(sprintf("%s/%s/exit", fname, owner))))
+  if (objectp(m_room = find_object(maze_link_fname("exit"))))
     if (player_in(m_room))
       n++;
 
@@ -795,7 +875,7 @@ int remove_all_players(mixed maze_room, mixed exile_room, string remove_msg) {
 
   object m_room, *inv;
   string c;
-  int x, y, z, k, num, length, height, altitude;
+  int x, y, z, num, length, height, altitude;
 
   if (objectp(maze_room))
     fname = base_name(maze_room);
@@ -826,7 +906,7 @@ int remove_all_players(mixed maze_room, mixed exile_room, string remove_msg) {
   for (x = 0; x < length; x++) {
     for (y = 0; y < height; y++) {
       for (z = 0; z < altitude; z++) {
-        c = sprintf("%s/%s/%d/%d/%d", fname, owner, x, y, z);
+        c = mroom_fname(x, y, z);
         if (objectp(m_room = find_object(c))) {
 
           tell_room(m_room, remove_msg);
@@ -844,7 +924,7 @@ int remove_all_players(mixed maze_room, mixed exile_room, string remove_msg) {
     }
   }
 
-  if (objectp(m_room = find_object(sprintf("%s/%s/entry", fname, owner)))) {
+  if (objectp(m_room = find_object(maze_link_fname("entry")))) {
     tell_room(m_room, remove_msg);
     inv = all_inventory(m_room);
     num = sizeof(inv);
@@ -857,7 +937,7 @@ int remove_all_players(mixed maze_room, mixed exile_room, string remove_msg) {
     }
   }
 
-  if (objectp(m_room = find_object(sprintf("%s/%s/exit", fname, owner)))) {
+  if (objectp(m_room = find_object(maze_link_fname("exit")))) {
     tell_room(m_room, remove_msg);
     inv = all_inventory(m_room);
     num = sizeof(inv);
@@ -965,7 +1045,7 @@ int query_maze_shared() {
 string *query_maze_dump_lines() {
   string *out = ({});
   string row;
-  int x, y, z, v, eb, lb;
+  int x, y, z, v, eb, lb, maxv, hexw;
 
   if (!maze_built || !l || !m || !h)
     return ({ "// maze not built" });
@@ -973,25 +1053,27 @@ string *query_maze_dump_lines() {
   // 入口格 / 出口格上「指向迷宫外」的那个位是引擎内部标记
   // （运行时会被 entry/exit 房间链接覆盖），导出时清掉，
   // 使 dump 出来的是纯粹的地图形状，可原样回灌给 vrm_fixed。
-  switch (entry_dir) {
-    case "east": eb = E; break;
-    case "west": eb = W; break;
-    case "south": eb = S; break;
-    case "north": eb = N; break;
-    case "up": eb = UP; break;
-    case "down": eb = D; break;
-  }
-  switch (reverse_dir[entry_dir]) {
-    case "east": lb = E; break;
-    case "west": lb = W; break;
-    case "south": lb = S; break;
-    case "north": lb = N; break;
-    case "up": lb = UP; break;
-    case "down": lb = D; break;
-  }
+  eb = dir_bit(entry_dir);
+  lb = dir_bit(reverse_dir[entry_dir]);
+
+  // 十六进制位宽按最大格值自适应：只有 6 向的旧地图仍旧导出两位，不改变既有观感。
+  maxv = 0;
+  for (z = 0; z < h; z++)
+    for (y = 0; y < m; y++)
+      for (x = 0; x < l; x++) {
+        v = all[x][y][z];
+        if (v > maxv) maxv = v;
+      }
+  if (maxv > 0xFFFF) hexw = 5;
+  else if (maxv > 0xFFF) hexw = 4;
+  else if (maxv > 0xFF) hexw = 3;
+  else hexw = 2;
 
   out += ({ "// 位值: 1=E(东,+x) 2=W(西,-x) 4=S(南,-y) 8=N(北,+y) 16=D(下,-z) 32=UP(上,+z)" });
-  out += ({ "// 每格两位十六进制；00=无房间；数据行自 y=0 起（首行 y=0），第 n 列即 x=n-1" });
+  out += ({ "//       64=NE(东北) 128=NW(西北) 256=SE(东南) 512=SW(西南)" });
+  out += ({ "//       1024=NU(北边高处) 2048=SU(南边高处) 4096=EU(东边高处) 8192=WU(西边高处)" });
+  out += ({ "//       16384=ND(北边低处) 32768=SD(南边低处) 65536=ED(东边低处) 131072=WD(西边低处)" });
+  out += ({ sprintf("// 每格 %d 位十六进制（1~8 位均可解析）；00=无房间；数据行自 y=0 起（首行 y=0），第 n 列即 x=n-1", hexw) });
   out += ({ sprintf("[SIZE] %d,%d,%d", l, m, h) });
   out += ({ sprintf("[ENTRY] %d,%d,%d", enter->x, enter->y, enter->z) });
   out += ({ sprintf("[EXIT] %d,%d,%d", leave->x, leave->y, leave->z) });
@@ -1008,7 +1090,12 @@ string *query_maze_dump_lines() {
         if (x == leave->x && y == leave->y && z == leave->z) v = v & ~lb;
         if (v < 0) v = 0;
         if (x) row += " ";
-        row += sprintf("%02X", v);
+        switch (hexw) {
+          case 2: row += sprintf("%02X", v); break;
+          case 3: row += sprintf("%03X", v); break;
+          case 4: row += sprintf("%04X", v); break;
+          default: row += sprintf("%05X", v); break;
+        }
       }
       out += ({ row });
     }
@@ -1075,7 +1162,7 @@ void setup_room_callbacks(mixed f, object ob, int l, int m, int h, int x, int y,
 
 nomask object query_maze_room(string str) {
   int idx, idx_owner, idx2, x, y, z, exits;
-  object ob, me, o, actor;
+  object ob, o, actor;
   string f, req_owner;
   string pkey;
 
@@ -1265,25 +1352,24 @@ nomask object query_maze_room(string str) {
   }
 
   //	setting exits directions:
-  if (exits & W)
-    ob->set("exits/west", mroom_fname(x - 1, y, z));
-  if (exits & E)
-    ob->set("exits/east", mroom_fname(x + 1, y, z));
-  if (exits & N)
-    ob->set("exits/north", mroom_fname(x, y + 1, z));
-  if (exits & S)
-    ob->set("exits/south", mroom_fname(x, y - 1, z));
-  if (exits & UP)
-    ob->set("exits/up", mroom_fname(x, y, z + 1));
-  if (exits & D)
-    ob->set("exits/down", mroom_fname(x, y, z - 1));
+  // 按统一方向表设置（6 个基础方向 + 12 个斜向）。
+  // 未使用的斜向位保持 0，行为与旧版完全一致；只有地图文件里显式写了斜向位的格子才会多出斜向出口。
+  {
+    int di;
+
+    for (di = 0; di < sizeof(dir_bits); di++) {
+      if (!(exits & dir_bits[di])) continue;
+      ob->set(sprintf("exits/%s", dir_names[di]),
+        mroom_fname(x + dir_dx[di], y + dir_dy[di], z + dir_dz[di]));
+    }
+  }
 
   if ((x == enter->x) && (y == enter->y) && (z == enter->z))
     ob->set(sprintf("exits/%s", entry_dir),
-      sprintf("%s/%s/entry", base_name(this_object()), owner));
+      maze_link_fname("entry"));
   if ((x == leave->x) && (y == leave->y) && (z == leave->z))
     ob->set(sprintf("exits/%s", reverse_dir[entry_dir]),
-      sprintf("%s/%s/exit", base_name(this_object()), owner));
+      maze_link_fname("exit"));
 
   if (is_outdoors) ob->set("outdoors", 1);
 

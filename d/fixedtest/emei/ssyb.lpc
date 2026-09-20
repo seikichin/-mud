@@ -1,0 +1,14 @@
+// ssyb —— 由 nitan/d/emei/ssyb.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "舍身崖壁");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "st0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

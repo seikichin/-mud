@@ -1,0 +1,41 @@
+// xueshan —— nitan d/xueshan 固定地图映射区（vrm_fixed）
+//
+//   xueshan.map         地图（方向位掩码 + [LINK] 特殊出口）
+//   xueshan-room.lpc    格房描述（改文字即可改每格 look）
+//   xueshangate.lpc / xueshangate2.lpc   迷宫外入口房 / 出口房
+//   其它 .lpc               不能入网格的独立房间
+//
+// 虚拟格房路径 = <本目录>/xueshan/xueshan/x/y/z
+//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = xueshan）
+// 格索引 -> 原 coor： coor = (格索引 + (-7006,-1990,12)) * 10
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "xueshan-room");
+  set_maze_map(__DIR__ "xueshan");
+  set_maze_spacing(10);
+  set_maze_owner_key("xueshan");
+
+  // 入口 = cedian1（格 7,1,0），出口 = mishi（格 5,3,2）
+  set_entry_dir("east");
+  set_link_entry_room(__DIR__ "xueshangate");
+  set_link_exit_room(__DIR__ "xueshangate2");
+  set_entry_back_dir("east");
+  set_exit_back_dir("out");
+
+  // 让格房 coor 与原 nitan 坐标逐个对齐
+  set_link_entry_room_x(-70020);
+  set_link_entry_room_y(-19880);
+  set_link_entry_room_z(160);
+
+  set_entry_short(HIW "侧殿" NOR);
+  set_entry_desc("侧殿，从这里可以进入迷宫（east）。\n");
+  set_exit_short(HIY "密室" NOR);
+  set_exit_desc("密室，出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 xueshan-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("侧殿");
+  set_maze_room_desc("nitan d/xueshan 映射区。");
+}

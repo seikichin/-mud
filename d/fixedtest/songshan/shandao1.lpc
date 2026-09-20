@@ -1,0 +1,20 @@
+// shandao1 —— 由 nitan/d/songshan/shandao1.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "中岳山道");
+  set("long", @LONG
+你走在嵩山中岳山道上，青松翠柏，山风岚雾，时来飘荡。左边通
+往启母石，右手是卢崖瀑布。
+LONG );
+  set("exits", ([
+    "southeast" : __DIR__ "3/6/2",
+    "northeast" : __DIR__ "3/6/2",
+    "northwest" : __DIR__ "4/0/0",
+    "southdown" : __DIR__ "dadian",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

@@ -1,0 +1,18 @@
+// wulaofeng —— 由 nitan/d/wudang/wulaofeng.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(-350,-350,130)  超出引擎地图边长上限 100（只保留最密集窗口）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "五老峰");
+  set("long", @LONG
+这里便是武当山五老峰。只见那五座奇峰突兀，惊险无比，行人
+多不敢放胆在此玩赏风景。
+LONG );
+  set("exits", ([
+    "southup" : __DIR__ "hutouyan",
+    "northdown" : __DIR__ "2/0/3",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

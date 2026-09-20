@@ -1,0 +1,18 @@
+// rjqmen —— 由 nitan/d/mingjiao/rjqmen.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(270,60,80)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "侧门");
+  set("long", @LONG
+这是锐金旗的一个侧门，大概只容得下一个人进出，每个教众到
+此，都必须出示一张腰牌，才可进入。
+LONG );
+  set("exits", ([
+    "enter" : __DIR__ "25/6/8",
+    "east" : __DIR__ "15/5/2",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

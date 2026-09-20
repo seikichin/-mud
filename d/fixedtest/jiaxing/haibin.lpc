@@ -1,0 +1,14 @@
+// haibin —— 由 nitan/d/jiaxing/haibin.c 转换（独立房间，不在固定地图网格内）
+// 原 coor(1300,-1860,0)  所属格无任何方向位（值为 0 = 引擎不生成房间）
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "海滨");
+  set("long", " ");
+  set("exits", ([
+    "west" : "/d/fixedtest/jiaxing/11/0/0",
+  ]));
+  set("no_fly", 1);
+  setup();
+}

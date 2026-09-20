@@ -1,0 +1,15 @@
+// bozhou —— 由 nitan/d/yanziwu/bozhou.c 转换（独立房间，不在固定地图网格内）
+// 原文件无 coor
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", "泊舟坞");
+  set("long", " ");
+  set("exits", ([
+    "east" : __DIR__ "pindi",
+    "northdown" : __DIR__ "muti",
+  ]));
+  set("no_fly", 1);
+  setup();
+}
