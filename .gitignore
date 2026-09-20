@@ -6,3 +6,8 @@ data/vo/cloth/
 log/ip_list
 
 p/residence/userroom/
+
+# lpcc 编译诊断产物（不入库）
+trace_lpcc.json
+# 运行期日志（不入库）
+log/
