@@ -20,7 +20,15 @@ void create() {}
 
 // 格索引 -> ({ short, long })
 mapping maze_cell_desc = ([
-  "9,4,0" : ({ HIR "【 地 阴 】" NOR, " " }),  // coor(100,40,0)  diyin
+  "9,4,0" : ({ HIR "【 地 阴 】" NOR, HIR @LONG
+
+                       地            阴
+
+    这里便是阴间的最深处「地阴」，你面前是一个无底深渊，深渊内
+侧悬浮着一块血红色的巨大晶体(jingti)，时明时暗，散发出暗淡的血
+红色光芒，投射着丝丝热量。也许这就传说中的「地阴血脉」吧。
+
+LONG NOR }),  // coor(100,40,0)  diyin
   "2,0,1" : ({ BLU "黄泉路" NOR, BLU @LONG
 “人生自古谁无死”，从古至今，死一直是所有帝王将相，仁人义
 士不能避免的结局。眼前就是著名的黄泉大道。就在你身边，一个个模
@@ -185,7 +193,13 @@ LONG NOR }),  // coor(130,0,30)  qiao1
 
 
 LONG NOR }),  // coor(130,10,30)  qiao2
-  "12,2,3" : ({ HIB "幽冥界" NOR, " " }),  // coor(130,20,30)  youmingjie
+  "12,2,3" : ({ HIB "幽冥界" NOR, HIB @LONG
+幽冥界，你疑心怎么从酆都走到这里来了的。四处弥漫着浓厚的烟
+雾，你什么也看不清楚，空中浮动着若隐若现的鬼火，周围似乎有一双
+双眼睛盯着你看，你走了几步，看见地上斜插着一块石碑(shibei)，你
+连忙俯身下去看上面的字。
+
+LONG NOR }),  // coor(130,20,30)  youmingjie
   "12,3,3" : ({ HIB "幽冥殿" NOR, HIB @LONG
 这里便是名闻天下，令人提起心惊胆寒的阎幽冥殿。人死后都会在
 这里受到应有的处置。正前一张大桌。正前坐着十殿阎罗。
@@ -272,7 +286,10 @@ LONG NOR }),  // coor(140,40,180)  yinyangta16
 这是地狱中最高的一座塔，高约三百余尺，共有十八级。相传塔顶
 住有神兽朱雀，这个传言也不知是真是假。
 LONG NOR }),  // coor(140,40,190)  yinyangta17
-  "13,4,20" : ({ HIB "阴阳塔" NOR, " " }),  // coor(140,40,200)  yinyangta18
+  "13,4,20" : ({ HIB "阴阳塔" NOR, HIB @LONG
+这是地狱中最高的一座塔，高约三百余尺，共有十八级。这里就是
+塔顶，塔顶有个供奉台(stone)，传说有神兽朱雀路过。
+LONG NOR }),  // coor(140,40,200)  yinyangta18
 ]);
 
 void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
