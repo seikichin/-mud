@@ -4,8 +4,8 @@
 //   city.map       地图（位掩码网格，勿手改）
 //   city-room.lpc  格房描述表（改文字即可改每格 look 结果）
 //
-// 虚拟格房路径 = <本目录>/city/city/<x>/<y>/<z>
-//   （引擎 mroom_fname = base_name(this_object())/owner/x/y/z）
+// 虚拟格房路径 = <本目录>/<x>/<y>/<z>
+//   （vrm_fixed 短路径：owner 段与区名重复时省略；入口/出口为 <本目录>/entry|exit）
 inherit "/std/room/vrm_fixed";
 #include <ansi.h>
 

@@ -9,5 +9,6 @@ void create() {
     "down" : __DIR__ "entry",
   ]));
   set("no_fly", 1);
+  set("NONPC", 1);
   setup();
 }

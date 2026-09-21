@@ -9,5 +9,6 @@ void create() {
     "enter" : __DIR__ "exit",
   ]));
   set("no_fly", 1);
+  set("NONPC", 1);
   setup();
 }
