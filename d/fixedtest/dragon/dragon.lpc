@@ -30,7 +30,7 @@ void create() {
   set_link_entry_room_z(40);
 
   set_entry_short(HIW "凌云窟" NOR);
-  set_entry_desc("凌云窟，从这里可以进入迷宫（north）。\n");
+  set_entry_desc("凌云窟，从这里可以进入迷宫（south）。\n");
   set_exit_short(HIY "竹径" NOR);
   set_exit_desc("竹径，出口就在这里。\n");
 

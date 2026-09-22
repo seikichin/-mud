@@ -28,7 +28,7 @@ void create() {
   set_link_entry_room_z(20);
 
   set_entry_short(HIW "麒麟窟" NOR);
-  set_entry_desc("麒麟窟，从这里可以进入迷宫（up）。\n");
+  set_entry_desc("麒麟窟，从这里可以进入迷宫（down）。\n");
   set_exit_short(HIY "麒麟窟" NOR);
   set_exit_desc("麒麟窟，出口就在这里。\n");
 

@@ -30,7 +30,7 @@ void create() {
   set_link_entry_room_z(20);
 
   set_entry_short(HIW "毒人场" NOR);
-  set_entry_desc("毒人场，从这里可以进入迷宫（up）。\n");
+  set_entry_desc("毒人场，从这里可以进入迷宫（down）。\n");
   set_exit_short(HIY "诛人场" NOR);
   set_exit_desc("诛人场，出口就在这里。\n");
 
