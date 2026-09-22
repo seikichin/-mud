@@ -11,6 +11,21 @@
 [ENTRY] 7,4,0
 [EXIT] 7,10,0
 
+# 出城口与跨格特殊出口（对应 nitan 原档 d/city 的跨区出口）
+# [LINK] 不参与方向位互反/相邻校验，可表达非网格方向或跨多格的连线
+[LINK] 7,10,0,north,/d/fixedtest/nanyang/yidao
+[LINK] 7,10,0,west,/d/fixedtest/huanghe/caodi1
+[LINK] 2,7,0,west,/d/fixedtest/luoyang/road8
+[LINK] 7,3,0,south,/d/fixedtest/wudang/wdroad1
+[LINK] 11,7,0,east,/d/fixedtest/taishan/3/0/0
+[LINK] 11,3,0,southeast,/d/fixedtest/yixing/2/4/0
+# 丐帮土地庙（nitan: city/ml7.north -> /d/gaibang/pomiao）。
+# 方向用 northeast 而非 north：北位要留给「青竹林 -> 土地庙/暗道」(11,11,0) 的格边，
+# 否则 [LINK] 会覆盖 north 位出口，土地庙+暗道将无法进入。
+# 地理上也吻合：ml7 coor(40,30) -> 丐帮土地庙 coor(70,60) 即东北方。
+[LINK] 11,10,0,northeast,/d/fixedtest/gaibang/1/0/0
+[LINK] 11,11,0,west,/d/fixedtest/gaibang/0/0/0
+
 [Z=0]
 000 000 000 000 000 000 000 000 000 001 00B 003 002
 000 000 000 000 000 000 000 000 000 000 00C 000 000
@@ -22,8 +37,8 @@
 000 00C 00D 007 00F 00F 00F 06F 00F 08F 00F 04E 000
 001 00F 00E 000 004 00C 00D 00F 32F 02E 00C 005 20A
 000 004 004 000 000 00D 02F 00F 026 004 004 009 006
-000 000 000 000 001 006 004 005 002 000 000 005 002
-000 000 000 000 000 000 000 000 000 000 000 001 002
+000 000 000 000 001 006 004 005 003 003 003 00F 002
+000 000 000 000 000 000 000 000 000 000 000 005 002
 
 [Z=1]
 000 000 000 000 000 000 000 000 000 000 000 000 000
