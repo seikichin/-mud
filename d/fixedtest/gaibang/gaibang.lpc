@@ -5,8 +5,8 @@
 //   gaibanggate.lpc / gaibanggate2.lpc   迷宫外入口房 / 出口房
 //   其它 .lpc               不能入网格的独立房间
 //
-// 虚拟格房路径 = <本目录>/gaibang/gaibang/x/y/z
-//   （引擎 mroom_fname = base_name(区域对象)/owner/x/y/z，owner = gaibang）
+// 虚拟格房路径 = /d/fixedtest/gaibang/<x>/<y>/<z>
+//   （vrm_fixed 短路径：owner 段与区名重复时省略；入口/出口为 <本目录>/entry|exit）
 // 格索引 -> 原 coor： coor = (格索引 + (6,6,0)) * 10
 inherit "/std/room/vrm_fixed";
 #include <ansi.h>
