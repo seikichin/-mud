@@ -59,7 +59,8 @@ string query_dodge_msg(object me) {
   if (sizeof(msg) > 0)
     return msg[random(sizeof(msg))];
 
-  return 0;
+  // 不能返回 0：FluffOS 的 "0 + string" 会得到 "0abc"，调用方直接 += 会多出一个 "0"。
+  return "";
 }
 
 int help(object me) {

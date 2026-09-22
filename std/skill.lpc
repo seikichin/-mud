@@ -146,7 +146,7 @@ int skill_difficulty() {
 
 //	研究此技能的难度，叠加至skill_difficulty，default为零，
 int skill_difficulty_r() {
-  return skill_attr["skill_difficulty_r"];
+  return (int)skill_attr["difficulty_r"];
 }
 
 //	这两个参数是为了取代原来单个技能文件中不同招式的action[dodge/parry/force/damage]
@@ -180,7 +180,7 @@ string refundable() {
   return (skill_attr["no_refund"]);
 }
 
-// 	此武功能练习的最高级别，default为0，想要多高自己设
+// 	此武功能练习的最高级别，default为1，想要多高自己设
 int practice_limit() {
   return (int)skill_attr["practice_limit"];
 }
@@ -206,7 +206,7 @@ string skill_class() {
 // according to the power of the skill.
 
 int valid_learn(object me) {
-  object weapon, s_weapon;
+  object weapon, s_weapon, w;
   string *w_skills = ({ "axe", "blade", "dagger", "fork", "hammer", "spear",
     "staff", "sword", "throwing", "whip", "musket" });
   int i;
@@ -226,7 +226,10 @@ int valid_learn(object me) {
       }
       if ((!objectp(weapon) || weapon->query("skill_type") != w_skills[i])
         && (!objectp(s_weapon) || s_weapon->query("skill_type") != w_skills[i])) {
-        return notify_fail("不能使用" + weapon->name() + "学习或练习" + skill_attr["name"] + "。\n");
+        // 主手可能为空而只剩副手（卸下主手时不提升副手的路径存在），
+        // 直接对 weapon 取 name() 会在 FluffOS 上抛 call_other 参数错误。
+        w = objectp(weapon) ? weapon : s_weapon;
+        return notify_fail("不能使用" + w->name() + "学习或练习" + skill_attr["name"] + "。\n");
       }
     }
   }
@@ -245,10 +248,11 @@ mapping query_action(object me, object weapon) {
   if (sizeof(action) > 0) {
     return action[random(sizeof(action))];
   }
+  return 0;
 }
 
 string query_absorb_msg() {
-  mapping msg;
+  mixed msg;
 
   msg = skill_attr["absorb_msg"];
 
@@ -256,11 +260,13 @@ string query_absorb_msg() {
     return msg[random(sizeof(msg))];
   }
 
-  return 0;
+  // 不能返回 0：FluffOS 中 "0 + string" 得到的是 "0abc"（0 会先转成字符 '0' 再拼接），
+  // 而调用方都是直接把返回值 += 到战斗提示里，返回 0 会让提示中凭空多出一个 "0"。
+  return "";
 }
 
 string query_dodge_msg(object me) {
-  mapping msg;
+  mixed msg;
 
   msg = skill_attr["dodge_msg"];
 
@@ -268,11 +274,12 @@ string query_dodge_msg(object me) {
     return msg[random(sizeof(msg))];
   }
 
-  return 0;
+  // 见 query_absorb_msg() 的说明：这里同样不能返回 0。
+  return "";
 }
 
 string query_parry_msg(object weapon) {
-  mapping msg;
+  mixed msg;
 
   if (objectp(weapon)) {
     msg = skill_attr["parry_msg"];
@@ -286,7 +293,8 @@ string query_parry_msg(object weapon) {
     return msg[random(sizeof(msg))];
   }
 
-  return 0;
+  // 见 query_absorb_msg() 的说明：这里同样不能返回 0。
+  return "";
 }
 
 
@@ -456,7 +464,7 @@ int perform_target(object me, string perform, object target) {
   else
     s_type = "unarmed";
   if (!skill_attr["usage/" + s_type] && !skill_attr["usage/dodge"])
-    return notify_fail(" skill not matched\n");
+    return notify_fail("你所选用的武功与手中兵器不匹配。\n");
   if (me->query_temp("till_death/lockup") == 1)
     return notify_fail(" （你血脉不畅，真气受滞，一时竟然运不起外功。）\n");
   //	if (me->query_temp("till_death/shield_lock")==1)
@@ -599,6 +607,8 @@ int scribe_spell(object me, object ob, string spell) {
   return 0;
 }
 
+//  hit_ob() 的第 4 参数 factor 是内功加成系数，只有声明了该参数的技能对象才会收到。
+//  技能文件覆盖 hit_ob 时必须保持 4 个参数，否则 factor 会被静默丢弃（实参多于形参不报错）。
 varargs mixed hit_ob(object me, object victim, int damage_bonus, int factor) {
   return 0;
 }

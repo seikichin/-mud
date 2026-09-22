@@ -95,7 +95,8 @@ string query_parry_msg(object weapon) {
     return msg[act];
   }
 
-  return 0;
+  // 不能返回 0：FluffOS 的 "0 + string" 会得到 "0abc"，调用方直接 += 会多出一个 "0"。
+  return "";
 }
 
 mixed hit_ob(object me, object victim) {
