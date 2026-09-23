@@ -49,7 +49,7 @@ int do_climb(string arg)
 
         message_vision(HIG "$N" HIG "拉着青藤爬上悬崖……\n", me);
                 
-        me->move("/d/huashan/chaoyang");
+        me->move("/d/fixedtest/huashan/huashanjueding");  // 由 /d/huashan/chaoyang 改指本工程华山绝顶
 
         me->start_busy(2);
 

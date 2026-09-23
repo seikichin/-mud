@@ -51,7 +51,7 @@ int valid_leave(object me,string dir)
         else
         if( me->query_temp("warquest/purchase") && n < 20 && random(12)>10 )
         {
-                dadao=new("/d/city2/npc/dadao");
+                dadao=new(__DIR__"npc/dadao");
                 dadao->set_from_me(me);
                 dadao->set_temp("warquest/party", "meng");
                 dadao->move(environment(me));

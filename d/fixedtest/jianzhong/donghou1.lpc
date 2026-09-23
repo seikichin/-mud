@@ -24,12 +24,13 @@ void init()
 {
         object ob1,ob2;
         object me=this_player();
-        if( (random(10)<2) && (this_object()->query("snake_count")>0) && (me->query_temp("dugu_visit") != 0) && (!present("pusi qushe",environment(this_player()))) )
-        {        
-                ob1=new(__DIR__"npc/pusiqushe");
-                ob1->move(this_object());
-                this_object()->add("snake_count", -1);
-        }
+        // 菩斯曲蛇 NPC 未随本工程移植，暂不刷新（原档为 new(__DIR__"npc/pusiqushe")）
+//         if( (random(10)<2) && (this_object()->query("snake_count")>0) && (me->query_temp("dugu_visit") != 0) && (!present("pusi qushe",environment(this_player()))) )
+//         {        
+//                 ob1=new(__DIR__"npc/pusiqushe");
+//                 ob1->move(this_object());
+//                 this_object()->add("snake_count", -1);
+//         }
 }
 
 int valid_leave(object me, string dir)

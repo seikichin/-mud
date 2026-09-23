@@ -44,7 +44,7 @@ int free_ob(object me)
         tell_object(me, HIR "你被两个狱卒架着走了出大牢...\n\n" NOR);
 
         if (me->is_ghost())
-                startroom = "/d/death/gate";
+        startroom = "/d/fixedtest/death/deathgate";  // 由 /d/death/gate 改指本工程 death 区（黄泉路）
         else
                 startroom = "/d/fixedtest/changan/3/6/0";
 

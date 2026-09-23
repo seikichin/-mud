@@ -119,9 +119,10 @@ int event_four(object me){
                 
                 me->set_temp("found_lianhuan_book", 1);
                 me->delete_temp("hiding");
-                book=new("/d/quanzhen/obj/lh_book");
-                book->set("player_id", me->query("id"));
-                book->move(me);
+                // 书册物品未随本工程移植，暂不掉落（原档为 new(__DIR__"obj/lh_book")）
+                // book=new("/d/quanzhen/obj/lh_book");
+                // book->set("player_id", me->query("id"));
+                // book->move(me);
                                                 
                 remove_call_out("event_three");
                 
