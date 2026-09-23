@@ -20,6 +20,11 @@
 [LINK] 0,7,0,west,/d/fixedtest/beijing/xichengmen
 [LINK] 9,7,0,east,/d/fixedtest/beijing/chaoyangmen
 [LINK] 4,14,0,north,/d/fixedtest/changcheng/nroad1
+# 皇宫正门(hgmen_s) -> 午门广场。nitan: beijing/hgmen_s.north = /d/huanggong/dianwai
+# 格(4,7) 同时住着康府大院/姚春内室/韦府大院，north 位原本让给了几何相邻的 (4,8)；
+# 这里用 [LINK] 覆盖 north（引擎在方向位之后设置 LINK，同名方向以 LINK 为准），
+# 恢复 nitan 的皇宫正门通道。(4,8) 仍可由 (4,9) 南下抵达，不丢可达性。
+[LINK] 4,7,0,north,/d/fixedtest/huanggong/dianwai
 
 [Z=0]
 000001 00000B 000002 000008 000009 000003 00200A 000000 000000 000000
