@@ -1,3 +1,4 @@
+#include <ansi.h>
 inherit ROOM;
 void create() {
   set("short", "有凤来仪");
@@ -36,6 +37,11 @@ int do_open(string arg) {
   }
   if (arg == "屏风" || arg == "ping feng" || arg == "pingfeng") {
     me = this_player();
+    // 蝙蝠传奇：屏风后的暗门 = 第 7 步
+    if (REWARD_D->riddle_check(me, "蝙蝠传奇") == 6) {
+      REWARD_D->riddle_set(me, "蝙蝠传奇", 7);
+      tell_object(me, HIY "（暗门后黑沉沉的，只有一点烛光在晃。）\n" NOR);
+    }
     message_vision("$N信手按在屏风上，屏风微微一动，过得片刻，屏风
 竟然向左移开来，露出一道暗门。 \n", me);
     if (!query("exits/south")) {

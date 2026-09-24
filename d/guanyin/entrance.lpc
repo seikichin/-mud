@@ -1,6 +1,8 @@
 // Copyright (C) 1995, by Tie Yu and Daniel Yu. All rights reserved.
 // This software can not be used, copied, or modified in any form without
 // the written permission from authors.
+#include <ansi.h>
+
 inherit ROOM;
 void create() {
   set("short", "石峰边缘");
@@ -19,4 +21,24 @@ LONG
   set("coor/y", -80);
   set("coor/z", 0);
   setup();
+}
+
+//  谜题「镜中之花」-- 第 1 阶段：发现花香的来历
+void init() {
+  object me;
+
+  me = this_player();
+  if (!userp(me)) return;
+  if (REWARD_D->check_m_success(me, "镜中之花")) return;
+  if (REWARD_D->riddle_check(me, "镜中之花")) return;
+
+  if (F_LEVEL->get_level(me->query("combat_exp")) < 40) {
+    tell_object(me, HIR "石峰如林，隐有凶险之气——非绝顶高手莫入。（至少需等级40）\n" NOR);
+    return;
+  }
+
+  REWARD_D->riddle_set(me, "镜中之花", 1);
+  tell_object(me, HIG "\n你立在石峰边缘，天地的尽头竟像就在脚下。\n"
+                      "无边的石峰层层叠叠，望不到边。\n"
+                      "风里隐约飘来一丝甜香——那香气，不该出现在大漠。\n" NOR);
 }

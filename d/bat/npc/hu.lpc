@@ -1,6 +1,8 @@
 #include <ansi.h>
 inherit SMART_NPC;
 
+int do_yuan();
+
 void create() {
   set_name("胡铁花", ({ "hu tiehua", "hu" }));
   set("title", HIB "无拘无束" NOR);
@@ -23,6 +25,12 @@ void create() {
     (: auto_smart_fight(40) :),
   }));
 
+  set("inquiry", ([
+    "原随云": (: do_yuan :),
+    "蝙蝠公子": (: do_yuan :),
+    "蝙蝠岛": (: do_yuan :),
+  ]));
+
   auto_npc_setup("wang", 220, 200, 0, "/obj/weapon/", "fighter_u", "luori", 1);
   set_skill("fengyu-piaoxiang", 250);
 
@@ -32,6 +40,27 @@ void create() {
     "long": "一件长衫，上面血花点点，触目惊心。\n",
   ]))->wear();
 
+}
+
+// 蝙蝠传奇：地牢里问胡铁花 —— 问出原随云的阴谋 = 第 6 步
+int do_yuan() {
+  object me = this_player();
+  if (!objectp(me))
+    return 1;
+
+  if (REWARD_D->riddle_check(me, "蝙蝠传奇") == 5) {
+    REWARD_D->riddle_set(me, "蝙蝠传奇", 6);
+    message_vision(CYN "\n胡铁花抬起脸，一双又黑又亮的眼睛盯着$N：\n"
+      "「老臭虫早就说过，这座岛上有人见不得光。」\n" NOR, me);
+    message_vision(CYN "他压低声音道：「他把我关在这儿，不是怕我，是怕我说出来。\n"
+      "　你往上走，琴、棋、书、画，一间一间走过去——\n"
+      "　走到最后一间屋子，坐着的那位，才是这岛真正的主子。」\n" NOR, me);
+    tell_object(me, HIY "（你想起了大厅里那道宽宽的楼梯。）\n" NOR);
+    return 1;
+  }
+
+  message_vision(CYN "胡铁花懒洋洋地笑道：「这种事，等你自己走进这座岛再说吧。」\n" NOR, me);
+  return 1;
 }
 
 

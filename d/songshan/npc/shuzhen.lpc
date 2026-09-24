@@ -4,6 +4,7 @@
 inherit NPC;
 #include <ansi.h>
 int kill_him();
+string ask_tianfeng();
 void create() {
   set_name("叶淑贞", ({ "ye shuzhen", "ye" }));
   set("nickname", HIR "前任帮主夫人" NOR);
@@ -19,6 +20,8 @@ void create() {
     "master nangong": (: kill_him :),
     "任慈": "任慈乃我夫君。\n",
     "黑珍珠": "action叶淑贞满脸紧张，一语不发。\n",
+    "天枫十四郎": (: ask_tianfeng :),
+    "tian feng 14 lang": (: ask_tianfeng :),
   ]));
   setup();
   carry_object(__DIR__ "obj/blackcloth")->wear();
@@ -37,4 +40,32 @@ int accept_object(object who, object ob) {
     return 0;
   }
   return 0;
+}
+
+// ---- 妙僧无花：天枫十四郎早已死去 ----
+string ask_tianfeng() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "妙僧无花"))
+    return "叶淑贞摇头道：那都是旧事了，不提也罢。\n";
+
+  i = REWARD_D->riddle_check(me, "妙僧无花");
+
+  if (i < 1)
+    return "叶淑贞疑惑道：天枫十四郎？你从何处听得这个名字？\n";
+
+  if (i == 1) {
+    REWARD_D->riddle_set(me, "妙僧无花", 2);
+    return "叶淑贞脸色一变，左右看了看，才压低声音道：\n"
+      "　　你说卢崖瀑布上那个天枫十四郎？\n"
+      "　　她摇了摇头：不会的。天枫十四郎早就死了——死在少林，\n"
+      "　　我亲眼见过他的尸身。你若真见着了，那便绝不是他。\n"
+      "　　她顿了顿，忽然道：……你去问问他，敢不敢摘下脸上那张东西。\n";
+  }
+
+  return "叶淑贞道：那不是我认得的那个天枫十四郎。\n";
 }

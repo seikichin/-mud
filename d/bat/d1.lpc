@@ -1,4 +1,7 @@
+// Room: /city/milin.c
+
 inherit ROOM;
+#include <ansi.h>
 
 void create() {
   set("short", "黑暗山洞");
@@ -9,12 +12,32 @@ LONG
   );
   set("exits", ([
     "east": __DIR__ "d2",
-    "west": __FILE__,
-    "south": __FILE__,
     "north": __FILE__,
+    "south": __FILE__,
+    "west": __FILE__,
   ]));
+  set("no_fly", 1);    // 禁止逍遥游瞬移跳过迷宫
+  set("NONPC", 1);     // 蝙蝠等 NPC 不得进入：这里是纯粹的黑暗与记忆
   set("coor/x", -40);
   set("coor/y", 10);
   set("coor/z", -10);
   setup();
+}
+
+void init() {
+  object me = this_player();
+  if (!userp(me))
+    return;
+  if (me->query_temp("bat_maze/pw"))
+    tell_object(me, HIY "你定了定神，忽然想起那中年文士说过的话：左、右、后、前、右、左、后。\n" NOR);
+}
+
+int valid_leave(object me, string dir) {
+  if (dir == "east") {
+    me->set_temp("bat_maze/step", 1);
+    return 1;
+  }
+  tell_object(me, HIR "你在一片漆黑中摸索着转了向，脚下尽是嶙峋的碎石，跌跌撞撞地又摸回了原处。\n" NOR);
+  me->delete_temp("bat_maze/step");
+  return 1;   // 出口表已把错方向指向 d1
 }

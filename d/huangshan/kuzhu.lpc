@@ -1,6 +1,9 @@
 // TIE@FY3 ALL RIGHTS RESERVED
 #include <ansi.h>
 inherit ROOM;
+
+string shifeng_desc();
+
 void create() {
   set("short", "苦竹溪");
   set("long", @LONG
@@ -20,6 +23,9 @@ LONG
     "kuzhuxi": "你可以试着从溪（ｘｉ）中喝（ｄｒｉｎｋ）一口。\n",
     "峭壁": "峭壁挡住了去路，崖顶似乎露出几户人家。\n",
     "人家": "峭壁挡住了去路，崖顶似乎露出几户人家。\n",
+    "石缝": (: shifeng_desc :),
+    "石头": (: shifeng_desc :),
+    "岩石": (: shifeng_desc :),
   ]));
   set("outdoors", "huangshan");
   set("coor/x", -50);
@@ -75,4 +81,35 @@ int fliping(object me) {
     message_vision("$N顺着谷壁爬了上来。\n", me);
   }
   return 1;
+}
+
+// ---- 画眉鸟：石缝中的尸体与面具 ----
+string shifeng_desc() {
+  object me, mask;
+  int i;
+
+  me = this_player();
+  if (!me) return "溪边乱石嶙峋，被水冲得发白。\n";
+
+  i = REWARD_D->riddle_check(me, "画眉鸟");
+
+  if (i == 1) {
+    REWARD_D->riddle_set(me, "画眉鸟", 2);
+    mask = new(__DIR__ "obj/zitanmask");
+    message_vision(HIW "\n$N拨开溪边一丛苦竹，忽然闻到一股极淡的腥气。\n\n" NOR, me);
+    message_vision(HIY "石头缝里蜷着一个采药女子的尸身，衣衫完好，钱袋也还在。\n"
+      "　　可她脸上——眉毛不见了。整整齐齐，被人一刀削了去。\n\n" NOR, me);
+    message_vision(HIG "$N在尸身旁边发现了一样东西：\n"
+      "　　一张紫檀木雕成的面具。五官栩栩如生，连眉毛都一根根雕了出来。\n\n" NOR, me);
+    if (mask && mask->move(me)) {
+      tell_object(me, "你拾起了紫檀面具。\n");
+      return "石缝里空空荡荡，只剩下被水冲得发白的碎石。\n";
+    }
+    return "石缝里空空荡荡，只剩下被水冲得发白的碎石。\n";
+  }
+
+  if (i >= 2)
+    return "石缝里空空荡荡，只剩下被水冲得发白的碎石。\n";
+
+  return "溪边乱石嶙峋，被水冲得发白。石缝间似乎夹着些什么。\n";
 }

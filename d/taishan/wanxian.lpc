@@ -1,5 +1,9 @@
 // Copyright (C) 1995, by Tie Yu and Daniel Yu. All rights reserved.
 inherit ROOM;
+#include <ansi.h>
+
+string qingshi_desc();
+
 void create() {
   set("short", "万仙楼");
   set("long", @LONG
@@ -17,9 +21,44 @@ LONG
   set("objects", ([
     __DIR__ "npc/ding": 1,
   ]));
+  set("item_desc", ([
+    "青石": (: qingshi_desc :),
+    "石头": (: qingshi_desc :),
+    "石坪": (: qingshi_desc :),
+    "刀痕": (: qingshi_desc :),
+  ]));
   set("outdoors", "fengyun");
   set("coor/x", 0);
   set("coor/y", 10);
   set("coor/z", 20);
   setup();
+}
+
+// ---- 弯刀之约：观石得碎片 ----
+string qingshi_desc() {
+  object me, stone;
+  int i;
+
+  me = this_player();
+  if (!me)
+    return "溪底一方五色花纹石坪，字迹已被溪水冲刷得模糊不清。\n";
+
+  i = REWARD_D->riddle_check(me, "弯刀之约");
+  if (i == 1 || i == 2) {
+    REWARD_D->riddle_set(me, "弯刀之约", 3);
+    stone = new(__DIR__ "obj/qingshi");
+    if (stone && stone->move(me)) {
+      message_vision(HIC "\n$N在石坪边蹲下身来，看见一道刀痕从石面斜斜划过，\n"
+        "深可没指，断面平滑如镜。石缘有一小块碎石被刀气带得松了，\n"
+        "轻轻一碰便落在$N手里。\n\n" NOR, me);
+      return "石面上那道刀痕，笔直得像一根绷紧的弦。\n";
+    }
+    return "石面上那道刀痕，笔直得像一根绷紧的弦。\n";
+  }
+
+  if (i >= 3)
+    return "石面上那道刀痕，笔直得像一根绷紧的弦——碎石你已经拾走了。\n";
+
+  return "溪底一方五色花纹石坪，上面刻着唐宋元明各代题字，可惜字迹已被溪水冲刷得模糊。\n"
+    "石坪东侧似乎少了一角，断口很新。\n";
 }

@@ -1,6 +1,9 @@
 inherit NPC;
 #include <ansi.h>
 int kill_him();
+int tell_dao();
+int do_ting(string arg);
+int sing_song(object me);
 
 void create() {
   set_name("石观音", ({ "shi guanyin", "guanyin" }));
@@ -38,6 +41,8 @@ void create() {
     "李菊": (: kill_him :),
     "天枫十四郎": (: kill_him :),
     "南宫灵": (: kill_him :),
+    "天缺古月寒": (: tell_dao :),
+    "古月寒": (: tell_dao :),
     "极乐之星": "极乐之星是龟兹王的宝物，据说里面藏着一个大秘密。\n",
     "龟兹王": "龟兹王是西域龟兹国的国王。\n",
   ]));
@@ -138,5 +143,84 @@ int give_saki(object who) {
   REWARD_D->riddle_set(who, "浪人的悲哀", 4);
   who->stop_busy();
   //	who->set("天枫_quest4","成功");
+  return 1;
+}
+
+
+/*
+  谜题「镜中之花」-- 第 7、8 阶段与结算。
+  注意：问「天枫十四郎」会触发 kill_him()（见 create 里的 inquiry），
+  那是一条危险的岔路；安全的问法是把话头引到刀上（「天缺古月寒」）。
+*/
+void init() {
+  ::init();
+  add_action("do_ting", "ting");
+}
+
+int tell_dao() {
+  object me;
+
+  me = this_player();
+
+  if (REWARD_D->check_m_success(me, "镜中之花")) {
+    message_vision(CYN "石观音淡淡一笑：“这些话，不必再说了。”\n" NOR, this_object());
+    return 1;
+  }
+
+  if (REWARD_D->riddle_check(me, "镜中之花") != 6) {
+    message_vision(CYN "石观音斜睨着$n，一言不发。\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  message_vision(CYN "$N幽幽叹了口气。\n" NOR, this_object());
+  tell_object(me, HIW "\n石观音道：“这把刀，本是一对。”\n"
+                       "“另一把，留在一个再也不会回来的人手里。”\n"
+                       "“他叫天枫十四郎。”\n\n"
+                       "“你不必替我难过。我只是想让人知道——”\n"
+                       "“刀上那个缺口，不是被人砍的。”\n"
+                       "“是我自己劈的。”\n" NOR);
+  REWARD_D->riddle_set(me, "镜中之花", 7);
+
+  if (me->query_condition("no_force")) {
+    tell_object(me, HIG "\n你心头一清，那团堵着的气忽然散了。\n" NOR);
+    me->change_condition_duration("no_force", 0);
+  }
+  tell_object(me, HIC "\n（静一静，ting 听一听）\n" NOR);
+  return 1;
+}
+
+int do_ting(string arg) {
+  object me;
+
+  me = this_player();
+
+  if (REWARD_D->check_m_success(me, "镜中之花"))
+    return notify_fail("四下寂静无声。\n");
+
+  if (REWARD_D->riddle_check(me, "镜中之花") != 7)
+    return notify_fail("你侧耳细听，只听见自己的心跳。\n");
+
+  if (me->query_temp("guanyin/lzzh_singing"))
+    return notify_fail("那支曲子，你已经听过了。\n");
+
+  me->set_temp("guanyin/lzzh_singing", 1);
+  tell_object(me, HIW "\n你屏住呼吸，侧耳细听……\n" NOR);
+  call_out("sing_song", 3, me);
+  return 1;
+}
+
+int sing_song(object me) {
+  if (!me) return 0;
+  if (environment(me) != environment()) return 0;
+
+  tell_object(me, HIC "\n\n不知从哪里，响起一支曲子。\n\n"
+                       "　　　　秋风吹不尽，总是玉关情。\n\n"
+                       "曲调古怪，词也听不真切，可所有的悲伤、苍凉、哀怨、\n"
+                       "惆怅，都一齐涌上了心头。\n\n"
+                       "你忽然懂了：这片石峰、这片花海、这面镜子，\n"
+                       "全是同一个人替自己搭的牢笼。\n\n"
+                       "她把自己关在里面，已经很多年了。\n" NOR);
+
+  REWARD_D->riddle_done(me, "镜中之花", 10, 1);  /* 10 = 评价占位，待策划确定 */
   return 1;
 }

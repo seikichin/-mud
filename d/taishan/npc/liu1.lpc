@@ -1,5 +1,9 @@
 #include <ansi.h>
 inherit NPC;
+
+string ask_ding();
+string ask_dao();
+
 void create() {
   set_name("柳若松", ({ "mr liu" }));
   set("gender", "男性");
@@ -19,6 +23,93 @@ void create() {
     name() + "苦笑道：现在你总该知道我是不是真的听话了！\n",
     name() + "道：我虽然是个活人，可是我心里会打什么主意，用不着等我说出来，你也能猜得到的。\n"
   }));
+  set("inquiry", ([
+    "丁鹏": (: ask_ding :),
+    "ding peng": (: ask_ding :),
+    "弯刀": (: ask_dao :),
+    "圆月弯刀": (: ask_dao :),
+  ]));
+
   setup();
   carry_object("/obj/armor/cloth")->wear();
+}
+
+// ---- 弯刀之约：柳若松诉苦 ----
+string ask_ding() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "弯刀之约"))
+    return "柳若松惨然一笑道：此事已了，不提也罢。\n";
+
+  i = REWARD_D->riddle_check(me, "弯刀之约");
+
+  if (i == 0) {
+    REWARD_D->riddle_set(me, "弯刀之约", 1);
+    return "柳若松脸色一白，四下张望了一阵，才压低声音道：\n"
+      "　　你问丁鹏？那个人的刀……那不是刀，是月光，是勾魂的月光。\n"
+      "　　我柳若松也曾是万松山庄的庄主，如今……你瞧我这样子，可还像个活人么？\n"
+      "　　你要真想明白，自己去万仙楼，看看那块青石罢。\n";
+  }
+
+  if (i == 1)
+    return "柳若松颤声道：你还在这里做甚？去万仙楼，看那块被劈开的青石！\n";
+
+  return "柳若松盯着你，忽然抓住你的手腕：你……你见着他的刀了？\n";
+}
+
+// ---- 讲刀的来历 ----
+string ask_dao() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  i = REWARD_D->riddle_check(me, "弯刀之约");
+  if (i < 3)
+    return "柳若松摇头道：我说不清的，你去看一眼那块石头便知。\n";
+
+  return "柳若松喃喃道：圆月弯刀……刀光起时，如一轮满月自天心落下。\n"
+    "　　我这一生所学，在那一刀之下，连半招都走不出。\n";
+}
+
+// ---- 交回青石碎片：完成 ----
+int accept_object(object who, object ob) {
+  int i;
+
+  if (!who || !ob) return 0;
+  if (ob->query("name") != "青石碎片" && ob->query("id") != "qingshi suipian")
+    return 0;
+
+  if (REWARD_D->check_m_success(who, "弯刀之约")) {
+    tell_object(who, "柳若松苦笑道：这石头我留着也没用了。\n");
+    return 1;
+  }
+
+  i = REWARD_D->riddle_check(who, "弯刀之约");
+  if (i < 3) {
+    tell_object(who, "柳若松看了一眼，摇头道：这石头你从何处拾来？我却不认得。\n");
+    return 0;
+  }
+
+  message_vision(HIW "\n$N接过那块碎石，只看了一眼，脸色便已惨白。\n"
+    "碎石断面上，那道细细的印子平滑如镜，竟像是被月光切开的。\n" NOR,
+    this_object(), who);
+  message_vision(HIY "$N踉跄后退两步，一屁股坐倒在地，手中碎石也拿捏不住，\n"
+    "哐当一声落在青石板上。\n" NOR, this_object(), who);
+  message_vision(HIG "柳若松喃喃道：就是这一刀……就是这一刀！\n"
+    "　我柳若松的剑，在它面前就和孩子手里的竹枝一般。\n" NOR, this_object(), who);
+  message_vision(HIG "柳若松忽然抬起头，直直看着$n，一字字道：\n"
+    "　记住我今天的样子——世上最可怕的，不是刀剑，\n"
+    "　是别人让你活着，却让你连自己都不敢认。\n\n" NOR,
+    this_object(), who);
+
+  if (!REWARD_D->check_m_success(who, "弯刀之约"))
+    REWARD_D->riddle_done(who, "弯刀之约", 10, 1);
+
+  return 1;
 }

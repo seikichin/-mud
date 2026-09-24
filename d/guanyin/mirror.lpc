@@ -1,6 +1,8 @@
 // Copyright (C) 1995, by Tie Yu and Daniel Yu. All rights reserved.
 // This software can not be used, copied, or modified in any form without
 // the written permission from authors.
+#include <ansi.h>
+
 inherit ROOM;
 void create() {
   set("short", "巨大的镜子");
@@ -23,4 +25,32 @@ LONG
   set("coor/z", -10);
   setup();
 
+}
+
+//  谜题「镜中之花」-- 第 6 阶段：照见镜中真形（不靠打赢）
+void init() {
+  add_action("do_zhao", "zhao");
+}
+
+int do_zhao(string arg) {
+  object me;
+
+  me = this_player();
+
+  if (REWARD_D->check_m_success(me, "镜中之花"))
+    return notify_fail("镜中的人影，你早已了然于胸。\n");
+
+  if (REWARD_D->riddle_check(me, "镜中之花") != 5)
+    return notify_fail("你凑近镜子，镜面灰蒙蒙的，什么也照不出来。\n");
+
+  message_vision(HIW "\n$N伸手拂去镜上的浮尘……\n" NOR, me);
+  tell_object(me, HIW "\n镜中映出的竟不是你的脸。\n\n"
+                       "那是一尊石像——眉眼慈悲，嘴角含笑，\n"
+                       "正是你在花海深处见过的那一尊。\n\n"
+                       "你忽然明白了：镜里那团黑影并不是鬼。\n"
+                       "它照见的，是看镜的人自己心里最怕的东西。\n" NOR);
+  me->set_temp("guanyin/saw_true", 1);
+  REWARD_D->riddle_set(me, "镜中之花", 6);
+  tell_object(me, HIC "\n（往上走，去见一见镜子的主人）\n" NOR);
+  return 1;
 }

@@ -1,5 +1,9 @@
 #include <ansi.h>
 inherit NPC;
+
+string ask_ye();
+string ask_mask();
+
 void create() {
   set_name("无花", ({ "wuhua" }));
   set("gender", "男性");
@@ -35,6 +39,13 @@ void create() {
   }));
 
 
+  set("inquiry", ([
+    "叶淑贞": (: ask_ye :),
+    "ye shuzhen": (: ask_ye :),
+    "面具": (: ask_mask :),
+    "mask": (: ask_mask :),
+  ]));
+
   setup();
   carry_object(__DIR__ "obj/mblade")->wield();
   carry_object(__DIR__ "obj/skinmask")->wear();
@@ -53,9 +64,76 @@ int do_test(object me) {
       } else {
         message_vision(HIY "\n$N对$n说道：好！你可以过去了。\n\n\n" NOR, this_object(), me);
         me->set_temp("marks/okey_to_see", 1);
+        if (!REWARD_D->check_m_success(me, "妙僧无花")
+          && !REWARD_D->riddle_check(me, "妙僧无花"))
+          REWARD_D->riddle_set(me, "妙僧无花", 1);
         return 1;
       }
     }
   }
   return 1;
+}
+
+// ---- 妙僧无花：追问叶淑贞 ----
+string ask_ye() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "妙僧无花"))
+    return "无花垂目不语。\n";
+
+  i = REWARD_D->riddle_check(me, "妙僧无花");
+
+  if (i < 2)
+    return "无花合十道：贫僧不知施主所言何人。\n";
+
+  if (i == 2) {
+    REWARD_D->riddle_set(me, "妙僧无花", 3);
+    return "无花的睫毛忽然颤了一下。\n"
+      "　　他缓缓道：……叶施主么。她的话，施主最好莫要全信。\n"
+      "　　他说话的时候，你注意到他拢在袖中的手指悄悄收紧了。\n";
+  }
+
+  return "无花道：施主何必再问。\n";
+}
+
+// ---- 妙僧无花：揭穿面具 ----
+string ask_mask() {
+  object me, mask;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "妙僧无花"))
+    return "地上空空荡荡，什么也没有。\n";
+
+  i = REWARD_D->riddle_check(me, "妙僧无花");
+  if (i < 3)
+    return "无花道：什么面具？施主说笑了。\n";
+
+  message_vision(HIW "\n$N盯着$n的脸，一字字道：天枫十四郎，早就死了。\n"
+    "　　那这张脸，是谁的？\n\n" NOR, me, this_object());
+  message_vision(HIY "$n身形一僵。\n"
+    "　　他抬起手，缓缓按在自己脸上，然后往下一扯——\n"
+    "　　“哧”的一声轻响，一张薄如蝉翼的面具应手而落。\n"
+    "　　面具下是一张年轻、清秀、苍白得近乎透明的脸。\n\n" NOR, me, this_object());
+  message_vision(HIG "无花将面具随手一抛，微笑道：好眼力。\n"
+    "　　可惜你知道了，却未必是好事。\n"
+    "　　他衣袖一振，人已在数丈之外。\n\n" NOR, me, this_object());
+
+  mask = query_temp("armor/mask");
+  if (mask) {
+    mask->unequip();
+    mask->move(environment());
+  }
+
+  if (!REWARD_D->check_m_success(me, "妙僧无花"))
+    REWARD_D->riddle_done(me, "妙僧无花", 10, 1);
+
+  move("/obj/void");
+  return "风声掠过树梢，山谷里重新静了下来。\n";
 }

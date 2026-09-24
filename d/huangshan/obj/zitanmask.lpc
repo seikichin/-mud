@@ -1,0 +1,17 @@
+#include <ansi.h>
+inherit ITEM;
+void create() {
+  set_name(HIR "紫檀面具" NOR, ({ "zitan mianju", "mianju", "mask" }));
+  set_weight(300);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "张");
+    set("value", 0);
+    set("long",
+      "一张紫檀木雕成的面具，五官栩栩如生，嘴角彷佛还带着一丝笑容，\n"
+      "几乎连一根根眉毛都数得出。颜色却是红中透紫，紫里发青。\n"
+      "面具内侧，还沾着一点极淡的、已经干涸的血迹。\n");
+  }
+  ::init_item();
+}

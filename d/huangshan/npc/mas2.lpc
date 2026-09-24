@@ -2,6 +2,8 @@ inherit NPC;
 inherit F_MASTER;
 #include <ansi.h>
 void smart_fight();
+string ask_bird();
+string ask_mask();
 
 void create() {
   set_name("柳无眉", ({ "master liu", "master", "liu" }));
@@ -25,6 +27,10 @@ void create() {
     "苍穹神剑": "苍穹神剑乃黄山牌神器，由外子执掌，可向他询问。\n",
     "破阵": "按奴家的意思呢，最好先让别人去探个虚实才好，别做小白鼠啊。\n",
     "阵": "按奴家的意思呢，最好先让别人去探个虚实才好，别做小白鼠啊。\n",
+    "画眉鸟": (: ask_bird :),
+    "bird": (: ask_bird :),
+    "面具": (: ask_mask :),
+    "mask": (: ask_mask :),
   ]));
 
   set("combat_exp", 12000000);
@@ -101,4 +107,59 @@ int give_pena(object who) {
   kill_ob(who);
   who->kill_ob(this_object());
   return 1;
+}
+
+// ---- 画眉鸟：柳无眉自曝无眉 ----
+string ask_bird() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "画眉鸟"))
+    return "柳无眉淡淡道：此事已了，不提也罢。\n";
+
+  i = REWARD_D->riddle_check(me, "画眉鸟");
+
+  if (i == 0) {
+    REWARD_D->riddle_set(me, "画眉鸟", 1);
+    return "柳无眉抬手掠了掠鬓角，忽然自嘲地笑了笑：\n"
+      "　　你瞧我这两道眉毛，是画的——小时候生过一场大病，眉毛掉光了。\n"
+      "　　她顿了顿，声音低了下去：\n"
+      "　　可是这山里，近来却出了个专削人眉毛的东西。谷底的苦竹溪边，\n"
+      "　　已经有几个采药的女子失了踪。下人们背地里叫它——画眉鸟。\n";
+  }
+
+  if (i == 1)
+    return "柳无眉道：你若有胆，便去谷底看看。我是不敢去的。\n";
+
+  return "柳无眉道：你……当真见着了？\n";
+}
+
+// ---- 画眉鸟：柳无眉识得面具 ----
+string ask_mask() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "画眉鸟"))
+    return "柳无眉摇了摇头，不再言语。\n";
+
+  i = REWARD_D->riddle_check(me, "画眉鸟");
+
+  if (i < 2)
+    return "柳无眉疑惑道：什么面具？\n";
+
+  if (i == 2) {
+    REWARD_D->riddle_set(me, "画眉鸟", 3);
+    return "柳无眉只看了一眼，手里的茶盏便“当”地落在地上，摔得粉碎。\n"
+      "　　她失声道：这……这张脸！\n"
+      "　　她退了两步，指着那面具的手指直抖：\n"
+      "　　你去问外子。这面具，他比我认得。\n";
+  }
+
+  return "柳无眉道：去问外子。\n";
 }

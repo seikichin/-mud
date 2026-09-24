@@ -4,6 +4,8 @@
 
 inherit NPC;
 
+int do_maze();
+
 void create() {
   set_name("中年文士", ({ "wenshi" }));
   set("gender", "男性");
@@ -20,9 +22,22 @@ void create() {
 更是鬼神莫测！\n",
   }));
   set("inquiry", ([
-    "奇门五行": "似乎是左右后前右左后。\n",
-    "maze": "似乎是左右后前右左后。\n",
+    "奇门五行": (: do_maze :),
+    "maze": (: do_maze :),
+    "迷宫": (: do_maze :),
   ]));
   setup();
   carry_object("/obj/armor/cloth")->wear();
+}
+
+// 蝙蝠传奇：把黑暗山洞的走法告诉玩家（进洞后会想起来）。
+int do_maze() {
+  object me = this_player();
+  if (!objectp(me))
+    return 1;
+  me->set_temp("bat_maze/pw", 1);
+  message_vision(CYN "中年文士头也不抬，用指头在案上虚划了几下道：\n"
+    "似乎是左右后前右左后。\n" NOR, me);
+  tell_object(me, HIY "（你暗暗把这句话记在了心里。）\n" NOR);
+  return 1;
 }

@@ -3,6 +3,7 @@ inherit NPC;
 inherit F_MASTER;
 #include <ansi.h>
 void smart_fight();
+string ask_mask();
 
 
 void create() {
@@ -38,6 +39,8 @@ void create() {
 你若是能破了这个阵，才能证明你配得上这把苍穹神剑。\n",
     "破阵": "武当山下，松竹林中，八卦七星，不死不休。\n",
     "阵": "武当山下，松竹林中，八卦七星，不死不休。\n",
+    "面具": (: ask_mask :),
+    "mask": (: ask_mask :),
   ]));
 
   set("combat_exp", 10000000);
@@ -163,4 +166,37 @@ int accept_object(object who, object ob) {
   who->set("marks/黄山学艺", 1);
   who->delete("marks/黄山送信", 1);
   return 1;
+}
+
+// ---- 画眉鸟：李玉函揭出真相 ----
+string ask_mask() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "画眉鸟"))
+    return "李玉函叹道：此事……就此了结罢。\n";
+
+  i = REWARD_D->riddle_check(me, "画眉鸟");
+
+  if (i < 3)
+    return "李玉函道：什么面具？内子说什么了？\n";
+
+  message_vision(HIW "\n$N接过那张紫檀面具，翻来覆去看了很久，脸色越来越沉。\n\n" NOR,
+    this_object(), me);
+  message_vision(HIY "李玉函忽然道：拥翠山庄有一门老手艺，叫“画眉”——\n"
+    "　在木头上雕出人的眉毛，一根一根，分毫不差。\n"
+    "　这门手艺，二十年前就绝了。\n\n" NOR, this_object(), me);
+  message_vision(HIR "他把面具翻过来，指着内侧一点干涸的血迹，一字字道：\n"
+    "　他还活着。他就在这山里。\n\n" NOR, this_object(), me);
+  message_vision(HIG "李玉函将面具还给你，退后一步，深深一揖：\n"
+    "　多谢阁下。这事……我夫妇二人欠你一个人情。\n"
+    "　你已揭破了「画眉鸟」的真相。\n\n" NOR, this_object(), me);
+
+  if (!REWARD_D->check_m_success(me, "画眉鸟"))
+    REWARD_D->riddle_done(me, "画眉鸟", 10, 1);
+
+  return "山谷里起了风，竹叶沙沙作响。\n";
 }

@@ -35,6 +35,9 @@ int do_dash(string arg) {
     return notify_fail("你现在正忙。\n");
 
   if (!arg || arg == "huache" || arg == "滑车") {
+    // 蝙蝠传奇：钻进滑车 = 第 2 步
+    if (REWARD_D->riddle_check(me, "蝙蝠传奇") == 1)
+      REWARD_D->riddle_set(me, "蝙蝠传奇", 2);
     room = find_object(__DIR__ "dong1");
     if (!room) room = load_object(__DIR__ "dong1");
     message_vision("$N一下子就跳进了滑车！\n", me);

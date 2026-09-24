@@ -1,4 +1,18 @@
+#include <ansi.h>
 inherit ROOM;
+
+// 蝙蝠传奇：抵达大厅 = 第 4 步
+void init() {
+  object me = this_player();
+  if (!userp(me))
+    return;
+  if (REWARD_D->riddle_check(me, "蝙蝠传奇") != 3)
+    return;
+  REWARD_D->riddle_set(me, "蝙蝠传奇", 4);
+  tell_object(me, HIY "\n厅里空荡得可怕，脚步声都像被什么东西吞掉了。\n"
+    "北面还有一道门，黑洞洞的，什么也瞧不真切——\n"
+    "那里面，似乎另有一番天地。\n" NOR);
+}
 
 void create() {
   set("short", "大厅");

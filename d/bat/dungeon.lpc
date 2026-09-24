@@ -1,6 +1,19 @@
 // dungeon.c
 
+#include <ansi.h>
 inherit ROOM;
+
+// 蝙蝠传奇：走出黑暗山洞、摸进地牢 = 第 5 步
+void init() {
+  object me = this_player();
+  if (!userp(me))
+    return;
+  if (REWARD_D->riddle_check(me, "蝙蝠传奇") != 4)
+    return;
+  REWARD_D->riddle_set(me, "蝙蝠传奇", 5);
+  tell_object(me, HIY "\n你居然从那一团漆黑里摸了出来。\n"
+    "南边墙角的大铁栲上伏着一个人，一时看不出是死是活。\n" NOR);
+}
 
 void create() {
   set("short", "地牢");

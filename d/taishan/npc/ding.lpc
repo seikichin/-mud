@@ -2,6 +2,7 @@
 inherit SMART_NPC;
 int showpower();
 int wieldblade();
+string ask_liu();
 void create() {
   set_name("丁鹏", ({ "ding peng", "ding" }));
   set("gender", "男性");
@@ -38,6 +39,12 @@ void create() {
     (: wieldblade :),
   }));
 
+  set("inquiry", ([
+    "柳若松": (: ask_liu :),
+    "mr liu": (: ask_liu :),
+    "青石": (: ask_liu :),
+  ]));
+
   set_temp("marks/disarmed", 9999999999);
   setup();
   carry_object("/obj/armor/cloth")->wear();
@@ -57,4 +64,30 @@ int wieldblade() {
   if (query_weapon())
     perform_action("blade.mingyue");
   return 1;
+}
+
+// ---- 弯刀之约：丁鹏指路 ----
+string ask_liu() {
+  object me;
+  int i;
+
+  me = this_player();
+  if (!me) return "……\n";
+
+  if (REWARD_D->check_m_success(me, "弯刀之约"))
+    return "丁鹏淡淡道：那件事，已经过去了。\n";
+
+  i = REWARD_D->riddle_check(me, "弯刀之约");
+
+  if (i == 0)
+    return "丁鹏看了你一眼，没有作声。\n";
+
+  if (i == 1) {
+    REWARD_D->riddle_set(me, "弯刀之约", 2);
+    return "丁鹏忽然笑了笑，伸手指了指溪底：\n"
+      "　　“你先看看那块青石。”\n"
+      "　　他说话的口气很温和，可你忽然觉得后背有些发凉。\n";
+  }
+
+  return "丁鹏道：石头还摆在那儿，你自己看罢。\n";
 }

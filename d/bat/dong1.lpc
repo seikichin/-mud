@@ -48,6 +48,9 @@ int do_open(string arg) {
   }
   if (arg == "rightdoor") {
     me = this_player();
+    // 蝙蝠传奇：推开右边那扇门 = 第 3 步
+    if (REWARD_D->riddle_check(me, "蝙蝠传奇") == 2)
+      REWARD_D->riddle_set(me, "蝙蝠传奇", 3);
     /*            if (me->is_busy() || me->is_fighting()){
 	        	tell_object(me,"你现在正忙。\n");
 	        	return 1;

@@ -68,7 +68,8 @@ int direct() {
   message_vision(CYN "$N对$n冷笑一声：你想见我师父？\n" NOR, ob, me);
   if (!REWARD_D->check_m_success(me, "极乐之星")
     && !me->query_temp("zangbei/龟兹_龟兹送宝", 1)
-    && REWARD_D->riddle_check(me, "浪人的悲哀") != 3) {
+    && REWARD_D->riddle_check(me, "浪人的悲哀") != 3
+    && REWARD_D->riddle_check(me, "镜中之花") != 4) {
     message_vision(CYN "哪有这么容易的事儿，我劝你还是不要去送死了吧。\n" NOR, ob);
     return 1;
   }
@@ -77,6 +78,14 @@ int direct() {
   room = load_object(AREA_GUANYIN "mirror");
   message_vision(YEL "$N脚下一松，整个人不见了！\n" NOR, me);
   me->move(room);
+
+  //  谜题「镜中之花」-- 第 5 阶段：进入镜室
+  if (REWARD_D->riddle_check(me, "镜中之花") == 4) {
+    REWARD_D->riddle_set(me, "镜中之花", 5);
+    tell_object(me, HIW "\n你跌坐在一片幽光里。面前立着一面大得离奇的镜子。\n"
+                         "镜中一团黑影，正缓缓抬起头来。\n"
+                         "（试试用 zhao 照一照那面镜子）\n" NOR);
+  }
   return 1;
 }
 
@@ -97,6 +106,13 @@ int event1() {
 
 住，曲无容乃是世上最" YEL "丑" CYN "的女人，再没有别人比得上。”\n\n" NOR);
   this_player()->set_temp("guanyin/qu_beauty", 1);
+
+  //  谜题「镜中之花」-- 第 3 阶段：亲眼看见她的脸
+  if (REWARD_D->riddle_check(this_player(), "镜中之花") == 2) {
+    REWARD_D->riddle_set(this_player(), "镜中之花", 3);
+    tell_object(this_player(), HIC "\n你怔怔看着那张脸，忽然懂了：\n"
+                                   "她一直在等的不是怜悯，而是有人肯认真地看她一眼。\n" NOR);
+  }
   return 1;
 }
 
@@ -133,6 +149,13 @@ int do_whisper(string msg) {
       tell_object(me, HIG "\n曲无容衣袖微展，一股清新的花香迎面扑来。。。\n" NOR);
       me->change_condition_duration("no_force", 0);
     }
+
+    //  谜题「镜中之花」-- 第 4 阶段：她替你解开花毒
+    if (REWARD_D->riddle_check(me, "镜中之花") == 3) {
+      REWARD_D->riddle_set(me, "镜中之花", 4);
+      tell_object(me, HIC "\n你只觉胸口一松，那团滞涩之气散了。\n"
+                           "曲无容低声道：“……往里走，莫要乱看。”\n" NOR);
+    }
   } else
     message_vision(CYN "曲无容厉声叱道：“下去，下去，这里不是你多话的地方。”\n" NOR, me);
   return 1;
@@ -156,6 +179,13 @@ int event2() {
   if (me->query_condition("no_force")) {
     tell_object(me, HIG "\n曲无容衣袖微展，一股清新的花香迎面扑来。。。\n" NOR);
     me->change_condition_duration("no_force", 0);
+  }
+
+  //  谜题「镜中之花」-- 第 4 阶段（由 ask 触发的同一条路径）
+  if (REWARD_D->riddle_check(me, "镜中之花") == 3) {
+    REWARD_D->riddle_set(me, "镜中之花", 4);
+    tell_object(me, HIC "\n你只觉胸口一松，那团滞涩之气散了。\n"
+                         "曲无容低声道：“……往里走，莫要乱看。”\n" NOR);
   }
   return 1;
 }

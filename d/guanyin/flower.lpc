@@ -1,6 +1,8 @@
 // Copyright (C) 1995, by Tie Yu and Daniel Yu. All rights reserved.
 // This software can not be used, copied, or modified in any form without
 // the written permission from authors.
+#include <ansi.h>
+
 inherit ROOM;
 void create() {
   set("short", "花香中");
@@ -27,8 +29,15 @@ LONG
 
 int valid_leave(object who, string dir) {
   if (dir == "north") {
-    if (userp(who))
+    if (userp(who)) {
       who->apply_condition("no_force", 10);
+      //  谜题「镜中之花」-- 第 2 阶段：花香封住内力
+      if (REWARD_D->riddle_check(who, "镜中之花") == 1) {
+        REWARD_D->riddle_set(who, "镜中之花", 2);
+        tell_object(who, HIC "\n花香扑面，甜得发腻。\n"
+                             "你忽觉丹田一空——内力竟如泥牛入海，再也提不起来。\n" NOR);
+      }
+    }
   }
   return 1;
 }
