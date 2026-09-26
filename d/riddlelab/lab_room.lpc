@@ -1,0 +1,122 @@
+// 无尽窟 —— 房间模板
+// 全部内容由 (x,y,z,l,m,h) 与出口数当场算出：没有一处手工房间。
+
+inherit ROOM;
+#include <ansi.h>
+
+#define RIDDLE_NAME "无尽窟"
+#define MAX_PHASE   5
+
+string *edge_desc = ({
+  "石壁上爬满暗绿的苔痕，摸上去又湿又滑。",
+  "岩面粗糙，指腹划过去像被细砂磨过。",
+  "一道细缝里渗出水来，滴答声在黑暗里格外清楚。",
+  "壁上有几道深浅不一的刻痕，像是很多年前也有人摸到过这里。",
+});
+
+string *core_desc = ({
+  "四下的黑暗稠得像墨，连自己的呼吸都显得吵。",
+  "不知从哪儿来的风在窟腹里打转，卷着土腥气。",
+  "脚下积着厚厚的浮尘，踩上去没有一点声音。",
+  "头顶的岩层压得极低，仿佛随时会塌下来。",
+});
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  int n, idx;
+  string short, long, layer;
+
+  n = sizeof(room->query("exits"));
+  idx = (x * 7 + y * 13 + z * 3) % 4;
+
+  if (x == 0 || y == 0 || x == length - 1 || y == width - 1)
+    long = edge_desc[idx];
+  else
+    long = core_desc[idx];
+
+  if (height > 1) {
+    if (z == 0) layer = "下层";
+    else if (z == height - 1) layer = "顶层";
+    else layer = "中层";
+    long = layer + "。" + long;
+  }
+
+  if (n <= 1) short = HIB "窟·尽头" NOR;
+  else if (n == 2) short = HIB "窟·甬道" NOR;
+  else short = HIB "窟·岔口" NOR;
+
+  room->set("short", short);
+  room->set("long", long);
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+  room->setup();
+}
+
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  object who, maze;
+
+  who = find_player(room->query("owner"));
+  if (who) maze = who->query("private_mazex/maze");
+
+  if (maze
+      && x == maze->query_tgt_x()
+      && y == maze->query_tgt_y()
+      && z == maze->query_tgt_z())
+    room->set("objects", ([ __DIR__ "obj/xinshi" : 1 ]));
+
+  room->setup();
+}
+
+// 出口房：持"窟心石"方可推进
+void init() {
+  object me;
+
+  if (!query("exit_room")) return;
+
+  me = this_player();
+  if (!me) return;
+  if (me->query_temp("riddlelab/busy")) return;
+
+  me->set_temp("riddlelab/busy", 1);
+  call_out("check_depth", 1, me);
+}
+
+void check_depth(object me) {
+  object maze, stone;
+  int ph;
+
+  if (!me) return;
+  me->delete_temp("riddlelab/busy");
+  if (environment(me) != this_object()) return;
+
+  stone = present("ku xin shi", me);
+  if (!stone) {
+    tell_object(me, HIR "窟底的石门纹丝不动——似乎还缺了什么。\n" NOR);
+    tell_object(me, HIY "（这座窟里，也许还有你没摸到的地方。）\n" NOR);
+    return;
+  }
+
+  ph = REWARD_D->riddle_check(me, RIDDLE_NAME);
+  if (ph < 1) return;
+
+  destruct(stone);
+
+  if (ph >= MAX_PHASE) {
+    REWARD_D->riddle_done(me, RIDDLE_NAME, 10, 1);
+    tell_object(me, HIG "窟心石嵌进石门，机括咬合，门后透进光来。\n" NOR);
+    tell_object(me, HIY "你终于走通了这座没有尽头的窟。\n" NOR);
+  } else {
+    REWARD_D->riddle_set(me, RIDDLE_NAME, ph + 1);
+    tell_object(me, HIG "窟心石嵌进石门，机括咬合，石门缓缓移开。\n" NOR);
+    tell_object(me, HIY "身后传来轰隆一声——整座石窟正在坍塌、重组。\n" NOR);
+  }
+
+  maze = me->query("private_mazex/maze");
+  if (maze) maze->refresh_maze();
+  else me->move("/d/riddlelab/gate");
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

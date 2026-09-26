@@ -34,3 +34,12 @@ LONG
 ｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
 「————————————————-」
 */
+
+void init() {
+  if (!this_player() || !userp(this_player())) return;
+  if (REWARD_D->riddle_check(this_player(), "幽冥渡") == 1) {
+    REWARD_D->riddle_set(this_player(), "幽冥渡", 2);
+    tell_object(this_player(), HIG "\n【往生道】你踏上了往生道。身后已经没有退路。\n" NOR);
+    tell_object(this_player(), WHT "（道边站着个人 —— 问问他。）\n\n" NOR);
+  }
+}

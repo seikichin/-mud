@@ -1,0 +1,86 @@
+// 《大人物》—— 巷陌场景表（9 格，按坐标给出）
+// 注意：(0,0) 是入口格，由 play.lpc 的 set_entry_* 给描述，不经过本表。
+
+inherit ROOM;
+#include <ansi.h>
+
+string *sc_short = ({
+  HIW "街口" NOR,
+  HIW "街口茶摊" NOR,
+  HIW "巷口货担" NOR,
+  HIW "墙根背阴处" NOR,
+  HIW "窄巷中段" NOR,
+  HIW "井台边" NOR,
+  HIW "门槛前" NOR,
+  HIW "巷子深处" NOR,
+  HIW "废宅门前" NOR,
+});
+
+string *sc_long = ({
+  "一条窄街的入口。\n",
+  @LONG
+茶摊就支在街口，两张旧木桌，几条长凳。炉上的水汽一阵阵往上冒，混着
+粗茶的味道。桌上搁着几只粗瓷碗，碗底还留着水痕。
+LONG
+  ,
+  @LONG
+一副货担搁在墙边，担子上插着针线、脂粉、木梳。担子主人不在，东西却摆得整齐。
+LONG
+  ,
+  @LONG
+墙根下一片背阴，堆着些干草。日头照不到这里，比别处凉些。
+LONG
+  ,
+  @LONG
+窄巷中段，两侧山墙几乎要挨到一处，抬头只见一线天。风从这头灌到那头，呜呜地响。
+LONG
+  ,
+  @LONG
+一口老井，井台石沿被绳子磨出深深的凹槽。辘轳上还挂着半桶水，水面上浮着片落叶。
+LONG
+  ,
+  @LONG
+一户人家的门槛，木头被坐得发亮。门虚掩着，里头静悄悄的。
+LONG
+  ,
+  @LONG
+巷子越走越深，人声远了。风从巷口灌进来，带着点潮气。
+LONG
+  ,
+  @LONG
+一间塌了半边的废宅，门板斜挂着，院里长满齐膝的荒草。
+LONG
+});
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  int idx;
+  string sh, lg;
+
+  idx = y * 3 + x;
+  if (idx < 0 || idx >= 9) { sh = HIB "穷街" NOR; lg = "一条安静的巷子。\n"; }
+  else { sh = sc_short[idx]; lg = sc_long[idx]; }
+
+  room->set("short", sh);
+  room->set("long", lg);
+  room->set("no_fight", 1);
+  room->set("no_fly", 1);
+  room->set("NONPC", 1);
+  room->setup();
+}
+
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  object npc;
+  string *who = ({ "chabo", "huolang", "zuihan", "qigai", "shufu", "laoyu" });
+  int idx;
+
+  room->setup();
+
+  idx = y * 3 + x;
+  if (z != 0) return;
+  if (idx < 1 || idx > 6) return;
+
+  npc = new("/d/darenwu/npc/" + who[idx - 1]);
+  if (npc) npc->move(room);
+}

@@ -1,0 +1,84 @@
+// 《碧玉刀》—— 七公（城外破庙里的老乞丐）
+// 第四戒：不可与僧道乞丐一类人结怨
+//
+// ★ 这一幕是通关闸门：七公是唯一给出刀的线索的人。
+//    不施舍 → 拿不到线索 → 找不回刀 → 无法通关。
+// 记录：j5 = 0 走开 / 1 施舍 / 2 驱赶
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("七公", ({ "qi gong", "qigong", "lao qigai" }));
+  set("gender", "男性");
+  set("age", 68);
+  set("long", @LONG
+一个老乞丐缩在墙角，身上的衣服看不出原来的颜色。
+面前放着个缺了口的破碗，碗底只剩一层薄薄的干饭粒。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 500);
+  set("inquiry", ([
+    "刀": "七公抬了抬眼：「刀？老叫花没刀。不过听说过。」\n",
+    "白衣女子": "七公摇头：「那种人，老叫花哪敢多看。」\n",
+  ]));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIW "\n一个老乞丐缩在墙角，抬头看了$N一眼。\n" NOR, me);
+  message_vision(HIY "他浑浊的眼睛忽然亮了一下：「客官……赏口饭吧。」\n" NOR, me);
+  tell_object(me, HIG "（answer 给些吃的  /  answer 驱赶他  /  直接走开）\n" NOR);
+}
+
+int do_answer(string arg) {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么做？\n");
+
+  if (me->query("biyudao/j5")) {
+    tell_object(me, "七公点点头：「客官的心意，老叫花记下了。」\n");
+    return 1;
+  }
+
+  if (arg == "给些吃的" || arg == "施舍" || arg == "给" || arg == "给他") {
+    me->set("biyudao/j5", 1);
+    me->add("biyudao/trust", 1);
+    message_vision(HIW "\n$N蹲下来，把干粮和水壶一起递了过去。\n" NOR, me);
+    message_vision(HIY "七公愣了愣，才接过来。他的手很抖。\n" NOR, me);
+    message_vision(HIC "「好人。」他啃了两口，忽然压低声音：\n"
+      "「老叫花告诉你个事儿——今早镇上市集，\n"
+      "有个货郎把一柄白玉柄的小刀，卖给了一个白衣女子。」\n" NOR, me);
+    message_vision(HIY "七公又道：「那女子在湖边住。不过客官——\n"
+      "那种人，你可得自己拿主意。」\n" NOR, me);
+    me->set("biyudao/clue", 1);
+    return 1;
+  }
+  else if (arg == "驱赶他" || arg == "驱赶" || arg == "滚" || arg == "呵斥") {
+    me->set("biyudao/j5", 2);
+    me->add("biyudao/trust", -1);
+    message_vision(HIW "\n$N捏着鼻子退开一步，挥手喝道：「滚开。」\n" NOR, me);
+    message_vision(HIR "七公慢慢坐回墙角，吐了一口唾沫：\n"
+      "「呸。为富不仁的东西。」\n" NOR, me);
+    message_vision(HIY "他把破碗拉到自己跟前，再没看$N一眼。\n" NOR, me);
+    return 1;
+  }
+
+  return notify_fail("（answer 给些吃的 / answer 驱赶他）\n");
+}

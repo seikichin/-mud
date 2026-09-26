@@ -1,6 +1,10 @@
 #include <ansi.h>
 inherit ROOM;
 
+string stone();
+int do_answer(string arg);
+
+
 void create() {
   set("short", HIW "三生石" NOR);
   set("long", @LONG
@@ -31,7 +35,14 @@ LONG
   set("coor/y", 40);
   set("coor/z", -20);
   set("outdoors", "potboil");
-  setup();
+    set("item_desc", ([
+    "三生石" : (: stone :),
+    "石"     : (: stone :),
+    "石头"   : (: stone :),
+    "stone"  : (: stone :),
+  ]));
+
+setup();
 }
 
 
@@ -42,3 +53,95 @@ LONG
 ｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
 「————————————————-」
 */
+
+void init() {
+  add_action("do_answer", "answer");
+}
+
+string stone() {
+  object me;
+  string *w7 = ({ "小", "楼", "一", "夜", "听", "春", "雨" });
+  int *hole = ({ });
+  string line = "";
+  int i, k, need, ph;
+
+  me = this_player();
+  if (!me || !userp(me)) return "一块三人高的青石，石面如镜。\n";
+
+  ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 5)
+    return "一块三人高的青石，石面像蒙着一层水汽，什么也照不出来。\n";
+
+  if (ph >= 6)
+    return "石面上那行字已经散了，只留下淡淡的涟漪。\n";
+
+  need = 2 + random(2);
+  while (sizeof(hole) < need) {
+    k = random(7) + 1;
+    if (member_array(k, hole) == -1) hole += ({ k });
+  }
+  hole = sort_array(hole, 1);
+  me->set_temp("youming/hole", hole);
+
+  for (i = 0; i < 7; i++) {
+    if (member_array(i + 1, hole) != -1)
+      line = line + "□ ";
+    else
+      line = line + w7[i] + " ";
+  }
+
+  return
+    "一块三人高的青石，石面如镜。镜中缓缓浮出一行字：\n\n"
+    "\t\t" + line + "\n\n"
+    "　今生已知前生事， 三生石上留姓氏，\n"
+    "　不知来生他是谁， 饮汤便忘三生事。\n\n"
+    "（缺的那几个字，可以用 answer <字> 补上。）\n";
+}
+
+int do_answer(string arg) {
+  object me;
+  string *w7 = ({ "小", "楼", "一", "夜", "听", "春", "雨" });
+  int *hole;
+  string want = "", got = "";
+  int i, ph;
+
+  me = this_player();
+  ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 5) return notify_fail("你还没走到这里。\n");
+
+  if (ph >= 6) {
+    message_vision("$N对着石头又说了一遍。石面静悄悄的，没有回应。\n", me);
+    return 1;
+  }
+
+  hole = me->query_temp("youming/hole");
+  if (!hole || !sizeof(hole))
+    return notify_fail("你还没有仔细看过那块石头（look 三生石）。\n");
+
+  if (!arg || !sizeof(arg))
+    return notify_fail("你要补哪几个字？（answer <字>，按石头上的顺序连写）\n");
+
+  for (i = 0; i < sizeof(hole); i++)
+    want += w7[hole[i] - 1];
+
+  got = replace_string(arg, " ", "");
+  got = replace_string(got, "　", "");
+
+  if (got == want) {
+    REWARD_D->riddle_set(me, "幽冥渡", 6);
+    message_vision(HIC "石面忽然亮了起来。那一行字重新拼在了一起：\n" NOR, me);
+    message_vision(HIW "\t\t小 楼 一 夜 听 春 雨\n" NOR, me);
+    message_vision(CYN "石壁深处有个声音道：「你写对了字 ——」\n" NOR, me);
+    message_vision(CYN "「可你认得出，写这七个字的人是谁么？」\n" NOR, me);
+    tell_object(me, HIG "\n【幽冥渡·三生石】七个字齐了。上春雨楼去吧。\n" NOR);
+    tell_object(me, WHT "（春雨楼在最高处：出此地向西回到忘川河，再往上走。）\n\n" NOR);
+    return 1;
+  }
+
+  message_vision(HIW "石面泛起一圈涟漪，那行字散开了。\n" NOR, me);
+  message_vision(CYN "丁迷在旁冷冷道：「石头照见的，是你心里想的那个人。」\n" NOR, me);
+  tell_object(me, WHT "（你写的是：" + got + "。再看看石头。）\n" NOR);
+  return 1;
+}

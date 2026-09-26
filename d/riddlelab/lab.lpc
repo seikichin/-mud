@@ -1,0 +1,85 @@
+// 无尽窟 —— 动态谜题区域（随机迷宫）
+//
+// 机制：
+//   1. 迷宫拓扑由引擎 build_maze() 随机 DFS 挖通 —— 每次重建都不一样；
+//   2. 尺寸随谜题阶段递增（见 query_maze_size）；
+//   3. 每格的内容（描述 / 物件）由 lab_room.lpc 按坐标当场算出，没有手工房间；
+//   4. 阶段推进后调用 refresh_maze() —— 旧图整片销毁，下次进入重建新图。
+
+inherit "/std/room/vrm_dungeon";
+#include <ansi.h>
+
+#define RIDDLE_NAME "无尽窟"
+
+// 本局"窟心石"落在哪一格（区域对象不是 ROOM，没有 set()，用成员变量 + 访问函数）
+int tgt_x, tgt_y, tgt_z;
+
+int query_tgt_x() { return tgt_x; }
+int query_tgt_y() { return tgt_y; }
+int query_tgt_z() { return tgt_z; }
+
+void query_maze_size() {
+  object who;
+  int ph;
+
+  who = find_player(owner);
+  if (!who) return;
+
+  ph = REWARD_D->riddle_check(who, RIDDLE_NAME);
+  if (ph < 1) ph = 1;
+
+  // 第 1 阶 2x2x1 …… 第 5 阶 6x6x3
+  l = 2 + (ph - 1);
+  m = 2 + (ph - 1);
+  h = 1 + (ph - 1) / 2;
+
+  // 每局随机指定"窟心石"落在哪一格
+  tgt_x = random(l);
+  tgt_y = random(m);
+  tgt_z = random(h);
+}
+
+void create() {
+  set_inherit_room(__DIR__ "lab_room");
+  set_maze_long(2, 2, 1);
+  set_maze_spacing(1);
+  set_maze_refresh(0);
+
+  set_entry_dir("north");
+
+  set_link_entry_dir("out");
+  set_link_entry_room(__DIR__ "gate");
+  set_link_entry_room_x(0);
+  set_link_entry_room_y(0);
+  set_link_entry_room_z(0);
+
+  set_link_exit_dir("out");
+  set_link_exit_room(__DIR__ "gate");
+
+  set_entry_short(HIW "窟口" NOR);
+  set_entry_desc(@LONG
+石壁在这里豁开一道仅容一人侧身而入的裂隙，冷风从缝里渗出来。
+LONG
+  );
+
+  set_exit_short(HIW "窟底" NOR);
+  set_exit_desc(@LONG
+裂隙在此收束成一线微光，外面便是来时的石台。
+LONG
+  );
+
+  set_maze_room_short(HIB "无尽窟" NOR);
+  set_maze_room_desc( ({
+    @LONG
+四壁的岩石泛着湿冷的青光，脚下碎石发出细碎的声响。
+LONG
+  }) );
+}
+
+void setup_entry_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "gate");
+}
+
+void setup_exit_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "gate");
+}

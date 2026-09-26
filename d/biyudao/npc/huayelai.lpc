@@ -1,0 +1,92 @@
+// 《碧玉刀》—— 花夜来（西子湖畔的白衣女子）
+// 第七戒：千万不可和陌生的女人来往（最重要的一条）
+//
+// ★★★ 全卡高潮：
+//   ① 前六幕最多让 trust ±1，这一幕直接决定能否通关（刀）
+//   ② 她第一句话「你在找这个么」是饵——承认“我在找”＝承认自己丢了刀
+//   ③ 段玉破局不是“不近女色”，而是对一个女贼说了实话
+// 记录：j7 = 0 走开 / 1 诚实承认并取回 / 2 沉溺攀谈
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("白衣女子", ({ "baiyi nvzi", "nvzi", "girl", "huayelai" }));
+  set("gender", "女性");
+  set("age", 23);
+  set("long", @LONG
+一个白衣女子立在柳树下，手里把玩着一柄刀——
+白玉的柄，在雾里泛着温润的光。
+她眉眼很淡，笑起来的时候，眼里却没有笑意。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 30000);
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIC "\n湖上起了雾。一个白衣女子立在柳树下，手里把玩着一柄刀。\n" NOR, me);
+  message_vision(HIC "她笑吟吟地看着$N：「你在找这个么？」\n" NOR, me);
+  tell_object(me, HIG "（answer 是，是我丢的  /  answer 姑娘贵姓  /  直接走开）\n" NOR);
+}
+
+int do_answer(string arg) {
+  object me, knife;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么说？\n");
+
+  if (me->query("biyudao/j7")) {
+    tell_object(me, "雾里很静，柳条一下一下地扫着水面。\n");
+    return 1;
+  }
+
+  if (arg == "是，是我丢的" || arg == "是我丢的" || arg == "我丢了它" || arg == "我丢了刀") {
+    me->set("biyudao/j7", 1);
+    me->add("biyudao/trust", 1);
+
+    message_vision(HIW "\n那女子挑了下眉：「只要刀？」\n" NOR, me);
+    message_vision(HIW "$N没有去接，只是老老实实道：\n"
+      "「是我丢的。我是来送刀的，没看好它。」\n" NOR, me);
+    message_vision(HIC "她看了$N很久，忽然笑了。这一次眼里也有了笑。\n" NOR, me);
+    message_vision(HIC "「我见过的人里，你是头一个肯认的。」\n" NOR, me);
+    message_vision(HIC "她把刀抛了过来：「拿去吧。别再丢了。」\n" NOR, me);
+
+    me->set("biyudao/knife", 1);
+    me->set("biyudao/clue", 1);
+    knife = new("/d/chuenyu/npc/obj/bknife");
+    if (knife) {
+      if (!knife->move(me)) destruct(knife);
+    }
+    return 1;
+  }
+  else if (arg == "姑娘贵姓" || arg == "姑娘" || arg == "聊两句" || arg == "贵姓") {
+    me->set("biyudao/j7", 2);
+    me->add("biyudao/trust", -1);
+    message_vision(HIW "\n$N笑了笑，向前一步：「姑娘贵姓？」\n" NOR, me);
+    message_vision(HIC "她「嘶」了一声，眼里的那点兴趣淡了。\n" NOR, me);
+    message_vision(HIC "风把雾吹过来，她的身影在雾里淡了一淡——\n"
+      "等雾散时，柳树下已经没人了。\n" NOR, me);
+    message_vision(HIW "刀也没了。\n" NOR, me);
+    me->set("biyudao/gone", 1);
+    destruct(this_object());
+    return 1;
+  }
+
+  return notify_fail("（answer 是，是我丢的 / answer 姑娘贵姓）\n");
+}

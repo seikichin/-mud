@@ -1,0 +1,56 @@
+// 《大人物》—— 穷街巷陌（环境）
+//
+// 迷宫 = 环境：9 格巷子，6 位目击者各居一格（NPC 不写 random_move 就不会走动）。
+// 环境是静态的：每局会变的东西一律不放在这里，而由玩家身上的道具开局生成。
+
+inherit "/std/room/vrm_dungeon";
+#include <ansi.h>
+
+void query_maze_size() {
+  l = 3; m = 3; h = 1;
+}
+
+void create() {
+  set_inherit_room(__DIR__ "play_room");
+  set_maze_long(3, 3, 1);
+  set_maze_spacing(1);
+  set_maze_refresh(0);
+
+  set_entry_dir("north");
+
+  set_link_entry_dir("out");
+  set_link_entry_room(__DIR__ "entry");
+  set_link_entry_room_x(0);
+  set_link_entry_room_y(0);
+  set_link_entry_room_z(0);
+
+  set_link_exit_dir("out");
+  set_link_exit_room(__DIR__ "entry");
+
+  set_entry_short(HIW "街口" NOR);
+  set_entry_desc(@LONG
+一条窄街的入口。青石板被踩得溜光，两旁屋檐低垂，把天光挤成窄窄一条。
+LONG
+  );
+
+  set_exit_short(HIW "回街口" NOR);
+  set_exit_desc(@LONG
+转出巷子，又回到了方才的街口。
+LONG
+  );
+
+  set_maze_room_short(HIB "穷街" NOR);
+  set_maze_room_desc( ({
+    @LONG
+青石板路，两旁是低矮的瓦房，檐下晾着几件洗过的衣裳。
+LONG
+  }) );
+}
+
+void setup_entry_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "entry");
+}
+
+void setup_exit_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "entry");
+}

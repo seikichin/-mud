@@ -1,0 +1,68 @@
+// 《圆月弯刀》—— 入魔关守关者（卡⑥ 幽冥渡·阶段 1 发起人）
+//
+// 设计依据：
+//   小说 L1272「如果你做了我们的孙女婿，就绝不能再回到凡人的世界中去」
+//   小说 L1303「这把刀是绝对看不得的，看过这把刀的人，都已死在这把刀下」
+//
+// 递给玩家的核心信息：
+//   ① 要答得出「圣刀上的七个字」—— 引出全卡主线
+//   ② 「问过的人，都活不过三天」—— 预告「禁忌知识」的代价色彩
+
+#include <ansi.h>
+inherit NPC;
+
+int ask_rumo();
+
+void create() {
+  set_name("守关者", ({ "guard", "shouguan", "shou guan zhe" }));
+  set("gender", "男性");
+  set("age", 60);
+  set("long",
+    "一个披着黑色斗篷的人，始终站在那块血红的大字下面。\n"
+    "他的脸藏在兜帽里，看不见表情，只有斗篷在风里猎猎作响。\n"
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 100000);
+
+  set("chat_chance", 3);
+  set("chat_msg", ({
+    "守关者一动不动地立在山壁前，斗篷被风吹得猎猎作响。\n",
+    "守关者低声道：关、魔、入—— 这三个字，是从右往左念的。\n",
+  }));
+
+  set("inquiry", ([
+    "入魔"   : (: ask_rumo :),
+    "rumo"   : (: ask_rumo :),
+    "魔教"   : (: ask_rumo :),
+    "圣刀"   : (: ask_rumo :),
+    "七个字" : (: ask_rumo :),
+    "幽冥渡" : (: ask_rumo :),
+  ]));
+
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+int ask_rumo() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph >= 1) {
+    message_vision("$N藏在兜帽下的脸似乎动了一下：「往生道在东南。你出去一路往上，到千机阁，再向东走。」\n",
+      this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N缓缓抬起头来。兜帽下面只有一片阴影。\n", this_object(), me);
+  message_vision(HIR "「要入我教，先得过幽冥渡。」\n" NOR, this_object(), me);
+  message_vision(HIR "「过了往生道，江湖上就当已经死了你这个人。」\n" NOR, this_object(), me);
+  message_vision(HIY "「还有—— 教主若问起，你得答得出圣刀上的七个字。」\n" NOR, this_object(), me);
+  message_vision(HIW "「别问我。问过的人，都活不过三天。」\n" NOR, this_object(), me);
+  message_vision(CYN "「……我什么也没说。你若真想听，去问问往生道上那个人吧。」\n" NOR,
+    this_object(), me);
+
+  REWARD_D->riddle_set(me, "幽冥渡", 1);
+  tell_object(me, HIG "\n【你踏上幽冥渡了。】\n" NOR);
+  tell_object(me, WHT "（往生道在东南方：出关向上，到千机阁，一路向东。）\n\n" NOR);
+  return 1;
+}

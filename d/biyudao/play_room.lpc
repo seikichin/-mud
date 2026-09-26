@@ -1,0 +1,128 @@
+// 《碧玉刀》—— 九景场景表（按坐标给出）
+//
+// 坐标 idx = y * 3 + x
+//   (0,0)=0 入口格（play.lpc 的 set_entry_* 给描述，不经过本表）
+//   (1,0)=1 山脚·遇劫    第一戒  (2,0)=2 宝珠山庄  终局·对质
+//   (0,1)=3 客栈          第二戒  (1,1)=4 市集      ★刀丢失处  (2,1)=5 赌坊 第三戒
+//   (0,2)=6 破庙          第四戒  (1,2)=7 三岔路    第六戒      (2,2)=8 湖畔 第七戒
+
+inherit ROOM;
+#include <ansi.h>
+
+string *sc_short = ({
+  HIW "官道" NOR,
+  HIW "黑松山脚" NOR,
+  HIW "宝珠山庄" NOR,
+  HIW "悦来客栈" NOR,
+  HIW "黑松镇市集" NOR,
+  HIW "银钩赌坊" NOR,
+  HIW "城外破庙" NOR,
+  HIW "三岔路口" NOR,
+  HIC "西子湖畔" NOR,
+});
+
+string *sc_long = ({
+  "一条黄土官道。\n",
+  @LONG
+山脚下一块空地。路旁的老松被雷劈去半边，剩下的枝干斜斜地伸着，
+像一只伸出来的手。地上散落着几件行李，有的已被踩烂。
+LONG
+  ,
+  @LONG
+一座青砖大宅，门楣上悬着块朱漆匾额：「宝珠山庄」。
+门前石阶扫得干干净净，两盏灯笼却还没点。庄里静得出奇。
+LONG
+  ,
+  @LONG
+一间山间客栈，招牌上写「悦来」两个字，漆已剥落。
+堂里摆着四五张八仙桌，长凳横七竖八。灶上飘着馒头的热气。
+LONG
+  ,
+  @LONG
+一个不大的市集。几十个摊子挤在石板街两侧，卖鱼的、卖布的、卖面的，
+吆喝声混在一处。人挤得很，肩膀挨着肩膀。
+LONG
+  ,
+  @LONG
+赌坊里烟气腾腾，人声嗡嗡。几张赌台围满了人，桌上银钱堆得像小山。
+墙上挂着块匾，写着「小赌怡情」四个字，字却是歪的。
+LONG
+  ,
+  @LONG
+一座塌了半边的破庙。神像倒在地下，脸上结满了蛛网。
+角落里堆着些干草，看得出有人在这里过夜。
+LONG
+  ,
+  @LONG
+三条路在此分开：往左地势平坦，往右钻进林子，中间那条笔直向北。
+路口立着块指路石，字迹模糊不清。
+LONG
+  ,
+  @LONG
+一湖春水，烟波不动。岸边几株垂柳，柳条都垂到水里去了。
+湖上起了雾，白蒙蒙的一片，把对岸遮得看不分明。
+LONG
+});
+
+void create() {}
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  int idx;
+  string sh, lg;
+
+  idx = y * 3 + x;
+  if (idx < 0 || idx >= 9) { sh = HIB "黑松" NOR; lg = "山间小路。\n"; }
+  else { sh = sc_short[idx]; lg = sc_long[idx]; }
+
+  room->set("short", sh);
+  room->set("long", lg);
+  room->set("no_fight", 1);
+  room->set("no_fly", 1);
+  room->set("NONPC", 1);
+  room->setup();
+}
+
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  object npc;
+  int idx;
+
+  room->setup();
+  if (z != 0) return;
+
+  idx = y * 3 + x;
+
+  if (idx == 1) {
+    npc = new("/d/biyudao/npc/jiefei");
+    if (npc) npc->move(room);
+    npc = new("/d/biyudao/npc/wanglaoshi");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 2) {
+    npc = new("/d/biyudao/npc/lujiu");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 3) {
+    npc = new("/d/biyudao/npc/heer");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 4) {
+    npc = new("/d/biyudao/npc/lisi");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 5) {
+    npc = new("/d/biyudao/npc/huangmazi");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 6) {
+    npc = new("/d/biyudao/npc/qigong");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 7) {
+    npc = new("/d/biyudao/npc/laochen");
+    if (npc) npc->move(room);
+  }
+  else if (idx == 8) {
+    npc = new("/d/biyudao/npc/huayelai");
+    if (npc) npc->move(room);
+  }
+}

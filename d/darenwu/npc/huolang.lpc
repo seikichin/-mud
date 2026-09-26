@@ -1,0 +1,72 @@
+// 《大人物》—— 目击者：货郎
+
+inherit NPC;
+#include <ansi.h>
+
+// 前向声明：LPC 单趟编译，create() 里要用到它
+string ask_boss();
+
+void create() {
+  set_name("货郎", ({"huolang"}));
+  set("gender", "男性");
+  set("age", 30);
+  set("long", "挑着副货担的年轻人，担子上插着针线、脂粉、木梳，一路走一路吆喝。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("can_speak", 1);
+  set("inquiry", ([
+    "大人物": (: ask_boss :),
+    "那个人": (: ask_boss :),
+  ]));
+  setup();
+}
+
+// 说辞不写在这里 —— 回过头问玩家身上的道具要
+string ask_boss() {
+  object me = this_player();
+  string t;
+  t = me->query_temp("darenwu/tale/huolang");
+  if (!t) return "货郎摇摇头：“这我可说不好。”\n";
+  return "货郎压低声音：“" + t + "”\n";
+}
+
+// 把红丝巾给他看
+int accept_object(object who, object ob) {
+  string real, he;
+
+  if (!ob || !ob->query("darenwu_scarf")) return 0;
+
+  real = who->query_temp("darenwu/real");
+  he = (query("gender") == "女性") ? "她" : "他";
+
+  if (query("id") == real) {
+    if (REWARD_D->check_m_success(who, "穷街寻人")) {
+      tell_object(who, "他摆摆手：“这事你已经问明白了。”\n");
+      return 1;
+    }
+    tell_object(who, HIY ""+he+"接过丝巾，手指在巾角上停住了，脸色忽然一变。\n" NOR);
+    tell_object(who, HIY "“这东西……你从哪儿得来的？”"+he+"抬头看你，\n"
+                         "“我那天见的人，巾角上也沾着一样的印子。”\n" NOR);
+    tell_object(who, HIG ""+he+"凑近了些，声音压得极低：“他往"
+                         + who->query_temp("darenwu/dest") + "去了，还没走远。”\n" NOR);
+    REWARD_D->riddle_done(who, "穷街寻人", 10, 1);
+    ob->destruct();
+    return 1;
+  }
+
+  // 没见过的，却硬要冒认 —— 把丝巾骗走
+  tell_object(who, HIY ""+he+"接过丝巾翻来覆去看了半晌，忽然一拍大腿：“对！就是他！”\n" NOR);
+  tell_object(who, HIY "“你跟我来——”他领着你东拐西绕，越走越偏，\n"
+                       "忽然撒腿就跑，转眼没了影。手里那条丝巾，也跟着没了。\n" NOR);
+  who->delete_temp("darenwu/dest");
+  who->delete_temp("darenwu/item");
+  who->delete_temp("darenwu/when");
+  who->delete_temp("darenwu/real");
+  who->delete_temp("darenwu/odor");
+  who->delete_temp("darenwu/damp");
+  tell_object(who, HIR "你只好转回街口，重新来过。\n" NOR);
+  who->move("/d/darenwu/entry");
+  ob->destruct();
+  return 1;
+}

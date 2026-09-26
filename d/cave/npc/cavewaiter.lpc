@@ -1,6 +1,9 @@
 // waiter.c
+#include <ansi.h>
 inherit SMART_NPC;
 inherit F_VENDOR;
+
+int ask_kongque();
 
 void create() {
   set_name("大食堂跑堂", ({ "waiter" }));
@@ -37,6 +40,18 @@ void create() {
     (: auto_smart_fight(30) :),
   }));
 
+  set("chat_chance", 10);
+  set("chat_msg", ({
+    "大食堂跑堂一边擦桌子一边嘀咕：这鬼地方，也就孔雀山庄那样的地方才镇得住吧。。。\n",
+    "大食堂跑堂压低嗓子：听说地底下有人亮过一个白盒子，愣是没人敢动他。。。\n",
+  }));
+
+  set("inquiry", ([
+    "孔雀翎": (: ask_kongque :),
+    "kongque": (: ask_kongque :),
+    "kong que ling": (: ask_kongque :),
+  ]));
+
   set("rank_info/respect", "大师傅");
   set("vendor_goods", ([
     __DIR__ "obj/wineskin": 10,
@@ -52,4 +67,28 @@ void create() {
 void init() {
   ::init();
   add_action("do_vendor_list", "list");
+}
+
+int ask_kongque() {
+  object me = this_player();
+  int rumor = me->query_temp("kongquelin/rumor");
+
+  if (rumor >= 1) {
+    message_vision("$N把抹布往肩上一搭：都说过了，那玩意儿三百年没人见过——真真假假的，谁知道。\n",
+      this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N左右看了看，把抹布往肩上一搭，压低了声音：\n", this_object(), me);
+  message_vision(HIY "「客官是外头来的吧？这地界归青龙会管——可青龙会也有忌惮的东西。」\n" NOR,
+    this_object(), me);
+  message_vision(HIY "「听说南边孔雀山庄有一件暗器，叫做孔雀翎。三百年了，没人见过。」\n" NOR,
+    this_object(), me);
+  message_vision(HIY "「没见过的都说它有，见过的——都死了。」\n" NOR, this_object(), me);
+  message_vision("「紫电青霜阁的欧阳老板见识广，你去问他，他准知道。」\n", this_object(), me);
+
+  me->set_temp("kongquelin/rumor", 1);
+  me->set_temp("kongquelin/used", 0);
+  tell_object(me, HIG "\n【你打听到了「孔雀翎」的传闻】\n" NOR);
+  return 1;
 }

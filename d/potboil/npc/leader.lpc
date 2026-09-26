@@ -1,0 +1,78 @@
+// 《圆月弯刀》—— 春雨楼教主（卡⑥ 幽冥渡·终局结算）
+//
+// 设计依据：
+//   小说 L2357「刀光并不快，却像你看见月光一样，当你看见时，已经落在你身上。」
+//   小说 L2359「它出现在人间时，带来的并不一定是灾祸，有时也会为人们带来正义和幸福。」
+//   小说 L2363「青青的弯刀上，有一行很细很小的字，'小楼一夜听春雨。'」
+
+#include <ansi.h>
+inherit NPC;
+
+int ask_qianchen();
+
+void create() {
+  set_name("教主", ({ "leader", "jiaozhu", "jiao zhu" }));
+  set("gender", "男性");
+  set("age", 40);
+  set("long",
+    "他坐在小楼的窗前，背对着你，一直没有回头。\n"
+    "窗外的月光照进来，把人和那柄刀一起映在地上 —— 刀是弯的，\n"
+    "弯得像一轮圆月。\n"
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 500000);
+
+  set("chat_chance", 3);
+  set("chat_msg", ({
+    "教主望着窗外的月亮，一直没有回头。\n",
+    "教主低声道：小楼一夜听春雨……明朝何处见杏花。\n",
+  }));
+
+  set("inquiry", ([
+    "前尘"   : (: ask_qianchen :),
+    "入教"   : (: ask_qianchen :),
+    "幽冥渡" : (: ask_qianchen :),
+    "圣刀"   : (: ask_qianchen :),
+    "七个字" : (: ask_qianchen :),
+    "刀"     : (: ask_qianchen :),
+    "教主"   : (: ask_qianchen :),
+  ]));
+
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+int ask_qianchen() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (!ph) {
+    if (REWARD_D->check_m_success(me, "幽冥渡")) {
+      message_vision("$N仍没有回头：「你已经答过我了。」\n", this_object(), me);
+      return 1;
+    }
+    message_vision("$N仍没有回头：「你还没走过幽冥渡。去入魔关。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (ph < 6) {
+    message_vision("$N仍没有回头：「那七个字，你还没有凑齐。」\n", this_object(), me);
+    message_vision(CYN "「往生道给你头两个字，忘川河给你中间两个字，黄泉海底有后两个字。」\n" NOR,
+      this_object(), me);
+    message_vision(CYN "「凑齐了，到三生石前去答。」\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N终于回过头来。\n", this_object(), me);
+  message_vision(HIW "「你能从幽冥渡走回来，就已经不是原来的你了。」\n" NOR, this_object(), me);
+  message_vision(HIY "「小楼一夜听春雨 —— 这七个字，是谁刻上去的？」\n" NOR, this_object(), me);
+  message_vision(CYN "「那不是诗。那是刀上的字。」\n" NOR, this_object(), me);
+  message_vision(CYN "「刀是杀人的利器。可它出现在人间时，带来的并不一定是灾祸，」\n" NOR,
+    this_object(), me);
+  message_vision(CYN "「有时也会为人们带来正义和幸福。」\n" NOR, this_object(), me);
+  message_vision(HIG "「你走吧。江湖上已经当你死了 ——」\n" NOR, this_object(), me);
+  message_vision(HIG "「这个『死』字，是你自己挣来的活。」\n" NOR, this_object(), me);
+
+  REWARD_D->riddle_done(me, "幽冥渡", 10, 1);
+  return 1;
+}

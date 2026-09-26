@@ -1,0 +1,42 @@
+// 《碧玉刀》—— 王老实（商旅）
+// 明为受害者，实则是望风的同伙。他的作用是“埋线”：
+// 若玩家出手相救，他会看到玩家包袱里有重物。
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("王老实", ({ "wang laoshi", "wanglaoshi", "shanglv" }));
+  set("gender", "男性");
+  set("age", 41);
+  set("long", @LONG
+一个做小本生意的商旅，穿着洗得发白的蓝布衫，抱着个破包袱。
+他脸色发青，嘴唇抿得很紧。
+（仔细看，他鞋底沾着的红泥，和那劫匪脚上的一模一样。）
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 1000);
+  set("inquiry", ([
+    "劫匪": "王老实缩了缩脖子：「不……不认得。」\n",
+    "红泥": "王老实脸色一变，把脚往后缩了缩：「山路……山路都是红泥。」\n",
+  ]));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  if (interactive(me = this_player()) && !is_fighting() && query_temp("saved")) {
+    remove_call_out("thanks");
+    call_out("thanks", 3, me);
+  }
+}
+
+void thanks(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIY "王老实凑过来，压低声音：「恩公这是要往北去？\n"
+    "小的常走这条道——前面镇上，恩公可得留神自己的包袱。」\n" NOR, me);
+}

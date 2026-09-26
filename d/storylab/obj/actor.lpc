@@ -1,0 +1,25 @@
+// 虚拟演员 —— 由剧情驱动器 spawn，专供复现剧情对话
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("青衣人", ({ "qingyi ren", "qingyi", "actor" }));
+  set("gender", "男性");
+  set("age", 40);
+  set("long", "一个青衣斗笠的人，脸藏在阴影里，看不清。\n");
+  set("combat_exp", 100000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  setup();
+}
+
+void init() {
+  ::init();
+  add_action("do_look_qing", "qingyi");
+}
+
+int do_look_qing(string arg) {
+  tell_object(this_player(), HIW "青衣人没有动，只低声道：“时辰未到。”\n" NOR);
+  return 1;
+}

@@ -1,0 +1,18 @@
+// 《大人物》剧场 —— 演员：柳风骨
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("柳风骨", ({"liu fenggu", "liufenggu", "liu"}));
+  set("gender", "男性");
+  set("age", 38);
+  set("long", "一个青衣文士立在崖顶，衣襟被山风吹得猎猎作响，眉眼间有股子疏狂气。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("inquiry", ([
+    "大人物": "柳风骨淡淡道：“我？我算不得。真正的那个，从不说自己是。”\n",
+  ]));
+  setup();
+}

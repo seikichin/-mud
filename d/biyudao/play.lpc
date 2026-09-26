@@ -1,0 +1,59 @@
+// 《碧玉刀》—— 黑松山九景（环境）
+//
+// 迷宫 = 环境：房与房之间真实相连，玩家自己 go/look。
+// 九格对应小说七条戒律 + 起点 + 终局，全部由 play_room.lpc 按坐标给出。
+
+inherit "/std/room/vrm_dungeon";
+#include <ansi.h>
+
+void query_maze_size() {
+  l = 3; m = 3; h = 1;
+}
+
+void create() {
+  set_inherit_room(__DIR__ "play_room");
+  set_maze_long(3, 3, 1);
+  set_maze_spacing(1);
+  set_maze_refresh(0);
+
+  set_entry_dir("north");
+
+  set_link_entry_dir("out");
+  set_link_entry_room(__DIR__ "entry");
+  set_link_entry_room_x(0);
+  set_link_entry_room_y(0);
+  set_link_entry_room_z(0);
+
+  set_link_exit_dir("out");
+  set_link_exit_room(__DIR__ "entry");
+
+  set_entry_short(HIW "官道" NOR);
+  set_entry_desc(@LONG
+一条黄土官道从山脚蜿蜒而过。道旁立着块界石，上面的字被风雨蚀得
+模糊，只依稀认得出「黑松」两个字。
+
+再往北去，山势渐高，雾气也重了。
+LONG
+  );
+
+  set_exit_short(HIW "回官道" NOR);
+  set_exit_desc(@LONG
+转出山口，又回到了那条黄土官道。
+LONG
+  );
+
+  set_maze_room_short(HIB "黑松" NOR);
+  set_maze_room_desc( ({
+    @LONG
+山间小路，两旁是密密的松林。风穿过林子，呜呜地响。
+LONG
+  }) );
+}
+
+void setup_entry_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "entry");
+}
+
+void setup_exit_room_extra(object ob) {
+  ob->set("exits/out", __DIR__ "entry");
+}

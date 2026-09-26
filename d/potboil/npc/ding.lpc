@@ -6,6 +6,8 @@
 #include <ansi.h>
 #include <combat.h>
 inherit SMART_NPC;
+int ask_blade();
+
 void smart_fight();
 
 void create() {
@@ -72,7 +74,13 @@ void create() {
 
   set("death_msg", CYN "\n$N大叫道：你～～～～～～～～！\n" NOR);
 
-  setup();
+    set("inquiry", ([
+    "圣刀"   : (: ask_blade :),
+    "七个字" : (: ask_blade :),
+    "三生石" : (: ask_blade :),
+  ]));
+
+setup();
 
 
   weapon = carry_object("/obj/armor/cloth");
@@ -121,4 +129,32 @@ void smart_fight() {
     stop_busy();
 
   return;
+}
+
+
+int ask_blade() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 5) {
+    message_vision("$N穿着一身惨碧色的丧衣，冷冷道：「楼兰？唐门？那算甚么东西？」\n", this_object(), me);
+    message_vision("$N：「这石头照见的，是你心里想的那个人。还不到时候。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (me->query_temp("youming/told_ding")) {
+    message_vision("$N一动不动地站着：「有些事，你最好还是不要知道。」\n", this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N回过头，那双眼睛亮得不像活人。\n", this_object(), me);
+  message_vision(CYN "「这石头照见的，是你心里想的那个人。你要找的那七个字……」\n" NOR,
+    this_object(), me);
+  message_vision(HIY "「那是陆放翁的诗。你读过唐诗，便该想得起来。」\n" NOR, this_object(), me);
+  message_vision(HIW "「有些事，你最好还是不要知道。知道了，就一定会有灾祸。」\n" NOR,
+    this_object(), me);
+
+  me->set_temp("youming/told_ding", 1);
+  tell_object(me, HIG "\n【幽冥渡·三生石】那七个字，是陆放翁的诗（look 三生石 试试）。\n" NOR);
+  return 1;
 }

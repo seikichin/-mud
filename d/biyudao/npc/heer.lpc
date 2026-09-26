@@ -1,0 +1,80 @@
+// 《碧玉刀》—— 何二（悦来客栈店小二）
+// 第二戒：不可随意交结陌生的朋友
+// 记录：j2 = 0 走开 / 1 如实相告 / 2 吹嘘
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("何二", ({ "he er", "heer", "he" }));
+  set("gender", "男性");
+  set("age", 24);
+  set("long", @LONG
+一个机灵的店小二，肩上搭着条白巾，正麻利地擦着桌子。
+他嘴上招呼着客人，眼睛却总往人身上瞟。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 1500);
+  set("chat_chance", 3);
+  set("chat_msg", ({
+    "何二吆喝道：客官，打尖还是住店？\n",
+  }));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIW "\n何二笑着迎上来：「客官打哪儿来啊？」\n"
+    "「这黑松山一带最近可不太平。您这是要上哪儿去？」\n" NOR, me);
+  tell_object(me, HIG "（answer 如实相告  /  answer 吹嘘两句  /  直接走开）\n" NOR);
+}
+
+int do_answer(string arg) {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么说？\n");
+
+  if (me->query("biyudao/j2")) {
+    tell_object(me, "何二笑道：「客官方才不是说过了么。」\n");
+    return 1;
+  }
+
+  if (arg == "如实相告" || arg == "如实" || arg == "宝珠山庄") {
+    me->set("biyudao/j2", 1);
+    me->add("biyudao/trust", 1);
+    message_vision(HIW "\n$N在长凳上坐下，道：「实不相瞒，我要去宝珠山庄。」\n" NOR, me);
+    message_vision(HIY "何二擦桌子的手停了一下。\n" NOR, me);
+    message_vision(HIY "他凑近了些，声音压得很低：\n"
+      "「那您得当心了。这两天，庄子上到处在打听一个带刀的年轻人。」\n" NOR, me);
+    message_vision(HIW "何二又道：「听说赛云庄的卢九爷也到了此地。他脾气怪，\n"
+      "可从不冤枉人。」\n" NOR, me);
+    me->set("biyudao/warn", 1);
+    return 1;
+  }
+  else if (arg == "吹嘘两句" || arg == "吹嘘" || arg == "吹牛") {
+    me->set("biyudao/j2", 2);
+    message_vision(HIW "\n$N一拍桌子，说起自家的家世、身手、见过的大人物。\n" NOR, me);
+    message_vision(HIY "何二一边听一边点头，脸上的笑却淡了。\n" NOR, me);
+    message_vision(HIY "他转身进了灶房——过了一会儿，后门悄悄开了，\n"
+      "一个半大孩子钻了出去，直奔镇上。\n" NOR, me);
+    me->set("biyudao/leak", 1);
+    return 1;
+  }
+
+  return notify_fail("（answer 如实相告 / answer 吹嘘两句）\n");
+}

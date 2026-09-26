@@ -43,15 +43,16 @@ string stone() {
   } else {
     tell_object(me, "一块表面十分平滑的白石，上面平铺了一张宣纸，上面写了些字：\n\n");
     tell_object(me, query("final"));
-    tell_object(me, "其中似乎少了三个字，纸边摆着现成的笔墨。 \n");
+    tell_object(me, "其中缺了六个字，纸边摆着现成的笔墨。 \n");
   }
   return "";
 }
 
 
 int do_write(string arg) {
-  object me, room;
+  object me, room, obj;
   string msg, msg1, msg2;
+  int n;
 
   me = this_player();
   if (query("marks/finished")) {
@@ -74,6 +75,21 @@ int do_write(string arg) {
 
   set("marks/finished", 1);
   me->set_temp("marks/guest", 1);
+  if (!REWARD_D->check_m_success(me, "三入神水")) {
+    tell_object(me, "提笔落下的一瞬，满室钟乳石竟齐齐映出光来。石壁深处传来一个很轻的声音，像叹息：\n"
+      + "「你写对了字——可你认得出，写这词的人是谁么？」\n"
+      + "那声音顿了顿：「清平剑客的旧居，就在这水底。你已经站在门口了。」\n");
+    me->set("marks/enter_ss/白石", 1);
+    n = (me->query("marks/enter_ss/钓鱼") ? 1 : 0)
+      + (me->query("marks/enter_ss/白石") ? 1 : 0)
+      + (me->query("marks/enter_ss/风筝") ? 1 : 0);
+    REWARD_D->riddle_set(me, "三入神水", n);
+    if (n >= 3) {
+      REWARD_D->riddle_done(me, "三入神水", 20, 1);
+      obj = new(AREA_SHENSHUI "obj/kuzhi");
+      if (objectp(obj)) obj->move(me);
+    }
+  }
   tell_object(me, "你只觉得后脑勺似乎被什么东西叮了一下。\n");
   me->unconcious();
   message("vision", "你只觉得眼前一花，似有一个人影掠过，" + me->name() + "已经失去了踪影。\n", environment(me), me);
@@ -88,31 +104,48 @@ int do_write(string arg) {
 
 void reorder() {
 
-  string final, poem;
-  int num1, num2, num3;
+  string final, s1, s2, s3;
 
-  num1 = random(12) * 2 + 2;
-  num2 = random(18) * 2 + 24;
-  num3 = random(14) * 2 + 60;
+  // poem1 共 45 字：浩浩愁茫茫劫短歌终明月缺郁郁佳城中有碧血
+  //                碧亦有时尽血亦有时灭一缕香魂无断绝是耶非耶化为蝴蝶
+  // 三处各缺二字，缺字都留在能由上下文推出的位置。
 
-  poem = poem1[0..num1 - 1] + "□" + poem1[num1 + 2..num2 - 1] + "□"
-    +poem1[num2 + 2..num3 - 1] + "□" + poem1[num3 + 2..89];
+  // 缺一：「郁郁佳城」
+  if (random(2)) {
+    set("num1", poem1[12..13]);
+    s1 = "□□" + poem1[14..15];
+  } else {
+    set("num1", poem1[14..15]);
+    s1 = poem1[12..13] + "□□";
+  }
 
-  final = "\n		" + poem[0..5] + "，" + poem[6..11] + "，\n"
-    + "		" + poem[12..17] + "，" + poem[18..23] + "。\n"
-    + "		" + poem[24..31] + "，" + poem[32..39] + "。\n"
-    + "		" + poem[40..49] + "，" + poem[50..59] + "，\n"
-    + "		" + poem[60..73] + "！\n"
-    + "		" + poem[74..81] + "，" + poem[82..89] + "。\n\n";
+  // 缺二：「血亦有时灭」
+  if (random(2)) {
+    set("num2", poem1[26..27]);
+    s2 = poem1[25..25] + "□□" + poem1[28..29];
+  } else {
+    set("num2", poem1[28..29]);
+    s2 = poem1[25..27] + "□□";
+  }
 
+  // 缺三：「化为蝴蝶」
+  if (random(2)) {
+    set("num3", poem1[41..42]);
+    s3 = "□□" + poem1[43..44];
+  } else {
+    set("num3", poem1[43..44]);
+    s3 = poem1[41..42] + "□□";
+  }
 
-  set("num1", poem1[num1..num1 + 1]);
-  set("num2", poem1[num2..num2 + 1]);
-  set("num3", poem1[num3..num3 + 1]);
+  final = "\n\t\t" + poem1[0..5] + "，" + poem1[6..11] + "，\n"
+    + "\t\t" + s1 + "，" + poem1[16..19] + "。\n"
+    + "\t\t" + poem1[20..24] + "，" + s2 + "。\n"
+    + "\t\t" + poem1[30..36] + "！\n"
+    + "\t\t" + poem1[37..40] + "？" + s3 + "。\n\n";
+
   set("final", final);
   return;
 }
-
 void reset() {
   ::reset();
   reorder();

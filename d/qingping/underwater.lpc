@@ -28,7 +28,8 @@ void init() {
 }
 
 int do_push(string arg) {
-  object me, room;
+  object me, room, obj;
+  int n;
 
   me = this_player();
   if (!arg || (arg != "stone" && arg != "石头"))
@@ -36,12 +37,26 @@ int do_push(string arg) {
   if (me->query_temp("marks/opened")) {
     message_vision("\n\n$N伸手向石头推去，石头随着你手上的力道向一边滑开。\n", me);
     message_vision("\n\n湖中的水突然向石后的空洞涌去！$N的头被水流带动，狠狠地撞在了石头上！\n\n\n", me);
+    if (!REWARD_D->check_m_success(me, "三入神水")) {
+      tell_object(me, "石头滑开，湖水倒灌。眼前一黑之前，你恍惚看见池边坐着个垂钓的老人——\n"
+        + "他的鱼竿上不挂饵，只挂着一小截枯枝。\n"
+        + "老人头也不回，声音却清楚得很：「清平剑客已不在清平。要找他，得到水里去找。」\n");
+      me->set("marks/enter_ss/钓鱼", 1);
+      n = (me->query("marks/enter_ss/钓鱼") ? 1 : 0)
+        + (me->query("marks/enter_ss/白石") ? 1 : 0)
+        + (me->query("marks/enter_ss/风筝") ? 1 : 0);
+      REWARD_D->riddle_set(me, "三入神水", n);
+      if (n >= 3) {
+        REWARD_D->riddle_done(me, "三入神水", 20, 1);
+        obj = new(AREA_SHENSHUI "obj/kuzhi");
+        if (objectp(obj)) obj->move(me);
+      }
+    }
     me->set_temp("marks/guest", 1);
     me->unconcious();
     room = find_object(AREA_SHENSHUI "woshi2");
     if (!objectp(room)) room = load_object(AREA_SHENSHUI "woshi2");
     me->move(room);
-    me->set("marks/enter_ss/钓鱼", 1);
   } else
     message_vision("$N使出浑身的力气，石头还是纹丝不动。\n", me);
   return 1;

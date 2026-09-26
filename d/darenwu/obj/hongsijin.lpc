@@ -1,0 +1,92 @@
+// 《大人物》—— 剧情道具：红丝巾
+//
+// 它只做两件事：
+//   1. 提供一条环境给不出的命令 smell —— 虚拟房间写不了 add_action；
+//   2. 开局把"本局"的剧情数据生成到玩家身上。它自己不存进度、不做面板。
+// 数据全在玩家身上：darenwu/dest、darenwu/item、darenwu/when、darenwu/real、
+// darenwu/odor、darenwu/damp、darenwu/tale/<目击者>。
+// 目击者的 inquiry 回过头来问玩家要，NPC 自身不含剧情。
+
+inherit ITEM;
+#include <ansi.h>
+
+#define WIT ({"chabo", "huolang", "zuihan", "qigai", "laoyu", "shufu"})
+
+void create() {
+  set_name("红丝巾", ({"hong sijin", "hongsijin", "sijin", "scarf"}));
+  set_weight(1);
+  set("unit", "条");
+  set("darenwu_scarf", 1);
+  set("no_drop", 1);
+  set("no_sell", 1);
+  set("no_get", 1);
+  set("long", @LONG
+一条洗得发白的红丝巾，边角起了毛。巾子上有几处洗不掉的痕迹，凑近了
+看，像是蹭上去的什么东西。
+（smell sijin 闻一闻。）
+LONG
+  );
+}
+
+void init() {
+  if (this_player() == environment())
+    add_action("do_smell", "smell");
+}
+
+// 开局：把本局的真相与六条说辞生成到玩家身上
+void start_round(object me) {
+  string *dest = ({"城北", "渡口", "山道", "赌坊"});
+  string *item = ({"松香", "老酒", "折扇", "新布鞋"});
+  string *when = ({"天刚亮", "日上三竿", "晌午", "日落时候"});
+  string *odor = ({"松节油的气味", "一股陈年老酒气", "淡淡的墨香", "新布浆过的气味"});
+  string *damp = ({"还潮着，沾着露水", "被日头晒得发脆",
+                   "上面积着些细灰", "摸着有些发凉"});
+  int di, ii, wi, real, i, j;
+  string d, it, w;
+
+  di = random(4); ii = random(4); wi = random(4);
+  real = random(6) + 1;
+
+  me->set_temp("darenwu/dest", dest[di]);
+  me->set_temp("darenwu/item", item[ii]);
+  me->set_temp("darenwu/when", when[wi]);
+  me->set_temp("darenwu/real", WIT[real - 1]);
+  me->set_temp("darenwu/odor", odor[ii]);
+  me->set_temp("darenwu/damp", damp[wi]);
+
+  for (i = 1; i <= 6; i++) {
+    d = dest[di]; it = item[ii]; w = when[wi];
+    if (i != real) {
+      // 假话者：随身物或时辰必错一处 —— 所以对不上丝巾上的气味与干湿
+      if (random(2) == 0) {
+        j = random(4);
+        while (j == ii) j = random(4);
+        it = item[j];
+      } else {
+        j = random(4);
+        while (j == wi) j = random(4);
+        w = when[j];
+      }
+    }
+    me->set_temp("darenwu/tale/" + WIT[i - 1],
+      "我看见那个人往" + d + "去了，随身带着" + it + "，那会儿是" + w + "。");
+  }
+}
+
+int do_smell(string arg) {
+  object me = this_player();
+  string s, w;
+
+  if (!me) return 0;
+  if (!arg || (!id(arg) && arg != "红丝巾"))
+    return notify_fail("你要闻什么？\n");
+
+  s = me->query_temp("darenwu/odor");
+  w = me->query_temp("darenwu/damp");
+  if (!s) return notify_fail("巾子上没什么味道。\n");
+
+  message_vision("$N把红丝巾凑到鼻端，细细地闻。\n", me);
+  tell_object(me, "巾子上有一股" + s + "。\n");
+  tell_object(me, "再一摸，巾角" + w + "。\n");
+  return 1;
+}

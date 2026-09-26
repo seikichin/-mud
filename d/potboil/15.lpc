@@ -13,9 +13,9 @@ LONG
     "eastdown": __DIR__ "25",
   ]));
 
-  /*	set("objects", ([
-	__DIR__"npc/wall" : 1,
-					]) );*/
+  set("objects", ([
+	__DIR__ "npc/leader" : 1,
+					]));
 
   set("coor/x", 10);
   set("coor/y", 50);

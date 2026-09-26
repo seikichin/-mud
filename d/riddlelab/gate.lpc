@@ -1,0 +1,55 @@
+// 无尽窟 —— 窟口石台（谜题起点）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "窟口石台" NOR);
+  set("long", @LONG
+一方半嵌进山体的石台，台面被磨得溜光。石台尽头的岩壁上裂着一道窄缝，
+风从缝里渗出来，带着地底深处才有的阴冷。台角搁着一盏旧铜灯，灯芯还亮
+着，不知是谁留下的。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out": "/d/oldpine/cliff1",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_enter", "enter");
+  add_action("do_enter", "jinru");
+}
+
+int do_enter(string arg) {
+  object me, ent;
+  int ph;
+
+  me = this_player();
+  if (!me) return 0;
+
+  if (REWARD_D->check_m_success(me, "无尽窟")) {
+    tell_object(me, "裂隙已经闭合了。\n");
+    return 1;
+  }
+
+  ent = load_object("/d/riddlelab/lab/" + me->query("id") + "/entry");
+  if (!ent)
+    ent = "/d/riddlelab/lab"->query_maze_room(me->query("id") + "/entry");
+  if (!ent)
+    return notify_fail("裂隙深处似乎被什么堵住了。\n");
+
+  ph = REWARD_D->riddle_check(me, "无尽窟");
+  if (ph < 1) {
+    REWARD_D->riddle_set(me, "无尽窟", 1);
+    tell_object(me, HIY "铜灯的火焰晃了一下。你踏上石台，脚下的回响一直往下沉。\n" NOR);
+  }
+
+  me->delete_temp("riddlelab/busy");
+  me->move(ent);
+  tell_object(me, HIC "你侧身挤进裂隙，身后那点光立刻被黑暗吞掉了。\n" NOR);
+  return 1;
+}

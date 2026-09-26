@@ -1,0 +1,18 @@
+// 《大人物》剧场 —— 演员：金大胡子
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("金大胡子", ({"jin dahuzi", "jinhuzi", "huzi"}));
+  set("gender", "男性");
+  set("age", 45);
+  set("long", "满脸大胡子的汉子，坐在赌台后头，眯着眼看每一注钱，指头上戴着个金戒指。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("inquiry", ([
+    "大人物": "金大胡子哈哈大笑：“输钱不皱眉头，才算个人物。小姑娘，你还差得远。”\n",
+  ]));
+  setup();
+}

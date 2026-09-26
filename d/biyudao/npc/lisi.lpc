@@ -1,0 +1,96 @@
+// 《碧玉刀》—— 李四（黑松镇货郎）
+// 第五戒：钱财不可露白
+// 记录：j3 = 0 走开 / 1 慷慨买货 / 2 呵斥推开
+// ※ 无论怎么选，刀都会丢（剧情推进力）。
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("李四", ({ "li si", "lisi", "huolang" }));
+  set("gender", "男性");
+  set("age", 30);
+  set("long", @LONG
+一个挑担子的货郎，担子上插满了针线、脂粉、木梳。
+他笑脸很热闹，眼神却很散——总在往别处膘。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 1200);
+  set("inquiry", ([
+    "货": "李四笑道：「客官随便看，都是南边来的好东西。」\n",
+    "刀": "李四一怔：「刀？小的只卖针线，不卖刀。」\n",
+  ]));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+    remove_call_out("steal_knife");
+    call_out("steal_knife", 7, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIW "\n一个货郎挑着担子挤过来，笑呵呵道：\n"
+    "「客官看看我这货？都是南边来的好东西——」\n" NOR, me);
+  message_vision(HIY "他忽然顿住了，眼睛直直地盯着$N的腰间。\n" NOR, me);
+  tell_object(me, HIG "（answer 买两件  /  answer 推开他  /  直接走开）\n" NOR);
+}
+
+/* 刀在这时候丢——无论玩家怎么选 */
+void steal_knife(object me) {
+  object knife;
+
+  if (!me) return;
+  if (me->query("biyudao/lost")) return;
+
+  knife = present("knife", me);
+  if (!knife) return;
+
+  me->set("biyudao/lost", 1);
+  destruct(knife);
+
+  tell_object(me, HIR "\n人堆里有人撞了你一下，你回头时，那人已挤远了。\n" NOR);
+  tell_object(me, HIW "你下意识摸了摸腰间——那里空了。\n" NOR);
+}
+
+int do_answer(string arg) {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么做？\n");
+
+  if (me->query("biyudao/j3")) {
+    tell_object(me, "李四已经挑着担子挤进人堆里了。\n");
+    return 1;
+  }
+
+  if (arg == "买两件" || arg == "买货" || arg == "买") {
+    me->set("biyudao/j3", 1);
+    me->add("biyudao/trust", 1);
+    message_vision(HIW "\n$N随手拿了两件，也没还价，把碎银递了过去。\n" NOR, me);
+    message_vision(HIY "李四颠了颠银子，笑得更热阔了：\n"
+      "「客官真是爽快人！」\n" NOR, me);
+    return 1;
+  }
+  else if (arg == "推开他" || arg == "推开" || arg == "呵斥") {
+    me->set("biyudao/j3", 2);
+    message_vision(HIW "\n$N皱了皱眉，抬手把那担子推开：\n"
+      "「走开，别挡道。」\n" NOR, me);
+    message_vision(HIY "李四一个趔趄，险险扶住担子。\n" NOR, me);
+    message_vision(HIY "他低头让开了路，嘴里却咕哝了一句什么。\n" NOR, me);
+    return 1;
+  }
+
+  return notify_fail("（answer 买两件 / answer 推开他）\n");
+}

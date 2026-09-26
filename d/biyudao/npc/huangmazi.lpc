@@ -1,0 +1,116 @@
+// 《碧玉刀》—— 黄麻子（银钩赌坊职业赌手）
+// 第三戒：不可和陌生人赌钱
+// 取用自 d/fy/npc/dice_thrower.lpc（全库仅 3 处 do_bet）
+//
+// ★ 核心立意：上桌赌钱反而是加分项——因为“赌钱时最能看出人品”。
+//    下注多少、押什么都不影响结果，只有“守不守规矩”影响。
+// 记录：j4 = 0 不赌 / 1 公平赌 / 2 出千
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("黄麻子", ({ "huang mazi", "huangmazi", "huang" }));
+  set("gender", "男性");
+  set("age", 33);
+  set("title", HIW "银钩手" NOR);
+  set("long", @LONG
+一个满脸麻子的中年人，手指又长又白。他手里晃着三颗骰子，
+骰子在指缝里滚来滚去，从不落地。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 20000);
+  set_skill("throwing", 200);
+  set("chat_chance", 5);
+  set("chat_msg", ({
+    "黄麻子晃了晃骰子，叫道：小赌可以养家糊口，大赌可以定国安邦。来吧！\n",
+  }));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_bet", "bet");
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIW "\n黄麻子笑咪咪地招手：「这位" + RANK_D->query_respect(me)
+    + "，过来赌两手，开开心吧。」\n" NOR, me);
+  message_vision(HIY "他把骰子往桌上一放：「小赌可以养家糊口，大赌可以定国安邦。」\n" NOR, me);
+  tell_object(me, HIG "（bet <点数0-18> <银两>  /  answer 出千  /  直接走开）\n" NOR);
+}
+
+int do_bet(string arg) {
+  int t, amt;
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+
+  if (!arg || !sscanf(arg, "%d %d", t, amt))
+    return notify_fail("bet <点数0-18> <银两>\n");
+  if (t < 0 || t > 18)
+    return notify_fail("点数只可从零到十八。\n");
+  if (amt < 1)
+    return notify_fail("赌注也太少了。\n");
+
+  if (me->query("biyudao/j4")) {
+    tell_object(me, "黄麻子笑道：「一局就够了。台子上的事，一局就能看出个八九分。」\n");
+    return 1;
+  }
+
+  me->set("biyudao/j4", 1);
+  me->add("biyudao/trust", 1);
+
+  message_vision(HIW "\n$N坐了下来，把银子推到桌上，押了" + t + "点。\n" NOR, me);
+  if (random(3) == 0) {
+    message_vision(HIY "骰子滴溜溜转定——竟然赢了。\n" NOR, me);
+    message_vision(HIW "$N怔了一下，却只是把赢来的银子又推了回去。\n" NOR, me);
+  }
+  else {
+    message_vision(HIY "骰子转定——输了。\n" NOR, me);
+    message_vision(HIW "$N只笑了笑，把银子推了过去，眉头都没皱一下。\n" NOR, me);
+  }
+
+  message_vision(HIC "黄麻子眯着眼看了$N半晌，缓缓道：\n"
+    "「输钱不皱眉头的，这台子上就你一个。」\n" NOR, me);
+  message_vision(HIW "他把骰子收进袖子里，道：「往北去的人多，\n"
+    "能守住自己那双手的却少。」\n" NOR, me);
+  return 1;
+}
+
+int do_answer(string arg) {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么做？\n");
+
+  if (me->query("biyudao/j4")) {
+    tell_object(me, "黄麻子摆摆手：「够了，够了。」\n");
+    return 1;
+  }
+
+  if (arg == "出千" || arg == "作弊" || arg == "动手脚") {
+    me->set("biyudao/j4", 2);
+    me->add("biyudao/trust", -1);
+    message_vision(HIW "\n$N指尖在骰子上暗动了一下。\n" NOR, me);
+    message_vision(HIR "黄麻子的手忽然扣住了$N手腕：\n"
+      "「小兄弟，这儿可是银钩赌坊。」\n" NOR, me);
+    message_vision(HIR "两个壮汉从帘后闪出来，把$N“请”了出去。\n" NOR, me);
+    me->set("biyudao/cheat", 1);
+    return 1;
+  }
+
+  return notify_fail("（bet <点数0-18> <银两> / answer 出千）\n");
+}

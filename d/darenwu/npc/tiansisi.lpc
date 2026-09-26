@@ -1,0 +1,18 @@
+// 《大人物》剧场 —— 演员：田思思
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("田思思", ({"tian sisi", "tiansisi", "sisi"}));
+  set("gender", "女性");
+  set("age", 17);
+  set("long", "一个十六七岁的少女，穿杏黄衫子，眼睛很亮，行李只有一个小小的蓝布包袱。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("inquiry", ([
+    "大人物": "田思思抿着嘴：“我要找一个真正的大人物——不是那种只会说好听话的。”\n",
+  ]));
+  setup();
+}

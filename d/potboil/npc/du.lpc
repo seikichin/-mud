@@ -6,6 +6,8 @@
 #include <ansi.h>
 #include <combat.h>
 inherit SMART_NPC;
+int ask_river();
+
 void smart_fight();
 
 void create() {
@@ -46,7 +48,13 @@ void create() {
 
   set("death_msg", CYN "\n$N大叫道：你～～～～～～～～！\n" NOR);
 
-  setup();
+    set("inquiry", ([
+    "忘川"   : (: ask_river :),
+    "过河"   : (: ask_river :),
+    "桥"     : (: ask_river :),
+  ]));
+
+setup();
 
   weapon = carry_object("/obj/armor/cloth");
   weapon->set_name("平江绣", ({ "cloth" }));
@@ -99,4 +107,35 @@ void smart_fight() {
 
   perform_busy(j);
   return;
+}
+
+
+int ask_river() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 2) {
+    message_vision("$N冷冷地打量着你：「你还没走到往生道。回去。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (ph >= 4) {
+    message_vision("$N抬起马连坡大草帽，拿眼睛瞟了你一眼：「桥在那儿。过去吧。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (ph == 3) {
+    message_vision("$N：「留下一样东西。金子(pay gold)、兵器(pay weapon)，还是记忆(pay memory)？」\n",
+      this_object(), me);
+    return 1;
+  }
+
+  REWARD_D->riddle_set(me, "幽冥渡", 3);
+  message_vision("$N细狭的眼睛里露出一丝讥嘲的笑容，右手一招，抬起草帽。\n", this_object(), me);
+  message_vision(CYN "「这条河叫忘川。河上有桥。」\n" NOR, this_object(), me);
+  message_vision(HIR "「不过 —— 过桥的人，要留下一样东西。」\n" NOR, this_object(), me);
+  message_vision(WHT "「金子(pay gold)、兵器(pay weapon)，还是你的记忆(pay memory)？」\n" NOR,
+    this_object(), me);
+  message_vision(WHT "「你自己挑。」\n" NOR, this_object(), me);
+  return 1;
 }

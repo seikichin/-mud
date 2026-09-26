@@ -1,0 +1,50 @@
+// 《大人物》—— 戏台口（入口）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "戏台口" NOR);
+  set("long", @LONG
+一座旧戏台的后台。墙上挂满褪了色的行头，一面铜镜照出你自己。
+台口垂着厚厚的幔帐，帐子后面隐约有锣鼓声——像是已经开演了很久，
+又像还没开场。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("NONPC", 1);
+  set("exits", ([
+    "out": "/d/oldpine/cliff1",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_enter", "enter");
+  add_action("do_enter", "jinru");
+}
+
+int do_enter(string arg) {
+  object me, ent, scarf;
+
+  me = this_player();
+  if (!me) return 0;
+
+  scarf = present("hongsijin", me);
+  if (!scarf) {
+    scarf = new(__DIR__ "obj/hongsijin");
+    if (scarf) {
+      scarf->move(me);
+      scarf->start_round(me);
+    }
+  }
+
+  ent = load_object("/d/darenwu/play/" + me->query("id") + "/entry");
+  if (!ent) ent = "/d/darenwu/play"->query_maze_room(me->query("id") + "/entry");
+  if (!ent) return notify_fail("巷口挤满了人，一时挤不进去。\n");
+
+  me->move(ent);
+  message_vision(HIW "$N侧身挤进人群，走进那条窄巷。\n" NOR, me);
+  return 1;
+}

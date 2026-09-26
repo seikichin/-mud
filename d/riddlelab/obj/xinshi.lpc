@@ -1,0 +1,16 @@
+// 窟心石 —— 无尽窟的过关信物
+
+inherit ITEM;
+
+void create() {
+  set_name("窟心石", ({ "ku xin shi", "xinshi", "shi" }));
+  set_weight(200);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "枚");
+    set("value", 0);
+    set("long", "一枚拇指大的石珠，通体温润，内里似有极细的纹路在缓缓游动。\n");
+  }
+  ::init_item();
+}

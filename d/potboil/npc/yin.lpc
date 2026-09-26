@@ -6,6 +6,8 @@
 #include <ansi.h>
 #include <combat.h>
 inherit SMART_NPC;
+int ask_blade();
+
 void smart_fight();
 
 void create() {
@@ -51,7 +53,13 @@ void create() {
 
   set("death_msg", CYN "\n$N大叫道：你～～～～～～～～！\n" NOR);
 
-  setup();
+    set("inquiry", ([
+    "圣刀"   : (: ask_blade :),
+    "七个字" : (: ask_blade :),
+    "刀"     : (: ask_blade :),
+  ]));
+
+setup();
 
   weapon = carry_object("/obj/weapon/sword");
   weapon->set_name("碧嶙剑", ({ "sword" }));
@@ -90,4 +98,33 @@ mapping ob_hit(object attacker, object victim, int damage) {
   victim->perform_busy(1);
   data["msg"] = CYN "$n白袍鼓动，借$N一击之力向后轻飘飘的退了开去。\n" NOR;
   return data;
+}
+
+
+int ask_blade() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 3) {
+    message_vision("$N阴恻恻道：「先跟杜七说话。俺不管事。」\n", this_object(), me);
+    return 1;
+  }
+  if (ph < 4) {
+    message_vision("$N阴恻恻道：「东西还没放上石台呢。急什么。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (me->query_temp("youming/told_yin")) {
+    message_vision("$N阴恻恻道：「说了就是说了。再问，俺也吐不出第二个字。」\n", this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N把那顶无常高冠扶了扶，从白麻长袍里伸出手来。\n", this_object(), me);
+  message_vision(CYN "「剩下的你问杜七。俺只说一个字。」\n" NOR, this_object(), me);
+  message_vision(HIY "「第五个字…… 是用耳朵听的那个字。」\n" NOR, this_object(), me);
+  message_vision(WHT "「后头两个字，你自己下水去看吧 —— 海底有东西。」\n" NOR, this_object(), me);
+
+  me->set_temp("youming/told_yin", 1);
+  tell_object(me, HIG "\n【幽冥渡·忘川河】圣刀第五字，是「听」。\n" NOR);
+  return 1;
 }

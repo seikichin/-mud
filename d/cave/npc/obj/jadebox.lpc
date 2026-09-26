@@ -1,3 +1,4 @@
+#include <ansi.h>
 inherit ITEM;
 void create() {
   set_name("雀翎玉盒", ({ "jadebox", "box", "jade box" }));
@@ -21,20 +22,122 @@ int is_container() {
 }
 
 void init() {
-  if (this_player() == environment())
+  if (this_player() == environment()) {
     add_action("do_open", "open");
+    add_action("do_show", "show");
+  }
 }
+
 int do_open(string arg) {
   object me, ob;
-  if (!arg || arg != "jadebox")
+  if (!arg || (arg != "jadebox" && arg != "box" && arg != "雀翎玉盒"))
     return notify_fail("你要打开什么？\n");
   me = this_player();
   ob = this_object();
+  if (!ob->query("closed")) {
+    tell_object(me, "盒子已经打开了。\n");
+    return 1;
+  }
   message_vision("$N小心翼翼打开$n。\n", me, ob);
   ob->set("closed", 0);
+  tell_object(me,
+    "盒里垫着三层明黄的缎子，缎子裁得极整齐，正中是一个浅浅的凹槽。\n"
+    "凹槽的大小形状，像是常年搁着什么——可如今，里头空空如也。\n");
+  me->set_temp("kongquelin/saw_empty", 1);
   return 1;
 }
 
 int is_closed() {
   return ((int)this_object()->query("closed"));
+}
+
+// ── 卡③《孔雀翎·信心》────────────────────────────
+// 威慑 = 传闻强度 - 已用次数。亮盒吓退杀手，额度用光则被识破。
+//
+// 注意：fy2005 的 message_vision 定义在 adm/simul_efun/message.lpc:10，
+// 第 1 个参数之后立即 me->name()。若只传 1 个参数，me 为 0 会抛
+// "Bad argument 1 to EFUN call_other()"。故本文件所有 message_vision
+// 一律至少传 2 个参数；只想给玩家看的消息改用 tell_object。
+
+void scare_away(object k) {
+  object env;
+  if (!k || !objectp(k)) return;
+  env = environment(k);
+  if (!env) return;
+  message("vision", HIC + k->name() + "一闪身，退进黑暗里去了。\n" NOR, env, k);
+  destruct(k);
+}
+
+void expose_fight(object me, object k) {
+  if (!me || !k || !objectp(me) || !objectp(k)) return;
+  if (environment(me) != environment(k)) return;
+  message_vision(HIR "$N狞笑一声，拔刀扑了上来！\n" NOR, k);
+  k->kill_ob(me);
+}
+
+void finale(object me) {
+  if (!me || !objectp(me)) return;
+  tell_object(me, HIW "\n你躲进一处暗角，把盒子翻了过来。\n" NOR);
+  tell_object(me, "盒盖内侧刻着两行极小的字，要凑得极近才看得清：\n");
+  tell_object(me, HIY "　　　以杀止杀者，力尽而亡。\n"
+                      "　　　以信立身者，天下莫敢犯。\n" NOR);
+  tell_object(me, "\n从来就没有什么孔雀翎。\n");
+  tell_object(me, HIC "你忽然想起小武那句话——孔雀翎存在的真正目的，不是杀人，而是救命。\n" NOR);
+  tell_object(me, HIG "真正的武器不是孔雀翎，是信心。\n" NOR);
+  REWARD_D->riddle_done(me, "孔雀翎", 10, 1);
+}
+
+int do_show(string arg) {
+  object me, ob, *inv, k;
+  int i, rumor, used, scared;
+
+  if (!arg || (arg != "box" && arg != "jadebox" && arg != "雀翎玉盒"))
+    return notify_fail("你要亮出什么？\n");
+
+  me = this_player();
+  ob = this_object();
+
+  k = 0;
+  inv = all_inventory(environment(me));
+  if (inv && sizeof(inv))
+    for (i = 0; i < sizeof(inv); i++)
+      if (inv[i]->query("cave_killer")) { k = inv[i]; break; }
+
+  if (!k) {
+    message_vision("$N把$n托在掌心示人——四下一片死寂，并没有人要看。\n", me, ob);
+    return 1;
+  }
+
+  rumor = me->query_temp("kongquelin/rumor");
+  used  = me->query_temp("kongquelin/used");
+
+  if (used < rumor + 1) {
+    me->set_temp("kongquelin/used", used + 1);
+
+    message_vision(HIY "$N忽然把$n托在掌心，冷冷道：都别动。\n" NOR, me, ob);
+    tell_object(me, HIC "白生生的玉盒在火把下泛着幽光，盒盖上刻着一只孔雀。\n" NOR);
+    message_vision(HIW + k->name() + "的脚步猛地一顿，蒙面布下那双眼睛骤然缩紧。\n" NOR, k);
+    message_vision(HIW "「……孔雀翎？」\n" NOR, k);
+    message_vision("他缓缓退了两步，又退两步，突地一闪身，消失在黑暗里。\n", k);
+
+    call_out("scare_away", 1, k);
+
+    scared = me->query_temp("kongquelin/scared") + 1;
+    me->set_temp("kongquelin/scared", scared);
+
+    if (scared >= 4 && !me->query_temp("kongquelin/done")) {
+      me->set_temp("kongquelin/done", 1);
+      call_out("finale", 3, me);
+    }
+    return 1;
+  }
+
+  me->set_temp("kongquelin/exposed", 1);
+  message_vision(HIY "$N把$n托在掌心，沉声道：都别动。\n" NOR, me, ob);
+  message_vision(HIR "那蒙面人却盯着$N上上下下看了半晌，忽然冷笑起来。\n" NOR, me);
+  message_vision(HIR "「孔雀翎？这半年里，我见人亮过三回了。」\n" NOR, k);
+  message_vision(HIR "「你手里那个盒子——是空的吧。」\n" NOR, k);
+  message_vision(HIR "$N心里一虚，手竟微微抖了一下。\n" NOR, me);
+  call_out("expose_fight", 3, me, k);
+  return 1;
 }

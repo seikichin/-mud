@@ -35,3 +35,67 @@ LONG
 ｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
 「————————————————-」
 */
+
+void init() {
+  add_action("do_pay", "pay");
+}
+
+int do_pay(string arg) {
+  object me, gold, wp;
+  int ph, half;
+
+  me = this_player();
+  ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 3) return notify_fail("这里没有人要你的东西。\n");
+  if (ph >= 4) return notify_fail("你已经留下过东西了。\n");
+
+  if (!arg || !sizeof(arg))
+    return notify_fail("留下金子(pay gold)、兵器(pay weapon)，还是记忆(pay memory)？\n");
+
+  if (arg == "gold") {
+    gold = present("gold_money", me);
+    if (!gold) return notify_fail("你身上没有金子。\n");
+    destruct(gold);
+    message_vision(HIY "$N把身上的金子都放在了河边的石台上。\n" NOR, me);
+  }
+  else if (arg == "weapon") {
+    wp = me->query_temp("weapon");
+    if (!wp) return notify_fail("你手上没有兵器。\n");
+    message_vision(HIY "$N把手中的" + wp->name() + "放在了石台上。\n" NOR, me);
+    destruct(wp);
+  }
+  else if (arg == "memory") {
+    half = me->query("kee") / 2;
+    if (half < 1) half = 1;
+    me->add("kee", -half);
+    me->start_busy(3);
+    message_vision(HIY "$N在石台边坐下，闭上眼，献出了一段记忆。\n" NOR, me);
+    message_vision(CYN "（头痛欲裂，你一时动弹不得。）\n" NOR, me);
+  }
+  else {
+    return notify_fail("留下金子(pay gold)、兵器(pay weapon)，还是记忆(pay memory)？\n");
+  }
+
+  message_vision(CYN "\n河水忽然退了下去。雾里缓缓浮起一道石桥。\n" NOR, me);
+  message_vision(HIR "杜七：「桥来了。」\n" NOR, me);
+  message_vision(HIY "杜七：「中间两个字，是 —— 『一夜』。」\n" NOR, me);
+  message_vision(WHT "阴涛：「第五个字，是用耳朵听的那个字。」\n" NOR, me);
+
+  REWARD_D->riddle_set(me, "幽冥渡", 4);
+  tell_object(me, HIG "\n【幽冥渡·忘川河】圣刀七字，你又得了中间两个字：一 夜\n" NOR);
+  tell_object(me, WHT "（还有第 5 字「听」。后两个字在海底 —— dive 下去看看。）\n\n" NOR);
+  return 1;
+}
+
+int valid_leave(object me, string dir) {
+  int ph;
+
+  if (dir != "northdown" && dir != "eastdown") return 1;
+
+  ph = REWARD_D->riddle_check(me, "幽冥渡");
+  if (ph >= 1 && ph < 4)
+    return notify_fail("河上无桥，浊水激啸 —— 你过不去。\n");
+
+  return 1;
+}

@@ -40,3 +40,42 @@ LONG
 ｜[ 离离漫惹三秋露，脉脉时凝九月霜 ｜
 「————————————————-」
 */
+
+void init() {
+  add_action("do_dive", "dive");
+  add_action("do_dive", "swim");
+}
+
+int do_dive(string arg) {
+  object me;
+  int ph;
+
+  me = this_player();
+  ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (!ph) return notify_fail("你还没踏上幽冥渡。\n");
+  if (ph < 4) return notify_fail("你还没过忘川河。\n");
+
+  if (ph >= 5) {
+    message_vision("$N又潜了下去。海底只有死寂的泥沙。\n", me);
+    return 1;
+  }
+
+  if (me->query_cor() + me->query_temp("youming/dive_try") < 15) {
+    me->add_temp("youming/dive_try", 5);
+    message_vision(HIW "一个浪头劈面打来，把$N推回了岸上。\n" NOR, me);
+    message_vision(WHT "（这里的水太急了 —— 但你摸到了一点门道。再试一次。）\n" NOR, me);
+    return 1;
+  }
+
+  message_vision(HIW "冰冷的海水漫过$N的头顶。\n" NOR, me);
+  message_vision(CYN "水底斜躺着一艘沉船的残骸，船板上刻着两个被水泡得发白的字：\n" NOR, me);
+  message_vision(HIW "\n\t\t春　　雨\n\n" NOR, me);
+  message_vision(WHT "（后面两个字，你记住了。）\n" NOR, me);
+
+  me->delete_temp("youming/dive_try");
+  me->set_temp("youming/saw_stele", 1);
+  REWARD_D->riddle_set(me, "幽冥渡", 5);
+  tell_object(me, HIG "\n【幽冥渡·黄泉海】圣刀七字的后两个字：春 雨\n" NOR);
+  return 1;
+}

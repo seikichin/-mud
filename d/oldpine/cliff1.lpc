@@ -7,6 +7,8 @@ void create() {
   set("long", @LONG
 你现在正栖身在一个山壁上勉强足以容纳一个人休息的小穴中，从这里无论是
 要往上爬或往下爬都有一段不算短的距离，最好先歇一歇，喘口气再走。
+
+穴壁再往里似乎还凹进去一块，深处透出一点微光。
 LONG
   );
   set("outdoors", "oldpine");
@@ -19,6 +21,13 @@ LONG
 
 void init() {
   add_action("do_climb", "climb");
+  add_action("do_cave", "cave");
+}
+
+int do_cave(string arg) {
+  message_vision("$N侧身往穴壁深处挪了挪，钻进那道窄缝。\n", this_player());
+  this_player()->move("/d/riddlelab/gate");
+  return 1;
 }
 
 int do_climb(string arg) {

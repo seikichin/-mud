@@ -24,7 +24,8 @@ void init() {
 }
 
 int do_dive() {
-  object me, room;
+  object me, room, obj;
+  int n;
   me = this_player();
 
   if (me->query_temp("marks/gateplace")) {
@@ -32,6 +33,21 @@ int do_dive() {
     room = find_object(AREA_SHENSHUI "gongmen");
     if (!objectp(room)) room = load_object(AREA_SHENSHUI "gongmen");
     me->move(room);
+    if (!REWARD_D->check_m_success(me, "三入神水")) {
+      tell_object(me, "沉入水底的一刹那，你看见了那艘船——五色的帆，像一片被打翻的晚霞，\n"
+        + "停在湖心的雾里。帆下站着个白衣人，正低头看着你。\n"
+        + "他没有说话，只是抬手指了指水下。\n");
+      me->set("marks/enter_ss/风筝", 1);
+      n = (me->query("marks/enter_ss/钓鱼") ? 1 : 0)
+        + (me->query("marks/enter_ss/白石") ? 1 : 0)
+        + (me->query("marks/enter_ss/风筝") ? 1 : 0);
+      REWARD_D->riddle_set(me, "三入神水", n);
+      if (n >= 3) {
+        REWARD_D->riddle_done(me, "三入神水", 20, 1);
+        obj = new(AREA_SHENSHUI "obj/kuzhi");
+        if (objectp(obj)) obj->move(me);
+      }
+    }
     return 1;
   }
   return 0;

@@ -1,0 +1,51 @@
+// 《碧玉刀》—— 段家戒条（玩家随身道具）
+//
+// 【纯命令壳】它只做一件世界给不出的事：让玩家查看随身那张纸条。
+// 一切进度存在玩家身上（me->query("biyudao/...")），本物件不记任何数据。
+
+inherit ITEM;
+#include <ansi.h>
+
+void create() {
+  set_name("段家戒条", ({ "jietiao", "zhi tiao", "note" }));
+  set_weight(50);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "张");
+    set("long", @LONG
+一张折过几道的纸，边角已经磨毛了。上面是父亲亲手写的七行字，
+墨迹浓重，看得出写的时候很用力。
+
+（read jietiao）
+LONG
+    );
+    set("value", 1);
+  }
+}
+
+void init() {
+  add_action("do_read", "read");
+}
+
+int do_read(string arg) {
+  object me;
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return 0;
+  if (arg != "jietiao" && arg != "zhi tiao" && arg != "note")
+    return 0;
+
+  write(HIW "\n═══ 段 家 戒 条 ═══\n" NOR);
+  write("一、不可惹事生非，多管闹事。\n");
+  write("二、不可随意交结陌生的朋友。\n");
+  write("三、不可和陌生人赌钱。\n");
+  write("四、不可与僧道乞丐一类人结怨。\n");
+  write("五、钱财不可露白。\n");
+  write("六、不可轻信人言。\n");
+  write(HIY "七、千万不可和陌生的女人来往。\n" NOR);
+  write(HIW "═══════════════════\n\n" NOR);
+  write("父亲的话还在耳边：「这几件事千万不能去做，\n");
+  write("否则我保证你立刻就会有麻烦上身。」\n\n");
+  return 1;
+}

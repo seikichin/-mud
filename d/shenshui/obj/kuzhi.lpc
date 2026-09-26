@@ -1,0 +1,20 @@
+// 三入神水 · 终局纪念物「枯枝」
+// 呼应《浣花洗剑录》：白衣人削下的一段枯枝，断口显露极高剑意，
+// 万老夫人见了那段枯枝，面上竟现出惊惧之色。
+
+inherit ITEM;
+void create() {
+  set_name("枯枝", ({ "ku zhi", "kuzhi", "branch" }));
+  set_weight(20);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "截");
+    set("long",
+      "一截枯枝，断口平整得不像话，像是被什么极锋利的东西一下削断的。\n"
+      "断口上没有一丝毛刺，也没有一丝刀痕——你盯着看了半晌，竟觉得\n"
+      "那道断口本身就像一记剑招。\n");
+    set("value", 0);
+    set("no_sell", 1);
+  }
+}

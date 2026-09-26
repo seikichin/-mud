@@ -1,0 +1,60 @@
+// 《碧玉刀》—— 官道（入口）
+//
+// 迷宫 = 环境：3×3 九景，玩家自由探索，顺序不限。
+// 交互全部落在世界里的东西上（NPC 的 answer / bet），玩家道具只提供
+// “查看随身纸条”这一条世界给不出的命令。
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "官道" NOR);
+  set("long", @LONG
+一条黄土官道从山脚蜿蜒而过。道旁立着块界石，上面的字被风雨蚀得
+模糊，只依稀认得出「黑松」两个字。
+
+再往北去，山势渐高，雾气也重了。听说翻过这座山，就是江南。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("NONPC", 1);
+  set("exits", ([
+    "out": "/d/oldpine/cliff1",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_enter", "enter");
+  add_action("do_enter", "jinru");
+}
+
+int do_enter(string arg) {
+  object me, ent, jt, knife;
+
+  me = this_player();
+  if (!me) return 0;
+
+  /* 下发【段家戒条】：纯提示道具，不记任何进度 */
+  jt = present("jietiao", me);
+  if (!jt) {
+    jt = new(__DIR__ "obj/jietiao");
+    if (jt) jt->move(me);
+  }
+
+  /* 开局带着祖传的碧玉刀（全篇的麦高芬） */
+  knife = present("knife", me);
+  if (!knife) {
+    knife = new("/d/chuenyu/npc/obj/bknife");
+    if (knife) knife->move(me);
+  }
+
+  /* 必须走区域正规入口：load_object 会绕过 setup_room_callbacks，NPC 不会 spawn */
+  ent = "/d/biyudao/play"->query_maze_room(me->query("id") + "/entry");
+  if (!ent) return notify_fail("山雾太重，一时看不清路。\n");
+
+  me->move(ent);
+  message_vision(HIW "$N紧了紧包袱，踏上了北去的官道。\n" NOR, me);
+  return 1;
+}

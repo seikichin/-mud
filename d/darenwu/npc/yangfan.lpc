@@ -1,0 +1,18 @@
+// 《大人物》剧场 —— 演员：杨凡
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("杨凡", ({"yang fan", "yangfan", "yang"}));
+  set("gender", "男性");
+  set("age", 35);
+  set("long", "一个身材矮胖的中年人，扁担搁在肩上，腰间系着条洗得发白的汗巾，看着极普通。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("inquiry", ([
+    "大人物": "杨凡笑道：“别问我，我就是个挑水的。”\n",
+  ]));
+  setup();
+}

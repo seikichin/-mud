@@ -1,0 +1,18 @@
+// 《大人物》剧场 —— 演员：疯乞丐
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("疯乞丐", ({"feng qigai", "qigai", "beggar"}));
+  set("gender", "男性");
+  set("age", 50);
+  set("long", "一个抱着酒葫芦的乞丐，靠着墙根晒太阳，衣裳看不出原来的颜色。\n");
+  set("combat_exp", 1000);
+  set("no_fight", 1);
+  set("no_get", 1);
+  set("inquiry", ([
+    "大人物": "疯乞丐咂咂嘴：“大人物？街尾那个挑水的，倒也算一个。”\n",
+  ]));
+  setup();
+}

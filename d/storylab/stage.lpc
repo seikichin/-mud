@@ -1,0 +1,18 @@
+// 舞台 —— 原型验证用
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "长街尽头" NOR);
+  set("long", @LONG
+一条青石板长街，两侧的铺子都上了门板。街尾悬着一盏孤灯，火苗被夜风吹得
+忽明忽暗。墙角蹲着个打盹的更夫，梆子搁在膝头。
+LONG);
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out": "/d/oldpine/cliff1",
+  ]));
+  setup();
+}

@@ -1,0 +1,81 @@
+// 《碧玉刀》—— 老陈（三岔路口的挑担老汉）
+// 第六戒：不可轻信人言
+// 破绽：担子里装的是空箩筐，他却走了满头大汗（他是替人跑腿的）。
+// 记录：j6 = 0 走开 / 1 先验证 / 2 轻信
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("老陈", ({ "lao chen", "laochen", "chen" }));
+  set("gender", "男性");
+  set("age", 55);
+  set("long", @LONG
+一个挑担的老汉，在路口歇脚。担子两头都是空箩筐。
+他抹着汗，气还有点喘——像是刚赶完一趟远路。
+LONG
+  );
+  set("attitude", "friendly");
+  set("combat_exp", 800);
+  set("inquiry", ([
+    "路": "老陈道：「往宝珠山庄？走左边这条近，一炷香就到。」\n",
+    "箩筐": "老陈手里紧了紧：「空……空担子，轻快。」\n",
+    "谁让你指的": "老陈脸色刷地白了：「没……没人。」\n",
+  ]));
+  setup();
+  carry_object("/obj/armor/cloth")->wear();
+}
+
+void init() {
+  object me;
+
+  ::init();
+  add_action("do_answer", "answer");
+  if (interactive(me = this_player()) && !is_fighting()) {
+    remove_call_out("greeting");
+    call_out("greeting", 2, me);
+  }
+}
+
+void greeting(object me) {
+  if (!me || environment(me) != environment()) return;
+  message_vision(HIW "\n一个挑担的老汉在路口歇脚，见$N过来，热心地起身：\n"
+    "「客官往宝珠山庄？走左边这条近，一炷香就到。」\n" NOR, me);
+  tell_object(me, HIG "（answer 请你先走一趟  /  answer 好，多谢  /  直接走开）\n" NOR);
+}
+
+int do_answer(string arg) {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (!arg) return notify_fail("你要怎么说？\n");
+
+  if (me->query("biyudao/j6")) {
+    tell_object(me, "老陈低头挑起了担子，不再说话。\n");
+    return 1;
+  }
+
+  if (arg == "请你先走一趟" || arg == "验证" || arg == "你先走") {
+    me->set("biyudao/j6", 1);
+    me->add("biyudao/trust", 1);
+    message_vision(HIW "\n$N笑了笑，拱手道：「老汉辛苦——不如你先走一趟，\n"
+      "我跟着就是。」\n" NOR, me);
+    message_vision(HIY "老陈的脸色变了变。\n" NOR, me);
+    message_vision(HIY "他搓了搓手，干笑一声：「那个……小的还得等人。」\n" NOR, me);
+    message_vision(HIW "他挑起空担子，快步照原路回去了。\n" NOR, me);
+    message_vision(HIC "$N看了看那块指路石——上面的字被人用刀刮过。\n" NOR, me);
+    me->set("biyudao/route", 1);
+    return 1;
+  }
+  else if (arg == "好，多谢" || arg == "多谢" || arg == "走左边") {
+    me->set("biyudao/j6", 2);
+    message_vision(HIW "\n$N道了声谢，走上左边那条路。\n" NOR, me);
+    message_vision(HIY "路越走越窄，最后钻进一片荒地。\n" NOR, me);
+    message_vision(HIR "等$N绕回三岔路口，天色已经暗了。\n" NOR, me);
+    message_vision(HIY "老陈早就不在了。\n" NOR, me);
+    return 1;
+  }
+
+  return notify_fail("（answer 请你先走一趟 / answer 好，多谢）\n");
+}

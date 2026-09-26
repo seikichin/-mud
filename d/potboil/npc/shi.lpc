@@ -2,6 +2,8 @@
 // dancing_faery@hotmail.com
 #include <ansi.h>
 inherit SMART_NPC;
+int ask_blade();
+
 
 void create() {
   object weapon;
@@ -50,7 +52,13 @@ void create() {
 
   set("death_msg", CYN "\n$N大叫道：你～～～～～～～～！\n" NOR);
 
-  setup();
+    set("inquiry", ([
+    "圣刀"   : (: ask_blade :),
+    "七个字" : (: ask_blade :),
+    "刀"     : (: ask_blade :),
+  ]));
+
+setup();
 
   weapon = carry_object("/obj/weapon/hammer");
   weapon->set_name("千斤铜鼎", ({ "ding" }));
@@ -63,4 +71,31 @@ void create() {
   weapon->set("value", 0);
   weapon->wear();
 
+}
+
+
+int ask_blade() {
+  object me = this_player();
+  int ph = REWARD_D->riddle_check(me, "幽冥渡");
+
+  if (ph < 1) {
+    message_vision("$N把铜鼎往地上一顿，摆摆手：「入魔关的守关者还没放你进来。先去找他。」\n", this_object(), me);
+    return 1;
+  }
+
+  if (me->query_temp("youming/told_shi")) {
+    message_vision("$N挠挠头咧嘴一笑：「俺就识那么两个字，再问也没有了。」\n", this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N挠了挠头，把那口千斤铜鼎往地上一顿。\n", this_object(), me);
+  message_vision(CYN "「这是往生道。走过去的人，江湖上就当他已经死了。」\n" NOR, this_object(), me);
+  message_vision(CYN "「至于教主问的那个……俺不识字。可就那么七个字，俺还是记住了一点。」\n" NOR, this_object(), me);
+  message_vision(HIY "「头一个字，是个『小』字 —— 俺认得这个。」\n" NOR, this_object(), me);
+  message_vision(HIY "「第二个字…… 像是说一座楼。」\n" NOR, this_object(), me);
+  message_vision(WHT "「剩下的你往东边去问杜七，他认得字。」\n" NOR, this_object(), me);
+
+  me->set_temp("youming/told_shi", 1);
+  tell_object(me, HIG "\n【幽冥渡·往生道】圣刀七字，你得了头两个字：小 楼\n" NOR);
+  return 1;
 }

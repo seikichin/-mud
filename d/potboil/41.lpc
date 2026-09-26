@@ -19,9 +19,9 @@ LONG
     "southdown": "/d/bashan/jadegate",
   ]));
 
-  /*	set("objects", ([
-	__DIR__"npc/wall" : 1,
-					]) );*/
+  set("objects", ([
+	__DIR__ "npc/guard" : 1,
+					]));
 
   set("coor/x", 40);
   set("coor/y", 10);
