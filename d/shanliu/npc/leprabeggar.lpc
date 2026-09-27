@@ -1,7 +1,9 @@
 inherit NPC;
 #include <ansi.h>
+int answer_shedan();
+
 void create() {
-  set_name("疯乞丐", ({ "lepra beggar" }));
+  set_name("疯乞丐", ({ "lepra beggar", "beggar" }));
   set("gender", "男性");
   set("age", 28);
   set("long", "这是一个身患麻风的疯乞丐，浑身恶疮脓水，满面红斑，为世人所弃，蜷缩 
@@ -15,6 +17,13 @@ void create() {
   set("chat_msg", ({
     "疯乞丐蜷缩躺在穷街的垃圾堆里，嘴里泛着白沫，涩涩发抖。\n",
   }));
+  set("inquiry", ([
+    "麻风": "action疯乞丐痉挛着抬起手，指了指自己溃烂的脸，又无力地垂了下去。\n",
+    "疯乞丐": "action疯乞丐气若游丝，只挤出三个字：救……救……我……\n",
+    "蛇胆": (: answer_shedan :),
+    "三大毒蛇": (: answer_shedan :),
+    "治病": (: answer_shedan :),
+  ]));
   setup();
   carry_object("obj/armor/cloth")->wear();
 }
@@ -48,6 +57,8 @@ int do_decide(string arg) {
       message_vision(
         HIG "$n微微一笑，抛开杂念，将三个蛇胆放入口中，但觉一股冰凉之意充盈全身。 
 $n跪在$N身前，将口中蛇胆与唾液缓缓渡到$N口中。。。\n \n" NOR, this_object(), me);
+      if (REWARD_D->riddle_check(me, "第一项考验") == 1)
+        REWARD_D->riddle_set(me, "第一项考验", 2);
       wangshedan = present("wang shedan", me);
       destruct(wangshedan);
       zhuyeshedan = present("zhuye shedan", me);
@@ -73,6 +84,7 @@ void bePrince(object me) {
 一项考验了。\n说罢，转身离去。\n\n" NOR, me);
     message_vision(
       HIC "$N若呆了一般，浸在青年若微风拂过一池春水的微笑中久久不能自拔。。\n\n" NOR, me);
+    REWARD_D->riddle_done(me, "第一项考验", 10, 1);
     destruct(this_object());
   } else {
     message_vision("$N缓缓站起，转身离去\n", this_object());
@@ -124,6 +136,26 @@ int do_heal(string arg) {
   }
   return 1;
 }
+int answer_shedan() {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (me->query("入山流/治愈麻风")) {
+    command("say 那桩事您都办成了，还问这些做什么？");
+    return 1;
+  }
+  if (me->query_temp("入山流/治麻风")) {
+    message_vision(
+      WHT "$n剧烈地咳了几声，断断续续道：蛇胆……须是凑齐三味……\n"
+      "响尾蛇出在关外大漠，竹叶蛇生在黄山翠林，王蛇……便在这条穷街的耍蛇人手里。\n"
+      "只是三味蛇胆又腥又苦，单吃是不成的，须得……以口渡药，才化得开。\n" NOR, this_object(), me);
+    return 1;
+  }
+  message_vision(CYN "$n茫然地摇了摇头，似乎连说话的力气都没有了。\n" NOR, this_object(), me);
+  return 1;
+}
+
 int accept_object(object me, object obj) {
   command("smile");
   command("say 多谢这位" + RANK_D->query_respect(me) +

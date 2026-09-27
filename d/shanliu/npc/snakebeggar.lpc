@@ -3,8 +3,9 @@
 inherit NPC;
 #include <ansi.h>
 int answer_snake();
+int answer_shedan();
 void create() {
-  set_name("耍蛇乞丐", ({ "playsnake beggar" }));
+  set_name("耍蛇乞丐", ({ "playsnake beggar", "beggar", "snakebeggar" }));
   set("gender", "男性");
   set("age", 53);
   set("long",
@@ -26,9 +27,32 @@ void create() {
     "毒蛇": (: answer_snake :),
     "蛇": (: answer_snake :),
     "snake": (: answer_snake :),
+    "蛇胆": (: answer_shedan :),
+    "三味蛇胆": (: answer_shedan :),
+    "麻风": (: answer_shedan :),
   ]));
   setup();
   carry_object("obj/armor/cloth")->wear();
+}
+
+int answer_shedan() {
+  object me;
+
+  me = this_player();
+  if (!me) return 0;
+  if (me->query("入山流/治愈麻风")) {
+    command("say 那桩事您都办成了，还来问我作甚？");
+    return 1;
+  }
+  if (me->query_temp("入山流/治麻风")) {
+    message_vision(
+      YEL "$N三角斜眼看了看$n，压低嗓门道：原来您是问这个。蛇胆入药，天下只三味——\n"
+      "一是响尾蛇，出在关外大漠；二是竹叶蛇，生在黄山翠林；\n"
+      "三是王蛇，嘿嘿，全天下只怕就我这儿还有一条。\n"
+      "十两黄金，连蛇带胆都是您的，要不要？ \n" NOR, this_object(), me);
+    return 1;
+  }
+  return answer_snake();
 }
 
 int accept_object(object me, object obj) {

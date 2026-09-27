@@ -118,9 +118,10 @@ int answer_shanliu() {
     message_vision("$N脸色一沉道：施主可曾救了那可怜乞丐？\n", this_object());
     return 1;
   }
-  if (random(5))
+  if (me->query_temp("入山流/问过山流")) {
     this_object()->ccommand("hmm");
-  else {
+  } else {
+    me->set_temp("入山流/问过山流", 1);
     message_vision(HIW "$N神色凝重地注视着$n，似乎要把$n看穿。\n" NOR, this_object(), me);
     call_out("verifyJoin", 2, me);
     //this_object()->set("answer_ask",me);
@@ -138,6 +139,8 @@ void verifyJoin(object me) {
     HIW "$N冷冷对$n道：要想入山流，首先要有「仁义」，这样吧，穷街路上有个患了
 癫痫麻风的病人，请施主慈悲为怀，舍身救助吧！去吧！ \n" NOR, this_object(), me);
   me->set_temp("入山流/治麻风", 1);
+  if (!REWARD_D->riddle_check(me, "第一项考验"))
+    REWARD_D->riddle_set(me, "第一项考验", 1);
   return;
 }
 
