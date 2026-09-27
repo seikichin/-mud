@@ -1,0 +1,18 @@
+// 青穗剑 —— 卡⑧《万梅·青穗剑》
+#include <weapon.h>
+
+inherit SWORD;
+
+void create() {
+  set_name("青穗剑", ({ "qingsui sword", "sword", "qingsui", "青穗剑" }));
+  set_weight(900);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "把");
+    set("long", "剑身锈迹斑斑，剑锋却仍在。柄上缠着半旧的青穗 —— 这柄剑在万梅山庄后院的木桩里，插了二十年。\n");
+    set("value", 30);
+    set("material", "steel");
+  }
+  ::init_sword(20);
+}

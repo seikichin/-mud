@@ -1,3 +1,5 @@
+#include <ansi.h>
+
 inherit ROOM;
 
 void create() {
@@ -16,10 +18,86 @@ LONG
     __DIR__ "npc/jiangjun": 1,
     __DIR__ "obj/meat": 1,
   ]));
+  set("item_desc", ([
+    "高台": "七尺高的石台。台上压着一方光泽柔润的古铜镇纸，镇纸下垫着一叠白纸卡（card）。\n",
+    "石台": "七尺高的石台。台上压着一方光泽柔润的古铜镇纸，镇纸下垫着一叠白纸卡（card）。\n",
+    "镇纸": "一方光泽柔润的古铜镇纸，压着一叠白纸卡。似乎可以移开（move）。\n",
+    "白纸卡": "一叠白纸卡，一共十二张，看上去什么也没有写。\n",
+    "火炉": "炉火正旺，烤得人脸上发烫。\n",
+  ]));
   set("coor/x", -30);
   set("coor/y", -10);
   set("coor/z", 0);
   setup();
+}
+
+void init() {
+  add_action("do_move", "move");
+  add_action("do_roast", "roast");
+  add_action("do_roast", "bake");
+}
+
+// 移开古铜镇纸 —— 取走那叠白纸卡
+int do_move(string arg) {
+  object me = this_player();
+  object card, jiangjun;
+
+  if (!arg || (arg != "镇纸" && arg != "zhenzhi" && arg != "paperweight"))
+    return 0;
+
+  if (present("card", me))
+    return notify_fail("你已经拿了一叠白纸卡了。\n");
+
+  if (objectp(jiangjun = present("jiang jun", this_object()))) {
+    if (present("stewed meat", this_object()))
+      message_vision(HIY "$N盯着$n看了一会儿，冷冷道：庄主的东西，你最好别动。\n" NOR, jiangjun, me);
+    else
+      message_vision(CYN "$N盯着$n看了一会儿，忽然咧嘴一笑：你也是庄里的人了。\n" NOR, jiangjun, me);
+  }
+
+  message_vision(HIY "$N移开古铜镇纸，露出一叠白纸卡。\n" NOR, me);
+  card = new(__DIR__ "obj/card");
+  if (objectp(card)) {
+    if (!card->move(me)) card->move(this_object());
+    tell_object(me, HIG "你把那叠白纸卡收进了怀里。\n" NOR);
+  }
+  return 1;
+}
+
+// 炉火烘烤，显影 —— 白纸卡上的字，要用火才看得见
+int do_roast(string arg) {
+  object me = this_player();
+  object card;
+
+  if (!arg || (arg != "card" && arg != "cards" && arg != "白纸卡" && arg != "纸卡"))
+    return 0;
+
+  if (!objectp(card = present("card", me)))
+    return notify_fail("你身上没有白纸卡。\n");
+
+  if (me->query_temp("marks/白纸卡/显影")) {
+    tell_object(me, "白纸卡上的字迹早已清清楚楚，不必再烘。\n");
+    return 1;
+  }
+
+  message_vision(HIY "$N把白纸卡凑到炉火边，一张一张慢慢地烘着。\n" NOR, me);
+  tell_object(me, HIW "\n火光映着纸面，一行行墨迹竟一个字一个字地浮了出来 ——\n\n" NOR);
+  tell_object(me, "  高涛：风尾帮内三堂香主。\n");
+  tell_object(me, "  罪名：通敌叛友。  结果：逃亡十二日，死于沼泽中。\n\n");
+  tell_object(me, "  柳青青：淮南大侠女，点苍剑客谢坚妻。\n");
+  tell_object(me, "  罪名：通奸，杀夫。  结果：逃亡十九日，死于荒漠中。\n\n");
+  tell_object(me, "  「独臂神龙」海奇阔。\n");
+  tell_object(me, "  罪名：残杀无辜。\n\n");
+  tell_object(me, "  …… ……\n\n");
+  tell_object(me, HIR "最后一张的墨迹最新，也最重：\n" NOR);
+  tell_object(me, HIR "  顾云飞：巴山剑客衣钵传人。\n" NOR);
+  tell_object(me, HIR "  罪名：卧底。\n" NOR);
+  tell_object(me, HIR "  结果：尚在人间。\n" NOR);
+  tell_object(me, HIY "\n顾云飞 —— 那不就是地窖里的表哥么？\n" NOR);
+  tell_object(me, CYN "老刀把子的字，一笔一划都像是用刀刻出来的。\n" NOR);
+
+  me->set_temp("marks/白纸卡/显影", 1);
+  return 1;
 }
 
 int valid_leave(object me, string dir) {

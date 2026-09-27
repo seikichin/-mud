@@ -1,0 +1,55 @@
+// 紫铜水壶 —— 卡⑧《万梅·青穗剑》
+// 装热水后会随时间冷却：热水 -> 温水 -> 凉水（只有热水能化锈）
+#include <ansi.h>
+
+inherit ITEM;
+inherit F_LIQUID;
+
+void create() {
+  set_name("紫铜水壶", ({ "copper pot", "pot", "shuihu", "水壶", "壶" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long", "一把紫铜打的水壶，壶身被灶火熏得发黑。壶里现在空着，装得下四五瓢水。\n");
+    set("unit", "把");
+    set("value", 20);
+    set("max_liquid", 4);
+  }
+  set("liquid", ([ "name": "清水", "remaining": 0 ]));
+  ::init_item();
+}
+
+void hu_say(string msg) {
+  object env = environment();
+  if (!objectp(env)) return;
+  if (living(env)) tell_object(env, msg);
+  else message("vision", msg, env);
+}
+
+// 装热水后开始计时
+int do_fill(string arg) {
+  int ok;
+  ok = ::do_fill(arg);
+  if (!ok) return ok;
+  if (query("liquid/name") == "热水") {
+    remove_call_out("cool_down");
+    remove_call_out("cool_down2");
+    call_out("cool_down", 30);
+    hu_say(HIY "壶身烫得几乎握不住 —— 热水会凉，你得快些。\n" NOR);
+  }
+  return ok;
+}
+
+void cool_down() {
+  if (query("liquid/name") != "热水" || !query("liquid/remaining")) return;
+  set("liquid/name", "温水");
+  hu_say(HIY "水壶里的热水已经不烫手了，成了温水。\n" NOR);
+  call_out("cool_down2", 30);
+}
+
+void cool_down2() {
+  if (query("liquid/name") != "温水" || !query("liquid/remaining")) return;
+  set("liquid/name", "凉水");
+  hu_say(CYN "水壶里的水彻底凉了。\n" NOR);
+}

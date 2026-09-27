@@ -1,6 +1,7 @@
 #include <ansi.h>
 inherit NPC;
 int tell_test();
+int ask_card();
 void create() {
   set_name("表哥", ({ "biao ge", "biaoge" }));
   set("gender", "男性");
@@ -16,6 +17,10 @@ void create() {
     "一件事": (: tell_test :),
     "shi": (: tell_test :),
     "thing": (: tell_test :),
+    "白纸卡": (: ask_card :),
+    "纸卡": (: ask_card :),
+    "名单": (: ask_card :),
+    "card": (: ask_card :),
   ]));
   set("no_arrest", 1);
   set_skill("move", 150);
@@ -69,6 +74,35 @@ int greeting(object me) {
     message_vision(HIR "\n除非你帮我做一件事，否则就在这里等死吧！\n" NOR, this_object(), me);
     me->set_temp("marks/test", 1);
   }
+  return 1;
+}
+
+// 卡⑦ 白纸卡 —— 示警顾云飞（他也在那叠卡上）
+int ask_card() {
+  object me = this_player();
+
+  if (!me->query_temp("marks/白纸卡/显影")) {
+    message_vision(CYN "$N摇摇头：「庄主的事，我知道得不多。」\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  if (REWARD_D->check_m_success(me, "白纸卡")) {
+    message_vision(CYN "$N低声道：「你快走。这里的事，忘掉最好。」\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  message_vision(YEL "\n$N一把攥住$n的手腕，脸色白得像纸：\n" NOR, this_object(), me);
+  message_vision(YEL "「你说……我的名字，也在那叠卡上？」\n" NOR, this_object(), me);
+  message_vision(YEL "「难怪，这半个月来，他看我的眼神都不一样了。」\n" NOR, this_object(), me);
+  message_vision(CYN "\n$N惨笑：「我在这里一年多，把所见所闻都记了下来，」\n" NOR, this_object(), me);
+  message_vision(CYN "「却一直没敢送出去 —— 如今也用不着送了。」\n" NOR, this_object(), me);
+  message_vision(CYN "「你记住，幽灵山庄里，没有一个人是自己走出去的。」\n" NOR, this_object(), me);
+
+  REWARD_D->riddle_done(me, "白纸卡", 10, 1);
+
+  tell_object(me, HIG "\n你忽然明白：老刀把子布了这么大的一个局，要杀的人里，本来就有他。\n" NOR);
+  message_vision(HIR "\n$N站起身，头也不回地往黑暗里跑去，转眼就不见了踪影。\n" NOR, this_object());
+  destruct(this_object());
   return 1;
 }
 

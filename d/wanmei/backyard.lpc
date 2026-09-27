@@ -1,7 +1,12 @@
 // Copyright (C) 1995, by Tie Yu and Daniel Yu. All rights reserved.
 // This software can not be used, copied, or modified in any form without
 // the written permission from authors.
+//
+// 卡⑧《万梅·青穗剑》：木桩里锈死二十年的青穗剑（须用热水化锈，且须趁热）
+#include <ansi.h>
+
 inherit ROOM;
+
 void create() {
   set("short", "山庄后院");
   set("long", @LONG
@@ -17,28 +22,91 @@ LONG
     "south": __DIR__ "bathroom",
   ]));
   set("outdoors", "wanmei");
+  set("rust", 3);
   set("item_desc", ([
     "切口儿": "
 这切口儿一看就是高手所削．．．\n",
     "青穗剑": "
-这青穗剑已经锈死在木桩里，再也拔不出了．．\n",
+一柄青穗剑插在木桩里，剑身、锈、木桩早已咬成了一整块。柄上缠着半旧的青穗，
+被风吹得褪了色。剑柄外侧露着一圈石样的锈壳。\n",
+    "木桩": "
+院中几根一尺粗细的木桩。其中一根斜削为两截，另一根被一剑洞穿 ——
+剑身没入木中，锈迹斑斑。\n",
+    "锈": "
+厚厚的一层铁锈，牢牢咬着剑身与木桩，抠也抠不动。\n",
   ]));
   set("coor/x", 10);
   set("coor/y", 0);
   set("coor/z", 0);
   setup();
 }
+
 void init() {
   add_action("do_pull", "pull");
+  add_action("do_pour", "pour");
 }
+
+int do_pour(string arg) {
+  object me = this_player();
+  object con;
+  if (query("sword_out"))
+    return notify_fail("剑已经不在了。\n");
+  if (!arg) return notify_fail("你要倒什么？\n");
+  if (!objectp(con = present(arg, me))) return 0;
+  if (!con->query("liquid")) return 0;
+  if (!con->query("liquid/remaining"))
+    return notify_fail(con->name() + "是空的。\n");
+  con->add("liquid/remaining", -1);
+  message_vision("$N拿起" + con->name() + "，把" + con->query("liquid/name") +
+    "浇在锈死的剑身上。\n", me);
+  if (con->query("liquid/name") == "热水") {
+    if (query("sword_ready")) {
+      tell_object(me, "锈已经化尽了，再浇也无用。\n");
+      return 1;
+    }
+    add("rust", -1);
+    if (query("rust") > 0) {
+      tell_object(me, HIG "热水顺着剑身渗进锈缝里，锈壳\"噼\"地裂开一道口子。\n" NOR);
+    } else {
+      set("sword_ready", 1);
+      tell_object(me, HIY "锈层尽数酥开，青穗剑在木桩里轻轻晃了一下 —— 仿佛只要一拔就会出来。\n" NOR);
+    }
+  } else if (con->query("liquid/name") == "山参野鸡汤") {
+    tell_object(me, "油腻的鸡汤浇在剑身上，锈没化开，反倒招来了几只蚂蚁。\n");
+  } else {
+    tell_object(me, "水顺着剑身流下去，锈纹丝不动。\n");
+  }
+  return 1;
+}
+
 int do_pull(string arg) {
-  object blood;
-  if (!arg || (arg != "青穗剑" && arg != "sword")) return 0;
+  object me = this_player();
+  object blood, sword;
+  if (!arg || (arg != "青穗剑" && arg != "sword" && arg != "qingsui")) return 0;
+  if (query("sword_out"))
+    return notify_fail("木桩上只留下一个剑孔，剑早已不在了。\n");
+  if (query("sword_ready")) {
+    message_vision("$N握住剑柄，轻轻一提，青穗剑\"铮\"的一声脱出木桩！\n", me);
+    set("sword_out", 1);
+    delete("sword_ready");
+    set("item_desc/青穗剑", "
+木桩上只留下一个深深的剑孔。\n");
+    sword = new(__DIR__ "obj/qingsui");
+    if (objectp(sword)) sword->move(me);
+    tell_object(me, HIW "\n二十年的锈，一朝散尽 —— 剑身上却再也找不到当年那道青光。\n" NOR);
+    return 1;
+  }
   write("你用尽全身力量，用力一拉！！\n");
   write("你的内力不够．．．累得狂喷鲜血．．．\n");
-  this_player()->receive_damage("kee", 50);
+  me->receive_damage("kee", 50);
   blood = new(__DIR__ "obj/blood");
   blood->move(this_object());
   return 1;
+}
 
+void reset() {
+  ::reset();
+  set("rust", 3);
+  delete("sword_out");
+  delete("sword_ready");
 }

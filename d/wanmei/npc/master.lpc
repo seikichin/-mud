@@ -2,6 +2,8 @@ inherit NPC;
 #include <ansi.h>
 inherit F_MASTER;
 void smart_fight();
+// 卡⑧《万梅·青穗剑》
+int ask_sword();
 
 int your_score = 0;
 void create() {
@@ -33,8 +35,11 @@ void create() {
     "拜师": "我向来有个规矩，凡是想拜我为师的，得接我三招不死，
 你想试试(accept test)？\n",
     "apprentice": "我向来有个规矩，凡是想拜我为师的，得接我三招不死，
-你想试试(accept test)？\n"
+你想试试(accept test)？\n",
 
+    "青穗剑": (: ask_sword :),
+    "剑": (: ask_sword :),
+    "sword": (: ask_sword :),
   ]));
 
   create_family("万梅山庄", 1, "庄主");
@@ -176,4 +181,37 @@ smart_fight() {
   if (!random(5))
     who->perform_action("sword.hunranyijian");
   return;
+}
+
+// 卡⑧《万梅·青穗剑》—— 剑神一笑
+// 门下那柄锈死在木桩里二十年的剑，终于有人请了出来
+int ask_sword() {
+  object me = this_player();
+
+  if (!present("qingsui sword", me)) {
+    message_vision(CYN "$N淡淡道：后院木桩里那柄剑，已经插在那里二十年了。\n" NOR,
+      this_object(), me);
+    message_vision(CYN "「你若请得出来，尽管拿去。」\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  if (REWARD_D->check_m_success(me, "青穗剑")) {
+    message_vision(CYN "$N看了你一眼，什么都没有说。\n" NOR, this_object(), me);
+    return 1;
+  }
+
+  message_vision(YEL "\n$N的目光落在那柄剑上，停了很久。\n" NOR, this_object(), me);
+  message_vision(CYN "「二十年前我把它插进木桩里，是因为我已经不需要它了。」\n" NOR,
+    this_object(), me);
+  message_vision(CYN "「二十年里，来拔它的人没有一百也有八十个。」\n" NOR,
+    this_object(), me);
+  message_vision(CYN "「他们拔的是剑；你想的是锈。」\n" NOR, this_object(), me);
+  message_vision(CYN "「冷的东西，热一下就会松口 —— 这个道理，二十年来只有你想到。」\n" NOR,
+    this_object(), me);
+  message_vision(HIY "\n$N忽然笑了一笑。\n" NOR, this_object(), me);
+  message_vision(CYN "「门上那四个字，你如今该看懂了：无剑为上。」\n" NOR, this_object(), me);
+
+  REWARD_D->riddle_done(me, "青穗剑", 10, 1);
+  tell_object(me, HIG "\n你忽然明白：他等的从来不是力气。\n" NOR);
+  return 1;
 }

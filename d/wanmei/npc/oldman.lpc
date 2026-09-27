@@ -1,4 +1,10 @@
+// 卡⑧《万梅·青穗剑》—— 老仆讲古（提示：铁锈怕热，须趁热化开）
+#include <ansi.h>
+
 inherit NPC;
+
+int ask_sword();
+
 void create() {
   set_name("满脸风霜的老人", ({ "oldman", "old man", "man" }));
   set("gender", "男性");
@@ -35,6 +41,41 @@ void create() {
     (: perform_action, "unarmed.hantian" :),
   }));
 
+  set("inquiry", ([
+    "青穗剑": (: ask_sword :),
+    "剑": (: ask_sword :),
+    "锈剑": (: ask_sword :),
+    "sword": (: ask_sword :),
+    "木桩": (: ask_sword :),
+  ]));
+
   setup();
   carry_object("/obj/armor/cloth")->wear();
+}
+
+int ask_sword() {
+  object me = this_player();
+
+  if (REWARD_D->check_m_success(me, "青穗剑")) {
+    message_vision(CYN "$N摇摇头：「剑都叫你请出来了，还问老朽做什么。」\n" NOR,
+      this_object(), me);
+    return 1;
+  }
+
+  message_vision(CYN "$N眯着眼看了你半天：「后院木桩里那柄？」\n" NOR,
+    this_object(), me);
+  message_vision(CYN "「老朽在庄里扫了三十年地，看着它一天一天锈进去的。」\n" NOR,
+    this_object(), me);
+  message_vision(CYN "「当年插剑的那位走的时候留下两句话，老朽记了三十年：」\n" NOR,
+    this_object(), me);
+  message_vision(HIY "　　　「剑在等人，不在等力。」\n" NOR, this_object(), me);
+  message_vision(HIY "　　　「热过了，就该散了。」\n" NOR, this_object(), me);
+  message_vision(CYN "「你若能让铁锈松口，它自己会出来 —— 只是得趁热。」\n" NOR,
+    this_object(), me);
+
+  if (!me->query_temp("marks/青穗剑")) {
+    me->set_temp("marks/青穗剑", 1);
+    REWARD_D->riddle_set(me, "青穗剑", 1);
+  }
+  return 1;
 }
