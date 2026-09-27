@@ -50,7 +50,8 @@ int do_look(string arg) {
 
   if (!arg || (arg != "菊花" && arg != "flower")) return 0;
 
-  tell_object(me, "正当秋季，院子里的菊花有半人多高，把地面遮住了许多。\n");
+  tell_object(me, "正当秋季，院子里的菊花有半人多高，把地面遮住了许多。\n"
+    "（最茂盛的那一簇底下，泥土似乎被人翻动过。）\n");
   return 1;
 }
 

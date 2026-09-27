@@ -3,6 +3,8 @@ inherit SMART_NPC;
 inherit INQUIRY_MSG;
 
 int estate();
+string do_hole();
+string do_flower_deny();
 
 void create() {
   set_name("马方中", ({ "ma fangzhong", "ma" }));
@@ -28,6 +30,10 @@ void create() {
 的时候已经被人杀死了。",
     "孙玉伯": "老伯是我的兄弟，我的朋友，也是我的父母，若没有他，我在十六岁
 的时候已经被人杀死了。",
+    "洞": (: do_hole() :),
+    "地道": (: do_hole() :),
+    "秘道": (: do_hole() :),
+    "花": (: do_flower_deny() :),
   ]));
 
   set("nb_chat_chance", 100);
@@ -50,4 +56,47 @@ void create() {
   carry_object("/obj/armor/cloth")->wear();
   carry_object(__DIR__ "obj/cup");
 
+}
+
+
+string do_flower_deny() {
+  object me = this_player();
+
+  if (!me) return "";
+
+  if (me->query_temp("zangbei/守洞人"))
+    return "action马方中笑了笑：“那些花，年年都开得这样好。”";
+
+  return "action马方中笑了笑：“不过是几株菊花罢了，不值一提。”\n\n"
+         "他说这话的时候，眼睛却是看着别处的。";
+}
+
+
+string do_hole() {
+  object me = this_player();
+  object room = environment();
+
+  if (!me || !room) return "";
+
+  if (REWARD_D->check_m_success(me, "十三年"))
+    return "action马方中看了看你，只是笑了笑，没有再说话。";
+
+  if (!room->query("exits/down"))
+    room->set("exits/down", "/d/zangbei/tunnel1");
+
+  if (!REWARD_D->riddle_check(me, "十三年"))
+    REWARD_D->riddle_set(me, "十三年", 1);
+
+  me->set_temp("zangbei/守洞人", 1);
+
+  return "action马方中的脸色忽然变了。\n\n"
+         "他慢慢放下手里的茶杯，走到那片开得最盛的菊花前，弯下腰，\n"
+         "抓住花根，用力往上一拔——连根而起，带起了一大块泥土。\n\n"
+         "泥土底下，赫然露出一个黑漆漆的洞口，一股又冷又湿的风从下面涌上来。\n\n"
+         "“我住在这里，就是要替他守着这地道的出口。”\n"
+         "马方中的声音低得几乎听不见，\n"
+         "“我只希望他永远都用不着这条地道。”\n\n"
+         "他抬起头看着你，眼睛里有一种说不出的东西：\n"
+         "“你若真要下去，就别指望还能干干净净地回来。”\n\n"
+         "（往下的路，已经打开了。）";
 }

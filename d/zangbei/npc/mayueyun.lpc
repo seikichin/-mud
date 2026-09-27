@@ -2,6 +2,7 @@
 inherit SMART_NPC;
 
 int estate();
+string do_hole2();
 
 void create() {
   set_name("马月云", ({ "ma yueyun", "ma" }));
@@ -25,6 +26,8 @@ void create() {
 
   set("inquiry", ([
     "*": "我很少出门，你问的这些我都不知道呀。\n",
+    "花": (: do_hole2() :),
+    "洞": (: do_hole2() :),
   ]));
 
   set("chat_chance", 1);
@@ -38,4 +41,21 @@ void create() {
     "long": "一条家常穿的布裙。\n",
   ]))->wear();
 
+}
+
+
+string do_hole2() {
+  object me = this_player();
+
+  if (!me) return "";
+
+  if (me->query_temp("zangbei/守洞人"))
+    return "action马月云看了看你，低声道：“他既然已经跟你说了，我也就不再说什么了。”";
+
+  return "action马月云低下头，手里的筷子停了很久。\n\n"
+         "“他每天半夜都要到院子里站上一会儿。”她的声音很轻，\n"
+         "“一直站到天快亮。”\n\n"
+         "“你别问我他是在看什么。”\n\n"
+         "“我嫁给他二十三年，从来没有问过。”\n\n"
+         "（她忽然抬起头看了你一眼，像是明白了什么，又低下头去。）";
 }

@@ -1,6 +1,10 @@
 #include <ansi.h>
 inherit SMART_NPC;
 
+string do_mafangzhong();
+string blame_you(object me, int n);
+void close_up(object room);
+
 void create() {
   set_name("孙巨", ({ "sun ju", "sun", "sunju" }));
   set("long", "
@@ -12,6 +16,11 @@ void create() {
   set("gender", "男性");
   set("title", "巨人");
   set("age", 52);
+
+  set("inquiry", ([
+    "马方中": (: do_mafangzhong() :),
+    "ma fangzhong": (: do_mafangzhong() :),
+  ]));
 
   set("combat_exp", 9500000);
   set("attitude", "friendly");
@@ -31,4 +40,77 @@ void create() {
   setup();
   carry_object("/obj/armor/cloth")->wear();
 
+}
+
+
+string do_mafangzhong() {
+  object me = this_player();
+  object room;
+
+  if (!me) return "";
+
+  if (REWARD_D->check_m_success(me, "十三年"))
+    return "action孙巨侧过头，空洞的眼窝对着你。\n"
+           "“马家的事，你已经知道了。”他缓缓道，“上去吧。”";
+
+  if (!me->query_temp("zangbei/守洞人"))
+    return blame_you(me, 1);
+
+  if (!me->query_temp("zangbei/秘道带血")
+      && me->query("kee") >= me->query("max_kee") * 3 / 4)
+    return blame_you(me, 2);
+
+  me->set_temp("zangbei/孙巨放行", 1);
+
+  room = environment();
+  if (room) {
+    room->set("exits/up", "/d/zangbei/groom2");
+    call_out("close_up", 180, room);
+  }
+
+  return "action孙巨沉默了很久。黑暗里，只听得见他粗重的呼吸声。\n\n"
+         "“马方中。”他忽然开口，声音像是从很深很深的地方传上来的，\n"
+         "“这三个字，只有从那条地道里下来的人，才说得出口。”\n\n"
+         "“我答应过老伯一件事——绝不让任何人追到他。”\n\n"
+         "他伸出手。那只手比常人的大出一倍，指节上结着厚厚的茧，\n"
+         "“上来吧。”\n\n"
+         "（小船无声地靠到了石壁边。石壁上，一道秘道的入口露了出来——\n"
+         "　你可以向上（up）爬进去了。）";
+}
+
+
+string blame_you(object me, int n) {
+  int kee, floor;
+
+  if (!me) return "";
+
+  kee = me->query("kee");
+  floor = me->query("max_kee") / 8;
+
+  if (kee > floor)
+    me->receive_damage("kee", kee - floor, this_object());
+
+  if (n == 1)
+    return "action孙巨的动作忽然停住了。\n\n"
+           "他缓缓转过头来，空洞的眼窝对着你，像是要把你看穿。\n\n"
+           "“这三个字，不是从你嘴里该出来的。”\n\n"
+           "话音未落，一只巨掌已经拍在石壁上。碎石飞溅，\n"
+           "你被那股气浪掀得倒退数步，胸口一阵剧痛。\n\n"
+           "“滚。”\n\n"
+           "（你受了伤。也许，你该先弄清楚这条地道究竟是谁的。）";
+
+  return "action孙巨忽然停住了。\n\n"
+         "他用力吸了吸鼻子，像是要从空气里闻出什么来。\n\n"
+         "“你身上没有血。”他的声音里透出一种冰冷的失望，\n"
+         "“老伯若是来了，必定是满身是血的。”\n\n"
+         "“你不是他。”\n\n"
+         "巨掌挥出，你只觉得胸口像被一堵墙撞上，整个人飞了出去。\n\n"
+         "（你受了伤。这条地道里的石头，很愿意帮你的忙。）";
+}
+
+
+void close_up(object room) {
+  if (!room) return;
+  if (room->query("exits/up")) room->delete("exits/up");
+  return;
 }

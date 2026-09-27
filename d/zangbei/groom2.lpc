@@ -32,14 +32,29 @@ LONG
 }
 
 void init() {
+  object me = this_player();
+
   add_action("do_look", "look");
+
+  if (!userp(me)) return;
+  if (!me->query_temp("zangbei/孙巨放行")) return;
+
+  me->delete_temp("zangbei/孙巨放行");
+  if (REWARD_D->check_m_success(me, "十三年")) return;
+
+  REWARD_D->riddle_done(me, "十三年", 10, 1);
+  tell_object(me, HIY "\n你从床下的秘道里爬出来，拍拍身上的土。\n\n"
+    "这里竟是一间卧室——那张很硬的木板床，正压在你出来的洞口上。\n\n"
+    "床上没有人。藤椅空着。\n\n"
+    "（你忽然明白：这条秘道，这十三年来，只有一个人走过。）\n" NOR);
 }
 
 
 int do_look(string arg) {
+  object me = this_player();
   if (!arg || (arg != "bed" && arg != "木板床" && arg != "床"))
     return 0;
-  if (!query("escaped")) {
+  if (!query("escaped") && !me->query_temp("zangbei/守洞人")) {
     tell_object(this_player(), "
 在关外长大的人都习惯睡硬炕老伯也不例外，所以这是张很硬的木板床，也是
 张很普通的木板床。\n");

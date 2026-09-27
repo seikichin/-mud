@@ -30,3 +30,39 @@ LONG
   set("map", "zbeast");
   setup();
 }
+
+
+void init() {
+  add_action("do_climb", "climb");
+}
+
+
+int do_climb(string arg) {
+  object me = this_player();
+  int kee, dmg, floor;
+
+  if (!arg) return 0;
+  if (arg != "chain" && arg != "铁链" && arg != "ring" && arg != "铁环")
+    return 0;
+
+  if (me->query_temp("zangbei/秘道带血")) {
+    tell_object(me, "你手上全是血，早已握不住那根锈链了。\n");
+    return 1;
+  }
+
+  message_vision(HIR "$N伸手抓住石壁上那根粗重的铁链，用力一拽。\n" NOR, me);
+
+  me->set_temp("zangbei/秘道带血", 1);
+
+  kee = me->query("kee");
+  dmg = me->query("max_kee") / 6;
+  floor = me->query("max_kee") / 5;
+  if (kee - dmg < floor) dmg = kee - floor;
+  if (dmg > 0) me->receive_damage("kee", dmg, this_object());
+
+  message_vision(HIR "生了锈的铁环忽然一转，剥落的铁屑像无数根细针，\n"
+    "深深扎进$N的掌心。鲜血顺着铁链往下淌，在黑暗里发出轻轻的滴答声。\n" NOR, me);
+
+  tell_object(me, HIR "（你受了伤——但你的手上，从此有了血。）\n" NOR);
+  return 1;
+}

@@ -1,6 +1,7 @@
 #include <ansi.h>
 inherit SMART_NPC;
 int do_running();
+string do_flower();
 
 void create() {
   set_name("马小贝", ({ "ma xiaobei", "xiaobei" }));
@@ -20,6 +21,8 @@ void create() {
 
   set("inquiry", ([
     "*": "有事儿去问我爸我妈吧。\n",
+    "花": (: do_flower() :),
+    "洞": (: do_flower() :),
   ]));
 
   set("arrive_msg", "跳跳蹦蹦地跑了过来");
@@ -51,4 +54,21 @@ int do_running() {
   ccommand("go south");
   return 1;
 
+}
+
+
+string do_flower() {
+  object me = this_player();
+
+  if (!me) return "";
+
+  if (me->query_temp("zangbei/守洞人"))
+    return "action马小贝歪着头看了看你：“爹都跟你说了？那你可别跟人说是我告诉你的！”";
+
+  return "action马小贝正在花丛里追着一只蝴蝶。听见你问起花，\n"
+         "他忽然停下来，左右看了看，压低了声音：\n\n"
+         "“那些花下面有个洞哦。”\n\n"
+         "“爹不许我们碰那些花，也不许跟人说。”他吐了吐舌头，\n"
+         "“去年我听见他在院子里跟人说话，说什么——守了十三年……”\n\n"
+         "“你要是去问爹，可别说是我说的！”";
 }
