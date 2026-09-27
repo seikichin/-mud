@@ -16,6 +16,12 @@ LONG);
     "east": __DIR__ "xiaojie3",
     "west": __DIR__ "neishi",
   ]));
+
+  set("item_desc", ([
+    "灶台": "一口黑黢黢的大灶，灶沿上积着厚厚的油垢，砖缝里塞满了纸头碎布。（ｆａｎ）\n",
+    "zaotai": "一口黑黢黢的大灶，灶沿上积着厚厚的油垢，砖缝里塞满了纸头碎布。（ｆａｎ）\n",
+    "stove": "一口黑黢黢的大灶，灶沿上积着厚厚的油垢，砖缝里塞满了纸头碎布。（ｆａｎ）\n"
+  ]));
   set("objects", ([
     __DIR__ "npc/mai": 1,
   ]));
@@ -28,6 +34,32 @@ LONG);
 
 void init() {
   add_action("do_look", "look");
+  add_action("do_fan", "fan");
+}
+
+int do_fan(string arg) {
+  object me, ob;
+  me = this_player();
+  if (!arg) return 0;
+  if (arg != "zaotai" && arg != "灶台" && arg != "stove") return 0;
+  if (me->query_temp("marks/fugui_dp_stove")) {
+    tell_object(me, "灶台缝里除了经年的油泥，再没有别的东西了。\n");
+    return 1;
+  }
+  message_vision(CYN "$N凑到灶台边，在砖缝里一阵抠摸。\n" NOR, me);
+  ob = new(__DIR__ "obj/canpian3");
+  if (!ob) {
+    tell_object(me, "你摸了半天，只摸到一手油泥。\n");
+    return 1;
+  }
+  if (!ob->move(me)) {
+    tell_object(me, "你身上带着的东西已经太多了。\n");
+    ob->move(this_object());
+    return 1;
+  }
+  message_vision(CYN "$N从灶台缝里抠出一片发黄的残纸，上头还沾着油。\n" NOR, me);
+  me->set_temp("marks/fugui_dp_stove", 1);
+  return 1;
 }
 
 

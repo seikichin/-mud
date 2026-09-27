@@ -36,6 +36,13 @@ void create() {
     __DIR__ "obj/sausage": 15,
     __DIR__ "obj/tongue": 5,
   ]));
+
+  set("inquiry", ([
+    "当票": "果张纸啊？我用来包过烧鹅啦，塞咗灶台缝里头，你要就自己去摞。\n",
+    "残票": "灶台缝，自己摞啦。\n",
+    "利源当铺": "隔篱就系当铺咯，活剥皮果个老头，剥皮都唔啃骨头嘅。\n"
+  ]));
+
   setup();
   carry_object("/obj/armor/cloth")->wear();
 }

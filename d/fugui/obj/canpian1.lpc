@@ -1,0 +1,16 @@
+inherit ITEM;
+
+void create() {
+  set_name("当票残片", ({ "canpian", "can pian", "pian" }));
+  set_weight(10);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "片");
+    set("long", "一片发黄的残纸，断口是虫蛀出来的毛茬。纸面上只剩半个墨字，\n像是个『利』字的上半截，旁边还沾着一块油渍。\n");
+    set("value", 0);
+    set("no_sell", 1);
+    set("no_pawn", 1);
+  }
+  ::init_item();
+}

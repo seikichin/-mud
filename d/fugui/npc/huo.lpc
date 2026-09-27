@@ -29,6 +29,14 @@ void create() {
 
   set_skill("unarmed", 80);
   set_skill("dodge", 100);
+
+  set("inquiry", ([
+    "当票": "当票？柜台底下压着一片碎纸，你要就拿去。\n",
+    "残票": "柜台底下，自己翻去。\n",
+    "王动": "富贵山庄那位庄主？三年没见他添过一件新衣裳了。\n",
+    "皮袄": "你倒知道得多。先把整张当票凑齐，再来跟我说话。\n"
+  ]));
+
   setup();
   carry_object("/obj/armor/cloth")->wear();
 }
@@ -55,4 +63,56 @@ void die() {
     );
   ::die();
   return;
+}
+
+int accept_object(object me, object ob) {
+  object ao, md, rd;
+  int pieces, fee;
+  if (!me || !ob) return 0;
+  if (ob->query("id") != "canpian") return 0;
+
+  rd = load_object("/adm/daemons/rewardd");
+  if (rd && rd->check_m_success(me, "旧皮袄")) {
+    command("say 那桩事已经了了。这破纸你自己留着吧。");
+    return 0;
+  }
+
+  me->add_temp("marks/fugui_dp_pieces", 1);
+  pieces = me->query_temp("marks/fugui_dp_pieces");
+  message_vision(CYN "$N接过残片，凑到灯下眯着眼看了看。\n" NOR, this_object(), me);
+  if (pieces < 3) {
+    command("say 半张破纸顶什么用？还有呢。");
+    return 1;
+  }
+
+  message_vision(CYN "$N把三片残纸在柜台上拼到一处，眯着的眼睛忽然睁开了。\n" NOR, this_object(), me);
+  command("say 原来是这张。利源当铺第一千三百号，活当，王动。");
+  command("say 三年前腊月里当的，一件旧皮袄。赎银按本店的规矩，七成半。");
+  fee = 1500;
+
+  md = load_object("/adm/daemons/moneyd");
+  if (!md || !md->affordable(me, fee)) {
+    tell_object(me, "活剥皮用枯瘦的手指敲了敲柜台：十五两银子，一文也不能少。\n");
+    me->set_temp("marks/fugui_dp_pieces", 0);
+    ao = new("/d/fugui/obj/canpian1");
+    if (ao) ao->move(me);
+    ao = new("/d/fugui/obj/canpian2");
+    if (ao) ao->move(me);
+    ao = new("/d/fugui/obj/canpian3");
+    if (ao) ao->move(me);
+    return 1;
+  }
+
+  if (me->query("env/e_money"))
+    md->charge_him(me, fee);
+  else
+    md->pay_him(me, md->affordable(me, fee) - fee);
+
+  ao = new("/d/fugui/obj/jiupiao");
+  if (ao) ao->move(me);
+  message_vision(CYN "$N转身从柜子最里头翻出一件叠得整整齐齐的旧皮袄，扔在柜台上。\n" NOR, this_object(), me);
+  command("say 王庄主当初当它，可不是为了他自己。拿去吧。");
+  me->set_temp("marks/fugui_dp_pieces", 0);
+  me->set_temp("marks/fugui_dp_redeemed", 1);
+  return 1;
 }

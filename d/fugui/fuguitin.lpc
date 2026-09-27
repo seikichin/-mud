@@ -1,4 +1,5 @@
 inherit ROOM;
+#include <ansi.h>
 
 void create() {
   set("short", "富贵如意厅");
@@ -36,6 +37,32 @@ LONG
 
 void init() {
   add_action("do_move", "move");
+  add_action("do_fan", "fan");
+}
+
+int do_fan(string arg) {
+  object me, ob;
+  me = this_player();
+  if (!arg) return 0;
+  if (arg != "bed" && arg != "床" && arg != "偌大的床") return 0;
+  if (me->query_temp("marks/fugui_dp_bed")) {
+    tell_object(me, "床底下除了几只老鼠屎，再没有别的东西了。\n");
+    return 1;
+  }
+  message_vision(CYN "$N掀开那张油腻的床单，伸手往床板缝里摸索。\n" NOR, me);
+  ob = new(__DIR__ "obj/canpian1");
+  if (!ob) {
+    tell_object(me, "你摸了半天，只摸到一手油。\n");
+    return 1;
+  }
+  if (!ob->move(me)) {
+    tell_object(me, "你身上带着的东西已经太多了。\n");
+    ob->move(this_object());
+    return 1;
+  }
+  message_vision(CYN "$N从床板缝里抠出一片发黄的残纸。\n" NOR, me);
+  me->set_temp("marks/fugui_dp_bed", 1);
+  return 1;
 }
 
 int do_move(string arg) {

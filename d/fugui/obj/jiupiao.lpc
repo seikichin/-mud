@@ -1,0 +1,16 @@
+inherit ITEM;
+
+void create() {
+  set_name("旧皮袄", ({ "jiupiao", "jiu piao ao", "piao ao", "coat" }));
+  set_weight(3000);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "件");
+    set("long", "一件叠得整整齐齐的旧皮袄。皮子早就硬了，领口磨得发亮，\n袖口上还补过两针——针脚歪歪扭扭的，看得出不是女人缝的。\n");
+    set("value", 2000);
+    set("no_sell", 1);
+    set("no_pawn", 1);
+  }
+  ::init_item();
+}

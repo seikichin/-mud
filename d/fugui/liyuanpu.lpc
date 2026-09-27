@@ -1,4 +1,5 @@
 inherit ROOM;
+#include <ansi.h>
 
 void create() {
   set("short", "利源当铺");
@@ -17,8 +18,42 @@ LONG);
     __DIR__ "npc/huo": 1,
   ]));
 
+  set("item_desc", ([
+    "柜台": "一张又高又厚的木柜台，台面被磨得发亮。柜台底下黑漆漆的，\n像是塞着些早就没人要的碎纸烂账。（ｆａｎ）\n",
+    "counter": "一张又高又厚的木柜台，台面被磨得发亮。柜台底下黑漆漆的，\n像是塞着些早就没人要的碎纸烂账。（ｆａｎ）\n"
+  ]));
+
   set("coor/x", 30);
   set("coor/y", 90);
   set("coor/z", 0);
   setup();
+}
+
+void init() {
+  add_action("do_fan", "fan");
+}
+
+int do_fan(string arg) {
+  object me, ob;
+  me = this_player();
+  if (!arg) return 0;
+  if (arg != "counter" && arg != "柜台") return 0;
+  if (me->query_temp("marks/fugui_dp_counter")) {
+    tell_object(me, "柜台底下除了老灰，再没有别的东西了。\n");
+    return 1;
+  }
+  message_vision(CYN "$N蹲下身子，伸手到柜台底下一阵摸索。\n" NOR, me);
+  ob = new(__DIR__ "obj/canpian2");
+  if (!ob) {
+    tell_object(me, "你摸了半天，只摸到一手灰。\n");
+    return 1;
+  }
+  if (!ob->move(me)) {
+    tell_object(me, "你身上带着的东西已经太多了。\n");
+    ob->move(this_object());
+    return 1;
+  }
+  message_vision(CYN "$N从灰里摸出一片发黄的残纸。\n" NOR, me);
+  me->set_temp("marks/fugui_dp_counter", 1);
+  return 1;
 }

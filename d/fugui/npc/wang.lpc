@@ -46,6 +46,8 @@ void create() {
     "郭大路": "哎...那头犟牛.....\n",
     "红娘子": "哎....\n",
     "竹叶青": "等我找到了，一定请你来喝！\n",
+    "当票": "……床底下。\n",
+    "皮袄": "哪有什么皮袄。\n",
     "leave": (: leave :),
   ]));
 
@@ -178,6 +180,19 @@ int do_unwie() {
 }
 
 int accept_object(object me, object ob) {
+  if (ob->query("id") == "jiupiao") {
+    if (REWARD_D->check_m_success(me, "旧皮袄")) {
+      command("say 这件衣裳，我已经收下过了。");
+      return 0;
+    }
+    message_vision(CYN "$N盯着那件旧皮袄看了很久，久到你以为他又睡着了。\n" NOR, this_object(), me);
+    command("say 三年前那场雪，比今年的大。");
+    command("say ……那小子冻得嘴唇发青，还硬说不冷。");
+    command("say 这件衣裳，我早忘了。");
+    REWARD_D->riddle_done(me, "旧皮袄", 10, 1);
+    message_vision(CYN "$N把皮袄随手搭在身上，翻个身，又不动了。\n" NOR, this_object(), me);
+    return 1;
+  }
   if (ob->query("name") == HIY "金链子" NOR) {
     command("touch " + me->query("id"));
     command("say 终于知道大路的消息了！\n");
