@@ -14,6 +14,7 @@ LONG);
   set("exits", ([
     "northwest": __DIR__ "qiongjie2",
     "east": AREA_MANGLIN "southsearoad1",
+    "enter": "/d/darenwu/entry",
   ]));
   //}}
   set("objects", ([

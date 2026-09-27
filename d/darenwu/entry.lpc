@@ -15,7 +15,7 @@ LONG
   set("no_fly", 1);
   set("NONPC", 1);
   set("exits", ([
-    "out": "/d/oldpine/cliff1",
+    "out": "/d/shanliu/qiongjie1",
   ]));
   setup();
 }

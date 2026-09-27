@@ -10,9 +10,10 @@ void create() {
 一座黑朦朦的山在云雾里忽隐忽现，那就是黑松山。
 LONG
   );
-  set("exits", ([ /* sizeof() == 2 */
+  set("exits", ([ /* sizeof() == 3 */
     "south": __DIR__ "dustyroad0",
     "north": __DIR__ "dustyroad2",
+    "enter": "/d/biyudao/entry",
   ]));
   set("outdoors", "chuenyu");
   set("objects", ([
