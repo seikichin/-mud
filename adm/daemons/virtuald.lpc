@@ -51,38 +51,70 @@ object compile_object(string file) {
   }
 
   // ------------------------------------------------------------------
-  //  vrm_fixed 固定区域：短路径
-  //    /d/fixedtest/<区>/<x>/<y>/<z> | /entry | /exit
-  //      → /d/fixedtest/<区>/<区>->query_maze_room("<区>/<x>/<y>/<z>|entry|exit")
+  //  vrm_fixed 固定区域：短路径（通用版；2026-09-28 由 fixedtest 专用版泛化）
+  //    <区域目录>/<区名>/<x>/<y>/<z> | /entry | /exit
+  //      → <区域目录>/<区名>->query_maze_room("<区名>/<x>/<y>/<z>|entry|exit")
+  //  例：/d/fixedtest/tangmen/3/4/0、/d/bylh/jianghu/7/11/0
   //  （vrm_fixed 覆盖了 mroom_fname/query_maze_pathbase，虚拟格房路径
-  //    就是 <区目录>/x/y/z，不再带重复的区名段）
+  //    就是 <区目录>/<区名>/x/y/z，不再带重复的区名段）
+  //  注：query_maze_room() 的参数格式是 "<owner>/<tail>"，此处的 owner
+  //      就是固定区域的实例键（= 区名），故须显式补上该段。
   // ------------------------------------------------------------------
-  if (strlen(file) > 13 && file[0..12] == "/d/fixedtest/") {
-    string rest, area, tail, apath;
+  {
+    string area, tail, apath, cand;
     object ad, r;
-    int k, qx, qy, qz;
+    int k, sl, qx, qy, qz, ok;
 
-    rest = file[13..];
-    k = member_array('/', rest);
+    k = -1;
+    for (int i = strlen(file) - 1; i > 0; i--) {
+      if (file[i] != '/')
+        continue;
+
+      tail = file[i + 1..];
+      ok = 0;
+      if (tail == "entry" || tail == "exit")
+        ok = 1;
+      else if (sscanf(tail, "%d/%d/%d", qx, qy, qz) == 3)
+        ok = 1;
+      if (!ok)
+        continue;
+
+      apath = file[0..i - 1];
+
+      // 布局 A：<目录>/<区名>.lpc        （如 /d/bylh/jianghu.lpc）
+      if (file_size(apath + ".lpc") >= 0) {
+        k = i;
+        break;
+      }
+
+      // 布局 B：<目录>/<区名>/<区名>.lpc （如 /d/fixedtest/tangmen/tangmen.lpc）
+      sl = strsrch(apath, "/", -1);
+      cand = apath + "/" + ((sl >= 0) ? apath[sl + 1..] : apath);
+      if (file_size(cand + ".lpc") >= 0) {
+        apath = cand;
+        k = i;
+        break;
+      }
+    }
+
     if (k > 0) {
-      area = rest[0..k - 1];
-      tail = rest[k + 1..];
-      if (tail == "entry" || tail == "exit" ||
-          sscanf(tail, "%d/%d/%d", qx, qy, qz) == 3) {
-        apath = "/d/fixedtest/" + area + "/" + area;
-        ad = find_object(apath);
-        if (!objectp(ad) && file_size(apath + ".lpc") >= 0)
-          ad = load_object(apath);
-        if (objectp(ad)) {
-          r = ad->query_maze_room(area + "/" + tail);
-          if (objectp(r)) {
-            r->set_virtual_flag();
-            return r;
-          }
+      sl = strsrch(apath, "/", -1);
+      area = (sl >= 0) ? apath[sl + 1..] : apath;
+      tail = file[k + 1..];
+
+      ad = find_object(apath);
+      if (!objectp(ad))
+        ad = load_object(apath);
+      if (objectp(ad) && inherits("/std/room/vrm_base", ad)) {
+        r = ad->query_maze_room(area + "/" + tail);
+        if (objectp(r)) {
+          r->set_virtual_flag();
+          return r;
         }
       }
     }
   }
+
   while (1) {
     int idx = strsrch(pname, "/", -1);
 

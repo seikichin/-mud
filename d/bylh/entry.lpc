@@ -1,0 +1,30 @@
+// 《白玉老虎》—— 大风堂·门前（入口房）
+//
+// 入口：/d/quicksand/xiaodao2 向南。
+// 九幕由此展开：门前 -> 大堂(喜堂) -> 灵堂 -> 密室。
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大风堂·门前" NOR);
+  set("long", @LONG
+青石大道到这里便到了头，迎面是两扇朱漆大门，门钉锃亮。
+
+门楣上悬着一方黑底金字的匾额——「大风堂」。
+
+今日是少堂主赵无忌的吉期。门前两只石狮的脖子上都系了红绸，檐下一
+排红灯笼一直挂到墙根，连石阶都换成了新的。
+
+可这满眼的红里，却静得听不见一声人语。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("NONPC", 1);
+  set("exits", ([
+    "out": "/d/quicksand/xiaodao2",
+    "north": __DIR__ "dating",
+  ]));
+  setup();
+}

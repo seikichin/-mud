@@ -1,0 +1,38 @@
+// 《白玉老虎》—— 江湖路（虚拟固定迷宫 · vrm_fixed）
+//
+//   江湖路：废驿道 → 官道 → 吉祥镇 → 辣椒巷 → 唐家镇西门
+//
+//   jianghu.map        地图（16 x 14，z=0）
+//   jianghu-room.lpc   格房模板（按坐标定描述）
+//   jianghugate.lpc    迷宫外入口房（大风堂密道口）
+//   jianghugate2.lpc   迷宫外出口房（唐家镇西门外）
+//
+//   虚拟格房路径 = /d/bylh/jianghu/x/y/z
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "jianghu-room");
+  set_maze_map(__DIR__ "jianghu");
+  set_maze_spacing(10);
+  set_maze_owner_key("jianghu");
+
+  // entry_dir 必须选「入口格掩码里不存在的方向」，否则会覆盖该格的真实连接。
+  // 入口格 (7,0,0) = N|E，故选 south：入口房 north→入口格、south→迷宫外。
+  set_entry_dir("south");
+  set_link_entry_room(__DIR__ "jianghugate");
+  set_link_exit_room(__DIR__ "jianghugate2");
+  set_entry_back_dir("south");
+  set_exit_back_dir("north");
+
+  set_entry_short(HIC "废驿道" NOR);
+  set_entry_desc("荒废的驿道。往 north 可进入江湖路。\n");
+  set_exit_short(HIY "唐家镇·西门外" NOR);
+  set_exit_desc("唐家镇西门外的官道。出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 jianghu-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("街巷");
+  set_maze_room_desc("江湖路上的一处所在。\n");
+}

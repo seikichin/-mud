@@ -1,0 +1,50 @@
+
+// 《白玉老虎》—— 虎山北口（密道出口房 · 守卫 · 幕七终局）
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_push(string arg);
+
+void create() {
+  set("short", HIC "虎山·北口" NOR);
+  set("long", @LONG
+密道在这里到了头。前面是一道低矮的石门，门半开着。
+
+门外是天光。天光底下，能看见一片青色的屋脊，和几棵很高很高的树。
+
+那片屋脊后面，就是唐家堡。
+
+——可是门外站着一个人。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : "/d/bylh/hushan/exit",
+    "north" : "/d/bylh/tangjiabao",
+  ]));
+  setup();
+}
+
+int valid_leave(object me, string dir) {
+  if (dir != "north") return 1;
+
+  if (!me->query_temp("bylh/hs_decoy")) {
+    message_vision(HIR "$N刚往门口迈出半步，一个人影就从门框后面闪了出来，挡在面前。\n" NOR, me);
+    return notify_fail("\n他穿着唐门弟子的青布衫，手里握着一柄短刀。\n"
+                       "「站住。」\n\n"
+                       "「这道门后面，不是你能走的地方。」\n\n"
+                       "他说话的时候，眼睛一直盯着你手里的兵刃，没有看你的脸。\n");
+
+  }
+
+  message_vision(HIY "$N走向门口。这一次，门框后面没有人。\n" NOR, me);
+  tell_object(me, "\n墙根下留着一只踩灭的灯笼。灯油还是温的。\n");
+
+  if (!me->query_temp("bylh/hs_done")) {
+    me->set_temp("bylh/hs_done", 1);
+    REWARD_D->riddle_done(me, "虎山行", 10, 1);
+  }
+  return 1;
+}

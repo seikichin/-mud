@@ -1,0 +1,20 @@
+// 《白玉老虎》—— 唐家镇·西门外（江湖路出口房）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "唐家镇·西门外" NOR);
+  set("long",
+    "从废驿道里一路走到头，眼前豁然一亮。\n"
+    "脚下是一条青石大道，笔直地伸向北面，能并排走四辆马车。\n\n"
+    "道旁立着一块界碑，上面刻着两个大字：\n\n"
+    "    唐  门\n\n"
+    "碑的背面还有一行小字，被人用刀刮过，只剩下半个「虎」字。\n");
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : "/d/bylh/jianghu/exit",
+  ]));
+  setup();
+}

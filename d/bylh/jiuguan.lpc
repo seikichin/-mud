@@ -1,0 +1,115 @@
+// 《白玉老虎》—— 幕六·步步危机（狮子林酒馆）
+//
+//   精神维度：坐下来听一段话——话里藏了四个「杀」字。
+//   数对了，就说明你听懂了：这是杀局。
+//
+//   命令：坐下（sit）听整段话；然后 数 N 作答。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_sit(string arg);
+int do_count(string arg);
+
+void create() {
+  set("short", HIY "狮子林酒馆" NOR);
+  set("long", @LONG
+一张梨木桌子，四条长凳。桌上一只酒壶，两只碗。
+
+喝酒的人不多。靠墙那一桌坐着一个人，一直低着头，看不清脸。
+他面前也摆着一只碗，碗里的酒一口也没动。
+
+你可以「坐下」。
+LONG
+  );
+  set("item_desc", ([
+    "酒壶" : "壶里的酒还温着。\n",
+    "碗"   : "两只碗。一只空的，一只满的。\n",
+    "人"   : "他始终没有抬头。\n"
+             "但你能感觉得到，他一直在听。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out"   : __DIR__ "shizilgate2",
+    "north" : __DIR__ "hushangate",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_sit", "坐下");
+  add_action("do_sit", "sit");
+  add_action("do_count", "数");
+  add_action("do_count", "count");
+}
+
+int do_sit(string arg) {
+  object me = this_player();
+
+  write("你在长凳上坐下。\n"
+        "那个人终于抬起了头。\n"
+        "他长得不难看，笑起来的时候尤其不难看。\n\n"
+        "他看着你，慢慢开口：\n\n"
+        "「兄台是路过？」\n"
+        "「路过的人，通常不坐这么久。」\n\n"
+        "「你在等人？」\n"
+        "「等谁？」\n"
+        "「……那你怎么知道他会来？」\n"
+        "「他一定会来。因为他还欠我一样东西。」\n"
+        "「什么东西？」\n"
+        "「一条命。」\n"
+        "「他是来还命的？」\n"
+        HIR "「不。他是来杀我的。」\n" NOR
+        "「你怎么知道？」\n"
+        HIR "「因为我也想杀他。」\n\n" NOR
+        "他顿了一顿，笑得更开了：\n\n"
+        "「你要不要也坐下来？」\n"
+        HIR "「坐下来的人，都要想想自己是来杀人的，还是来被杀的。」\n\n" NOR
+        HIY "你忽然觉得，这段话说得太顺了。\n"
+        "顺得像背下来的。\n\n"
+        "（你可以「数」一数——他这段话里，一共用了几个「杀」字。）\n" NOR);
+
+  me->set_temp("bylh/jg_heard", 1);
+  return 1;
+}
+
+int do_count(string arg) {
+  object me = this_player();
+  int n;
+
+  if (!me->query_temp("bylh/jg_heard")) {
+    write("你还没听他说过话。\n（先「坐下」）\n");
+    return 1;
+  }
+  if (!arg || arg == "") {
+    write("几个？（数 4）\n");
+    return 1;
+  }
+
+  n = to_int(arg);
+
+  if (n == 4) {
+    write(HIY "四个。\n\n" NOR
+          "来杀我的 —— 我也想杀他 —— 来杀人的 —— 来被杀的。\n\n"
+          "四个「杀」字，四个人。\n"
+          "你抬头看了一圈：靠墙那一桌一个，门口一个，窗外一个，\n"
+          "还有一个——就坐在你对面。\n\n"
+          "你慢慢站起来，没有看他的脸。\n"
+          "你只是把酒碗推开，走出去了。\n\n"
+          HIR "身后没有人追上来。\n" NOR);
+
+    if (!me->query_temp("bylh/jg_done")) {
+      me->set_temp("bylh/jg_done", 1);
+      REWARD_D->riddle_done(me, "步步危机", 10, 1);
+    }
+    return 1;
+  }
+
+  if (n > 4)
+    write(sprintf("你数出了 %d 个。你听得太细了——细到把旁人的话也算了进去。\n", n));
+  else
+    write(sprintf("你只数出了 %d 个。你听得不够。\n", n));
+  write("再听一遍罢。（坐下）\n");
+  return 1;
+}

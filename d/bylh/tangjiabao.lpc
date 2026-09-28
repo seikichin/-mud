@@ -1,0 +1,26 @@
+
+// 《白玉老虎》—— 唐家堡（幕八占位，P2c 扩展）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·后园" NOR);
+  set("long", @LONG
+从虎山北口出来，是一片极大的园子。
+
+园子里没有花，只有树。一棵一棵的松，排得整整齐齐，像是站着的兵。
+树底下铺着青石，石缝里连一根草都没有。
+
+园子深处，是一片连着的屋脊，一层压着一层，看不到头。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out"   : "/d/bylh/hushangate2",
+    "north" : "/d/bylh/tanghouting",
+  ]));
+
+  setup();
+}

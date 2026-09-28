@@ -1,0 +1,20 @@
+// 《白玉老虎》—— 大风堂·密道口（江湖路入口房）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIC "大风堂·密道口" NOR);
+  set("long",
+    "案下压着一道暗门。掀开来，是一段向下的石阶，越走越窄，\n"
+    "最后只能侧着身子过。\n"
+    "石阶的尽头透出一线灰白——那是废驿道上的天光。\n\n"
+    "司空晓风一直送到门口，没有再多说一句话。\n");
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "up"    : __DIR__ "mishi",
+    "north" : "/d/bylh/jianghu/entry",
+  ]));
+  setup();
+}

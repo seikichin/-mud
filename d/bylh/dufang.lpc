@@ -1,0 +1,122 @@
+// 《白玉老虎》—— 幕三·赌（吉祥镇赌坊）
+//
+//   谋略维度：骰子灌了铅，前三局庄家必赢。
+//   识破千术的唯一办法是「检查」骰子，然后「揭穿」。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_bet(string arg);
+int do_check(string arg);
+int do_expose(string arg);
+
+void create() {
+  set("short", HIY "吉祥镇·赌坊" NOR);
+  set("long", @LONG
+屋里乌烟瘴气，一张张赌桌摆得满满当当。人声很吵，却没有一个人抬
+头看你。
+
+墙上挂着一块匾，四个字：
+
+    一  掷  千  金
+
+正中的那张桌子围的人最多。桌上扣着一只青瓷碗，碗底是三颗骰子。
+庄家是个瘦子，脸白，手也白。他摇骰的时候，眼睛一直看着你的袖子。
+LONG
+  );
+  set("item_desc", ([
+    "匾" : "「一掷千金」。金漆剥落了大半，只有那个「千」字，越看越亮。\n",
+    "骰子" : "三颗白瓷骰子，扣在青瓷碗下。\n你可以「检查」一下。\n",
+    "桌子" : "一张油腻的梨木桌子，桌角刻满了各色各样的记号。\n"
+             "最新的一道，刻得很深，像是不久前才留下的。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out" : "/d/bylh/jianghu/3/8/0",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_bet", "押");
+  add_action("do_bet", "bet");
+  add_action("do_check", "检查");
+  add_action("do_check", "check");
+  add_action("do_expose", "揭穿");
+  add_action("do_expose", "expose");
+}
+
+int do_bet(string arg) {
+  object me = this_player();
+  int round, his, i;
+  string side;
+
+  if (!arg || (arg != "大" && arg != "小" && arg != "big" && arg != "small")) {
+    write("押大，还是押小？（押 大／押 小）\n");
+    return 1;
+  }
+  side = (arg == "大" || arg == "big") ? "大" : "小";
+
+  round = me->query_temp("bylh/dufang_round");
+  round = round ? round + 1 : 1;
+  me->set_temp("bylh/dufang_round", round);
+
+  // 前三局：骰子灌了铅，庄家必赢
+  if (round <= 3) {
+    if (side == "大") his = 4 + random(5);
+    else his = 11 + random(7);
+  } else {
+    his = 3 + random(16);
+  }
+
+  write(sprintf("你押了%s。庄家揭开青瓷碗——\n\n", side));
+  write(sprintf(HIY "    三颗骰子：%d 点。\n\n" NOR, his));
+
+  if ((side == "大" && his >= 11) || (side == "小" && his <= 10)) {
+    write("这一局你赢了。\n");
+  } else {
+    write(HIR "这一局你输了。\n" NOR);
+    if (round <= 3)
+      write("你注意到：庄家摇骰的手，从头到尾都是一个姿势。\n");
+  }
+  return 1;
+}
+
+int do_check(string arg) {
+  object me = this_player();
+
+  write("你拿起那三颗骰子，掂了掂。\n\n"
+        HIR "——比寻常的骰子重了一倍。\n\n" NOR
+        "你翻到六点那一面：点的凹坑里，灌着一点灰白色的东西。\n"
+        "拿指甲一剔，是软的。\n\n"
+        HIY "铅。\n" NOR);
+
+  me->set_temp("bylh/dufang_check", 1);
+  return 1;
+}
+
+int do_expose(string arg) {
+  object me = this_player();
+
+  if (!me->query_temp("bylh/dufang_check")) {
+    write("你空口无凭，凭什么说人家作弊？\n（先「检查」骰子）\n");
+    return 1;
+  }
+
+  write("你把三颗骰子往桌上一拍：\n\n"
+        "「六点灌铅，一掷千金——好一个一掷千金。」\n\n"
+        "满屋子的吵声，一下子静了。\n\n"
+        "庄家的脸白得更厉害了。他盯着你看了很久，忽然笑了：\n"
+        "「是唐门的眼睛。」\n"
+        "「……我们不做这买卖了。」\n\n"
+        "他袖子一卷，三颗骰子就不见了。人也从后门走了。\n"
+        "桌上留下一样东西——一只白玉雕成的小匣，匣里是三颗白玉骰子。\n"
+        HIY "匣底刻着一个小小的墨斗形记号。\n" NOR);
+
+  if (!me->query_temp("bylh/dufang_done")) {
+    me->set_temp("bylh/dufang_done", 1);
+    REWARD_D->riddle_done(me, "一掷千金", 10, 1);
+  }
+  return 1;
+}

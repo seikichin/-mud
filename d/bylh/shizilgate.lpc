@@ -1,0 +1,26 @@
+// 《白玉老虎》—— 狮子林入口房（城南土墙外）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIB "城南土墙外" NOR);
+  set("long", @LONG
+出了城南门，是一道半塌的土墙。
+
+墙外空地上堆着一大片石头——太湖石、黄石、还有几块说不清来历的黑石
+头，叠得又高又乱，像是一群蹲着的野兽。
+
+这就是狮子林。
+
+石头缝里透出一线灰影，里面黑麂麂的。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out"  : "/d/bylh/jianghu/12/8/0",
+    "north": "/d/bylh/shizilin/entry",
+  ]));
+  setup();
+}

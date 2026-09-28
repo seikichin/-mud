@@ -1,0 +1,131 @@
+
+// 《白玉老虎》—— 大风堂·密室
+//
+//   幕二：司空晓风交任务，给假身份（为幕五卧底盘问准备）。
+//   幕九：司空晓风揭示真相 ——「白玉老虎」是一个计划的名字。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_identity(string arg);
+int do_speak(string arg);
+
+void create() {
+  set("short", HIW "大风堂·密室" NOR);
+  set("long", @LONG
+一间不大的密室，四壁没有窗。
+
+墙上挂着一幅中原的舆图，图上用朱笔圈了几处。案上摊着一封没写完的
+信，砚台里的墨已经干了。
+
+司空晓风背对着门站着，肩背挺得笔直。
+LONG
+  );
+  set("item_desc", ([
+    "舆图" : "图上用朱笔圈了三处：蜀中、皖南、还有一个地方被涂掉了。\n",
+    "信"   : "只有半句：「……若见了上官刃，务必……」\n"
+             "后面的事，他没写。\n",
+    "案"   : "案上除了信，还押着一只白玉雕成的小虎。\n"
+             "虎口里，塞着一张卷得很紧的纸。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "west": __DIR__ "dating",
+    "down": __DIR__ "jianghugate",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_identity", "身份");
+  add_action("do_identity", "identity");
+  add_action("do_speak", "说话");
+}
+
+int do_identity(string arg) {
+  object me = this_player();
+
+  if (me->query_temp("bylh/identity")) {
+    write("司空晓风看着你，没有再说什么。\n");
+    return 1;
+  }
+
+  write("司空晓风转过身，把一个名字交到你手上：\n\n"
+        HIY "    「李玉堂。皖南绩溪溪头村人。」\n\n" NOR
+        "「出了大风堂的门，你就叫这个名字。」\n"
+        "「记住：唐门不认朋友，只认来处。」\n\n"
+        "他说完，从案上拿起那只白玉小虎，塞进你怀里。\n"
+        "玉是凉的。但他塞得很用力。\n\n"
+        "「带着它。」\n");
+
+  me->set_temp("bylh/identity", 1);
+  return 1;
+}
+
+// 幕九：真相
+int do_speak(string arg) {
+  object me = this_player();
+  int n;
+
+  if (!me->query_temp("bylh/tj_done")) {
+    if (!me->query_temp("bylh/identity"))
+      write("司空晓风背对着门站着，没有说话的意思。\n"
+            "（你可以问他「身份」的事。）\n");
+    else
+      write("司空晓风背对着门站着，没有说话的意思。\n"
+            "（他还有别的事要交给你。）\n");
+    return 1;
+  }
+
+  n = me->query_temp("bylh/ms_talk");
+  if (!n) n = 0;
+
+  if (n == 0) {
+    write("「你回来了。」\n\n"
+          "司空晓风没有回头。\n\n"
+          "「你见到他了。」\n"
+          "「他让你回来问我——问白玉老虎是个什么东西。」\n\n"
+          "他终于转过身。\n");
+    me->set_temp("bylh/ms_talk", 1);
+    return 1;
+  }
+
+  if (n == 1) {
+    write("「白玉老虎，不是一件东西。」\n\n"
+          "「它是你父亲起的一个名字。」\n"
+          "「一个计划的名字。」\n\n"
+          "他把案上那只白玉小虎拿起来，放在掌心里。\n"
+          "虎口里那张纸，还卷着。\n"
+          "他没有拆。\n");
+    me->set_temp("bylh/ms_talk", 2);
+    return 1;
+  }
+
+  if (n == 2) {
+    write("「你父亲知道一件事——」\n\n"
+          "「唐家的人，只信一种人：手上沾过血的人。」\n\n"
+          "「所以他找了上官刃。」\n"
+          "「一个他信得过的人。」\n\n"
+          "「然后他把脖子伸了过去。」\n");
+    me->set_temp("bylh/ms_talk", 3);
+    return 1;
+  }
+
+  write("喜堂上那一刀——\n"
+        "是你父亲自己要求的。\n\n"
+        "你要报仇。\n"
+        "可你的仇人，是你父亲自己。\n\n"
+        "——但他不欠你什么。\n"
+        "他欠的是他自己。\n\n"
+        "司空晓风把那只白玉老虎放在你手上。\n\n"
+        HIY "「现在，它是你的了。」\n\n" NOR
+        "你低头看着它。\n"
+        "玉是凉的。虎口里那颗珠子，还在慢慢地转。\n");
+
+  if (!me->query_temp("bylh/ms_done")) {
+    me->set_temp("bylh/ms_done", 1);
+    REWARD_D->riddle_done(me, "虎子", 10, 1);
+  }
+  return 1;
+}

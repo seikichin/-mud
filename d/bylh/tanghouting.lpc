@@ -1,0 +1,216 @@
+
+// 《白玉老虎》—— 唐家堡·后堂（幕八·虎穴 · 情感）
+//
+//   上官刃：名义上的杀父仇人，实为奉赵简之命的卧底。
+//   情感维度：复仇（拔刀）vs 信任（交出怀里的白玉老虎）。
+//   他没有接——他让玩家回大风堂去问司空晓风。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_speak(string arg);
+int do_draw(string arg);
+int do_cut(string arg);
+int do_give(string arg);
+int do_sheath(string arg);
+int do_back(string arg);
+
+
+void create() {
+  set("short", HIW "唐家堡·后堂" NOR);
+  set("long", @LONG
+推开那扇门，里面很亮。
+
+一盏灯，一张案。
+
+案上摊着一张很大的纸，纸上画着密密的线，像是一张图。
+一个人背对着门，站在案前，正在看那张图。
+
+他没有回头。
+
+「你来了。」他说。
+「我等了你很久。」
+
+你可以「说话」。
+LONG
+  );
+  set("item_desc", ([
+    "案"   : "一张很旧的梨木长案。案角有一道很深的刀痕。\n",
+    "图"   : "一幅舆图。上面画着的，是大风堂。\n"
+             "每一间屋子、每一条通路，都标得清清楚楚。\n"
+             "有些地方还用小字注着：\n\n"
+             "    「此处可进」\n"
+             "    「此处有井」\n"
+             "    「此处无人」\n",
+    "灯"   : "一盏油灯。灯芯剪得很短，火苗一动不动。\n",
+    "人"   : "他背对着门站着。\n"
+             "他的肩很宽，背很直。\n"
+             "你看着那个背影，忽然发现——\n"
+             "你在喜堂上见到的那个背影，也是这个样子。\n",
+    "刀"   : "案上放着一柄刀，连鞘都没有。\n"
+             "刀锋朝外，刃上有一层淡淡的青光。\n"
+             "——把刀这样放着的人，是随时准备让人拿的。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out" : "/d/bylh/tangjiabao",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_speak", "说话");
+  add_action("do_draw",  "拔刀");
+  add_action("do_cut",   "砍");
+  add_action("do_sheath","收刀");
+  add_action("do_give",  "交出");
+  add_action("do_back",  "回去");
+}
+
+// 回大风堂
+int do_back(string arg) {
+  object me = this_player();
+
+  if (!me->query_temp("bylh/tj_done")) {
+    write("你还不能走。\n");
+    return 1;
+  }
+
+  write("你退出后堂，从角门出了唐家堡。\n\n"
+        "连夜赶了七天的路。\n"
+        "第七天的黄昏，你推开了大风堂的门。\n\n"
+        HIY "（你走进了密室。）\n" NOR);
+
+  me->move(__DIR__ "mishi");
+  return 1;
+}
+
+
+int do_speak(string arg) {
+  object me = this_player();
+  int n = me->query_temp("bylh/tj_talk");
+
+  if (!n) n = 0;
+
+  if (n == 0) {
+    write("「你父亲是我杀的。」\n\n"
+          "他说得很平静，像是在说别人的事。\n\n"
+          "「头是我割下来的。我亲手割的。」\n");
+    me->set_temp("bylh/tj_talk", 1);
+    return 1;
+  }
+
+  if (n == 1) {
+    write("「我等了你很久。」\n\n"
+          "「你比我算的，晚来了三天。」\n\n"
+          "「这三天，我一直在想一件事——」\n"
+          "「你要是永远不来，我该怎么办。」\n");
+    me->set_temp("bylh/tj_talk", 2);
+    return 1;
+  }
+
+  if (n == 2) {
+    write("「你要动手，就动手罢。」\n\n"
+          "「刀在案上，你自己拿。」\n\n"
+          "他始终没有回头。\n");
+    me->set_temp("bylh/tj_talk", 3);
+    return 1;
+  }
+
+  write("「你还想问什么？」\n"
+        "他的声音里，第一次有了一点别的东西。\n");
+  return 1;
+}
+
+int do_draw(string arg) {
+  object me = this_player();
+
+  if (me->query_temp("bylh/tj_draw")) {
+    write("刀已经在你手里了。\n（你可以「砍」，也可以「收刀」）\n");
+    return 1;
+  }
+
+  write("你拿起案上的刀。\n\n"
+        "刀很沉——比你想的要沉。\n\n"
+        "他终于转过身来。\n\n"
+        "他脸上没有表情。但他的手在袖子里，握得很紧。\n\n"
+        "「动手罢。」他说。\n\n"
+        HIY "（你可以「砍」，也可以「收刀」）\n" NOR);
+
+  me->set_temp("bylh/tj_draw", 1);
+  return 1;
+}
+
+int do_cut(string arg) {
+  object me = this_player();
+
+  if (!me->query_temp("bylh/tj_draw")) {
+    write("你手里没有刀。\n");
+    return 1;
+  }
+  if (me->query_temp("bylh/tj_cut")) {
+    write("你的手还在抖。\n");
+    return 1;
+  }
+
+  write("你的刀落下去。\n\n"
+        "他没有躲。\n\n"
+        "刀锋到离他喉咙还有半寸的地方——\n"
+        "停住了。\n\n"
+        "不是他躲开了。是你自己停的。\n\n"
+        "你握刀的手，在抖。\n\n"
+        "他看了你很久，忽然笑了一下：\n\n"
+        "「你跟你父亲，一模一样。」\n\n"
+        HIY "（你可以「收刀」，也可以「交出」怀里的东西。）\n" NOR);
+
+  me->set_temp("bylh/tj_cut", 1);
+  return 1;
+}
+
+int do_sheath(string arg) {
+  object me = this_player();
+
+  if (!me->query_temp("bylh/tj_draw")) {
+    write("你手里没有刀。\n");
+    return 1;
+  }
+
+  write("你把刀放回案上。\n\n"
+        "放得很轻。\n");
+
+  me->delete_temp("bylh/tj_draw");
+  return 1;
+}
+
+int do_give(string arg) {
+  object me = this_player();
+
+  if (me->query_temp("bylh/tj_done")) {
+    write("案上那只白玉老虎，静静地躺着。\n");
+    return 1;
+  }
+
+  write("你从怀里，把那个白玉老虎摸出来，放在案上。\n\n"
+        "这一路上，它一直硌着你的肋骨。\n"
+        "你一直没有好好看过它。\n\n"
+        "它不大，只有半个巴掌。一只蹲着的老虎，玉色发青，\n"
+        "虎口里衔着一颗珠子。珠子是活的，一碰就转。\n\n"
+        "他终于动了一下。\n\n"
+        "他低下头，看着那只白玉老虎。看了很久很久。\n\n"
+        "然后他伸出手——\n"
+        "却没有拿。\n\n"
+        "他把手收回去，把白玉老虎推回你面前。\n\n"
+        "「这东西不是给我的。」他说。\n"
+        "「你父亲把它留给司空晓风，司空晓风又给了你。」\n\n"
+        "「你该回大风堂去。」\n"
+        "「去问司空晓风——问问这个『白玉老虎』，到底是个什么东西。」\n\n"
+        "他重又转过身，背对着你。\n\n"
+        "「走罢。」\n"
+        "「这件事，还没有完。」\n\n"
+        HIY "（往 out 出去，回大风堂。）\n" NOR);
+
+  me->set_temp("bylh/tj_done", 1);
+  REWARD_D->riddle_done(me, "虎穴", 10, 1);
+  return 1;
+}

@@ -1,0 +1,36 @@
+// 《白玉老虎》—— 墓穴 muxue（乱葬岗地下 · 虚拟固定迷宫 · vrm_fixed）
+//
+//   muxue.map        地图（14 x 10，z=0）
+//   muxue-room.lpc   格房模板（按坐标定描述）
+//   muxuegate.lpc    迷宫外入口房（乱葬岗·陷坑底）
+//   muxuegate2.lpc   迷宫外出口房（乱葬岗·北坡墓门）
+//
+//   虚拟格房路径 = /d/bylh/muxue/x/y/z
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "muxue-room");
+  set_maze_map(__DIR__ "muxue");
+  set_maze_spacing(10);
+  set_maze_owner_key("muxue");
+
+  // 入口格 (7,0,0) = N，入口房只能选掩码里没有的方向 south，
+  // 否则会覆盖该格的真实连接。
+  set_entry_dir("south");
+  set_link_entry_room(__DIR__ "muxuegate");
+  set_link_exit_room(__DIR__ "muxuegate2");
+  set_entry_back_dir("south");
+  set_exit_back_dir("north");
+
+  set_entry_short(HIC "墓道口" NOR);
+  set_entry_desc("一段斜插下去的墓道，从这里的 north 可以进入墓穴深处。\n");
+  set_exit_short(HIC "旧墓道口" NOR);
+  set_exit_desc("墓穴的尽头，头顶透下一线灰白的天光。出口就在这里。\n");
+
+  // 仅用于通过引擎 check_vars() 的非空校验；
+  // 格房实际 short/long 由 muxue-room.lpc 的 setup_room_desc() 决定。
+  set_maze_room_short("墓穴");
+  set_maze_room_desc("乱葬岗底下的一处墓穴。\n");
+}

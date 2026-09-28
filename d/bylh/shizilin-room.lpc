@@ -1,0 +1,97 @@
+// 《白玉老虎》—— 狮子林 · 格房模板
+//
+//   假山石头迷宫。石多路窄，一步一转，转过去还是石头。
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {}
+
+string region_short(int x, int y) {
+  if (x <= 1 && y <= 1) return HIB "入口石" NOR;
+  if (x >= 9 && y >= 8) return HIY "酒旗" NOR;
+  if (y >= 6 && x <= 6) return HIB "石洞" NOR;
+  if (y <= 2) return HIB "石径" NOR;
+  return HIB "假山" NOR;
+}
+
+string region_long(int x, int y) {
+  string s;
+
+  if (x <= 1 && y <= 1) {
+    return "两块巨大的太湖石叠在一起，底下留着一条尺来宽的缝。\n"
+           "石头上长着厚厚的青苔，摸上去渗手。\n";
+  }
+
+  if (x >= 9 && y >= 8) {
+    return "假山在这里散开了，前头是一片空地。\n"
+           "空地上挂着一面酒旗，被风吃得猎猎作响。\n";
+  }
+
+  if (y >= 6 && x <= 6) {
+    s = "一个石洞。洞口很低，得弯着腰走。\n"
+        "洞里滴水，一滴一滴，回声比外面长得多。\n";
+    if (y >= 8) s += "前面透出一点亮，不知道是出口还是别的什么。\n";
+    return s;
+  }
+
+  if (y <= 2) {
+    s = "一条石径，窄得只容一个人过。\n"
+        "两边的石头削得很齐——齐得像刀切的。\n";
+    if (x >= 2) s += "石缝里插着一枝枯了的野花。\n";
+    return s;
+  }
+
+  s = "假山深处。四面都是石头，石头上面还是石头。\n"
+      "你转了个弯——前面还是石头。\n";
+  if (x >= 5) s += "不远处的石壁上，新添了一道白茬子。\n"
+                  "像是刚被人用刀尖划过的。\n";
+  return s;
+}
+
+mapping maze_cell_desc = ([
+  "2,0,0" : ({ HIB "石径·窄口" NOR,
+    "这里的石头忽然窄到极处。你侧着身子才能挤过去。\n\n"
+    "石壁上有一小片暗褐色的印子，用手一擦，擦不掉。\n" }),
+
+  "9,8,0" : ({ HIY "假山·出口" NOR,
+    "石头到头了。前面是一小块空地，空地上挂着一面酒旗。\n\n"
+    "地上有几道很深的脚印，是从酒旗那个方向来的。\n"
+    "脚印并排着，一共四个人的。\n" }),
+
+  "11,9,0" : ({ HIY "酒旗·门外" NOR,
+    "酒旗就在眼前。旗子上两个褪了色的字：\n\n"
+    "    狮  林\n\n"
+    "旗子下面，有人摆了一张桌子，桌子后面是一条空凳子。\n" }),
+]);
+
+void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
+  string key, sn, lg;
+  mixed info;
+
+  key = sprintf("%d,%d,%d", x, y, z);
+  info = maze_cell_desc[key];
+
+  if (arrayp(info) && sizeof(info) >= 2) {
+    sn = info[0];
+    lg = info[1];
+  } else {
+    sn = region_short(x, y);
+    lg = region_long(x, y);
+  }
+
+  room->set("short", sn);
+  room->set("long", lg);
+  room->set("map_x", x);
+  room->set("map_y", y);
+  room->set("map_z", z);
+
+  room->setup();
+}
+
+void setup_npc_obj(object room, int length, int width, int height, int x, int y, int z) {
+  return;
+}
+
+int setup_entry_room() { return 1; }
+int setup_exit_room() { return 1; }

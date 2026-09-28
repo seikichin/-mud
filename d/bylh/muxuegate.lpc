@@ -1,0 +1,25 @@
+// 《白玉老虎》—— 墓穴入口房（乱葬岗·陷坑底）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIC "乱葬岗·陷坑" NOR);
+  set("long", @LONG
+陷坑的坑底，比从上面看时要深得多。
+
+坑壁上横着半截朽烂的棺木，木头一碰就碎。坑底的正中，有一段墓道斜
+斜地插进地里去——那不是雨水冲出来的，是有人拿工具挖的，挖得又直
+又齐。
+
+墓道口飘上来的风带着土腥气，是凉的。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "up"    : "/d/bylh/luangzang",
+    "north" : "/d/bylh/muxue/entry",
+  ]));
+  setup();
+}

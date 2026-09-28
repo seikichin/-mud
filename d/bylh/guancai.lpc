@@ -1,0 +1,112 @@
+// 《白玉老虎》—— 幕四·活埋（棺中）
+//
+//   玩家从乱葬岗的土坑滑落，被埋进一口棺材，埋在地下。
+//   唯一的出路是「忍」——不是挣扎，是忍。
+//
+//   命令：listen（听）/ endure（忍）/ struggle（挣扎）/ push（推）
+//   脱困条件：连续「忍」4 次；中途挣扎则忍耐前功尽弃。
+
+inherit ROOM;
+#include <ansi.h>
+
+string *stages = ({
+  "头顶传来脚步声，不止一个人。",
+  "有人在土上蹲了下来，用指节敲了敲棺盖。\n"
+  "「还有气。」一个声音说。",
+  "另一个声音笑了笑：「不急，让他多躺一会儿。」\n"
+  "「唐门的东西，得他自己肯交出来。」",
+  "脚步声来来回回，像在等什么。\n"
+  "土，一点一点地往下沉。"
+});
+
+void create() {
+  set("short", HIB "棺中" NOR);
+  set("long", @LONG
+一片漆黑。
+
+有东西压在胸口上，很沉，压得人喘不过气——是土。
+
+你伸手向上摸，摸到的是木头。一寸一寸摸过去，摸到四壁，四壁也是木
+头。你在一口棺材里，棺材埋在地下。
+
+棺盖外面，土还在簌簌地往下响。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  setup();
+}
+
+int do_listen(string arg) {
+  object me = this_player();
+  int s = me->query_temp("bylh/guancai_stage");
+
+  if (!s) s = 0;
+  if (s >= sizeof(stages)) {
+    write("那几个人已经走开了。你只听得见自己的心跳。\n");
+    return 1;
+  }
+
+  write(HIY + stages[s] + NOR + "\n");
+  me->set_temp("bylh/guancai_stage", s + 1);
+  return 1;
+}
+
+int do_endure(string arg) {
+  object me = this_player();
+  int n = me->query_temp("bylh/guancai_endure");
+
+  n = n ? n + 1 : 1;
+  me->set_temp("bylh/guancai_endure", n);
+
+  if (n == 1) {
+    write("你把一口气慢慢吐了出去，一动不动。\n"
+          "土压着胸口，你就让土压着。\n");
+    return 1;
+  }
+  if (n == 2) {
+    write("你咬住牙，连眼皮都没有动一下。\n"
+          "上面的声音忽然停了——他们在听。\n");
+    return 1;
+  }
+  if (n == 3) {
+    write("你什么也不想。你只是等。\n"
+          "不知过了多久，棺盖上「笃」地响了一声。\n");
+    return 1;
+  }
+
+  tell_object(me, HIY "棺盖被撞开一线。天光刺得人睁不开眼。\n" NOR);
+  tell_object(me, "有人把你从土里拖了出来，随手扔在坑边，像扔一条破麻袋。\n");
+  tell_object(me, "「留着。」那个声音说，「还没到要他命的时候。」\n");
+
+  set("exits/up", "/d/bylh/muxuegate");
+
+  REWARD_D->riddle_done(me, "活埋", 10, 1);
+  return 1;
+}
+
+int do_struggle(string arg) {
+  object me = this_player();
+
+  tell_object(me, HIR "你拼了命地推棺盖，指甲翻了，木头却纹丝不动。\n" NOR);
+  tell_object(me, "上面的土又厚了一层。\n");
+
+  me->receive_damage("kee", 25);
+  me->set_temp("bylh/guancai_endure", 0);
+  return 1;
+}
+
+void init() {
+  object me;
+
+  add_action("do_listen", "listen");
+  add_action("do_endure", "endure");
+  add_action("do_struggle", "struggle");
+  add_action("do_struggle", "push");
+
+  me = this_player();
+  if (me && userp(me)) {
+    me->set_temp("bylh/guancai_endure", 0);
+    me->set_temp("bylh/guancai_stage", 0);
+  }
+}

@@ -1,0 +1,24 @@
+// 《白玉老虎》—— 墓穴出口房（乱葬岗·北坡墓门）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIC "乱葬岗·北坡" NOR);
+  set("long", @LONG
+乱葬岗的北坡，比南面要矮一些，坟也稀疏。
+
+脚下的石板缝里长满了白草。草根处压着半边埋进土里的墓门，门楣上原
+本有三个字，被风雨磨得几乎认不出了——只剩下一个「墓」字。
+
+南面就是那片乌压压的坟地。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : "/d/bylh/muxue/exit",
+    "up"    : "/d/bylh/luangzang",
+  ]));
+  setup();
+}

@@ -751,15 +751,15 @@ int query_maze_owner_redundant() {
   return (stringp(owner) && owner != "" && b == owner);
 }
 
-// 虚拟房间的路径前缀
+// 虚拟房间的路径前缀（= 区域对象自身的路径）
+//   例：/d/bylh/jianghu  →  格房 /d/bylh/jianghu/7/0/0、入口房 /d/bylh/jianghu/entry
+//
+// 修正（2026-09-28）：原实现在 redundant 分支里又剥掉了一层目录，
+// 会生成 /d/bylh/7/0/0 这样的路径 —— 既与本文件头部注释
+// 「格房 <区目录>/<区>/<x>/<y>/<z>」矛盾，也会让同一目录下的
+// 多个固定区域互相撞名。两种分支本就都该用 base_name()。
 string query_maze_pathbase() {
-  string b;
-  int i;
-
-  b = base_name(this_object());
-  if (!query_maze_owner_redundant()) return b;
-  i = strsrch(b, "/", -1);
-  return (i > 0) ? b[0..i - 1] : b;
+  return base_name(this_object());
 }
 
 string mroom_fname(int x, int y, int z) {

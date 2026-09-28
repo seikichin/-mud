@@ -1,0 +1,33 @@
+// 《白玉老虎》—— 狮子林（假山迷宫 · 幕六·步步危机）
+//
+//   shizilin.map       地图（12 x 10，z=0，42 格）
+//   shizilin-room.lpc  格房模板
+//   shizilgate.lpc     入口房（城南土墙外）
+//   shizilgate2.lpc    出口房（狮子林酒馆前）
+//
+//   虚拟格房路径 = /d/bylh/shizilin/x/y/z
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "shizilin-room");
+  set_maze_map(__DIR__ "shizilin");
+  set_maze_spacing(10);
+  set_maze_owner_key("shizilin");
+
+  // 入口格 (0,0,0) = N|E，故选 south。
+  set_entry_dir("south");
+  set_link_entry_room(__DIR__ "shizilgate");
+  set_link_exit_room(__DIR__ "shizilgate2");
+  set_entry_back_dir("south");
+  set_exit_back_dir("north");
+
+  set_entry_short(HIB "假山口" NOR);
+  set_entry_desc("一堆叠得乱七八糟的石头，中间露出一道缝。往 north 可钻进去。\n");
+  set_exit_short(HIY "酒旗" NOR);
+  set_exit_desc("石头尽头挂着一面酒旗。出口就在这里。\n");
+
+  set_maze_room_short("假山");
+  set_maze_room_desc("狮子林里的一处假山。\n");
+}

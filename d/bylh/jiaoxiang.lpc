@@ -1,0 +1,109 @@
+// 《白玉老虎》—— 幕五·辣椒巷（唐门盘问处）
+//
+//   心理维度：冒充「李玉堂」通过盘问。答错即暴露，可重试。
+//   前提：先在密室用「身份」拿到假身份（否则玩家不可能答对）。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_answer(string arg);
+
+void create() {
+  set("short", HIR "辣椒巷·门里" NOR);
+  set("long", @LONG
+门里比巷子还窄。两边的墙上也挂着辣椒，挂得更密，密得透不进光。
+
+一个人拦在你面前。他穿着很普通的青布衫，手上没兵刃，脸上也没表情。
+
+「站住。」
+
+「唐家的地方，不是谁都能进的。」
+
+他看了你一眼——从你的鞋看到你的手，又看回你的眼睛。
+
+「你叫什么名字？」
+LONG
+  );
+  set("item_desc", ([
+    "辣椒" : "一串一串，从地挂到顶。有几串已经干得发黑了。\n",
+    "门"   : "黑漆木门，没有门环。门上有一道一道很深的划痕。\n",
+    "人"   : "他看着你，眼睛一眨也不眨。\n"
+             "你可以「答」他的话。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out" : "/d/bylh/jianghu/7/11/0",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_answer", "答");
+  add_action("do_answer", "answer");
+}
+
+int do_answer(string arg) {
+  object me = this_player();
+  int step = me->query_temp("bylh/jx_step");
+  string a;
+
+  if (!arg || arg == "") {
+    if (!step || step == 1) write("他在问你名字。\n");
+    else if (step == 2) write("他在问你是哪里人。\n");
+    else write("他在问你到这里来做什么。\n");
+    return 1;
+  }
+  a = arg;
+  if (!step) step = 1;
+
+  if (step == 1) {
+    if (a == "李玉堂" || a == "li yutang") {
+      write("「李玉堂。」\n\n"
+            "他点了点头，脸上还是没有表情。\n"
+            "「哪里人？」\n");
+      me->set_temp("bylh/jx_step", 2);
+    } else if (!me->query_temp("bylh/identity")) {
+      write("你随口报了个名字。\n\n"
+            HIR "他忽然笑了：「你连自己该叫什么名字都没记住。」\n" NOR
+            "「司空晓风交给你的东西，你到底看了没有？」\n");
+      me->set_temp("bylh/jx_step", 1);
+    } else {
+      write(HIR "他盯着你看了很久。\n" NOR
+            "「你刚才说的是另一个名字。」\n"
+            "你只能重来。（答 李玉堂）\n");
+      me->set_temp("bylh/jx_step", 1);
+    }
+    return 1;
+  }
+
+  if (step == 2) {
+    if (a == "皖南绩溪溪头村" || a == "皖南绩溪" || a == "绩溪溪头村" || a == "绩溪") {
+      write("「皖南绩溪溪头村。」\n\n"
+            "他沉默了一下。\n"
+            "「溪头村东头那口井，还在不在？」\n");
+      me->set_temp("bylh/jx_step", 3);
+    } else {
+      write(HIR "他摇了摇头。\n" NOR
+            "「绩溪不是这么说的。你再说一遍。」（答 皖南绩溪溪头村）\n");
+      me->set_temp("bylh/jx_step", 2);
+    }
+    return 1;
+  }
+
+  // step 3：开放问题
+  write(HIY "你顿了半息。\n\n" NOR
+        "那口井已经不在了——你知道该说什么。\n"
+        "你说你是来做药材生意的，姓唐的一位太爷托你带货。\n\n"
+        "他侧了侧身，让开了半步。\n"
+        "「进去罢。」\n\n"
+        "你从他身边走过去的时候，他忽然在你耳边说了一句：\n"
+        HIR "「你的手很稳。做过买卖的人，手没有这么稳的。」\n" NOR
+        "但他说完这句，就再也没有开口。\n");
+
+  if (!me->query_temp("bylh/jx_done")) {
+    me->set_temp("bylh/jx_done", 1);
+    REWARD_D->riddle_done(me, "辣椒巷", 10, 1);
+  }
+  return 1;
+}

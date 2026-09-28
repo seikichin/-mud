@@ -1,0 +1,27 @@
+
+// 《白玉老虎》—— 虎山南麓（密道入口房 · 幕七）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIG "虎山·南麓" NOR);
+  set("long", @LONG
+酒馆的后门推开，是一片背阴的山坡。
+
+坡上长的都是些歪脖子松。风一过，松针就沙沙地响，像是有人在低声说话。
+
+坡根底下有一道石阶，斜斜地往地里伸下去。石阶上落满了松针。
+可奇怪的是——石阶正中间，有一条被人踩出来的路，光溜溜的。
+
+有人常从这里下去。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "out"   : "/d/bylh/jiuguan",
+    "north" : "/d/bylh/hushan/entry",
+  ]));
+  setup();
+}

@@ -1,0 +1,66 @@
+// 《白玉老虎》—— 大风堂·大堂（喜堂）
+//
+//   幕一《黄道吉日》：本是大喜之日，一夜之间成了凶案现场。
+//   机制：调查现场（`调查`）——找不到客人，只找到一道拖向灵堂的血迹。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_investigate(string arg);
+
+void create() {
+  set("short", HIW "大风堂·大堂" NOR);
+  set("long", @LONG
+好一座大堂。七十二根合抱的廊柱，水磨青砖的地面，一眼望不到头。
+
+今日是少堂主赵无忌的吉期。堂上红烛高烧，墙上贴满了「囍」字，香案
+上摆着一对白玉雕成的鸳鸯，连廊柱上都缠了红绸。
+
+酒席从堂里一直摆到廊下，碗筷齐整，却都是空的。
+
+——没有一个客人。
+LONG
+  );
+  set("item_desc", ([
+    "香案" : "一对白玉雕成的鸳鸯，并头卧在红绒垫上。\n"
+             "鸳鸯的翅膀上，都系着一根红绳，打的是死结。\n",
+    "酒席" : "碗筷摆得整整齐齐，酒壶里的酒还温着，菜也还冒着热气。\n"
+             "像是客人们刚刚还在——只是一转眼，人就不见了。\n",
+    "红烛" : "红烛烧到一半，烛泪堆成了两个小丘。\n"
+             "左边那一根的火苗，忽然晃了一下。\n",
+    "囍字" : "满堂的「囍」字，贴得端端正正。\n"
+             "只有东墙那一张，贴歪了。\n",
+    "血"   : "青砖地上有一道暗红的痕迹，一直向北拖进灵堂。\n"
+             "你可以「调查」看个仔细。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south": __DIR__ "entry",
+    "north": __DIR__ "lingtang",
+    "east" : __DIR__ "mishi",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_investigate", "调查");
+  add_action("do_investigate", "investigate");
+}
+
+int do_investigate(string arg) {
+  object me = this_player();
+
+  write("你沿着大堂走了一圈。\n\n"
+        "酒还温着，烛还烧着，杯盘碗盏一应俱全——\n"
+        "唯独没有人。\n\n"
+        HIR "青砖地上，有一道暗红的痕迹。\n" NOR
+        "从东边那扇门（密室）拖出来，一路向北，一直拖进灵堂。\n"
+        "擦得不算干净——像是拖的人很急，或者，很沉。\n");
+
+  if (!me->query_temp("bylh/dating_done")) {
+    me->set_temp("bylh/dating_done", 1);
+    REWARD_D->riddle_done(me, "黄道吉日", 10, 1);
+  }
+  return 1;
+}

@@ -1,0 +1,38 @@
+
+// 《白玉老虎》—— 虎山密道（虚拟固定迷宫 · vrm_fixed）
+//
+//   幕七·虎山行：密道三处岔路，石壁上的记号是反的。
+//   入口段 (4,1,0) 的尸骨是唯一解线索。
+//   末尾 (3,8,0) 的薄石壁可「敲」——引开北口守卫。
+//
+//   hushan.map         地图（8 x 10，z=0）
+//   hushan-room.lpc    格房模板
+//   hushangate.lpc     迷宫外入口房（虎山南麓）
+//   hushangate2.lpc    迷宫外出口房（虎山北口 · 守卫）
+//
+//   虚拟格房路径 = /d/bylh/hushan/x/y/z
+
+inherit "/std/room/vrm_fixed";
+#include <ansi.h>
+
+void create() {
+  set_inherit_room(__DIR__ "hushan-room");
+  set_maze_map(__DIR__ "hushan");
+  set_maze_spacing(10);
+  set_maze_owner_key("hushan");
+
+  // 入口格 (4,0,0) 掩码 = N，故选 south。
+  set_entry_dir("south");
+  set_link_entry_room(__DIR__ "hushangate");
+  set_link_exit_room(__DIR__ "hushangate2");
+  set_entry_back_dir("south");
+  set_exit_back_dir("north");
+
+  set_entry_short(HIC "密道·南口" NOR);
+  set_entry_desc("虎山密道南口的石阶下。往 north 可钻进去。\n");
+  set_exit_short(HIC "密道·北口" NOR);
+  set_exit_desc("虎山密道北口的石门里。出口就在这里。\n");
+
+  set_maze_room_short("虎山密道");
+  set_maze_room_desc("虎山里的一条密道。\n");
+}

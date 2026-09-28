@@ -1,0 +1,26 @@
+// 《白玉老虎》—— 狮子林出口房（酒旗前）
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIY "狮子林·酒旗" NOR);
+  set("long", @LONG
+从假山里钻出来，眼前忽然一空。
+
+一块不大的空地上，支着一面酒旗，旗上两个褪了色的字：
+
+    狮  林
+
+旗下面摆着一张桌子，桌上两只酒碗，碗里的酒还是满的。
+桌子后面是一条空凳子。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : "/d/bylh/shizilin/exit",
+    "out"   : "/d/bylh/jiuguan",
+  ]));
+  setup();
+}

@@ -13,7 +13,7 @@ LONG);
     "north": AREA_FUGUI "yidao1",
     "east": __DIR__ "xiaodao1",
     "west": __DIR__ "xiaodao3",
-    "south": "/d/fixedtest/city/citygate2",
+    "south": "/d/bylh/entry",
   ]));
 
   set("coor/x", -800);

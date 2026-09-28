@@ -1,0 +1,114 @@
+// 《白玉老虎》—— 大风堂·灵堂
+//
+//   幕二《凶手》：灵堂验伤，从暗器伤口反推凶手的门派。
+//   机制：`验伤` 看伤口 → `推断 毒针|毒蒺藜|断魂砂` 三选一。
+//   正确答案是毒针（细孔）；但描述里已埋下伏笔（断口太平整）。
+
+inherit ROOM;
+#include <ansi.h>
+
+int do_examine(string arg);
+int do_guess(string arg);
+
+void create() {
+  set("short", WHT "大风堂·灵堂" NOR);
+  set("long", @LONG
+红绸一夜之间换成了白幔。
+
+灵堂正中停着一口崭新的棺木，棺盖上覆着素绢。棺前的香案上立着一块
+牌位，墨迹尚未干透——
+
+　　「大风堂　赵公　讳简　之灵位」
+
+香只点了三炷，其中一炷已经快要烧尽。
+
+堂里站着几个人，谁也不说话。
+LONG
+  );
+  set("item_desc", ([
+    "棺木" : "棺盖没有钉死，只虚虚地覆着一层素绢。\n"
+             "你可以「验伤」看个仔细。\n",
+    "牌位" : "墨迹还没有干透。写的人手很稳，一笔一划，没有一处抖。\n",
+    "白幔" : "白幔是新换的。昨天的红绸不知被收到了哪里去。\n"
+             "幔角上有一小块深色的印子，洗不掉。\n",
+  ]));
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south": __DIR__ "dating",
+  ]));
+  setup();
+}
+
+void init() {
+  add_action("do_examine", "验伤");
+  add_action("do_examine", "examine");
+  add_action("do_guess", "推断");
+  add_action("do_guess", "guess");
+}
+
+int do_examine(string arg) {
+  object me = this_player();
+
+  write("你掀开素绢。\n\n"
+        "赵简的尸身穿着寿衣，躺得很端正。\n"
+        HIR "只是颈上——头已经不在了。\n\n" NOR
+        "断口平平整整，一刀切下去，没有半分拖泥带水。\n"
+        "刀口不深不浅，正好在第二骨节上。像是有人量过。\n\n"
+        "你再看下去：\n"
+        "左肩的衣料上有一个极小的孔，孔口一圈发青，青得发黑。\n"
+        "你拿指头比了比——那孔细得像一根针。\n\n"
+        HIY "（唐门的暗器，江湖上常见的只有三种：毒针、毒蒺藜、断魂砂。\n"
+        "  毒针留下的是细孔；毒蒺藜留下的是五爪形的伤口，皮肉外翻；\n"
+        "  断魂砂则是一大片溃烂，见骨。）\n" NOR);
+
+  me->set_temp("bylh/lingtang_saw", 1);
+  return 1;
+}
+
+int do_guess(string arg) {
+  object me = this_player();
+  string a;
+
+  if (!arg || arg == "") {
+    write("你要推断凶手用的是哪一种暗器？\n"
+          "（推断 毒针／推断 毒蒺藜／推断 断魂砂）\n");
+    return 1;
+  }
+  if (!me->query_temp("bylh/lingtang_saw")) {
+    write("你连伤口都没有看过，怎么推断？\n");
+    return 1;
+  }
+
+  a = arg;
+
+  if (a == "毒针" || a == "针") {
+    write(HIY "你想起那个细孔，孔口发青。\n" NOR
+          "——是毒针。\n\n"
+          "唐门的毒针，细如牛毛，见血封喉。\n"
+          "可你总觉得有哪里不对：\n"
+          "毒针杀人，何必再割走一颗头？\n"
+          "而且那一刀……太平整了。\n");
+
+    if (!me->query_temp("bylh/lingtang_done")) {
+      me->set_temp("bylh/lingtang_done", 1);
+      REWARD_D->riddle_done(me, "凶手", 10, 1);
+    }
+    return 1;
+  }
+
+  if (a == "毒蒺藜" || a == "蒺藜") {
+    write("你再看了一遍。伤口是一个细孔，不是五爪形的血口子。\n"
+          "不是毒蒺藜。\n");
+    return 1;
+  }
+
+  if (a == "断魂砂" || a == "砂") {
+    write("你再看了一遍。肩上的皮肉完好，没有溃烂。\n"
+          "不是断魂砂。\n");
+    return 1;
+  }
+
+  write("唐门的暗器，江湖上常见的只有三种：毒针、毒蒺藜、断魂砂。\n");
+  return 1;
+}
