@@ -1,4 +1,6 @@
 inherit ROOM;
+#include <ansi.h>
+
 void create() {
   set("short", "销魂窝");
   set("long", @LONG
@@ -16,4 +18,166 @@ LONG
   set("coor/y", 0);
   set("coor/z", -10);
   setup();
+}
+
+//==========================================================
+// 黑暗：进屋即屏蔽视觉，只留听觉（say / tell_object 仍能收到）
+//==========================================================
+void init() {
+  object me = this_player();
+
+  add_action("do_smell", "smell");
+  add_action("do_listen", "listen");
+  add_action("do_touch", "touch");
+  add_action("do_touch", "mo");
+  add_action("do_light", "light");
+
+  if (!objectp(me) || !interactive(me)) return;
+  if (me->query_temp("marks/bat/hall/dark")) return;
+
+  me->set_temp("marks/bat/hall/dark", 1);
+  me->set_temp("block_msg/write", 1);
+  me->set_temp("block_msg/vision", 1);
+
+  tell_object(me, "\n" + HIB "你一脚踏进屋里，身后的门无声地合上了。\n"
+    "黑暗像水一样漫上来，浓得化不开——你什么也看不见了。\n" NOR);
+  tell_object(me, HIC "只有那股香气，甜得发腻，一缕一缕地往你鼻子里钻……\n" NOR);
+  tell_object(me, HIY "（黑暗里，你只剩下耳朵、鼻子和手。）\n" NOR);
+}
+
+int valid_leave(object me, string dir) {
+  if (me->query_temp("marks/bat/hall/dark")) {
+    me->delete_temp("marks/bat/hall/dark");
+    me->delete_temp("block_msg/write");
+    me->delete_temp("block_msg/vision");
+    tell_object(me, HIC "\n门在身后打开了，一线微光透进来——你又能看见东西了。\n" NOR);
+  }
+  return 1;
+}
+
+//==========================================================
+// 听
+//==========================================================
+int do_listen(string arg) {
+  object me = this_player();
+
+  if (!me->query_temp("marks/bat/hall/heard")) {
+    me->set_temp("marks/bat/hall/heard", 1);
+    tell_object(me, "\n" + HIC "黑暗里，有一扇门被推开了。\n" NOR);
+    tell_object(me, WHT "一个男人的声音道：你还拉住我干什么？是不是还想问我要这鼻烟壶？\n" NOR);
+    tell_object(me, WHT "一个女人的声音在软语央求：只要你把它给我，我什么都给你。\n" NOR);
+    tell_object(me, WHT "男人淡淡道：你本就已将什么都给我了。\n" NOR);
+    tell_object(me, WHT "男人忽又道：你又不吸鼻烟，为什么一定要这鼻烟壶？\n" NOR);
+    tell_object(me, WHT "女人轻轻道：我喜欢它，我喜欢那上面刻的图画。\n" NOR);
+    tell_object(me, WHT "男人笑了：你看得到么？\n" NOR);
+    tell_object(me, WHT "女人道：可是我却能摸得出，我知道上面刻的是山水。\n" NOR);
+    tell_object(me, "\n" + HIR "啪！一记清脆的耳光。\n" NOR);
+    tell_object(me, HIY "叮——一样小小的东西跌在地上，滚开了。\n" NOR);
+    tell_object(me, "\n" + HIG "屋子深处，有人在低低地哭。\n" NOR);
+    return 1;
+  }
+
+  tell_object(me, HIC "四周静得能听见自己的心跳。角落里，那低低的哭声还没有停。\n" NOR);
+  return 1;
+}
+
+//==========================================================
+// 嗅
+//==========================================================
+int do_smell(string arg) {
+  object me = this_player();
+
+  if (me->query_temp("marks/bat/hall/got_yanhu")) {
+    tell_object(me, HIC "鼻烟的辛辣味还在鼻端缭绕，可壶已经在你手里了。\n" NOR);
+    return 1;
+  }
+
+  tell_object(me, "\n" + HIY "你深深吸了一口气。\n" NOR);
+  tell_object(me, HIY "那股辛辣的、微微发甜的烟草味，在腻人的浓香里若有若无地飘着……\n" NOR);
+
+  if (me->query_condition("cough")) {
+    tell_object(me, HIG "你鼻子一痒，忍不住打了个喷嚏——怪了，这一下反倒把味道的来路嗅得清清楚楚。\n" NOR);
+  }
+
+  tell_object(me, HIG "那味道，是从东边的墙角飘过来的。\n" NOR);
+  me->set_temp("marks/bat/hall/smelled", 1);
+  return 1;
+}
+
+//==========================================================
+// 摸（找壶 / 摸人）
+//==========================================================
+int do_touch(string arg) {
+  object me = this_player();
+  object ob;
+
+  if (!arg) {
+    tell_object(me, "你要摸什么？\n");
+    return 1;
+  }
+
+  if (arg == "woman" || arg == "东三娘" || arg == "脸" || arg == "她的脸") {
+    ob = present("woman", environment(me));
+    if (!ob) {
+      tell_object(me, "这里没有这个人。\n");
+      return 1;
+    }
+    if (!me->query_temp("marks/bat/hall/touched")) {
+      me->set_temp("marks/bat/hall/touched", 1);
+      tell_object(me, "\n" + HIC "你伸出手，轻轻碰到一张脸。\n" NOR);
+      tell_object(me, HIC "她的鼻子挺直而秀气，嘴唇很薄，却很有韵致。\n" NOR);
+      tell_object(me, "\n" + HIB "再往上——\n" NOR);
+      tell_object(me, HIB "你摸到的，不是眼睛。\n" NOR);
+      tell_object(me, HIB "她的眼帘像是被缝成了一片光滑的皮肤，一片空白。\n" NOR);
+      tell_object(me, HIR "她没有眼睛。根本就没有眼睛。\n" NOR);
+      tell_object(me, "\n" + CYN "她的身子在你掌下微微僵了一下，却没有躲开。\n" NOR);
+      tell_object(me, CYN "黑暗里，她的声音很轻：你摸出来了，是不是。\n" NOR);
+      return 1;
+    }
+    tell_object(me, CYN "她的脸很凉。她没有躲开。\n" NOR);
+    return 1;
+  }
+
+  if (me->query_temp("marks/bat/hall/got_yanhu")) {
+    tell_object(me, "壶已经在你手里了。\n");
+    return 1;
+  }
+
+  if (!me->query_temp("marks/bat/hall/smelled")) {
+    tell_object(me, "\n你蹲下身，在地上摸索起来。\n");
+    tell_object(me, HIC "地板冰凉。灰尘、碎屑、不知是谁落下的一根发簪……什么都有，就是没有你要找的东西。\n" NOR);
+    tell_object(me, HIY "可你连自己在找什么都不知道。也许，该先用鼻子闻一闻。\n" NOR);
+    return 1;
+  }
+
+  if (arg == "east" || arg == "东" || arg == "东边" || arg == "东边墙角") {
+    ob = new(__DIR__ "obj/yanhu");
+    if (!ob->move(me)) {
+      destruct(ob);
+      tell_object(me, "你摸到了，却怎么也拿不起来。\n");
+      return 1;
+    }
+    me->set_temp("marks/bat/hall/got_yanhu", 1);
+    tell_object(me, "\n" + HIG "你的指尖碰到了一个冰凉的小东西。\n" NOR);
+    tell_object(me, HIG "你把它捏在手里——小小的一只，温润光滑，壶盖已经跌开了。\n" NOR);
+    tell_object(me, HIY "鼻烟壶。\n" NOR);
+    return 1;
+  }
+
+  tell_object(me, HIC "你在那边摸索了半天，只摸到冰冷的墙壁。\n" NOR);
+  tell_object(me, HIC "那股味道，似乎并不在那边。\n" NOR);
+  return 1;
+}
+
+//==========================================================
+// 火（岛规：绝不许有一线光）
+//==========================================================
+int do_light(string arg) {
+  object me = this_player();
+
+  tell_object(me, "\n" + HIR "你的手刚摸到火折子，忽然停住了。\n" NOR);
+  tell_object(me, HIR "——这岛上的规矩：绝不许有一线光。\n" NOR);
+  tell_object(me, "\n" + HIB "黑暗里，仿佛有无数双眼睛，正冷冷地盯着你。\n" NOR);
+  tell_object(me, HIC "你把手缩了回来。\n" NOR);
+  return 1;
 }

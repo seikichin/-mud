@@ -17,6 +17,12 @@ void create() {
   set("combat_exp", 300000);
   set("attitude", "friendly");
 
+  set("inquiry", ([
+    "鼻烟壶": "……那只壶，是掉在地上了。你听，它还在那儿响着呢。\n",
+    "眼睛": "（她沉默了很久，才轻轻道）你看不见，那就用手摸罢。\n",
+    "出去": "出去？（她笑了笑，声音很轻）我这样的人，还能出去么。\n",
+  ]));
+
   setup();
 }
 
@@ -32,5 +38,31 @@ int do_enjoy() {
   message_vision("$N内心涌起一种莫名的深深的悲哀．．．．\n", me);
   me->apply_condition("hualiu_poison", 10 + random(20));
   return 1;
+}
 
+int accept_object(object me, object ob) {
+  if (!ob || !ob->id("yanhu")) return 0;
+
+  if (me->query_temp("marks/bat/hall/done")) {
+    tell_object(me, "东三娘把那只小小的鼻烟壶攥在掌心，摇了摇头：这壶，我已经收下了。\n");
+    return 1;
+  }
+
+  tell_object(me, "\n" + CYN "东三娘伸出双手，摸索着，小心翼翼地捧住了那只鼻烟壶。\n" NOR);
+  tell_object(me, CYN "她用指腹一点一点地摩挲着壶身，像是在认一件失散多年的东西。\n" NOR);
+  tell_object(me, CYN "过了很久，她才轻轻开口：\n" NOR);
+  tell_object(me, HIY "这上面刻的是山水。山和水，都在。\n" NOR);
+  tell_object(me, HIY "……就跟我家那边一样。\n" NOR);
+  tell_object(me, "\n" + HIG "她的声音忽然哽住了。\n" NOR);
+  tell_object(me, HIG "你听见有什么东西，一滴一滴落在壶盖上。\n" NOR);
+
+  me->set_temp("marks/bat/hall/done", 1);
+
+  tell_object(me, "\n" + HIC "她低低地道：这些人里，只有你还肯弯下腰来，替一个瞎子摸黑找东西。\n" NOR);
+  tell_object(me, HIC "……你走罢，别回头。\n" NOR);
+
+  REWARD_D->riddle_done(me, "地狱中的温情", 10, 1);
+
+
+  return 1;
 }

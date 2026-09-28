@@ -1,0 +1,15 @@
+#include <ansi.h>
+inherit ITEM;
+
+void create() {
+  set_name(HIY "鼻烟壶" NOR, ({ "yanhu", "biyanhu", "hu" }));
+  set_weight(100);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "只");
+    set("long", "一只小小的鼻烟壶，壶身温润，上面刻着山水。\n"
+      "壶盖已经跌开了，一股辛辣的烟草味正从里面散出来。\n");
+    set("value", 300);
+  }
+}
