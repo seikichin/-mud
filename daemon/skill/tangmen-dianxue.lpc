@@ -14,7 +14,7 @@ void setup() {
   set("difficulty", 400);
   set("damage_level", 150);
   set("unarmed_parry_msg", ({
-    "$n指若拈花，轻描淡写地把$N的招式引到了空处。\n","$n手掌一翻，$N只觉腕上一麻，$w几乎脱手。\n",
+    "$n指若拈花，轻描淡写地把$N的招式引到了空处。\n","$n手掌一翻，$N只觉腕上一麻，这一招竟使不出力道。\n",
   }));
   action = ({
     ([ "action": "$N指如疾风，点向$n的$l",
