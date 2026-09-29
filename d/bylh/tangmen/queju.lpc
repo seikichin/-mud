@@ -17,10 +17,8 @@ void create() {
 东面有一道小门，通着另一处宅院。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
-    "/obj/book/skill/yinjia-gong_150" : 1,
     "/d/bylh/tangmen/npc/tang_que" : 1,
   ]));
   set("exits", ([

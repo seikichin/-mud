@@ -18,7 +18,6 @@ void create() {
 满屋子的人都在流眼泪、淌汗，却还是一筷子一筷子地往嘴里送。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/tang_zitan" : 1,

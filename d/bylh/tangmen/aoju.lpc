@@ -17,10 +17,8 @@ void create() {
 墨迹已经干透，笔锋却还像是刚写下去时那样锋锐。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
-    "/obj/book/skill/yijian-guanghan_180" : 1,
     "/d/bylh/tangmen/npc/tang_ao" : 1,
   ]));
   set("exits", ([

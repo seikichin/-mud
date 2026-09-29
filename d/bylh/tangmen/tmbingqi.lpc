@@ -12,7 +12,6 @@ void create() {
 掌柜的是个不爱说话的老头，你要买什么，他只用手一指。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "south" : __DIR__ "jiulou",

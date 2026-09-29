@@ -11,7 +11,7 @@ void create() {
     set("unit", "本");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "册子很薄，字也很少。\n\n只有一句话，反复写了七遍：\n\n    「先坏其身，后成其功。」\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 35,
       "difficulty": 8,
       "liter_level": 40,
-      "max_skill": 150,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

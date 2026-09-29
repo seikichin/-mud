@@ -16,7 +16,6 @@ void create() {
 大厅北面通向后院，东面是花园的方向。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/tang_jing" : 1,

@@ -18,11 +18,8 @@ void create() {
 东面是东较武场，西面是西较武场。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
-    "/obj/book/skill/tangmen-dianxue_100" : 1,
-    "/obj/book/skill/tangmen-shenfa_80" : 1,
     "/d/bylh/tangmen/npc/jiaotou" : 1,
   ]));
   set("exits", ([

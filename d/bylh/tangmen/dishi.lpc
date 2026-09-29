@@ -19,7 +19,6 @@ void create() {
 还有几根弯弯曲曲的铜丝。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/lei_zhentian" : 1,

@@ -15,7 +15,6 @@ void create() {
 桥头的石阶上，长满了青苔。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "north" : __DIR__ "lajiaoxiang",

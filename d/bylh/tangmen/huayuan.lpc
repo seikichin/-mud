@@ -20,7 +20,6 @@ void create() {
 北面是老祖宗的内堂，东面是大少爷的居处，南面是大倌的居处。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/tang_weishi" : 1,

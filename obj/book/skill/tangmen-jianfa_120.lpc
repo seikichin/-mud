@@ -11,7 +11,7 @@ void create() {
     set("unit", "卷");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "一卷剑谱，画的是六招。\n每一招都画了三遍：第一遍是起手，第二遍是中途，第三遍是收势。\n剑路很短，也很干净 —— 没有一招是多余的。\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 20,
       "difficulty": 6,
       "liter_level": 30,
-      "max_skill": 120,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

@@ -12,11 +12,7 @@ void create() {
 四面是高高的看台，看台上连一个座位都没有留下。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
-    set("objects", ([
-    "/obj/book/skill/tangmen-jianfa_120" : 1,
-  ]));
   set("exits", ([
     "west" : __DIR__ "lianwu",
   ]));

@@ -50,6 +50,8 @@ void create() {
 
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+  carry_object("/obj/book/skill/tangmen-anqi_80");
+  carry_object("/obj/book/skill/tangmen-zhen_100");
 }
 
 void init() {

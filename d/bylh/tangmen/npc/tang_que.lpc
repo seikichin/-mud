@@ -63,6 +63,7 @@ void create() {
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
   carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+  carry_object("/obj/book/skill/yinjia-gong_150");
 }
 
 // 拜师：唐门弟子、男性、赢过上一代师傅、投掷过 170 级

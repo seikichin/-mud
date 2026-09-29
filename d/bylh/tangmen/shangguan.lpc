@@ -17,7 +17,6 @@ void create() {
 北面是书房，东面是另一处小院。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/shangguan_ren" : 1,

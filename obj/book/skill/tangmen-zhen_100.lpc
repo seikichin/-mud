@@ -11,7 +11,7 @@ void create() {
     set("unit", "卷");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "一叠薄薄的绢，上面用极细的墨线画着各式各样的针。\n有的像牛毛，有的像绣花针，最长的一枚也短得几乎看不见。\n每根针旁边都注着淬毒的方子。\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 15,
       "difficulty": 5,
       "liter_level": 20,
-      "max_skill": 100,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

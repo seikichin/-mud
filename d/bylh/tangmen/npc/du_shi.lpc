@@ -35,4 +35,5 @@ void create() {
   map_skill("throwing", "tangmen-zhen");
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+  carry_object("/obj/book/skill/tangmen-dugong_80");
 }

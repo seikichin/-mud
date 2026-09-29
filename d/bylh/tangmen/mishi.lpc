@@ -17,14 +17,9 @@ void create() {
 不是香，不是臭，更不是酸甜苦辣，只是一种感觉。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
-    "/obj/book/skill/manyu-lihua_130" : 1,
-    "/obj/book/skill/sanhua-tiannv_200" : 1,
     "/d/bylh/tangmen/npc/tang_qiwei" : 1,
-    "/obj/book/skill/duanhun-sha_100" : 1,
-    "/obj/book/skill/dujili_100" : 1,
   ]));
   set("exits", ([
     "down" : __DIR__ "dating",

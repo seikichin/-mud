@@ -17,7 +17,6 @@ void create() {
 窗子是开着的。窗台上摆着一盆小小的黄花。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/lianlian" : 1,

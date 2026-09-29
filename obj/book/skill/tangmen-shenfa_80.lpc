@@ -11,7 +11,7 @@ void create() {
     set("unit", "卷");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "一卷画满脚印的图。\n脚印有深有浅，有正有斜，连成一条弯弯曲曲的线。\n旁边写着：脚要轻，心要稳。\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 10,
       "difficulty": 3,
       "liter_level": 10,
-      "max_skill": 80,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

@@ -15,7 +15,6 @@ void create() {
 楼梯口挂着一块木牌，写着「楼上雅座」。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/jiulou_zg" : 1,

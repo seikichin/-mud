@@ -17,7 +17,6 @@ void create() {
 再往上去，就是树顶了。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "up" : __DIR__ "shuding",

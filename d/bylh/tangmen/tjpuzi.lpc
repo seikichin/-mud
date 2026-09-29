@@ -10,7 +10,6 @@ void create() {
 唐掌柜坐在柜台后面打瞌睡，听见脚步声才睁开一只眼。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "north" : __DIR__ "jiulou",

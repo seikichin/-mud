@@ -12,7 +12,6 @@ void create() {
 听说唐门的子弟，就是拿这些缸来试暗器的。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "east" : __DIR__ "lianwu",

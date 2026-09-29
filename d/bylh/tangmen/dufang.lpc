@@ -15,11 +15,9 @@ void create() {
 地上有个盖子，掀开是一条通向下边的窄梯。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
     "/d/bylh/tangmen/npc/du_shi" : 1,
-    "/obj/book/skill/tangmen-dugong_80" : 1,
   ]));
   set("exits", ([
     "east" : __DIR__ "houyuan",

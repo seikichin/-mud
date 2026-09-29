@@ -45,4 +45,6 @@ void create() {
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
   carry_object("/d/bylh/tangmen/obj/tangmen-sword")->wield();
+  carry_object("/obj/book/skill/yijian-guanghan_180");
+  carry_object("/obj/book/skill/tangmen-jianfa_120");
 }

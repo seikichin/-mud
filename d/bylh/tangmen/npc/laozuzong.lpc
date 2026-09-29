@@ -36,4 +36,5 @@ void create() {
   map_skill("throwing", "manyu-lihua");
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-skirt")->wear();
+  carry_object("/obj/book/skill/qingting-sandianshui_120");
 }

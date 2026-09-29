@@ -11,7 +11,7 @@ void create() {
     set("unit", "卷");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "图上是十三片细小的铁片。\n每一片的角度、厚薄、淬毒都不同，合起来看像一朵花。\n图旁边写着两个字：勿近。\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 20,
       "difficulty": 6,
       "liter_level": 30,
-      "max_skill": 100,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

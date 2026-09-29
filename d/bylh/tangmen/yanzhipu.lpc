@@ -13,7 +13,6 @@ void create() {
 只是价钱贵得叫人咋舌 —— 唐家堡里每一样东西都不便宜。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/gugu" : 1,

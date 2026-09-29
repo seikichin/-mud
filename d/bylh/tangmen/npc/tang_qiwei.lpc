@@ -43,4 +43,8 @@ void create() {
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
   carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+  carry_object("/obj/book/skill/manyu-lihua_130");
+  carry_object("/obj/book/skill/sanhua-tiannv_200");
+  carry_object("/obj/book/skill/duanhun-sha_100");
+  carry_object("/obj/book/skill/dujili_100");
 }

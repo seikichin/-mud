@@ -32,6 +32,10 @@ int main(object me, string arg) {
   if (!mapp(skill = ob->query("skill")))
     return notify_fail("你无法从这样东西学到任何东西。\n");
 
+  // 门派专属秘籍：非本门弟子，读了也白读
+  if (stringp(ob->query("study_class")) && ob->query("study_class") != me->query("class"))
+    return notify_fail("这是" + F_MASTER->query_chinese_class(ob->query("study_class")) + "的不传之秘，你一个外人，看了也白看。\n");
+
   // added by tie
   if (stringp(skill["literate"])) liter = skill["literate"];
   else liter = "literate";

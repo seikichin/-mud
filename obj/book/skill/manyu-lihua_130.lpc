@@ -11,7 +11,7 @@ void create() {
     set("unit", "本");
     set("value", 2000);
     set("material", "paper");
-    set("no_get", 1);
+    set("study_class", "tangmen");
     set("no_sell", 1);
     set("long",
       "一本很厚的册子，前面二十页全是废纸 ——\n写满了又划掉的字。\n\n后面的字才渐渐定了下来，一行一行数着：\n六十四件，六十四个部位。\n");
@@ -21,7 +21,7 @@ void create() {
       "sen_cost": 30,
       "difficulty": 8,
       "liter_level": 40,
-      "max_skill": 130,
+      "max_skill": 60,
     ]));
   }
   ::init_item();

@@ -17,7 +17,6 @@ void create() {
 墙上挂着一幅字，只有两个大字：「福」「寿」。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("objects", ([
     "/d/bylh/tangmen/npc/laozuzong" : 1,

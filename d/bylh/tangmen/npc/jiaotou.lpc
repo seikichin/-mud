@@ -60,6 +60,8 @@ void create() {
   setup();
   carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
   carry_object("/d/bylh/tangmen/obj/tangmen-fist")->wield();
+  carry_object("/obj/book/skill/tangmen-dianxue_100");
+  carry_object("/obj/book/skill/tangmen-shenfa_80");
 }
 
 // 入门条件：等级低于 3 级、力量大于 15、速度大于 15

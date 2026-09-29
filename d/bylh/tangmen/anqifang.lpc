@@ -15,12 +15,9 @@ void create() {
 每一张图样下面都压着一行小字，写的是淬毒的方子。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
     "/d/bylh/tangmen/npc/anqi_jiang" : 1,
-    "/obj/book/skill/tangmen-anqi_80" : 1,
-    "/obj/book/skill/tangmen-zhen_100" : 1,
   ]));
   set("exits", ([
     "west" : __DIR__ "houyuan",

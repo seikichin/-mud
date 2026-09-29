@@ -15,7 +15,6 @@ void create() {
 案上摊着一幅舆图，图上的墨迹还是湿的。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "south" : __DIR__ "shangguan",

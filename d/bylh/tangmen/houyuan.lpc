@@ -14,10 +14,8 @@ void create() {
 东面是暗器房，西面是炼毒房，北面有一棵极高的老树。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
     set("objects", ([
-    "/obj/book/skill/tangmen-xinfa_80" : 1,
     "/d/bylh/tangmen/npc/tang_er" : 1,
   ]));
   set("exits", ([

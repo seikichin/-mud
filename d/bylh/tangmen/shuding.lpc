@@ -15,11 +15,7 @@ void create() {
 从这里看下去，唐家堡一层层的屋脊像是鱼鳞，一直铺到半山。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
-    set("objects", ([
-    "/obj/book/skill/qingting-sandianshui_120" : 1,
-  ]));
   set("exits", ([
     "down" : __DIR__ "gushu",
   ]));

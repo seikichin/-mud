@@ -23,7 +23,6 @@ void create() {
 南面还有一处小筑。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "south" : __DIR__ "lianouxiaozhu",

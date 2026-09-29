@@ -16,7 +16,6 @@ void create() {
 东面的墙塌了一角，露出一个黑黝黝的洞。
 LONG
   );
-  set("no_fight", 1);
   set("no_fly", 1);
   set("exits", ([
     "east" : __DIR__ "didao",
