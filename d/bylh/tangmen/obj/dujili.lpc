@@ -1,0 +1,39 @@
+// 《白玉老虎》蜀中唐门 · 暗器：毒蒺藜
+//
+//   十三片细小的铁片组合成的，每一片上的毒性都不同。
+//   打这样一枚暗器，得花三个月。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(MAG "毒蒺藜" NOR, ({ "dujili", "du jili", "duji" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "十三片细小的铁片，每一片都只有指甲盖那么大，\n"
+      "合起来才是一枚蒺藜。\n"
+      "落地之后还有倒刺 —— 唐门的匠人说，「蒺藜布地」，\n"
+      "说的就是它一旦散了开来，整片地都走不得。\n");
+    set("unit", "堆");
+    set("base_unit", "枚");
+    set("base_weight", 40);
+    set("base_value", 1);
+    set("weapon_prop/attack", 33);
+    set("level_required", 50);
+    set("volumn", 60);
+  }
+  set_amount(60);
+  ::init_throwing(55);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一捆多少枚，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 25);
+}

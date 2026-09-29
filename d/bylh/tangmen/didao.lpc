@@ -1,0 +1,24 @@
+// 《白玉老虎》蜀中唐门·地道
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "地道" NOR);
+  set("long", @LONG
+地道很窄，只容一个人蛇行一般爬过去。
+
+爬不多远，地气便渐渐燥热起来，隐隐还可以听到水在石头下流过的声音。
+再往里，空气里有了硝石和硫磺的味道。
+
+前头透出一点极微弱的光。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "east" : __DIR__ "dishi",
+    "west" : __DIR__ "qiushi",
+  ]));
+  setup();
+}

@@ -1,0 +1,38 @@
+// 《白玉老虎》蜀中唐门 · 唐门弟子
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐门弟子", ({ "唐门弟子", "tang dizi", "dizi", "disciple" }));
+  set("gender", "男性");
+  set("age", 22);
+  set("long",
+    "一个穿着青衫白裤的年轻人，腰间挂着一个小小的革囊。\n\n他走路的时候，两只手都空着 ——\n唐门的弟子，手上从来不拿东西。\n\n他看了你一眼，眼神冷得像针。\n"
+  );
+  set("combat_exp", 50000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "弟子");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "唐门" :
+      "外人不许在唐家堡里乱走。\n",
+    "暗器" :
+      "我的暗器，只打三种人：\n来唐家堡闹事的，看不起唐家的，还有 —— 问我暗器的。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 80);
+  set_skill("throwing", 90);
+  set_skill("dodge", 80);
+  set_skill("tangmen-xinfa", 70);
+  set_skill("force", 80);
+  set_skill("move", 80);
+  set_skill("parry", 80);
+
+  map_skill("force", "tangmen-xinfa");
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-fist")->wield();
+}

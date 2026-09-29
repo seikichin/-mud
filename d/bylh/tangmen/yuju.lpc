@@ -1,0 +1,27 @@
+// 《白玉老虎》蜀中唐门·三少爷居
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "三少爷居" NOR);
+  set("long", @LONG
+这间屋子，比大少爷那间要讲究得多。
+
+帐子是新的，几上的花瓶是新的，连窗纸都是新糊的。
+屋子里有一股淡淡的香气，像是花香，又像是脂粉。
+
+梳妆台上摆着一面铜镜，镜子擦得很亮。
+镜前放着一支金钗，钗头是一朵小小的牡丹。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_yu" : 1,
+  ]));
+  set("exits", ([
+    "south" : __DIR__ "aoju",
+  ]));
+  setup();
+}

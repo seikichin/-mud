@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 唐门心法
+
+inherit ITEM;
+
+void create() {
+  set_name("唐门心法", ({ "唐门心法", "tangmen xinfa", "xinfa" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "本");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "一本普通的线装书，封面已经磨破了。\n里面写的是坐功：怎么呼吸，怎么沉气，怎么把气收到丹田里去。\n");
+    set("skill", ([
+      "name": "tangmen-xinfa",
+      "exp_required": 0,
+      "sen_cost": 10,
+      "difficulty": 3,
+      "liter_level": 10,
+      "max_skill": 80,
+    ]));
+  }
+  ::init_item();
+}

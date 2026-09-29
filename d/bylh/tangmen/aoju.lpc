@@ -1,0 +1,31 @@
+// 《白玉老虎》蜀中唐门·大少爷居
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大少爷居" NOR);
+  set("long", @LONG
+屋里陈设极简，只有一床、一案、一柜。
+
+案上一柄剑，剑在鞘中，鞘是旧的，没有一丝装饰。
+剑旁压着一张纸，纸上只写着两句诗：
+
+    「满堂花醉三千客，
+      一剑光寒四十州。」
+
+墨迹已经干透，笔锋却还像是刚写下去时那样锋锐。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/yijian-guanghan_180" : 1,
+    "/d/bylh/tangmen/npc/tang_ao" : 1,
+  ]));
+  set("exits", ([
+    "north" : __DIR__ "yuju",
+    "west" : __DIR__ "huayuan",
+  ]));
+  setup();
+}

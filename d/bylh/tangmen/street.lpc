@@ -1,0 +1,35 @@
+// 《白玉老虎》蜀中唐门·唐家堡·长街
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·长街" NOR);
+  set("long", @LONG
+大门是敞开着的，看不到一点剑拔弩张、戒备森严的样子。
+走进大门，就是条用青石板铺成的街道，整齐干净，每块青石板都洗得
+像镜子一样发亮。
+
+街道两旁，有各式各样的店铺，门面光鲜，货物齐全。
+有卖奇巧玩物的，有卖胭脂花粉的，还有兵器铺、钱庄、酒楼……
+气派简直比京城里字号最老的老铺子还大。
+
+街上人来人往，说的却都是官话，很少有川音。
+走在这条街上，简直就好像到了京城的大栅栏。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_dizi" : 2,
+    "/d/bylh/tangmen/npc/tang_sangui" : 1,
+  ]));
+  set("exits", ([
+    "west" : "/d/bylh/tangjiabao",
+    "south" : __DIR__ "lianwu",
+    "northeast" : __DIR__ "yanzhipu",
+    "east" : __DIR__ "jiulou",
+    "north" : __DIR__ "dating",
+  ]));
+  setup();
+}

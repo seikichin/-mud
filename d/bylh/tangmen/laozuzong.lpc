@@ -1,0 +1,29 @@
+// 《白玉老虎》蜀中唐门·老祖宗内堂
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "老祖宗内堂" NOR);
+  set("long", @LONG
+堂里很暗，也很静。
+
+没有帘子，没有屏风，也没有人。
+只有一股极淡的药香，不知从哪里飘出来。
+
+正中的一把椅子上，放着一串沉香念珠。
+念珠是温的。
+
+墙上挂着一幅字，只有两个大字：「福」「寿」。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/laozuzong" : 1,
+  ]));
+  set("exits", ([
+    "south" : __DIR__ "huayuan",
+  ]));
+  setup();
+}

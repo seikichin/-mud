@@ -1,0 +1,45 @@
+// 唐门点穴·『一指点魂』(yizhidianhun)
+//
+//   唐门的点穴手法，除了唐家子弟，无人能解。
+//   一指按下去，人还站着，魂已经走了。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+int perform(object me, object target) {
+  int extra, enhance, mod;
+
+  extra = me->query_skill("tangmen-dianxue", 1);
+  if (extra < 90)
+    return notify_fail("『一指点魂』需要90级的唐门点穴。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『一指点魂』只能对战斗中的对手使用。\n");
+
+  if (target->is_busy())
+    return notify_fail(target->name() + "已经手忙脚乱了！\n");
+
+  mod = COMBAT_D->can_busy(me, target, "tangmen-dianxue");
+  if (!mod)
+    return notify_fail(HIW "此人身法灵活，点不上他的穴道。\n" NOR);
+
+  message_vision(HIW "$N欺身而入，右手食中二指一并，像一根针似的点向$n的胸口。\n" NOR, me, target);
+
+  if (extra > 200) extra = 200;
+  enhance = extra * 100 / 85;
+
+  if (COMBAT_D->do_busy_attack(me, target, "tangmen-dianxue/yizhidianhun", "unarmed", enhance, mod)) {
+    message_vision(HIR "\n$N的指头按在$n身上，$n" HIR "只觉得周身的气血忽然一顿 —— 半边身子已经不听使唤了。\n" NOR, me, target);
+    target->set_temp("busy_timer/tangmen-dianxue", time());
+    target->force_busy(3);
+  } else {
+    message_vision(YEL "\n$N沉肩坐马，把$n" YEL "这一指硬生生让了过去 —— 穴道未闭。\n" NOR, target, me);
+    me->perform_busy(2);
+  }
+
+  return 1;
+}

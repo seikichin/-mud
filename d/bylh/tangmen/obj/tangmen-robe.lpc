@@ -1,0 +1,23 @@
+// 《白玉老虎》蜀中唐门 · 唐门长衫
+//
+//   唐门里有身份的人穿的衣裳。
+
+#include <ansi.h>
+#include <armor.h>
+
+inherit CLOTH;
+
+void create() {
+  set_name("唐门长衫", ({ "tangmen robe", "robe" }));
+  set_weight(1200);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "件");
+    set("material", "cloth");
+    set("long", "一件鸦青色的长衫，料子极好，走动时下摆纹丝不动。\n衫角内侧缝着一道暗袋，袋口比针眼还细。\n");
+    set("value", 5);
+    set("armor_prop/armor", 5);
+  }
+  ::init_cloth();
+}

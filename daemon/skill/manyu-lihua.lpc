@@ -1,0 +1,65 @@
+// manyu-lihua.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "满天花雨");
+  set("type", "throwing");
+  set("usage/throwing", 1);
+  set("usage/parry", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 200);
+  set("difficulty", 600);
+  set("damage_level", 300);
+  set("parry_msg", ({
+    "$n双手一合又一分，满袖$v像是一场花雨落下来，$N不得不先救自己。\n","$n十指齐弹，$v在空中织成一张网，$N的$w还没递到就被缠住了。\n",
+  }));
+  action = ({
+    ([ "action": "$N双手同时扬起，六十四件$w一齐飞出，分打$n周身六十四个部位",
+      "dodge": 600,
+      "parry": 500,
+      "damage": 200,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N原地一转，$w从四面八方泼出去，$n竟找不到一处可以站的空处",
+      "dodge": 500,
+      "parry": 600,
+      "damage": 220,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N双掌一推，$w像雨一样落下来，$n的$l上先着了十几处",
+      "dodge": 450,
+      "parry": 400,
+      "damage": 180,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N身形拔起，半空中回手一撒，$w自上而下盖住了$n",
+      "dodge": 550,
+      "parry": 450,
+      "damage": 240,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N一手连发三十六件，另一手接着又是三十六件，中间竟没有一丝空隙",
+      "dodge": 400,
+      "parry": 550,
+      "damage": 300,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N闭上眼，凭听风辨位把$w撒出去，$n的$l上一处不落",
+      "dodge": 350,
+      "parry": 600,
+      "damage": 280,
+      "damage_type": "刺伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("throwing", 1) < 66)
+    return notify_fail("你的基本功夫不到家，练不成满天花雨。
+");
+  return 1;
+}

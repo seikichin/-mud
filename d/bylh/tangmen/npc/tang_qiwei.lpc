@@ -1,0 +1,46 @@
+// 《白玉老虎》蜀中唐门 · 唐七味
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐七味", ({ "唐七味", "tang qiwei", "qiwei" }));
+  set("gender", "男性");
+  set("age", 44);
+  set("long",
+    "他站在那里，你几乎看不见他 ——\n这间秘室太暗了。\n\n你只闻到一阵异味擦肩而过：\n不是香，不是臭，更不是酸甜苦辣，只是一种感觉。\n\n据说唐七味以嗅觉发暗器，百发百中。\n因为他能闻得出敌人的气息，从气息里分辨出他要往哪一边躲。\n"
+  );
+  set("combat_exp", 7000000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "七爷");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "暗器" :
+      "你已经站在我面前了，我闻得出你身上有几分胆气，\n几分惧意。\n\n就凭这一点，我已经知道你要往哪一边躲。\n",
+    "祖师爷" :
+      "树顶上悟出来的东西，才是唐门真正的根。\n",
+    "唐门" :
+      "唐门的暗器制法、毒药炼法，都在这间屋子里。\n不过你看不见。\n",
+    "秘室" :
+      "这屋里什么都没有。\n（他顿了顿）\n你信吗？\n",
+  ]));
+
+  set_skill("throwing", 190);
+  set_skill("duanhun-sha", 170);
+  set_skill("parry", 170);
+  set_skill("tangmen-dugong", 160);
+  set_skill("move", 180);
+  set_skill("manyu-lihua", 150);
+  set_skill("tangmen-shenfa", 170);
+  set_skill("force", 170);
+  set_skill("dodge", 180);
+  set_skill("tangmen-zhen", 180);
+
+  map_skill("dodge", "tangmen-shenfa");
+  map_skill("force", "tangmen-dugong");
+  map_skill("move", "tangmen-shenfa");
+  map_skill("throwing", "tangmen-zhen");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}

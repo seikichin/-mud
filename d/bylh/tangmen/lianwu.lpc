@@ -1,0 +1,34 @@
+// 《白玉老虎》蜀中唐门·练武场
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "练武场" NOR);
+  set("long", @LONG
+这是一个宽敞的练武场。
+
+你的身边摆着几个木架，每一个上面又分成十数个小格，
+每一格中都放着不同的暗器：钢镖、银针、飞蝗石、铁蒺藜、三叉棱、
+铁丸、飞刀、没羽箭、龙须钉……所有说得上名字的，都能在这里找到。
+
+广场的那边立着几个木人模型，头、脸、耳、鼻都清晰可见 ——
+那是给唐门子弟练暗器手法用的。
+
+东面是东较武场，西面是西较武场。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/tangmen-dianxue_100" : 1,
+    "/obj/book/skill/tangmen-shenfa_80" : 1,
+    "/d/bylh/tangmen/npc/jiaotou" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "xiwu",
+    "east" : __DIR__ "dongwu",
+    "north" : __DIR__ "street",
+  ]));
+  setup();
+}

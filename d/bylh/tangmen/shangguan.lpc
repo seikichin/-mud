@@ -1,0 +1,32 @@
+// 《白玉老虎》蜀中唐门·客卿宅·前院
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "客卿宅·前院" NOR);
+  set("long", @LONG
+这是一处极安静的宅院，比唐家堡别处都要安静。
+
+院中有几十盆海棠，几棵梧桐。
+梧桐叶子很大，把大半个院子都遮在阴影里。
+
+这里住的是唐家堡请来的一位客卿 ——
+听说他做了唐家的女婿，也做了唐家几个重要部门的主管之一。
+
+北面是书房，东面是另一处小院。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/shangguan_ren" : 1,
+    "/d/bylh/tangmen/npc/lao_kong" : 1,
+  ]));
+  set("exits", ([
+    "north" : __DIR__ "shufang",
+    "east" : __DIR__ "xiaojie",
+    "west" : __DIR__ "queju",
+  ]));
+  setup();
+}

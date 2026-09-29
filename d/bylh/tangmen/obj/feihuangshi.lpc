@@ -1,0 +1,37 @@
+// 《白玉老虎》蜀中唐门 · 暗器：飞蝗石
+//
+//   唐门入门的暗器。石头便宜，手法不便宜。
+//   一捆六十枚 —— 掷出去，就不再回来。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(YEL "飞蝗石" NOR, ({ "feihuangshi", "feihuang shi", "shizi" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "一枚枚打磨得圆润的鹅卵石，大小轻重都差不离。\n"
+      "唐门子弟入门，头一年打的就是这个 —— 打出去，再捡回来。\n"
+      "石头上没有花，也没有字，可它打在人身上，照样是暗器。\n");
+    set("unit", "捆");
+    set("base_unit", "枚");
+    set("base_weight", 30);
+    set("base_value", 1);
+    set("weapon_prop/attack", 6);
+    set("volumn", 60);
+  }
+  set_amount(60);
+  ::init_throwing(15);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一捆多少枚，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 5);
+}

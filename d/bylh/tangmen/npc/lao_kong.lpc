@@ -1,0 +1,33 @@
+// 《白玉老虎》蜀中唐门 · 老孔
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("老孔", ({ "老孔", "lao kong", "laokong" }));
+  set("gender", "男性");
+  set("age", 50);
+  set("long",
+    "老孔并不姓孔。老孔也姓唐 —— 据说还是唐缺和唐傲的堂叔。\n\n他有一张红通通的脸，脸上长着个红通通的酒糟鼻子。\n\n他的职务很多，不但是客卿的跟班，还是客卿的厨子。\n他炒出来的牛肉，简直像牛皮。\n"
+  );
+  set("combat_exp", 40000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "厨子");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "上官刃" :
+      "大老爷这个人，难伺候。\n不过他的心事，比谁都重。\n",
+    "酒" :
+      "（他的眼睛亮了）\n你要请我喝酒？\n",
+    "老孔" :
+      "这里人人都姓唐。如果我姓唐，应声的人也不知道有多少。\n\n孔的意思，就是一个洞。我这人就是一个洞 ——\n随便什么样的酒，都可以从这个洞里倒下去。\n",
+  ]));
+
+  set_skill("parry", 50);
+  set_skill("move", 60);
+  set_skill("dodge", 60);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 蜻蜓三抄水
+
+inherit ITEM;
+
+void create() {
+  set_name("蜻蜓三抄水", ({ "蜻蜓三抄水", "qingting sandianshui", "qingting" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "图上画着一只蜻蜓，正用它长长的肚尖点着水面。\n水面被点出三个小小的圈。\n三个圈之间的距离，一模一样。\n");
+    set("skill", ([
+      "name": "qingting-sandianshui",
+      "exp_required": 1000000,
+      "sen_cost": 25,
+      "difficulty": 7,
+      "liter_level": 30,
+      "max_skill": 120,
+    ]));
+  }
+  ::init_item();
+}

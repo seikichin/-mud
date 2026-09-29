@@ -1,0 +1,35 @@
+// 《白玉老虎》蜀中唐门 · 朱掌柜
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("朱掌柜", ({ "朱掌柜", "zhu zhanggui", "zhuzhanggui", "zhubajie" }));
+  set("gender", "男性");
+  set("age", 48);
+  set("long",
+    "一个矮小臃肿的胖子，天生的好脾气。\n\n就算有人当着他的面叫他「猪八戒」，他也不会生气。\n\n他一边擦着汗，一边往锅里添辣椒。\n\n他以前在城里最贵的那家大酒楼当过老板 ——\n后来那家酒楼关了门，他就到这里来了。\n"
+  );
+  set("combat_exp", 60000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "掌柜");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "辣椒" :
+      "我这店里的辣子鸡丁，可以把你辣得满脸眼泪，满身冷汗。\n",
+    "唐门" :
+      "这条巷子里的人，都是从滇、桂、蜀一带迁移过来的。\n我们这里的人，都喜欢吃辣椒。\n",
+    "寿尔康" :
+      "（他的手停了停）\n那地方……早就没有啦。\n",
+  ]));
+
+  set_skill("move", 80);
+  set_skill("tangmen-anqi", 60);
+  set_skill("throwing", 70);
+  set_skill("dodge", 80);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

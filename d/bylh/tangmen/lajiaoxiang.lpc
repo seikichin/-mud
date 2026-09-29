@@ -1,0 +1,34 @@
+// 《白玉老虎》蜀中唐门·辣椒巷
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "辣椒巷" NOR);
+  set("long", @LONG
+这条巷子很深，很长。
+
+巷子里一共住着一百三十九户人家，
+这一百三十九户人家，有一个共同的特点 —— 每家人都喜爱吃辣椒。
+
+傍晚的时候，巷子里充满了辣椒的香气，
+家家户户的菜锅里都在炒着辣椒。
+
+在这些人眼中看来，吃饭时候如果没有辣椒，
+简直就好像走到路上不穿裤子，一样不可思议。
+
+如果你从来不吃辣椒，最好就不要走进这条巷子，
+否则你的眼泪立刻就会被辣出来。
+
+南面还有一处小筑。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : __DIR__ "lianouxiaozhu",
+    "east" : __DIR__ "lajiaodian",
+    "north" : "/d/bylh/tangjiabao",
+  ]));
+  setup();
+}

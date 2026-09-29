@@ -1,0 +1,22 @@
+// 《白玉老虎》蜀中唐门 · 唐门剑
+//
+//   唐门也有用剑的人 —— 一柄薄剑，便于近身。
+
+#include <weapon.h>
+inherit SWORD;
+
+void create() {
+  set_name("唐门剑", ({ "tangmen sword", "sword" }));
+  set_weight(5000);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "把");
+    set("long", "一柄又薄又轻的长剑，剑身很窄，像是从暗器里化出来的。\n剑鞘上没有任何纹饰，朴素得像一件农具。\n");
+    set("value", 5);
+    set("material", "steel");
+    set("wield_msg", "$N「铮」地一声，抽出一把$n。\n");
+    set("unwield_msg", "$N将手中的$n收回鞘里。\n");
+  }
+  ::init_sword(10);
+}

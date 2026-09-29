@@ -1,0 +1,31 @@
+// 《白玉老虎》蜀中唐门·大倌居
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大倌居" NOR);
+  set("long", @LONG
+这间屋子是唐家堡里最大的一间卧房。
+
+屋子里并没有多少家具，只有一张极大的床，铺着雪白的被。
+床边一张矮几，几上永远摆着吃食 —— 一整只鸡，一条鱼，一碟卤味。
+
+奇怪的是，屋里收拾得一尘不染，
+连一根鸡骨头都看不见。
+
+东面有一道小门，通着另一处宅院。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/yinjia-gong_150" : 1,
+    "/d/bylh/tangmen/npc/tang_que" : 1,
+  ]));
+  set("exits", ([
+    "east" : __DIR__ "shangguan",
+    "north" : __DIR__ "huayuan",
+  ]));
+  setup();
+}

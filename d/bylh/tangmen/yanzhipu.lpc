@@ -1,0 +1,25 @@
+// 《白玉老虎》蜀中唐门·唐家堡·胭脂铺
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·胭脂铺" NOR);
+  set("long", @LONG
+一排六开间的门面，卖的是胭脂花粉，也卖些奇巧玩物。
+柜台后面的伙计一个个眉清目秀，说话斯文，招呼客人极有分寸。
+
+这里的胭脂，据说连京城里的贵人都要来买。
+只是价钱贵得叫人咋舌 —— 唐家堡里每一样东西都不便宜。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/gugu" : 1,
+  ]));
+  set("exits", ([
+    "southwest" : __DIR__ "street",
+  ]));
+  setup();
+}

@@ -1,0 +1,39 @@
+// 《白玉老虎》蜀中唐门 · 老祖宗
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("老祖宗", ({ "老祖宗", "lao zuzong", "zuzong" }));
+  set("gender", "女性");
+  set("age", 82);
+  set("long",
+    "堂里没有灯。\n\n你只看见一个极瘦小的影子，坐在正中那把椅子上，背对着门。\n\n她的头发全白了，梳得很整，一丝不乱。\n她两只手搭在膝上，手指很细，很长，指甲修得干干净净。\n\n她已经很久没有见人了。\n"
+  );
+  set("combat_exp", 20000000);
+  set("class", "tangmen");
+  create_family("唐门", 1, "老祖宗");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "暗器" :
+      "暗器是死的，人是活的。\n唐家的人，靠的不是暗器，是心。\n",
+    "唐门" :
+      "（一个衰弱温和，却又充满威严的声音）\n唐家的事，我都知道。\n",
+    "解药" :
+      "唐家解药的方子，只有我知道。\n这方子在我身上，已经五十三年了。\n",
+  ]));
+
+  set_skill("tangmen-dugong", 200);
+  set_skill("move", 180);
+  set_skill("throwing", 200);
+  set_skill("manyu-lihua", 180);
+  set_skill("dodge", 180);
+  set_skill("force", 200);
+  set_skill("tangmen-xinfa", 200);
+  set_skill("parry", 200);
+
+  map_skill("force", "tangmen-xinfa");
+  map_skill("throwing", "manyu-lihua");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-skirt")->wear();
+}

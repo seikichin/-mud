@@ -1,0 +1,26 @@
+// 《白玉老虎》蜀中唐门·囚室
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "囚室" NOR);
+  set("long", @LONG
+这里四面一片漆黑。
+
+借着梯子口透下来的一点亮光，你才发现里面竟然有一个人 ——
+不，那不是人。那只是一副精钢镣铐，锁在一根石桩上。
+
+镣铐是空的。锁扣上有磨出来的亮痕。
+
+东面的墙塌了一角，露出一个黑黝黝的洞。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "east" : __DIR__ "didao",
+    "up" : __DIR__ "dufang",
+  ]));
+  setup();
+}

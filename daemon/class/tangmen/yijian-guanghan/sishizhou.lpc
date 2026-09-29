@@ -1,0 +1,36 @@
+// 一剑光寒·『一剑光寒四十州』(sishizhou)
+//
+//   「满堂花醉三千客，一剑光寒四十州。」
+//   这一剑是唐门剑法里最冷、也最重的一剑。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+int perform(object me, object target) {
+  int extra;
+
+  extra = me->query_skill("yijian-guanghan", 1);
+  if (extra < 150)
+    return notify_fail("『一剑光寒四十州』需要150级的一剑光寒。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『一剑光寒四十州』只能对战斗中的对手使用。\n");
+
+  message_vision(HIW "\n$N把剑平平地举起来 —— 剑身上一点光在游走，\n" NOR
+    HIC "从剑锷一直走到剑尖，然后整把剑都亮了。\n" NOR, me, target);
+
+  me->add_temp("apply/attack", extra);
+  me->add_temp("apply/damage", extra * 2);
+
+  COMBAT_D->do_attack(me, target, TYPE_PERFORM, HIW "一剑光寒，四十州的风都冷了下来" NOR);
+
+  me->add_temp("apply/attack", -extra);
+  me->add_temp("apply/damage", -extra * 2);
+
+  me->perform_busy(3);
+  return 1;
+}

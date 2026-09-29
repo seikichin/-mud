@@ -1,0 +1,49 @@
+// 唐门身法·『移形换位』(yixinghuanwei)
+//
+//   唐门的人从不久战。
+//   打不倒你，就先跟你换个位置 —— 你回头的时候，他已经不在了。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+int perform(object me, object target) {
+  int skill;
+  string msg;
+  mapping buff;
+
+  skill = me->query_skill("tangmen-shenfa", 1);
+  if (skill < 60)
+    return notify_fail("『移形换位』需要60级的唐门身法。\n");
+
+  if (ANNIE_D->check_buff(me, "powerup"))
+    return notify_fail("你已经在运用类似的武功了。\n");
+
+  if ((int)me->query("force") < 50)
+    return notify_fail("『移形换位』需要50点的内力。\n");
+
+  if (userp(me)) me->add("force", -50);
+
+  if (skill > 200) skill = 200;
+
+  msg = HIC "$N脚下轻轻一点，整个人在原地留下了一道模糊的影子。\n" NOR;
+
+  message_vision(msg, me);
+
+  buff = ([
+    "caster": me,
+    "who": me,
+    "type": "powerup",
+    "att": "bless",
+    "name": "唐门身法·移形换位",
+    "buff1": "apply/dodge",
+    "buff1_c": skill,
+    "time": 60,
+    "buff_msg": HIC "你的身形变得有些不定，像是一层影子叠在另一层上面。\n" NOR,
+  ]);
+  ANNIE_D->buffup(buff);
+
+  if (me->is_fighting()) me->start_busy(1);
+
+  return 1;
+}

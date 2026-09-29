@@ -1,0 +1,65 @@
+// yijian-guanghan.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "一剑光寒");
+  set("type", "sword");
+  set("usage/sword", 1);
+  set("usage/parry", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 200);
+  set("difficulty", 600);
+  set("damage_level", 250);
+  set("parry_msg", ({
+    "$n一剑横在身前，光寒如水，$N的$w竟不敢再往前递。\n","$n剑尖微抬，$N只觉一股寒气直逼眉心，招式自散。\n",
+  }));
+  action = ({
+    ([ "action": "$N一剑光寒，$w只闪了一闪，$n的$l上已多了一道极细的血线",
+      "dodge": 300,
+      "parry": 400,
+      "damage": 180,
+      "damage_type": "割伤"
+    ]),
+    ([ "action": "「满堂花醉三千客，一剑光寒四十州。」$N的$w出手时，$n甚至没有看见剑在哪里",
+      "dodge": 500,
+      "parry": 500,
+      "damage": 250,
+      "damage_type": "割伤"
+    ]),
+    ([ "action": "$N剑势毫无变化，只是快 —— 快得叫$n来不及想该怎么躲",
+      "dodge": 200,
+      "parry": 600,
+      "damage": 300,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N一剑平推，$n的$l上像是被一整座雪山压过",
+      "dodge": 350,
+      "parry": 450,
+      "damage": 220,
+      "damage_type": "内伤"
+    ]),
+    ([ "action": "$N的$w在空中画了半圈，$n的兵器便脱了手",
+      "dodge": 400,
+      "parry": 300,
+      "damage": 150,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N收剑站定，$n才发现自己的$l早已被刺穿 —— 这一剑是什么时候递出去的，没人看清",
+      "dodge": 600,
+      "parry": 700,
+      "damage": 400,
+      "damage_type": "刺伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("sword", 1) < 66)
+    return notify_fail("你的基本功夫不到家，练不成一剑光寒。
+");
+  return 1;
+}

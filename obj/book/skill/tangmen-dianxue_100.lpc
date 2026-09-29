@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 唐门点穴
+
+inherit ITEM;
+
+void create() {
+  set_name("唐门点穴", ({ "唐门点穴", "tangmen dianxue", "dianxue" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "图上画着一个人形，周身标满了小黑点。\n每一黑点旁边写着一个名字，还有一行小字，写的是解穴的手法。\n最末一行写着：非唐家子弟，不可解。\n");
+    set("skill", ([
+      "name": "tangmen-dianxue",
+      "exp_required": 200000,
+      "sen_cost": 15,
+      "difficulty": 5,
+      "liter_level": 20,
+      "max_skill": 100,
+    ]));
+  }
+  ::init_item();
+}

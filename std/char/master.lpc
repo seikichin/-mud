@@ -115,6 +115,7 @@ string query_chinese_class(string e_class) {
     case "huangshan": return "黄山";
     case "wolfmount": return "狼山";
     case "moon": return "皓月天宫";
+    case "tangmen": return "唐门";
     default: return "无";
   }
 }

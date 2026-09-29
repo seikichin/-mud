@@ -1,0 +1,23 @@
+// 《白玉老虎》蜀中唐门 · 唐门劲装
+//
+//   唐门子弟日常所穿的衣裳。袖口紧、下摆短，为的是出手时利落。
+
+#include <ansi.h>
+#include <armor.h>
+
+inherit CLOTH;
+
+void create() {
+  set_name("唐门劲装", ({ "tangmen cloth", "cloth" }));
+  set_weight(800);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "件");
+    set("material", "cloth");
+    set("long", "一件靛青色的劲装，袖口收得极紧，腰间扎着一条黑色的宽带。\n唐门的人惯穿这样衣裳 —— 因为暗器出手的那一瞬，最忌衣袖兜风。\n");
+    set("value", 5);
+    set("armor_prop/armor", 3);
+  }
+  ::init_cloth();
+}

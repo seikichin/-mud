@@ -1,0 +1,37 @@
+// 《白玉老虎》蜀中唐门 · 暗器：铁蒺藜
+//
+//   铁铸的，四角带倒刺。唐门人打它，图的是落地之后还会咬人。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(WHT "铁蒺藜" NOR, ({ "tiejili", "tie jili", "tieji" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "铁铸的蒺藜，四角带着倒刺。\n"
+      "打在肉上是一个五爪形的口子，皮肉外翻；\n"
+      "落在地上，踩上去的也不会好过。\n");
+    set("unit", "堆");
+    set("base_unit", "枚");
+    set("base_weight", 40);
+    set("base_value", 1);
+    set("weapon_prop/attack", 12);
+    set("level_required", 15);
+    set("volumn", 60);
+  }
+  set_amount(60);
+  ::init_throwing(25);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一捆多少枚，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 10);
+}

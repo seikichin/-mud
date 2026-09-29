@@ -1,0 +1,45 @@
+// 唐门暗器手法·『袖底飞星』(xiudifeixing)
+//
+//   唐门的人出手，别人从来看不见暗器在哪里。
+//   这一招全在袖底：胳膊不动，星已经出去了。
+//
+//   暗器是消耗品 —— 手里没有暗器（或用完了）就打不出来。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+#include "/daemon/class/tangmen/tangmen_ammo.lpc"
+
+int perform(object me, object target) {
+  string err;
+  int extra;
+
+  extra = me->query_skill("tangmen-anqi", 1);
+  if (extra < 60)
+    return notify_fail("『袖底飞星』需要60级的唐门暗器手法。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『袖底飞星』只能对战斗中的对手使用。\n");
+
+  if (stringp(err = tangmen_ammo_error(me)))
+    return notify_fail(err);
+
+  message_vision(HIY "\n$N的袖子连晃都没有晃一下 —— " NOR
+    HIC "星，已经出去了。\n" NOR, me, target);
+
+  me->add_temp("apply/attack", extra);
+  me->add_temp("apply/damage", extra);
+
+  COMBAT_D->do_attack(me, target, TYPE_PERFORM, "");
+
+  me->add_temp("apply/attack", -extra);
+  me->add_temp("apply/damage", -extra);
+
+  use_tangmen_ammo(me, target);
+  me->perform_busy(2);
+  return 1;
+}

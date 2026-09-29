@@ -1,0 +1,21 @@
+// 《白玉老虎》蜀中唐门·西较武场
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "西较武场" NOR);
+  set("long", @LONG
+这是唐门的西较武场，比东面的小一些。
+
+角落里堆着十几口破了的大缸，缸口上密密麻麻全是针孔。
+听说唐门的子弟，就是拿这些缸来试暗器的。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "east" : __DIR__ "lianwu",
+  ]));
+  setup();
+}

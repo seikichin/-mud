@@ -1,0 +1,43 @@
+// 《白玉老虎》蜀中唐门 · 上官刃
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("上官刃", ({ "上官刃", "shangguan ren", "shangguanren", "ren gong" }));
+  set("title", "唐家客卿");
+  set("nickname", HIR "铁剑金人" NOR);
+  set("gender", "男性");
+  set("age", 47);
+  set("long",
+    "他身高八尺，宽肩长臂，每跨出一步，都要比别人多五分。\n\n他沉默寡言，态度稳重冷酷，无论在什么时候出现，\n都显得精力充沛、斗志旺盛，一双炯炯有光的眼睛，\n更好像随时都能看透别人的心。\n\n他做的每一件事都绝对像钟表般精确。\n"
+  );
+  set("combat_exp", 9000000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "姑爷");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "赵简" :
+      "（他沉默了很久，久到你以为他不会回答）\n……是我杀的。\n",
+    "大风堂" :
+      "（他转过身，去看墙上的字）\n那是个很好的地方。\n",
+    "上官刃" :
+      "我就是。\n",
+    "白玉老虎" :
+      "（他的手指忽然收紧了）\n你说什么？\n",
+    "唐门" :
+      "我是唐家的客卿。\n（他淡淡道）唐家待我不薄。\n",
+  ]));
+
+  set_skill("move", 170);
+  set_skill("dodge", 170);
+  set_skill("unarmed", 160);
+  set_skill("sword", 200);
+  set_skill("force", 190);
+  set_skill("parry", 190);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-sword")->wield();
+}

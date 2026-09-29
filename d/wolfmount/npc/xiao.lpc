@@ -41,7 +41,7 @@ int do_answer(string arg) {
     return notify_fail(name() + "道：看来你也帮不了我！\n");
   if (arg == "lian" || arg == "lian cheng bi" || arg == "连城壁") {
     if (me->query_temp("in_doubt") && me->query_temp("listened")) {
-      REWARD_D->riddle_done("识破天宗", me, 20, 1);
+      REWARD_D->riddle_done(me, "识破天宗", 20, 1);
 
       command("unwield gelu");
       command("give gelu to " + me->get_id());

@@ -1,0 +1,38 @@
+// 《白玉老虎》蜀中唐门 · 暗器：龙须钉
+//
+//   钉身拧着螺旋细纹，钉尾散开一小撮须。
+//   打出去会滴溜溜地转，钻进皮肉，还要往骨头缝里钻。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(CYN "龙须钉" NOR, ({ "longxuding", "longxu ding", "dingzi" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "一根三寸长的细钉，钉身上拧着螺旋细纹，钉尾散着一小撮须。\n"
+      "唐门的匠人说，暗器要讲一个「透」字 ——\n"
+      "这根钉飞出去，钉身会滴溜溜地转。\n");
+    set("unit", "堆");
+    set("base_unit", "枚");
+    set("base_weight", 40);
+    set("base_value", 1);
+    set("weapon_prop/attack", 19);
+    set("level_required", 25);
+    set("volumn", 60);
+  }
+  set_amount(60);
+  ::init_throwing(35);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一捆多少枚，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 15);
+}

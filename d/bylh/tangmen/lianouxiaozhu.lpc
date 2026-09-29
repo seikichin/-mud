@@ -1,0 +1,24 @@
+// 《白玉老虎》蜀中唐门·莲藕小筑
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "莲藕小筑" NOR);
+  set("long", @LONG
+这里是距蜀中唐门不远的莲藕小筑。
+
+莲藕小筑是栋古玉色的建筑，看来雅致简朴，
+但有多少江湖高手为了越此一步，都尸横遍地。
+
+小筑四面环水，只有一道窄窄的石桥通到门口。
+桥头的石阶上，长满了青苔。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "north" : __DIR__ "lajiaoxiang",
+  ]));
+  setup();
+}

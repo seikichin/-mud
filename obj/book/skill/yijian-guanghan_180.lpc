@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 一剑光寒
+
+inherit ITEM;
+
+void create() {
+  set_name("一剑光寒", ({ "一剑光寒", "yijian guanghan", "guanghan" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "本");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "这册子上没有画，也没有招式。\n\n从头到尾，只有两句诗：\n\n    满堂花醉三千客，\n    一剑光寒四十州。\n\n字是剑写的 —— 每一笔的收锋处，都有一道极细的划痕。\n");
+    set("skill", ([
+      "name": "yijian-guanghan",
+      "exp_required": 5000000,
+      "sen_cost": 35,
+      "difficulty": 9,
+      "liter_level": 50,
+      "max_skill": 180,
+    ]));
+  }
+  ::init_item();
+}

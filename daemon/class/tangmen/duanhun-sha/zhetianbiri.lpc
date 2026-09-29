@@ -1,0 +1,67 @@
+// 断魂砂·『遮天蔽日』(zhetianbiri)
+//
+//   断魂砂比米粒还小，一发出来就是黑蒙蒙的一大片。
+//   这一招不追求杀，只求把对方罩住 —— 砂落处，敌人的
+//   眼睛、手脚都慢了半拍。
+//
+//   （本招式不附带任何中毒效果，只有即时的压制。）
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+#include "/daemon/class/tangmen/tangmen_ammo.lpc"
+
+int perform(object me, object target) {
+  string msg, err;
+  int extra, mod;
+  mapping buff;
+
+  extra = me->query_skill("duanhun-sha", 1);
+  if (extra < 100)
+    return notify_fail("『遮天蔽日』需要100级的断魂砂。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『遮天蔽日』只能对战斗中的对手使用。\n");
+
+  if (stringp(err = tangmen_ammo_error(me)))
+    return notify_fail(err);
+
+  if (ANNIE_D->check_buff(target, "defdown"))
+    return notify_fail("对方已经被压制住了。\n");
+
+  mod = COMBAT_D->can_busy(me, target, "duanhun-sha");
+  if (!mod)
+    return notify_fail(HIW "此人目力极佳，看不进这一片砂里去。\n" NOR);
+
+  message_vision(HIY "\n$N袍袖一抖，一片黑蒙蒙的砂泼了出去，一丈方圆里连天光都暗了。\n" NOR, me, target);
+
+  if (COMBAT_D->do_busy_attack(me, target, "duanhun-sha/zhetianbiri", "weapon", extra * 2, mod)) {
+    msg = HIR "$n" HIR "眼前一黑，砂粒像是钻进了每一处缝隙，手脚顿时慢了半拍。\n" NOR;
+    buff = ([
+      "caster": me,
+      "who": target,
+      "type": "defdown",
+      "att": "curse",
+      "name": "断魂砂·遮天蔽日",
+      "buff1": "apply/dodge",
+      "buff1_c": -extra,
+      "buff2": "apply/parry",
+      "buff2_c": -extra,
+      "time": 60,
+      "buff_msg": msg,
+    ]);
+    ANNIE_D->buffup(buff);
+    target->set_temp("busy_timer/duanhun-sha", time());
+  } else {
+    msg = WHT "可是$n" WHT "闭住了呼吸，一步一步退出那片砂去 —— 反而抢进了$N" WHT "的空门！\n" NOR;
+    COMBAT_D->do_attack(target, me, TYPE_PERFORM, msg);
+  }
+
+  use_tangmen_ammo(me, target);
+  me->perform_busy(2);
+  return 1;
+}

@@ -20,6 +20,8 @@ LONG
   set("exits", ([
     "out"   : "/d/bylh/hushangate2",
     "north" : "/d/bylh/tanghouting",
+    "east"  : "/d/bylh/tangmen/street",
+    "south" : "/d/bylh/tangmen/lajiaoxiang",
   ]));
 
   setup();

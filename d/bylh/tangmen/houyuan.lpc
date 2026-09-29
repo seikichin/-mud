@@ -1,0 +1,30 @@
+// 《白玉老虎》蜀中唐门·唐家堡·后院
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·后院" NOR);
+  set("long", @LONG
+这里是唐门的后院。
+
+院子很大，却收拾得干干净净。靠墙一溜排着几口大缸，
+缸里泡着些看不出是什么的东西，散发着一股说不清的味儿。
+
+东面是暗器房，西面是炼毒房，北面有一棵极高的老树。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/tangmen-xinfa_80" : 1,
+    "/d/bylh/tangmen/npc/tang_er" : 1,
+  ]));
+  set("exits", ([
+    "north" : __DIR__ "gushu",
+    "west" : __DIR__ "dufang",
+    "east" : __DIR__ "anqifang",
+    "south" : __DIR__ "dating",
+  ]));
+  setup();
+}

@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 唐门毒功
+
+inherit ITEM;
+
+void create() {
+  set_name("唐门毒功", ({ "唐门毒功", "tangmen dugong", "dugong" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "本");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "册子里画着许多小瓶子，瓶子上都有编号。\n每一瓶下面写着能解哪一种毒 ——\n大多数瓶子下面都是空的。\n");
+    set("skill", ([
+      "name": "tangmen-dugong",
+      "exp_required": 100000,
+      "sen_cost": 15,
+      "difficulty": 4,
+      "liter_level": 20,
+      "max_skill": 80,
+    ]));
+  }
+  ::init_item();
+}

@@ -1,0 +1,29 @@
+// 《白玉老虎》蜀中唐门·炼毒房
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "炼毒房" NOR);
+  set("long", @LONG
+这里是唐门的炼毒房。
+
+屋中没有什么摆设，只是靠墙摆着三个木架，架子上摆着大大小小的瓷瓶。
+每只瓶子上都贴着标签，写着些看不懂的名目。
+
+空气里有一种腥气，甜得发腻，闻久了叫人头皮发麻。
+地上有个盖子，掀开是一条通向下边的窄梯。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/d/bylh/tangmen/npc/du_shi" : 1,
+    "/obj/book/skill/tangmen-dugong_80" : 1,
+  ]));
+  set("exits", ([
+    "east" : __DIR__ "houyuan",
+    "down" : __DIR__ "qiushi",
+  ]));
+  setup();
+}

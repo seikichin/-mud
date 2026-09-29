@@ -1,0 +1,169 @@
+// 《白玉老虎》蜀中唐门 · 唐门教头
+
+inherit NPC;
+inherit F_MASTER;
+#include <ansi.h>
+
+void create() {
+  set_name("唐门教头", ({ "唐门教头", "jiaotou", "tang jiaotou", "teacher tang" }));
+  set("gender", "男性");
+  set("age", 48);
+  set("long",
+    "一个精悍的中年汉子，两只手上全是厚茧。\n\n他的十根指头，每一根都能把一枚暗器弹出去，打中十丈外的苍蝇眼睛。\n\n练武场上的木人，脸上的孔，全都他一个人打出来的。\n"
+  );
+  set("combat_exp", 150000);
+  set("class", "tangmen");
+  create_family("唐门", 5, "教头");
+  set("apprentice_available", 50);
+  set("ranks", ({
+    "外门弟子", "入门弟子", "唐门弟子", "暗器弟子", "暗器好手",
+    "唐门好手", "唐门高手", "唐门执事", "唐门香主", "唐门堂主",
+    "唐门护法", "唐门长老", "执掌长老", "副堡主", "堡主",
+    HIY "唐门家主" NOR
+  }));
+  set("rank_levels", ({
+    16000, 32000, 64000, 128000, 256000, 512000, 1024000, 1536000,
+    2048000, 3064000, 4096000, 5120000, 6144000, 8192000, 9999999
+  }));
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "暗器" :
+      "暗器的手法，说穿了只有两个字 —— 稳，快。\n\n练武场上那几个木人，脸上都画着穴道。\n你若能一连打中三十次，再来找我。\n",
+    "练功" :
+      "唐门的功夫，都在各处放着。\n暗器房里有暗器谱，练武场上有身法图，树顶上有祖师留下的东西。\n\n我只教一件事 —— 手要稳。\n",
+    "唐门" :
+      "唐门子弟入门，先练眼，后练手，最后才练心。\n",
+    "拜师" :
+      "唐门收徒弟，只收没沾过江湖气的生胚子。\n等级不到三级的，力量过了十五、脚下也快过十五的，我都收。\n",
+    "出师" :
+      "唐门一辈一辈，都是打出来的。\n你若能打赢我，就可以去拜更高一辈的师傅。\n只是 —— 手不稳，别来。\n",
+    "师傅" :
+      "我只教入门的那点东西。\n想学唐门更深一层的功夫，得打赢我，再去拜高一代的师傅。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 60);
+  set_skill("throwing", 80);
+  set_skill("parry", 60);
+  set_skill("unarmed", 60);
+  set_skill("tangmen-xinfa", 50);
+  set_skill("dodge", 50);
+  set_skill("tangmen-shenfa", 50);
+  set_skill("force", 40);
+  set_skill("move", 50);
+  set_skill("tangmen-zhen", 40);
+
+  map_skill("dodge", "tangmen-shenfa");
+  map_skill("force", "tangmen-xinfa");
+  map_skill("move", "tangmen-shenfa");
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-fist")->wield();
+}
+
+// 入门条件：等级低于 3 级、力量大于 15、速度大于 15
+void attempt_apprentice(object me) {
+  int lvl, my_str, my_agi;
+
+  if (me->query("class") == "tangmen") {
+    command("say 你已经是唐门的人了。");
+    return;
+  }
+
+  lvl = F_LEVEL->get_level((int)me->query("combat_exp"));
+  my_str = (int)me->query("str");
+  my_agi = (int)me->query("agi");
+
+  if (lvl >= 3) {
+    command("shake");
+    command("say 唐门收徒弟，只收没沾过江湖气的生胚子。");
+    return;
+  }
+
+  if (my_str <= 15 || my_agi <= 15) {
+    command("shake");
+    command("say 唐门的暗器，靠的是手上的力，脚下的快。");
+    command("say 你这两样，都还差得远。");
+    return;
+  }
+
+  command("pat " + me->query("id"));
+  command("say 手上有力，脚下有风 —— 好，唐门的门，你就算走进来了。");
+  tell_object(me, "（从今日起，你就是唐门第六代外门弟子。）\n");
+  command("recruit " + me->query("id"));
+}
+
+// 入门赠礼：一捆飞蝗石（六十枚），只送一次。
+void give_rumen_liwu(object ob) {
+  object ammo;
+
+  if (!objectp(ob) || ob->query("tangmen_rumen_gift")) return;
+  ob->set("tangmen_rumen_gift", 1);
+
+  ammo = new("/d/bylh/tangmen/obj/feihuangshi.lpc");
+  if (!objectp(ammo)) return;
+
+  if (!ammo->move(ob)) {
+    tell_object(ob, "（你身上带不下这捆飞蝗石，就先放在练武场上罢。）\n");
+    ammo->move(environment());
+    return;
+  }
+
+  tell_object(ob, "（教头塞给你一捆飞蝗石 —— 六十枚，够你打一阵子了。）\n");
+  message_vision("$N把一捆飞蝗石塞到$n手里。\n", this_object(), ob);
+}
+
+int recruit_apprentice(object ob) {
+  if (!::recruit_apprentice(ob)) return 0;
+
+  ob->set("class", "tangmen");
+  give_rumen_liwu(ob);
+  return 1;
+}
+
+// ── 出师 ────────────────────────────────────────────────
+// 唐门弟子能打赢教头，便可另投更高一辈的师傅（第四代）
+int accept_fight(object me) {
+  if (me->query("class") != "tangmen") {
+    command("say 外人要动手，先过唐家堡的大门。\n");
+    return 0;
+  }
+
+  if (is_fighting()) {
+    command("say 想倚多为胜？练武场上的木人还没打够么。\n");
+    return 0;
+  }
+
+  if ((int)query("gin") * 10 >= (int)query("max_gin") * 9
+    && (int)query("kee") * 10 >= (int)query("max_kee") * 9
+    && (int)query("sen") * 10 >= (int)query("max_sen") * 9) {
+    command("say 好 —— 你若能赢我一只手，唐门更上一辈的师傅，就该你去拜了！\n");
+    me->set_temp("marks/fi_jiaotou", 1);
+    return 1;
+  }
+
+  command("say 好，不过，先养好了伤再动手。\n");
+  return 0;
+}
+
+void win_enemy(object loser) {
+  if (loser->query_temp("marks/fi_jiaotou")) {
+    command("say 手还是不够稳。回去再打三千下木人！\n");
+    loser->delete_temp("marks/fi_jiaotou");
+  }
+}
+
+void lose_enemy(object winner) {
+  if (winner->query_temp("marks/fi_jiaotou")) {
+    command("say 好，你的手，比我的稳了。\n");
+    command("say 唐门的功夫，我已经教不了你 —— 去找高一代的师傅罢。\n");
+    winner->set_temp("won_master_jiaotou", 1);
+    winner->delete_temp("marks/fi_jiaotou");
+  }
+}
+
+void init() {
+  ::init();
+  add_action("do_killing", "kill");
+}

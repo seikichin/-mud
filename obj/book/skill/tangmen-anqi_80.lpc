@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 唐门暗器谱
+
+inherit ITEM;
+
+void create() {
+  set_name("唐门暗器谱", ({ "唐门暗器谱", "anqipu", "tangmen anqipu" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "一叠写得很密的册子，封面上是唐门的家徽。\n每一页上画的都是手势：捏、捻、弹、甩、洒。\n画得很细，连指节弯到什么程度都标了出来。\n");
+    set("skill", ([
+      "name": "tangmen-anqi",
+      "exp_required": 0,
+      "sen_cost": 10,
+      "difficulty": 3,
+      "liter_level": 10,
+      "max_skill": 80,
+    ]));
+  }
+  ::init_item();
+}

@@ -1,0 +1,47 @@
+// tangmen_ammo.lpc —— 唐门「暗器类招式」共用的助手
+//
+//   唐门暗器是消耗品：
+//     手里没有暗器（或者暗器已经用完）时，暗器类的特殊招式不能释放。
+//
+//   本文件只提供两个函数，供 /daemon/class/tangmen/ 下的暗器招式 #include：
+//     - string tangmen_ammo_error(object me)
+//         可以出手则返回 0；不能出手则返回失败原因（字符串）。
+//     - void use_tangmen_ammo(object me, object target)
+//         消耗一枚暗器（沿用引擎 std/wield.lpc 的 throw_weapon 逻辑，
+//         打完最后一枚会自动卸下并提示「用完了」）。
+//
+//   特别声明：唐门武学有意「不涉及毒」——
+//     没有淬毒、中毒、解毒之类的持续状态，
+//     避免玩家离线后目标身上仍在结算、甚至被磨死的隐患。
+
+string tangmen_ammo_error(object me) {
+  object wp;
+
+  if (!objectp(me)) return "你不在战斗中。\n";
+
+  wp = me->query_temp("weapon");
+  if (!objectp(wp))
+    return "你手上没有暗器，唐门的暗器手法无从施展。\n";
+
+  if (wp->query("skill_type") != "throwing")
+    return "你手中所持并非暗器，唐门的暗器手法无从施展。\n";
+
+  if ((int)wp->query_amount() < 1)
+    return "你身上的暗器已经用完了，暗器手法再也打不出来。\n";
+
+  return 0;
+}
+
+void use_tangmen_ammo(object me, object target) {
+  object wp;
+
+  if (!objectp(me)) return;
+
+  wp = me->query_temp("weapon");
+  if (!objectp(wp)) return;
+  if (wp->query("skill_type") != "throwing") return;
+  if ((int)wp->query_amount() < 1) return;
+
+  wp->throw_weapon(me, target, 0);
+  return;
+}

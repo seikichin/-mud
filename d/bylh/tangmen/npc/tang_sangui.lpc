@@ -1,0 +1,37 @@
+// 《白玉老虎》蜀中唐门 · 唐三贵
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐三贵", ({ "唐三贵", "tang sangui", "sangui" }));
+  set("title", "客栈管事");
+  set("gender", "男性");
+  set("age", 39);
+  set("long",
+    "精明能干，做人圆滑，对于饮食穿着都很考究，\n看来就像是个买卖做得很成功的生意人。\n\n事实上，他确实把唐家堡的客栈经营得很成功，而且做得很规矩。\n\n唐家的规矩是：你干什么，就得像干什么的；你卖什么，就得吆喝什么。\n"
+  );
+  set("combat_exp", 300000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "管事");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "规矩" :
+      "你干什么，就得像干什么的。\n你卖什么，就得吆喝什么。\n这是唐家的成功之处。\n",
+    "唐家堡" :
+      "唐家堡里这条街上一共有三十多家店铺，\n每一家都是在规规矩矩做生意。\n",
+    "客栈" :
+      "住店五两银子一晚，不贵。\n不过唐家堡里，什么东西都贵。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 90);
+  set_skill("throwing", 100);
+  set_skill("dodge", 100);
+  set_skill("move", 100);
+  set_skill("parry", 100);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

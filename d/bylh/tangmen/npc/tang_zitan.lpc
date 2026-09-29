@@ -1,0 +1,40 @@
+// 《白玉老虎》蜀中唐门 · 唐紫檀
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐紫檀", ({ "唐紫檀", "tang zitan", "zitan" }));
+  set("gender", "男性");
+  set("age", 63);
+  set("long",
+    "一个老头子，腰身特别长，腰板挺着笔直，\n穿着件已经洗得发白的蓝布长衫，腰带上插着根很长的旱烟袋。\n\n他的脸永远都像棺材板一样，所以他才叫做唐紫檀。\n做棺材用的木头，最好的一种就是紫檀。\n"
+  );
+  set("combat_exp", 9000000);
+  set("class", "tangmen");
+  create_family("唐门", 2, "三先生");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "暗器" :
+      "（他慢慢打着火镰，燃起一根纸煤）\n发暗器的人，手要稳，心要冷。\n你的手在抖。\n",
+    "辣椒" :
+      "不吃辣的，就别进这条巷子。\n",
+    "唐门" :
+      "我姓唐。这里人人都姓唐。\n",
+    "赵无忌" :
+      "（旱烟袋灭了。他过了很久才开口）\n我没有听说过这个人。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 130);
+  set_skill("throwing", 150);
+  set_skill("dodge", 120);
+  set_skill("force", 150);
+  set_skill("move", 120);
+  set_skill("parry", 130);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}

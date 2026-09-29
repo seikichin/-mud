@@ -1,0 +1,24 @@
+// 《白玉老虎》蜀中唐门·东较武场
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "东较武场" NOR);
+  set("long", @LONG
+这是唐门的东较武场。地面是整块青石铺的，被脚步磨得光滑如镜。
+
+场上空无一人，只有几排兵器架静静地立着。
+四面是高高的看台，看台上连一个座位都没有留下。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/tangmen-jianfa_120" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "lianwu",
+  ]));
+  setup();
+}

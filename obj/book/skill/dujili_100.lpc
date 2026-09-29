@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 毒蒺藜图谱
+
+inherit ITEM;
+
+void create() {
+  set_name("毒蒺藜图谱", ({ "毒蒺藜图谱", "dujili tupu", "jili tupu" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "图上是十三片细小的铁片。\n每一片的角度、厚薄、淬毒都不同，合起来看像一朵花。\n图旁边写着两个字：勿近。\n");
+    set("skill", ([
+      "name": "dujili",
+      "exp_required": 500000,
+      "sen_cost": 20,
+      "difficulty": 6,
+      "liter_level": 30,
+      "max_skill": 100,
+    ]));
+  }
+  ::init_item();
+}

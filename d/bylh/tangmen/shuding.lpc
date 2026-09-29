@@ -1,0 +1,27 @@
+// 《白玉老虎》蜀中唐门·树顶
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "树顶" NOR);
+  set("long", @LONG
+这是万年古松的树顶。
+
+当年祖师爷曾在这里日观云动，夜观星变，
+最终悟出了唐门绝学。
+
+树顶被枝叶围成一个小小的平台，风一吹，整棵树都在轻轻地晃。
+从这里看下去，唐家堡一层层的屋脊像是鱼鳞，一直铺到半山。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/qingting-sandianshui_120" : 1,
+  ]));
+  set("exits", ([
+    "down" : __DIR__ "gushu",
+  ]));
+  setup();
+}

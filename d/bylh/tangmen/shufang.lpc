@@ -1,0 +1,24 @@
+// 《白玉老虎》蜀中唐门·客卿书房
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "客卿书房" NOR);
+  set("long", @LONG
+书房一面靠墙，全是书架。
+
+书架上摆的不是书，是一卷一卷的图。
+每一卷上都写着地名 —— 有些是关中的，有些是皖北的，
+还有一卷，上面写着「保定」。
+
+案上摊着一幅舆图，图上的墨迹还是湿的。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : __DIR__ "shangguan",
+  ]));
+  setup();
+}

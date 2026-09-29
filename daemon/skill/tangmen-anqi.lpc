@@ -1,0 +1,68 @@
+// tangmen-anqi.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "唐门暗器手法");
+  set("type", "throwing");
+  set("usage/throwing", 1);
+  set("usage/parry", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 150);
+  set("difficulty", 300);
+  set("damage_level", 100);
+  set("parry_msg", ({
+    "$n双手一翻，指间已多了七枚$v，$N的$w还没递到，人已退开三尺。\n","$n左手画个半圆，$v竟像是被一根看不见的线牵着，绕开了$N的$w。\n","$n侧身让过锋芒，中指一弹，一枚铁蒺藜打着旋儿逼得$N不得不收招。\n",
+  }));
+  set("unarmed_parry_msg", ({
+    "$n手掌一翻，掌心几枚暗器已对准了$N的手腕。\n","$n退半步，袖口一垂，$N只觉手腕一凉，忙不迭缩手。\n",
+  }));
+  action = ({
+    ([ "action": "$N手腕一抖，三枚$w无声无息地分取$n的$l",
+      "dodge": 80,
+      "parry": 150,
+      "damage": 30,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N食中二指一捻，$w贴着地面斜飞出去，直打$n的$l",
+      "dodge": 120,
+      "parry": 100,
+      "damage": 35,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N身形一晃，$w已从袖底溜出，取的却是$n的$l",
+      "dodge": 200,
+      "parry": 180,
+      "damage": 25,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N五指张开，$w散作一片寒星，罩向$n的$l",
+      "dodge": 150,
+      "parry": 200,
+      "damage": 45,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N不退反进，欺到$n身前三尺，$w才脱手而出，打的是$n的$l",
+      "dodge": -50,
+      "parry": 250,
+      "damage": 60,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N回身一甩，$w带着一声轻啸，绕了个弧直取$n的$l",
+      "dodge": 180,
+      "parry": 120,
+      "damage": 50,
+      "damage_type": "刺伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("throwing", 1) < 50)
+    return notify_fail("你的基本功夫不到家，练不成唐门暗器手法。
+");
+  return 1;
+}

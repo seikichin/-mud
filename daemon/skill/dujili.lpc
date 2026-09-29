@@ -1,0 +1,61 @@
+// dujili.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "毒蒺藜");
+  set("type", "throwing");
+  set("usage/throwing", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 180);
+  set("difficulty", 450);
+  set("damage_level", 200);
+  action = ({
+    ([ "action": "$N扬手打出$w，十三片叶子在半空中忽然张开，像一朵要命的花，罩住$n的$l",
+      "dodge": 250,
+      "parry": 300,
+      "damage": 120,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N手中的$w一转，十三种光彩流动不定，$n连它究竟要打哪里都看不出",
+      "dodge": 320,
+      "parry": 350,
+      "damage": 100,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N屈指一弹，$w擦着$n的$l掠过，只划破一层油皮",
+      "dodge": 200,
+      "parry": 250,
+      "damage": 60,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N两枚$w一前一后，前一枚是虚，后一枚才直奔$n的$l",
+      "dodge": 280,
+      "parry": 200,
+      "damage": 140,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N欺身近前，$w竟是贴着$n的皮肉打进去的，$n连躲的余地都没有",
+      "dodge": -120,
+      "parry": 400,
+      "damage": 180,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N手一抖，$w在半空碎成十三片，将$n的$l裹在当中",
+      "dodge": 180,
+      "parry": 320,
+      "damage": 160,
+      "damage_type": "刺伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("throwing", 1) < 60)
+    return notify_fail("你的基本功夫不到家，练不成毒蒺藜。
+");
+  return 1;
+}

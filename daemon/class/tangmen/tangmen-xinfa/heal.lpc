@@ -1,0 +1,26 @@
+// 唐门心法·『疗伤』(heal)
+//
+//   唐门的疗伤也是袖子里的：两只手一交叠，气就转完了。
+//   用的是 mudlib 公用的 general_heal（护体需满内力、不能战斗中疗伤）。
+
+#include <ansi.h>
+#include "/daemon/class/GENERIC/FORCE/generic_heal.lpc"
+
+int exert(object me, object target, int amount) {
+  string msg_self, msg_target;
+  int cost, skill;
+
+  skill = (int)me->query_skill("tangmen-xinfa", 1);
+  if (skill < 40)
+    return notify_fail("『唐门心法·疗伤』需要40级的唐门心法。\n");
+
+  if (skill > 200) skill = 200;
+
+  amount = skill * 8;
+  cost = 50;
+  msg_self = HIC "$N盘膝坐下，双手交叠按在丹田上，一口气缓缓地在体内转了一圈。\n" NOR;
+  msg_target = HIC "$N把双手按在$n的背上，一股柔和的气缓缓地渡了过去。\n" NOR;
+
+  general_heal(me, target, "party", amount, cost, msg_self, msg_target, "kee");
+  return 1;
+}

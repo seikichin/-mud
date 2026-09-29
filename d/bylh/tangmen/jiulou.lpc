@@ -1,0 +1,30 @@
+// 《白玉老虎》蜀中唐门·唐门酒楼
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐门酒楼" NOR);
+  set("long", @LONG
+这是唐家镇有名的酒楼，可以说是无人不知，无人不晓。
+所有人到此，都要来坐一坐。
+
+楼下一层层摆开几十张桌子，座无虚席。
+跑堂的端着盘子在人缝里穿来穿去，吆喝声一声高过一声。
+
+楼梯口挂着一块木牌，写着「楼上雅座」。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/jiulou_zg" : 1,
+  ]));
+  set("exits", ([
+    "south" : __DIR__ "tjpuzi",
+    "north" : __DIR__ "tmbingqi",
+    "up" : __DIR__ "jiulou2",
+    "west" : __DIR__ "street",
+  ]));
+  setup();
+}

@@ -1,0 +1,47 @@
+// 《白玉老虎》蜀中唐门 · 唐敬
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐敬", ({ "唐敬", "tang jing", "tangjing", "master tang" }));
+  set("title", "唐大先生");
+  set("nickname", HIR "福寿双全" NOR);
+  set("gender", "男性");
+  set("age", 71);
+  set("long",
+    "这位老先生生平从未在江湖中走动，也没有做过一件让人觉得了不起的事，\n却威镇江湖，名满天下。\n\n这种人当然是有福气的人，而且一定能够长寿的。\n他就是蜀中唐门这一代的掌门人 —— 唐敬，唐大先生。\n"
+  );
+  set("combat_exp", 11000000);
+  set("class", "tangmen");
+  create_family("唐门", 2, "大先生");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "白玉老虎" :
+      "（老人的眼睛忽然变得极亮，随即又暗了下去）\n这个名字，唐家已经封了三百年。你从哪里听来的？\n",
+    "掌门" :
+      "老夫就是掌门。\n不过唐家的事，如今多半是大倌在管。\n",
+    "唐门" :
+      "唐门并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。\n这个家族雄踞川中两百多年，从没有任何一个门派的子弟，敢妄入他们的地盘一步。\n",
+    "雷震天" :
+      "（老人闭上眼睛）他还在我们这里。\n你若见了他，替老夫问一声好。\n",
+  ]));
+
+  set_skill("tangmen-dugong", 180);
+  set_skill("parry", 180);
+  set_skill("tangmen-dianxue", 150);
+  set_skill("unarmed", 150);
+  set_skill("move", 150);
+  set_skill("manyu-lihua", 150);
+  set_skill("dodge", 150);
+  set_skill("force", 200);
+  set_skill("throwing", 200);
+  set_skill("tangmen-xinfa", 200);
+
+  map_skill("force", "tangmen-xinfa");
+  map_skill("throwing", "manyu-lihua");
+  map_skill("unarmed", "tangmen-dianxue");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}

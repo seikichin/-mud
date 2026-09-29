@@ -1,0 +1,61 @@
+// sanhua-tiannv.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "散花天女");
+  set("type", "throwing");
+  set("usage/throwing", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 220);
+  set("difficulty", 800);
+  set("damage_level", 400);
+  action = ({
+    ([ "action": "$N取出一枚$w，指尖一紧，那朵牡丹花心忽然绽开 —— $n的$l上像是被雷劈了一记",
+      "dodge": 500,
+      "parry": 600,
+      "damage": 400,
+      "damage_type": "烧伤"
+    ]),
+    ([ "action": "$N将$w弹出去，才飞出两丈便轰然炸开，火与毒一齐泼向$n的$l",
+      "dodge": 450,
+      "parry": 700,
+      "damage": 450,
+      "damage_type": "烧伤"
+    ]),
+    ([ "action": "$N掌中$w的花瓣纷飞，每一瓣上都带着唐门的毒与江南雷家的火",
+      "dodge": 600,
+      "parry": 500,
+      "damage": 380,
+      "damage_type": "烧伤"
+    ]),
+    ([ "action": "$N把$w捏碎在掌心，整个人都退到了三丈外 —— $n的$l连着周围的石头一起飞了",
+      "dodge": 300,
+      "parry": 800,
+      "damage": 500,
+      "damage_type": "烧伤"
+    ]),
+    ([ "action": "$N一扬手，$w在半空中散成一片花雨，花雨落地，地也跟着炸了",
+      "dodge": 550,
+      "parry": 650,
+      "damage": 420,
+      "damage_type": "烧伤"
+    ]),
+    ([ "action": "$N静静地看着$n，手里的$w一动不动 —— 这才是最叫人害怕的一招",
+      "dodge": 800,
+      "parry": 900,
+      "damage": 600,
+      "damage_type": "烧伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("throwing", 1) < 73)
+    return notify_fail("你的基本功夫不到家，练不成散花天女。
+");
+  return 1;
+}

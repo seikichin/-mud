@@ -1,0 +1,34 @@
+// 《白玉老虎》蜀中唐门 · 双喜
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("双喜", ({ "双喜", "shuangxi", "shuang xi" }));
+  set("gender", "女性");
+  set("age", 19);
+  set("long",
+    "她的人又白，又小，又俏，又甜，脸上还有两个好深好深的酒窝。\n\n她是大小姐的大丫头，也是大小姐的朋友。\n\n她的一双小手又白又软又小，就像一朵小小的白花 ——\n不过要是真把她当一朵白花，那就错了。\n"
+  );
+  set("combat_exp", 100000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "使女");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "眼睛" :
+      "（她眼珠子转了转）\n你问这个干什么？\n",
+    "大小姐" :
+      "我们小姐最不喜欢别人吵她。\n你要是惹了她，我也救不了你。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 80);
+  set_skill("throwing", 90);
+  set_skill("dodge", 100);
+  set_skill("move", 100);
+  set_skill("parry", 80);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-skirt")->wear();
+}

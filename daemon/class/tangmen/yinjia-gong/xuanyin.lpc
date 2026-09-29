@@ -1,0 +1,50 @@
+// 阴劲·『玄阴护体』(xuanyin)
+//
+//   阴劲是唐门里最阴、最柔的一路内力。
+//   它不把人震开，只是像一层又薄又冷的水，把力气全都卸到旁边去。
+
+#include <ansi.h>
+inherit SSERVER;
+
+int exert(object me, object target, int amount) {
+  int skill, ratio;
+  mapping buff;
+
+  skill = me->query_skill("yinjia-gong", 1);
+  if (skill < 60)
+    return notify_fail("『阴劲·玄阴护体』需要60级的阴劲。\n");
+
+  if (target && me != target)
+    return notify_fail("『玄阴护体』只能用在自己身上。\n");
+
+  if (ANNIE_D->check_buff(me, "forceshield"))
+    return notify_fail("你已经在运功护体了。\n");
+
+  if ((int)me->query("force") < 100)
+    return notify_fail("至少需要100点的内力。\n");
+
+  if (userp(me)) me->add("force", -100);
+
+  ratio = 120 * (10 + (int)me->query_skill("force") / 10) / 20;
+
+  message_vision(HIC "$N把两只手收进袖子里，周身的气息一点一点沉了下去 —— \n" NOR
+    HIC "像是有一层看不到的水，慢慢裹住了他。\n" NOR, me);
+
+  buff = ([
+    "caster": me,
+    "who": me,
+    "type": "forceshield",
+    "att": "bless",
+    "name": "阴劲·玄阴护体",
+    "buff1": "till_death/shield_lock",
+    "buff1_c": 1,
+    "time": 300,
+    "buff_msg": HIC "一层阴柔的劲气在$N周身铺开，薄得像水，冷得像冰。\n" NOR,
+    "disa_msg": YEL "你周身那一层阴柔的劲气散去了。\n" NOR,
+    "shield_desc": HIC "$N招式甫及$n身前三尺，便被一层又薄又冷的劲气卸开了。\n" NOR,
+    "shield_amount": ratio,
+    "shield_type": "force",
+  ]);
+  ANNIE_D->buffup(buff);
+  return 1;
+}

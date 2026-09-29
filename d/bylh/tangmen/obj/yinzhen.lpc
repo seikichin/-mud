@@ -1,0 +1,38 @@
+// 《白玉老虎》蜀中唐门 · 暗器：唐门银针
+//
+//   唐门三种名器之首。针身极细，针尾发青。
+//   这里只写「形」，不写「毒」—— 中毒的结算另有说法。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(HIW "唐门银针" NOR, ({ "yinzhen", "tangmen yinzhen", "yin zhen", "zhen" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "一根细针，比绣花针略长，针尾泛着一点青。\n"
+      "唐门的暗器里，这种最小，也最阴。\n"
+      "中针的人先只觉得被蚊虫叮了一下 —— 等他想明白，已经晚了。\n");
+    set("unit", "堆");
+    set("base_unit", "枚");
+    set("base_weight", 40);
+    set("base_value", 1);
+    set("weapon_prop/attack", 26);
+    set("level_required", 35);
+    set("volumn", 60);
+  }
+  set_amount(60);
+  ::init_throwing(45);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一捆多少枚，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 20);
+}

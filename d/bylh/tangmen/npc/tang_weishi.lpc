@@ -1,0 +1,36 @@
+// 《白玉老虎》蜀中唐门 · 唐门守卫
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐门守卫", ({ "唐门守卫", "tang weishi", "weishi", "guard" }));
+  set("gender", "男性");
+  set("age", 30);
+  set("long",
+    "一个身材高大的汉子，一身青布衣，头缠白布巾。\n\n他站在花园的入口，双手背负在身后，站得像一根柱子。\n\n花园是唐家堡的禁区。\n没有老祖宗的话，谁也不许进去。\n"
+  );
+  set("combat_exp", 120000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "守卫");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "进去" :
+      "你要进去？\n（他看了你一眼）\n有老祖宗的话么？\n",
+    "花园" :
+      "这里是禁地。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 110);
+  set_skill("throwing", 120);
+  set_skill("dodge", 100);
+  set_skill("force", 100);
+  set_skill("move", 100);
+  set_skill("parry", 110);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-fist")->wield();
+}

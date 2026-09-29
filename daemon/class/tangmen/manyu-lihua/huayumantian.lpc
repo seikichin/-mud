@@ -1,0 +1,49 @@
+// 满天花雨·『花雨漫天』(huayumantian)
+//
+//   唐门压箱底的手法：不是打一个人，是把整间屋子都罩进去。
+//   暗器是消耗品 —— 打到第几个敌人没暗器了，就停在第几个。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+#include "/daemon/class/tangmen/tangmen_ammo.lpc"
+
+int perform(object me, object target) {
+  string err;
+  int extra, i, num;
+  object *enemy;
+
+  extra = me->query_skill("manyu-lihua", 1);
+  if (extra < 120)
+    return notify_fail("『花雨漫天』需要120级的满天花雨。\n");
+
+  if (!me->is_fighting())
+    return notify_fail("『花雨漫天』只能在战斗中使用。\n");
+
+  if (stringp(err = tangmen_ammo_error(me)))
+    return notify_fail(err);
+
+  message_vision(HIM "\n$N双手一合又一分 ——\n" NOR
+    HIY "满袖的暗器像一场花雨，把这一片地方全罩住了。\n" NOR, me);
+
+  enemy = me->query_enemy();
+  num = sizeof(enemy);
+
+  me->add_temp("apply/attack", extra);
+
+  for (i = 0; i < num; i++) {
+    if (!objectp(enemy[i])) continue;
+    if (!enemy[i]->is_character()) continue;
+    if (!me->is_fighting(enemy[i])) continue;
+    if (stringp(tangmen_ammo_error(me))) break;
+
+    COMBAT_D->do_attack(me, enemy[i], TYPE_PERFORM, "");
+    use_tangmen_ammo(me, enemy[i]);
+  }
+
+  me->add_temp("apply/attack", -extra);
+
+  me->perform_busy(3);
+  return 1;
+}

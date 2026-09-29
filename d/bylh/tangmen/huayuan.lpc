@@ -1,0 +1,40 @@
+// 《白玉老虎》蜀中唐门·唐家堡·花园
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·花园" NOR);
+  set("long", @LONG
+这里是唐家堡的「花园」—— 唐家禁地中的禁地。
+
+走过一座朱栏绿板的小木桥，穿过一片千红万紫的花林，
+就可以看见建筑在山坡上的一栋栋规模宏伟的宅第。
+
+从外表上看，每栋屋宇的格式都几乎完全一样，
+外貌完全没有特色，当然更不会有门牌路名。
+
+用青石块铺成的小路两旁，都是灰扑扑的高墙。
+每条路都是这样子的 —— 你不知道哪一栋里住着谁。
+
+北面是老祖宗的内堂，东面是大少爷的居处，南面是大倌的居处。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_weishi" : 1,
+    "/d/bylh/tangmen/npc/yizhanghong" : 1,
+    "/d/bylh/tangmen/npc/jin_laoda" : 1,
+    "/d/bylh/tangmen/npc/hu_gezi" : 1,
+    "/d/bylh/tangmen/npc/tang_juanjuan" : 1,
+    "/d/bylh/tangmen/npc/bing_daifu" : 1,
+  ]));
+  set("exits", ([
+    "south" : __DIR__ "queju",
+    "north" : __DIR__ "laozuzong",
+    "east" : __DIR__ "aoju",
+    "west" : __DIR__ "dating",
+  ]));
+  setup();
+}

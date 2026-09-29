@@ -1,0 +1,140 @@
+// 《白玉老虎》蜀中唐门 · 唐缺
+
+inherit NPC;
+inherit F_MASTER;
+#include <ansi.h>
+
+void create() {
+  set_name("唐缺", ({ "唐缺", "tang que", "tangque", "da guan" }));
+  set("title", "大倌");
+  set("gender", "男性");
+  set("age", 33);
+  set("long",
+    "这个人长得又肥又蠢，看起来简直就像是块活动的肥猪肉。\n\n他脸上的肉实在太多，眼鼻五官都已被肉挤到一起，\n使得他看来好像永远带着种愁眉苦脸、六神无主的样子。\n\n可是唐家兄弟中最可怕的一个，并不是唐傲，而是他 —— 唐缺。\n"
+  );
+  set("combat_exp", 9500000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "大倌");
+  set("attitude", "peaceful");
+  set("apprentice_available", 20);
+  set("ranks", ({
+    "花雨学徒", "花雨门人", "花雨弟子", "花雨好手", "花雨高手",
+    "唐门好手", "唐门高手", "唐门执事", "唐门香主", "唐门堂主",
+    "唐门护法", "唐门长老", "执掌长老", "副堡主", "堡主",
+    HIY "唐门家主" NOR
+  }));
+  set("rank_levels", ({
+    16000, 32000, 64000, 128000, 256000, 512000, 1024000, 1536000,
+    2048000, 3064000, 4096000, 5120000, 6144000, 8192000, 9999999
+  }));
+  set("inquiry", ([
+    "拜师" :
+      "唐门一辈一辈地往上走。\n想拜我，先赢过上一代的师傅，投掷（throwing）过 170 级，再来。\n",
+    "出师" :
+      "你若能打赢我，就可以去拜更高一辈的师傅。\n别急，手稳了再说。\n",
+    "散花天女" :
+      "（他忽然不笑了）\n你从哪里听来的这五个字？\n",
+    "雷震天" :
+      "他已经死了。\n（他叹了口气，显得很同情的样子）\n真的，我很为他难过。\n",
+    "阴劲" :
+      "阴劲是内力中最难练的一种，也是最可怕的一种。\n\n练阴劲的人，通常会把自己练得阴阳怪气，不男不女。\n（他眯着眼笑起来，笑得像一只被人打肿了的狐狸）\n",
+    "唐门" :
+      "唐家堡从衣食住行，到休娱乐，甚至包括死丧婚嫁，\n每一样东西都不必外求。\n\n事实上，蜀中一带最考究的酒楼、最时新的绸缎庄、\n花色最齐全的脂粉，就全都在唐家堡里。\n",
+    "上官刃" :
+      "他是唐家的女婿。唐家正需要他这样的一个人。\n",
+  ]));
+
+  set_skill("tangmen-dugong", 180);
+  set_skill("parry", 180);
+  set_skill("tangmen-dianxue", 170);
+  set_skill("unarmed", 180);
+  set_skill("move", 150);
+  set_skill("manyu-lihua", 150);
+  set_skill("dodge", 150);
+  set_skill("force", 200);
+  set_skill("yinjia-gong", 200);
+  set_skill("throwing", 180);
+
+  map_skill("force", "yinjia-gong");
+  map_skill("throwing", "manyu-lihua");
+  map_skill("unarmed", "tangmen-dianxue");
+  set_skill("manyu-lihua", 170);
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}
+
+// 拜师：唐门弟子、男性、赢过上一代师傅、投掷过 170 级
+void attempt_apprentice(object me) {
+  if (me->query("class") != "tangmen") {
+    command("say 唐门的门，不是随便进的。");
+    return;
+  }
+  if (me->query("gender") != "男性") {
+    command("say 我这身毒功，只传男弟子 —— 女弟子去找唐娟娟罢。");
+    return;
+  }
+  if (!me->query_temp("won_master_jinlaoda")) {
+    command("say 先去赢金老大，再来找我。");
+    return;
+  }
+  if ((int)me->query_skill("throwing", 1) <= 170) {
+    command("shake");
+    command("say 你的手还不够快 —— 投掷至少要过 170 级。");
+    tell_object(me, "（需投掷（throwing）170 级以上，并且已赢过上一代的师傅）\n");
+    return;
+  }
+  command("pat " + me->query("id"));
+  command("say 好，唐门的毒，你总算踏进来了。");
+  command("recruit " + me->query("id"));
+}
+
+int recruit_apprentice(object ob) {
+  if (::recruit_apprentice(ob))
+    ob->set("class", "tangmen");
+}
+
+int accept_fight(object me) {
+  if (me->query("class") != "tangmen") {
+    command("say 外人要动手，先过唐家堡的大门。\n");
+    return 0;
+  }
+
+  if (is_fighting()) {
+    command("say 想倚多为胜？练武场上的木人还没打够么。\n");
+    return 0;
+  }
+
+  if ((int)query("gin") * 10 >= (int)query("max_gin") * 9
+    && (int)query("kee") * 10 >= (int)query("max_kee") * 9
+    && (int)query("sen") * 10 >= (int)query("max_sen") * 9) {
+    command("say 好 —— 你若能赢我一只手，就可以去拜更高一辈的师傅！\n");
+    me->set_temp("marks/fi_tangque", 1);
+    return 1;
+  }
+
+  command("say 好，不过，先养好了伤再动手。\n");
+  return 0;
+}
+
+void win_enemy(object loser) {
+  if (loser->query_temp("marks/fi_tangque")) {
+    command("say 火候还差。回去再练！\n");
+    loser->delete_temp("marks/fi_tangque");
+  }
+}
+
+void lose_enemy(object winner) {
+  if (winner->query_temp("marks/fi_tangque")) {
+    command("say 好，你的火候，够深了。\n");
+    command("say 上一辈的师傅，在唐家堡里等着你。\n");
+    winner->set_temp("won_master_tangque", 1);
+    winner->delete_temp("marks/fi_tangque");
+  }
+}
+
+void init() {
+  ::init();
+  add_action("do_killing", "kill");
+}

@@ -1,0 +1,25 @@
+// 《白玉老虎》蜀中唐门·唐门酒楼·雅座
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐门酒楼·雅座" NOR);
+  set("long", @LONG
+这里是雅座，非常的清静，一般没有人来。
+来的都是一些唐门中有身份的人。
+
+临窗摆着一张八仙桌，桌上只有一壶酒、两只杯。
+窗外看下去，就是唐家堡的长街，青石板一直铺到山脚下。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_hou" : 1,
+  ]));
+  set("exits", ([
+    "down" : __DIR__ "jiulou",
+  ]));
+  setup();
+}

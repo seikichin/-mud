@@ -1,0 +1,38 @@
+// 《白玉老虎》蜀中唐门 · 炼毒师
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("炼毒师", ({ "炼毒师", "dushi", "du shi", "liandu" }));
+  set("gender", "男性");
+  set("age", 52);
+  set("long",
+    "这个人看起来特别干净。\n\n他的指甲缝里连一点污垢都没有，衣服上一尘不染。\n\n用毒的人，看起来总是特别干净。\n\n他手里拿着一根竹管，正在往一只瓷瓶里滴着什么，\n滴得极慢，一滴，又一滴。\n"
+  );
+  set("combat_exp", 800000);
+  set("class", "tangmen");
+  create_family("唐门", 5, "药师");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "唐门" :
+      "这屋里的瓶子，你一只都不要动。\n动了，我救不了你。\n",
+    "毒" :
+      "唐门的毒，讲究一个「慢」字。\n\n中毒的人不会立刻死，只会等着伤口溃烂，\n慢慢的死 —— 死得绝对比任何一种死法都痛苦。\n",
+    "解药" :
+      "解药的方子不在这里。\n方子在老祖宗身上。\n",
+  ]));
+
+  set_skill("move", 110);
+  set_skill("tangmen-dugong", 140);
+  set_skill("dodge", 110);
+  set_skill("parry", 120);
+  set_skill("force", 140);
+  set_skill("throwing", 130);
+  set_skill("tangmen-zhen", 120);
+
+  map_skill("force", "tangmen-dugong");
+  map_skill("throwing", "tangmen-zhen");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

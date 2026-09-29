@@ -1,0 +1,132 @@
+// 《白玉老虎》蜀中唐门 · 一丈红
+
+inherit NPC;
+inherit F_MASTER;
+#include <ansi.h>
+
+void create() {
+  set_name("一丈红", ({ "一丈红", "yizhanghong", "yi zhang hong" }));
+  set("gender", "女性");
+  set("age", 36);
+  set("long",
+    "一个很高很高的女人，穿着一身鲜红的衣裳。\n\n这么高的一个女人，身材居然还很好：\n应该凸起来的地方绝不平坦，应该平坦的地方也绝没有凸起来。\n\n她的年纪已经不能算很小了，笑起来的时候，眼角已有了皱纹。\n\n可是她笑得还是很媚，一双水汪汪的眼睛更叫人受不了。\n"
+  );
+  set("combat_exp", 4000000);
+  set("class", "tangmen");
+  create_family("唐门", 4, "客卿");
+  set("attitude", "peaceful");
+  set("apprentice_available", 20);
+  set("ranks", ({
+    "针房学徒", "针房门人", "银针弟子", "针房好手", "银针好手",
+    "唐门好手", "唐门高手", "唐门执事", "唐门香主", "唐门堂主",
+    "唐门护法", "唐门长老", "执掌长老", "副堡主", "堡主",
+    HIY "唐门家主" NOR
+  }));
+  set("rank_levels", ({
+    16000, 32000, 64000, 128000, 256000, 512000, 1024000, 1536000,
+    2048000, 3064000, 4096000, 5120000, 6144000, 8192000, 9999999
+  }));
+  set("inquiry", ([
+    "拜师" :
+      "唐门一辈一辈地往上走。\n想拜我，先赢过上一代的师傅，投掷（throwing）过 80 级，再来。\n",
+    "出师" :
+      "你若能打赢我，就可以去拜更高一辈的师傅。\n别急，手稳了再说。\n",
+    "胡矮子" :
+      "那个矮子，一辈子都在偷看别人洗澡。\n他连我的肚脐眼都看不到。\n",
+    "大小姐" :
+      "我们都跟着大小姐。\n她走到哪里，我们就在她附近三丈之内。\n",
+    "一丈红" :
+      "他们背后都叫我「杀人不眨眼的女魔王」。\n\n（她吃吃地笑）\n男人最喜欢听这种话。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 140);
+  set_skill("move", 180);
+  set_skill("dodge", 180);
+  set_skill("unarmed", 150);
+  set_skill("throwing", 170);
+  set_skill("parry", 160);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  set_skill("throwing", 170);
+  set_skill("tangmen-zhen", 150);
+  set_skill("tangmen-shenfa", 160);
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-skirt")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}
+
+// 拜师：唐门弟子、女性、赢过上一代师傅、投掷过 80 级
+void attempt_apprentice(object me) {
+  if (me->query("class") != "tangmen") {
+    command("say 唐门的门，不是随便进的。");
+    return;
+  }
+  if (me->query("gender") != "女性") {
+    command("say 我这手银针，只传女弟子 —— 男弟子去找金老大罢。");
+    return;
+  }
+  if (!me->query_temp("won_master_jiaotou")) {
+    command("say 先去练武场，赢了教头一只手，再来找我。");
+    return;
+  }
+  if ((int)me->query_skill("throwing", 1) <= 80) {
+    command("shake");
+    command("say 你的手还不够快 —— 投掷至少要过 80 级。");
+    tell_object(me, "（需投掷（throwing）80 级以上，并且已赢过上一代的师傅）\n");
+    return;
+  }
+  command("pat " + me->query("id"));
+  command("say 好，从今日起，你跟我练针。");
+  command("recruit " + me->query("id"));
+}
+
+int recruit_apprentice(object ob) {
+  if (::recruit_apprentice(ob))
+    ob->set("class", "tangmen");
+}
+
+int accept_fight(object me) {
+  if (me->query("class") != "tangmen") {
+    command("say 外人要动手，先过唐家堡的大门。\n");
+    return 0;
+  }
+
+  if (is_fighting()) {
+    command("say 想倚多为胜？练武场上的木人还没打够么。\n");
+    return 0;
+  }
+
+  if ((int)query("gin") * 10 >= (int)query("max_gin") * 9
+    && (int)query("kee") * 10 >= (int)query("max_kee") * 9
+    && (int)query("sen") * 10 >= (int)query("max_sen") * 9) {
+    command("say 好 —— 你若能赢我一只手，就可以去拜更高一辈的师傅！\n");
+    me->set_temp("marks/fi_yizhanghong", 1);
+    return 1;
+  }
+
+  command("say 好，不过，先养好了伤再动手。\n");
+  return 0;
+}
+
+void win_enemy(object loser) {
+  if (loser->query_temp("marks/fi_yizhanghong")) {
+    command("say 针还不够准。回去再扎三千下布靶！\n");
+    loser->delete_temp("marks/fi_yizhanghong");
+  }
+}
+
+void lose_enemy(object winner) {
+  if (winner->query_temp("marks/fi_yizhanghong")) {
+    command("say 好，你的针，比我的准了。\n");
+    command("say 上一辈的师傅，在唐家堡里等着你。\n");
+    winner->set_temp("won_master_yizhanghong", 1);
+    winner->delete_temp("marks/fi_yizhanghong");
+  }
+}
+
+void init() {
+  ::init();
+  add_action("do_killing", "kill");
+}

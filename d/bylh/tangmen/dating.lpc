@@ -1,0 +1,31 @@
+// 《白玉老虎》蜀中唐门·唐家堡·议事大厅
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "唐家堡·议事大厅" NOR);
+  set("long", @LONG
+这里是唐门的议事大厅。
+平时一般不使用，只有在唐门发生重大事情的时候，唐门的长辈才在这儿聚集商量。
+
+整个大厅建筑得很奇怪，四周有八根朱红大柱。
+地面黝黑发亮，是唐门平时冶炼暗器所剩的铁屑溶制成的整块。
+正中是一个很大的八卦图。
+
+大厅北面通向后院，东面是花园的方向。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_jing" : 1,
+  ]));
+  set("exits", ([
+    "north" : __DIR__ "houyuan",
+    "up" : __DIR__ "mishi",
+    "east" : __DIR__ "huayuan",
+    "south" : __DIR__ "street",
+  ]));
+  setup();
+}

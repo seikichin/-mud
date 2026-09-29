@@ -1,0 +1,30 @@
+// 《白玉老虎》蜀中唐门·大小姐院
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "大小姐院" NOR);
+  set("long", @LONG
+这处小院跟唐家堡别处都不一样。
+
+院里有个小小的莲池，荷花还没有开，
+风里却已经满了莲叶的清香。
+
+窗下有一张精巧而舒服的椅子，
+椅子对着窗外的莲池，椅面上有一处被坐得有些发亮的地方。
+
+窗子是开着的。窗台上摆着一盆小小的黄花。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/lianlian" : 1,
+    "/d/bylh/tangmen/npc/shuangxi" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "shangguan",
+  ]));
+  setup();
+}

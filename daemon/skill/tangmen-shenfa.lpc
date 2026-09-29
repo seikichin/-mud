@@ -1,0 +1,29 @@
+// tangmen-shenfa.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "唐门身法");
+  set("type", "step");
+  set("usage/dodge", 1);
+  set("usage/move", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 150);
+  set("difficulty", 250);
+  set("dodge_msg", ({
+    "$n脚下轻轻一点，人已在三尺之外，$N的$w打了个空。\n",
+    "$n侧身贴着$N的$w滑过去，衣角都没有沾到。\n",
+    "$n身形一矮，$N只觉得眼前一花，人已绕到了侧面。\n",
+    "$n像是在地上画了个圈，$N的招式全落进了那个圈里。\n",
+  }));
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("step", 1) < 50)
+    return notify_fail("你的基本功夫不到家，练不成唐门身法。
+");
+  return 1;
+}

@@ -1,0 +1,33 @@
+// 《白玉老虎》蜀中唐门·秘室
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "秘室" NOR);
+  set("long", @LONG
+这是一间秘室。
+
+据说唐门的暗器制法以及毒药的炼法就收藏在这里。
+
+但是屋里什么都没有，只有四面灰色的石壁，
+不知传闻是否属实。
+
+这时，一阵异味擦肩而过 ——
+不是香，不是臭，更不是酸甜苦辣，只是一种感觉。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/obj/book/skill/manyu-lihua_130" : 1,
+    "/obj/book/skill/sanhua-tiannv_200" : 1,
+    "/d/bylh/tangmen/npc/tang_qiwei" : 1,
+    "/obj/book/skill/duanhun-sha_100" : 1,
+    "/obj/book/skill/dujili_100" : 1,
+  ]));
+  set("exits", ([
+    "down" : __DIR__ "dating",
+  ]));
+  setup();
+}

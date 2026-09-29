@@ -1,0 +1,36 @@
+// 《白玉老虎》蜀中唐门 · 胡矮子
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("胡矮子", ({ "胡矮子", "hu gezi", "hu aizi", "aidizi" }));
+  set("gender", "男性");
+  set("age", 44);
+  set("long",
+    "他一定要仰着头，才能瞪着别人 ——\n因为他站在别人旁边时，还没有人家一半高。\n\n这么矮的一个人，脾气却比谁都大。\n\n不过他这一身气功，实在练得很惊人。\n"
+  );
+  set("combat_exp", 4000000);
+  set("class", "tangmen");
+  create_family("唐门", 4, "客卿");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "胡矮子" :
+      "别人怕那个杀人不眨眼的女魔王，我胡大鼎可不怕她！\n",
+    "大小姐" :
+      "大少爷叫我们跟着大小姐，我们就跟着。\n",
+    "气功" :
+      "你再看我一眼，我就把你打成一张饼。\n",
+  ]));
+
+  set_skill("move", 150);
+  set_skill("unarmed", 170);
+  set_skill("force", 170);
+  set_skill("dodge", 150);
+  set_skill("parry", 150);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}

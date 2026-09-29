@@ -1,0 +1,22 @@
+// tangmen-dugong.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "唐门毒功");
+  set("type", "force");
+  set("usage/force", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 160);
+  set("difficulty", 450);
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query("max_force") < 800)
+    return notify_fail("你的内力不够深厚，练不成唐门毒功。
+");
+  return 1;
+}

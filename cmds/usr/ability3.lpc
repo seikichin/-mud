@@ -37,7 +37,8 @@ int main(object me, string arg) {
     "yinshi",
     "bonze",
     "moon",
-    "legend"
+    "legend",
+    "tangmen"
   });
 
   if (wizardp(me)) {

@@ -1,0 +1,21 @@
+// 《白玉老虎》蜀中唐门·兵器铺
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "兵器铺" NOR);
+  set("long", @LONG
+这是唐门开的兵器铺，中心摆着一个展览台，台上有许多兵器。
+不过这些兵器都只是拿来给人看的，真正的唐门兵器，从不出现在这里。
+
+掌柜的是个不爱说话的老头，你要买什么，他只用手一指。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "south" : __DIR__ "jiulou",
+  ]));
+  setup();
+}

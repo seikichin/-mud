@@ -1,0 +1,39 @@
+// 《白玉老虎》蜀中唐门 · 暗器：断魂砂
+//
+//   比米粒还要小得多。不能打远，一发出来就是黑蒙蒙的一大片。
+//   攒上这样一捆，比黄金贵。
+
+#include <ansi.h>
+#include <weapon.h>
+
+inherit THROWING;
+
+void create() {
+  set_name(RED "断魂砂" NOR, ({ "duanhunsha", "duanhun sha", "duanhun" }));
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("long",
+      "一把比米粒还要小得多的黑砂，装在鹿皮袋里。\n"
+      "它不能打远 —— 可是一发出来，就是黑蒙蒙的一大片，\n"
+      "遮天蔽日，让人连手都抬不起来。\n\n"
+      "唐门弟子一辈子里，也未必舍得用完一袋。\n");
+    set("unit", "袋");
+    set("base_unit", "撮");
+    set("base_weight", 40);
+    set("base_value", 1);
+    set("weapon_prop/attack", 40);
+    set("level_required", 65);
+    set("volumn", 90);
+  }
+  set_amount(90);
+  ::init_throwing(65);
+}
+
+// 唐门的暗器是消耗品：掷出去就不再回来，本身也不值钱。
+// 不论一袋多少撮，卖断、典当都只换得几文钱。
+// 真正的价钱在暗器匠那里 —— 买得贵，卖得贱。
+void set_amount(int v) {
+  ::set_amount(v);
+  if (v > 0) set("value", 30);
+}

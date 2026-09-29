@@ -1,0 +1,36 @@
+// 《白玉老虎》蜀中唐门 · 唐猴
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐猴", ({ "唐猴", "tang hou", "tanghou", "houzi" }));
+  set("gender", "男性");
+  set("age", 26);
+  set("long",
+    "一个瘦小黢干，长得像猴子一样的年轻人。\n\n他的一张瘦猴般的脸，随时都可以因为恐惧而扭曲。\n\n他站在雅座的门口，手里端着一壶酒，脚却像是钉在地上。\n"
+  );
+  set("combat_exp", 150000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "家仆");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "唐玉" :
+      "（他的脸忽然白了）\n你……你别提这个名字。\n",
+    "唐门" :
+      "（他眼睛四处乱转）\n我……我只是个跑腿的。\n",
+    "大倌" :
+      "大倌的事，我不敢说。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 100);
+  set_skill("throwing", 110);
+  set_skill("dodge", 110);
+  set_skill("move", 110);
+  set_skill("parry", 100);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

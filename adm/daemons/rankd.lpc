@@ -83,6 +83,7 @@ string query_rank(object ob) {
             case "lama": return "【  藏  尼  】";
             case "yinshi": return "【  隐  士  】";
             case "beggar": return "【  叫化子  】";
+            case "tangmen": return "【  唐  女  】";
             default: return "【  平  民  】";
           }
       }
@@ -115,6 +116,7 @@ string query_rank(object ob) {
             case "yinshi": return "【  隐  士  】";
             case "lama": return "【  藏  僧  】";
             case "beggar": return "【  叫化子  】";
+            case "tangmen": return "【  唐  门  】";
             default: return "【  平  民  】";
           }
       }

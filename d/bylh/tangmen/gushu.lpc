@@ -1,0 +1,27 @@
+// 《白玉老虎》蜀中唐门·参天古树
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "参天古树" NOR);
+  set("long", @LONG
+这是唐门内院的一棵万年古松。
+
+树干粗得三个人都抱不过来，树皮裂成一片一片，
+像是老人手上的筋。
+
+树身上钉着一圈极小的铁钉，一路盘上去 ——
+那是唐门子弟练轻功时踏的。
+
+再往上去，就是树顶了。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("exits", ([
+    "up" : __DIR__ "shuding",
+    "south" : __DIR__ "houyuan",
+  ]));
+  setup();
+}

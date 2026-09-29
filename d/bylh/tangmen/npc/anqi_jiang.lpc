@@ -1,0 +1,123 @@
+// 《白玉老虎》蜀中唐门 · 暗器匠
+
+inherit NPC;
+inherit F_VENDOR;
+#include <ansi.h>
+
+void create() {
+  set_name("暗器匠", ({ "暗器匠", "anqi jiang", "jiangren", "artisan" }));
+  set("gender", "男性");
+  set("age", 57);
+  set("long",
+    "一个干瘦的老头，背驼得厉害。\n\n他的一双手却很稳 —— 稳得像一块石头。\n\n他面前的工作台上，摊着一枚还没打完的毒蒺藜，\n十三片细小的铁片，每一片都只有指甲盖那么大。\n"
+  );
+  set("combat_exp", 600000);
+  set("class", "tangmen");
+  create_family("唐门", 5, "匠人");
+  set("attitude", "peaceful");
+
+  // 唐门的暗器：消耗品，越好的越贵（可卖出去只值几文钱）
+  set("vendor_goods", ([
+    "/d/bylh/tangmen/obj/feihuangshi" : 99,
+    "/d/bylh/tangmen/obj/tiejili"     : 99,
+    "/d/bylh/tangmen/obj/longxuding"  : 99,
+    "/d/bylh/tangmen/obj/yinzhen"     : 99,
+    "/d/bylh/tangmen/obj/dujili"      : 99,
+    "/d/bylh/tangmen/obj/duanhunsha"  : 50,
+  ]));
+  set("inquiry", ([
+    "暗器" :
+      "毒蒺藜是用十三片细小的铁片组合成的，\n每一片上都带着剧毒，每一片上的毒性都不同。\n\n要打这样一枚暗器，得花三个月。\n",
+    "断魂砂" :
+      "断魂砂比米粒还要小得多，虽然不能打远，\n可是一发出来就是黑蒙蒙的一大片。\n只要挨着一粒，就必将腐烂入骨。\n",
+    "唐门银针" :
+      "针身极细，针尾发青。\n这一种最小，也最阴 —— 中针的人，还没想明就已经晚了。\n",
+    "唐门" :
+      "这里墙上挂的图样，你莫要去碰。\n碰了，手就没了。\n",
+  ]));
+
+  set_skill("tangmen-anqi", 130);
+  set_skill("throwing", 140);
+  set_skill("dodge", 110);
+  set_skill("move", 110);
+  set_skill("parry", 120);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+
+  set("inquiry/买",
+    "（list 看货，buy 暗器名 买）\n越是好的暗器，越贵。\n买得贵，卖得贱 —— 唐门的暗器，出了手就不再回来。\n");
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}
+
+void init() {
+  ::init();
+  add_action("do_vendor_list", "list");
+}
+
+// 货卖光了，过些日子自然会补齐
+void reset() {
+  set("vendor_goods", ([
+    "/d/bylh/tangmen/obj/feihuangshi" : 99,
+    "/d/bylh/tangmen/obj/tiejili"     : 99,
+    "/d/bylh/tangmen/obj/longxuding"  : 99,
+    "/d/bylh/tangmen/obj/yinzhen"     : 99,
+    "/d/bylh/tangmen/obj/dujili"      : 99,
+    "/d/bylh/tangmen/obj/duanhunsha"  : 50,
+  ]));
+}
+
+// 唐门的暗器，不卖外人
+int legit_buyer(object me) {
+  if (!objectp(me)) return 0;
+  if (me->query("class") != "tangmen") {
+    command("say 唐门的暗器，不卖外人。");
+    return 0;
+  }
+  return 1;
+}
+
+// ── 暗器价目表 ────────────────────────────────────────────────
+// 唐门的暗器不外卖，价钱由唐门自己定：买得贵，卖得贱。
+// 表里的键是暗器自己的「身价」（value，几文钱），
+// 值是唐门卖给弟子的价钱（单位：文）。
+// 暗器用一件少一件，行市只涨不落 —— 越好的，越贵。
+mapping anqi_prices = ([
+  5  : 1000,      // 飞蝗石
+  10 : 6000,      // 铁蒺藜
+  15 : 40000,     // 龙须钉
+  20 : 150000,    // 唐门银针
+  25 : 400000,    // 毒蒺藜
+  30 : 1000000,   // 断魂砂
+]);
+
+int anqi_price(int v) {
+  if (undefinedp(anqi_prices[v])) return v;
+  return anqi_prices[v];
+}
+
+// 覆盖父类的 buy_object：收多少钱，按上面的行市来。
+// （父类的算法是 value * price_modifier / 100）
+int buy_object(object me, string what) {
+  mapping goods;
+  string *name;
+  int i;
+  if (!mapp(goods = query("vendor_goods"))) return 0;
+  name = keys(goods);
+  for (i = 0; i < sizeof(name); i++) {
+    if (what == name[i]->name() || what == name[i]->query("id")
+      || what == "/feature/nada.lpc"->ngstr(name[i]->name()))
+      return anqi_price((int)name[i]->query("value"));
+  }
+  return 0;
+}
+
+// 覆盖父类的 price_string：list 上写的价钱，要与收的价钱一模一样
+string price_string(int v) {
+  v = anqi_price(v);
+  if (v % 10000 == 0) return CHINESE_D->chinese_number(v / 10000) + "两黄金";
+  if (v % 100 == 0) return CHINESE_D->chinese_number(v / 100) + "两银子";
+  return CHINESE_D->chinese_number(v) + "文钱";
+}

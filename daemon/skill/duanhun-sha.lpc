@@ -1,0 +1,61 @@
+// duanhun-sha.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "断魂砂");
+  set("type", "throwing");
+  set("usage/throwing", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 180);
+  set("difficulty", 450);
+  set("damage_level", 200);
+  action = ({
+    ([ "action": "$N反手一扬，一片黑蒙蒙的$w迎面打来，$n的$l上立时像是落了一层灰",
+      "dodge": 200,
+      "parry": 250,
+      "damage": 90,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N袍袖一抖，$w散作一丈方圆的雾，$n退得快，却还是沾上了$l",
+      "dodge": 250,
+      "parry": 300,
+      "damage": 110,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N左手挥出一蓬$w封住去路，右手又是一蓬，逼得$n只能往$l上撞",
+      "dodge": 150,
+      "parry": 350,
+      "damage": 130,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N俯身贴地抖出$w，沙粒专往低处走，$n的$l躲无可躲",
+      "dodge": 100,
+      "parry": 280,
+      "damage": 150,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N掌心一翻，$w泼出去的力道竟像是泼水，$n的$l上立刻起了一片乌黑",
+      "dodge": 180,
+      "parry": 220,
+      "damage": 170,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N双手连扬，$w一层叠着一层，把$n整个罩进了那一片黑里",
+      "dodge": 220,
+      "parry": 400,
+      "damage": 200,
+      "damage_type": "瘀伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("throwing", 1) < 60)
+    return notify_fail("你的基本功夫不到家，练不成断魂砂。
+");
+  return 1;
+}

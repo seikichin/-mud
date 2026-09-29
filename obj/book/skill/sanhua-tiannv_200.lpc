@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 散花天女
+
+inherit ITEM;
+
+void create() {
+  set_name("散花天女", ({ "散花天女", "sanhua tiannv", "tiannv" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "本");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "这不是一本书。\n\n这是一张极大的图，藏在屋角一只上了锁的铁匣里。\n图上画着一朵牡丹，花瓣层层叠叠。\n每一瓣的位置上都标着一个数字。\n\n图纸的边角已经焦了。\n");
+    set("skill", ([
+      "name": "sanhua-tiannv",
+      "exp_required": 8000000,
+      "sen_cost": 40,
+      "difficulty": 9,
+      "liter_level": 50,
+      "max_skill": 200,
+    ]));
+  }
+  ::init_item();
+}

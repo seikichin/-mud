@@ -1,0 +1,50 @@
+// 唐门毒功·『摧心』(cuixin)
+//
+//   毒功练的不是毒，是把内力练到又阴又准 ——
+//   掌心里像是握着一团看不见的火。
+//
+//   特别声明：这里只有即时的攻戉增益 buff，
+//     不涉及淬毒、中毒、解毒之类的持续状态。
+
+#include <ansi.h>
+inherit SSERVER;
+
+int exert(object me, object target, int amount) {
+  int skill;
+  string msg;
+  mapping buff;
+
+  if ((int)me->query_skill("tangmen-dugong", 1) < 40)
+    return notify_fail("『唐门毒功·摧心』需要40级的唐门毒功。\n");
+
+  if ((int)me->query("force") < 100)
+    return notify_fail("『唐门毒功·摧心』需要100点的内力。\n");
+
+  if (ANNIE_D->check_buff(me, "powerup"))
+    return notify_fail("你已经在运用类似的武功了。\n");
+
+  skill = me->query_skill("tangmen-dugong", 1) / 2;
+  if (userp(me)) me->add("force", -100);
+
+  msg = HIR "$N的十根指头慢慢收拢，掌心里像是握着一团看不见的火。\n" NOR;
+
+  buff = ([
+    "caster": me,
+    "who": me,
+    "type": "powerup",
+    "att": "bless",
+    "name": "唐门毒功·摧心",
+    "buff1": "apply/attack",
+    "buff1_c": skill,
+    "buff2": "apply/damage",
+    "buff2_c": skill,
+    "time": 180,
+    "buff_msg": msg,
+  ]);
+  ANNIE_D->buffup(buff);
+
+  if (me->is_fighting() && userp(me))
+    me->start_busy(1);
+
+  return 1;
+}

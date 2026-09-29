@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 断魂砂秘录
+
+inherit ITEM;
+
+void create() {
+  set_name("断魂砂秘录", ({ "断魂砂秘录", "duanhunsha milu", "sha milu" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "一卷用油纸包着的册子。\n上面写着如何把毒药磨成比米粒还小的沙。\n最后一行写着：风大时不可用。\n");
+    set("skill", ([
+      "name": "duanhun-sha",
+      "exp_required": 500000,
+      "sen_cost": 20,
+      "difficulty": 6,
+      "liter_level": 30,
+      "max_skill": 100,
+    ]));
+  }
+  ::init_item();
+}

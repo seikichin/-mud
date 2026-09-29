@@ -1,0 +1,31 @@
+// 《白玉老虎》蜀中唐门·辣椒店
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "辣椒店" NOR);
+  set("long", @LONG
+一家很小的饭馆，门口挂着十来串鲜红的辣椒，当做招牌。
+
+所以这家饭馆就叫做「辣椒店」。
+
+店里的掌柜，是个矮小臃肿的胖子，姓朱，天生的好脾气。
+就算有人当着他的面叫他「猪八戒」，他也不会生气。
+
+七八张桌子，居然有一半上了座。
+每张桌子上都摆着一碟辣子鸡丁，一碟豆瓣鲤鱼。
+满屋子的人都在流眼泪、淌汗，却还是一筷子一筷子地往嘴里送。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/tang_zitan" : 1,
+    "/d/bylh/tangmen/npc/zhu_zg" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "lajiaoxiang",
+  ]));
+  setup();
+}

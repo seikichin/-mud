@@ -1,0 +1,33 @@
+// 《白玉老虎》蜀中唐门 · 酒楼掌柜
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("酒楼掌柜", ({ "酒楼掌柜", "zhanggui", "jiulou zhanggui" }));
+  set("gender", "男性");
+  set("age", 45);
+  set("long",
+    "一个胖胖的中年人，脸上永远带着三分笑。\n\n他手上的算盘打得飞快，眼睛却比算盘更快 ——\n哪位客人要添酒，哪位客人要走，他一眼就看得到。\n"
+  );
+  set("combat_exp", 80000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "掌柜");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "唐门" :
+      "小店的酒，是唐家堡最好的。\n只是吃酒的人，从来不敢多说话。\n",
+    "酒楼" :
+      "楼上雅座，是给唐家自己有身份的人留的。\n",
+  ]));
+
+  set_skill("move", 70);
+  set_skill("tangmen-anqi", 50);
+  set_skill("throwing", 60);
+  set_skill("dodge", 70);
+
+  map_skill("parry", "tangmen-anqi");
+  map_skill("throwing", "tangmen-anqi");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

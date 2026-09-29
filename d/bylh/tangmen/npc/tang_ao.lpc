@@ -1,0 +1,48 @@
+// 《白玉老虎》蜀中唐门 · 唐傲
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐傲", ({ "唐傲", "tang ao", "tangao", "da shao ye" }));
+  set("title", "大少爷");
+  set("gender", "男性");
+  set("age", 30);
+  set("long",
+    "这人高大英俊，健壮，宽肩，细腰，浓眉，大眼，充满了男性的魅力。\n\n他沉默寡言，态度稳重冷酷，一双炯炯有光的眼睛，\n好像随时都能看透别人的心。\n\n唐家的大少爷，唐傲。他的剑法，在江湖中已经很少有人敢去比。\n"
+  );
+  set("combat_exp", 10000000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "大少爷");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "上官刃" :
+      "（他冷冷看了你一眼）\n唐家的事，轮不到你来问。\n",
+    "满堂花醉三千客" :
+      "那是我写给自己看的两句话。\n还有下一句 —— 一剑光寒四十州。\n",
+    "剑法" :
+      "（他的手按在剑上，没有动）\n你想试试？\n",
+    "唐门" :
+      "唐家的子弟，并不一定要靠暗器取胜。\n",
+    "剑" :
+      "剑，就是剑客的荣誉。\n剑客的荣誉，远比性命更重要 —— 不管是谁的性命都一样。\n",
+  ]));
+
+  set_skill("yijian-guanghan", 180);
+  set_skill("move", 180);
+  set_skill("tangmen-jianfa", 180);
+  set_skill("sword", 200);
+  set_skill("parry", 200);
+  set_skill("dodge", 180);
+  set_skill("force", 180);
+  set_skill("tangmen-xinfa", 170);
+  set_skill("tangmen-shenfa", 170);
+
+  map_skill("dodge", "tangmen-shenfa");
+  map_skill("force", "tangmen-xinfa");
+  map_skill("move", "tangmen-shenfa");
+  map_skill("sword", "yijian-guanghan");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-sword")->wield();
+}

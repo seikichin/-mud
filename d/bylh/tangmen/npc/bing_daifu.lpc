@@ -1,0 +1,35 @@
+// 《白玉老虎》蜀中唐门 · 病大夫
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("病大夫", ({ "病大夫", "bing daifu", "daifu", "nibaba" }));
+  set("gender", "男性");
+  set("age", 58);
+  set("long",
+    "已经是四月底，天气已经很暖，他身上居然还穿着件皮袍子，\n居然还是冷得脸色发青，一面咳嗽，一面还在流鼻涕。\n\n其实他年纪还不太大，却已老病侵寻，像是个行将就木的人。\n\n可是他却是当今江湖中的四大神医之一 ——「泥菩萨」病大夫。\n"
+  );
+  set("combat_exp", 800000);
+  set("class", "tangmen");
+  create_family("唐门", 5, "大夫");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "我的病" :
+      "我的病千万不能治好。\n\n我的病一治好，我这个人就要死了。\n",
+    "心病" :
+      "你的脸上已有病象，显见得心火郁红，肝火也很盛。\n想必是因为心里有件事不能解决 ——\n只不过你一直勉强抑制，所以别人是绝对看不出来的。\n",
+    "病大夫" :
+      "泥菩萨过江，自身虽然难保，\n可是别人不管有什么病，我一眼就可以看出来。\n",
+    "大小姐" :
+      "她的派头若是小了，像我这么有身份的人怎么会替她做事？\n",
+  ]));
+
+  set_skill("force", 160);
+  set_skill("move", 100);
+  set_skill("dodge", 100);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}

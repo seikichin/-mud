@@ -1,0 +1,43 @@
+// 《白玉老虎》蜀中唐门 · 雷震天
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("雷震天", ({ "雷震天", "lei zhentian", "leizhentian" }));
+  set("title", "霹雳堂主");
+  set("gender", "男性");
+  set("age", 59);
+  set("long",
+    "角落里坐着一个人。\n\n不，那不能算是坐着 —— 他是缩在那里的。\n\n他又脏又臭，苍白的脸上长满了铜钱般的癣，\n看来就像是带着个拙劣的面具。\n\n他手脚上都锁着很粗的铁链。\n\n可是他的神情，他的动作，却偏偏带着种说不出的傲气。\n\n他的两只手，出奇的干净，出奇的稳定。\n"
+  );
+  set("combat_exp", 8000000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "姑爷");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "散花天女" :
+      "散花天女不是一个人，是一种暗器。\n\n一种空前未有的暗器 ——\n只要一在江湖中出现，世上所有的暗器，都会变得像是孩子们的儿戏。\n",
+    "眼睛" :
+      "（他忽然笑了，笑得很轻）\n我瞎了。\n是唐家的人下的手。\n",
+    "雷震天" :
+      "（他忽然挺起了胸）\n我是雷震天！江南霹雳堂的第十三代堂主雷震天！\n",
+    "霹雳堂" :
+      "江南雷家以独门火药暗器成名、致富，至今已有两百年。\n现在……雷家已经没有了。\n",
+    "唐门" :
+      "他们不敢杀我。\n\n只要我还有这双手在，他们就不能杀我，也不敢杀我。\n",
+    "蜜姬" :
+      "（他沉默了很久）\n……她还好么？\n",
+  ]));
+
+  set_skill("move", 100);
+  set_skill("dodge", 100);
+  set_skill("force", 200);
+  set_skill("unarmed", 180);
+  set_skill("parry", 180);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}

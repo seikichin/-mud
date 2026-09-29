@@ -1,0 +1,43 @@
+// 蜻蜓三抄水·『三抄水』(sancaoshui)
+//
+//   蜻蜓点水，只点一下。
+//   唐门的人要点三下 —— 你一抬头，他已经绕到你背后了。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+int perform(object me, object target) {
+  int extra, mod;
+
+  extra = me->query_skill("qingting-sandianshui", 1);
+  if (extra < 100)
+    return notify_fail("『三抄水』需要100级的蜻蜓三抄水。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『三抄水』只能对战斗中的对手使用。\n");
+
+  if (target->is_busy())
+    return notify_fail(target->name() + "已经手忙脚乱了！\n");
+
+  mod = COMBAT_D->can_busy(me, target, "qingting-sandianshui");
+  if (!mod)
+    return notify_fail(HIW "此人身法灵活，不会被这三抄水绕过。\n" NOR);
+
+  message_vision(HIC "\n$N脚尖在地上连点三下 ——\n" NOR
+    HIC "一下在水上，一下在风里，第三下已经在$n的身后了。\n" NOR, me, target);
+
+  if (COMBAT_D->do_busy_attack(me, target, "qingting-sandianshui/sancaoshui", "step", 200, mod)) {
+    message_vision(HIW "\n$N" HIW "回过头去，却看不到人 —— 只听得到自己的心跳。\n" NOR, target);
+    target->set_temp("busy_timer/qingting-sandianshui", time());
+    target->force_busy(3);
+  } else {
+    message_vision(YEL "\n但是$N" YEL "一步未动，稳稳地站在原处 —— 三抄水落了个空。\n\n" NOR, target);
+    me->perform_busy(2);
+  }
+
+  return 1;
+}

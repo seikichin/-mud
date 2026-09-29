@@ -1,0 +1,31 @@
+// 《白玉老虎》蜀中唐门·地室
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "地室" NOR);
+  set("long", @LONG
+这是个用青石砌成的地室，宽大，却闷得叫人喘不过气。
+
+地室的四壁、地上、顶上都堆满了东西：
+黄的、白的、黑的，一小包一小包，用油纸裹着。
+空气里全是硝石和硫磺的味道。
+
+角落里有一张床。床脚上拖着两根很粗的铁链，
+铁链一头固定在墙上，另一头是空的。
+
+桌上摆着些奇形怪状的器具：银针、细管、竹哨、
+还有几根弯弯曲曲的铜丝。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+  set("objects", ([
+    "/d/bylh/tangmen/npc/lei_zhentian" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "didao",
+  ]));
+  setup();
+}

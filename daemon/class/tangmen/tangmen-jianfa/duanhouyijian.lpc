@@ -1,0 +1,34 @@
+// 唐门剑法·『断喉一剑』(duanhouyijian)
+//
+//   唐门的剑法并不好看。它只有一剑，只向一个地方去。
+
+#include <ansi.h>
+#include <combat.h>
+inherit SSERVER;
+
+int perform(object me, object target) {
+  int extra;
+
+  extra = me->query_skill("tangmen-jianfa", 1);
+  if (extra < 90)
+    return notify_fail("『断喉一剑』需要90级的唐门剑法。\n");
+
+  if (!target) target = offensive_target(me);
+  if (!target
+    || !target->is_character()
+    || !me->is_fighting(target))
+    return notify_fail("『断喉一剑』只能对战斗中的对手使用。\n");
+
+  message_vision(HIC "\n$N的剑插在鞘里。他没有拔剑 —— 只是把手抬了一抬。\n" NOR, me, target);
+
+  me->add_temp("apply/attack", extra);
+  me->add_temp("apply/damage", extra);
+
+  COMBAT_D->do_attack(me, target, TYPE_PERFORM, HIC "这一剑快得几乎看不见，直奔$n的喉下三寸" NOR);
+
+  me->add_temp("apply/attack", -extra);
+  me->add_temp("apply/damage", -extra);
+
+  me->perform_busy(2);
+  return 1;
+}

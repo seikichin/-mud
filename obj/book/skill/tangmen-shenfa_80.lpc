@@ -1,0 +1,28 @@
+// 《白玉老虎》蜀中唐门武学秘籍 · 唐门身法图解
+
+inherit ITEM;
+
+void create() {
+  set_name("唐门身法图解", ({ "唐门身法图解", "shenfa tujie", "shenfa" }));
+  set_weight(600);
+  if (clonep())
+    set_default_object(__FILE__);
+  else {
+    set("unit", "卷");
+    set("value", 2000);
+    set("material", "paper");
+    set("no_get", 1);
+    set("no_sell", 1);
+    set("long",
+      "一卷画满脚印的图。\n脚印有深有浅，有正有斜，连成一条弯弯曲曲的线。\n旁边写着：脚要轻，心要稳。\n");
+    set("skill", ([
+      "name": "tangmen-shenfa",
+      "exp_required": 0,
+      "sen_cost": 10,
+      "difficulty": 3,
+      "liter_level": 10,
+      "max_skill": 80,
+    ]));
+  }
+  ::init_item();
+}

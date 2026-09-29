@@ -1,0 +1,39 @@
+// 《白玉老虎》蜀中唐门 · 上官怜怜
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("上官怜怜", ({ "上官怜怜", "lianlian", "lian lian", "shangguan lianlian", "da xiao jie" }));
+  set("title", "大小姐");
+  set("gender", "女性");
+  set("age", 20);
+  set("long",
+    "她的人比莲花更甜美。\n\n她年轻，美丽，尊贵。\n\n这些日子，她眉目间总是带着种说不出的忧郁。\n\n只有她自己知道，她忧郁，是因为她心里有个解不开的结。\n她心里还有个忘不了的人 —— 这个人偏偏又距离她那么遥远。\n"
+  );
+  set("combat_exp", 3500000);
+  set("class", "tangmen");
+  create_family("唐门", 4, "小姐");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "上官刃" :
+      "（她沉默了很久）\n我不知道他做的是对是错。\n我只知道，他从来没有笑过。\n",
+    "连一莲" :
+      "（她的脸忽然红了，又白了）\n……你认错人了。\n",
+    "唐门" :
+      "我姓上官。我父亲……就住在前院。\n",
+    "花" :
+      "这池子里种的是莲。可是它总也不开。\n",
+  ]));
+
+  set_skill("move", 130);
+  set_skill("dodge", 130);
+  set_skill("sword", 130);
+  set_skill("force", 120);
+  set_skill("parry", 130);
+
+
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-skirt")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-sword")->wield();
+}

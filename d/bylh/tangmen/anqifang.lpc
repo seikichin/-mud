@@ -1,0 +1,29 @@
+// 《白玉老虎》蜀中唐门·暗器房
+
+inherit ROOM;
+#include <ansi.h>
+
+void create() {
+  set("short", HIW "暗器房" NOR);
+  set("long", @LONG
+这里是唐门的暗器房。
+
+一踏进屋门便感到一股热浪迎面扑来，屋子正中的几个巨大风箱格外夺目，
+几个汉子正卖力地拉动着，将火焰激起丈余高。
+
+墙上挂满了各式各样的图样，有的画着花瓣，有的画着针。
+每一张图样下面都压着一行小字，写的是淬毒的方子。
+LONG
+  );
+  set("no_fight", 1);
+  set("no_fly", 1);
+    set("objects", ([
+    "/d/bylh/tangmen/npc/anqi_jiang" : 1,
+    "/obj/book/skill/tangmen-anqi_80" : 1,
+    "/obj/book/skill/tangmen-zhen_100" : 1,
+  ]));
+  set("exits", ([
+    "west" : __DIR__ "houyuan",
+  ]));
+  setup();
+}

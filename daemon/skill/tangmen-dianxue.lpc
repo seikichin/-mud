@@ -1,0 +1,65 @@
+// tangmen-dianxue.lpc —— 《白玉老虎》蜀中唐门武学
+// 原著：「蜀中唐门」并不是一个武功的门派，也不是一个秘密帮会，而是一个家族。
+// 他们的毒药暗器实在太可怕，江湖中人闻而丧胆。
+#include <ansi.h>
+inherit SKILL;
+
+void setup() {
+  set("name", "唐门点穴");
+  set("type", "unarmed");
+  set("usage/unarmed", 1);
+  set("usage/parry", 1);
+  set("skill_class", "tangmen");
+  set("effective_level", 170);
+  set("difficulty", 400);
+  set("damage_level", 150);
+  set("unarmed_parry_msg", ({
+    "$n指若拈花，轻描淡写地把$N的招式引到了空处。\n","$n手掌一翻，$N只觉腕上一麻，$w几乎脱手。\n",
+  }));
+  action = ({
+    ([ "action": "$N指如疾风，点向$n的$l",
+      "dodge": 150,
+      "parry": 200,
+      "damage": 50,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N并指如剑，直取$n的$l",
+      "dodge": 200,
+      "parry": 150,
+      "damage": 60,
+      "damage_type": "刺伤"
+    ]),
+    ([ "action": "$N一指点出，认穴之准，毫厘不差",
+      "dodge": 100,
+      "parry": 300,
+      "damage": 80,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N十指齐出，一瞬间点了$n周身十几处大穴",
+      "dodge": 250,
+      "parry": 350,
+      "damage": 100,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N掌指齐施，逼得$n不得不硬接",
+      "dodge": -80,
+      "parry": 400,
+      "damage": 120,
+      "damage_type": "瘀伤"
+    ]),
+    ([ "action": "$N欺身而入，一指按在$n的$l上 —— 唐门的点穴手法，除了唐家子弟，无人能解",
+      "dodge": 50,
+      "parry": 500,
+      "damage": 160,
+      "damage_type": "瘀伤"
+    ]),
+  });
+}
+
+int valid_learn(object me) {
+  if (!::valid_learn(me)) return 0;
+  if ((int)me->query_skill("unarmed", 1) < 56)
+    return notify_fail("你的基本功夫不到家，练不成唐门点穴。
+");
+  return 1;
+}

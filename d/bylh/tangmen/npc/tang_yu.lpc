@@ -1,0 +1,46 @@
+// 《白玉老虎》蜀中唐门 · 唐玉
+
+inherit NPC;
+#include <ansi.h>
+
+void create() {
+  set_name("唐玉", ({ "唐玉", "tang yu", "tangyu", "san shao ye" }));
+  set("title", "三少爷");
+  set("gender", "男性");
+  set("age", 28);
+  set("long",
+    "一个很年轻的人，生得眉清目秀，皮肤白里透红，\n看起来就像是个女孩子。\n\n别人只要看他两眼，他的脸就会红。\n\n他笑的时候温柔而妩媚，还带着三分羞涩 ——\n这种笑容也不知害死过多少人。\n\n以前有人曾经送了他十二个字评语：\n心狠手辣，翻脸无情，六亲不认。\n"
+  );
+  set("combat_exp", 8000000);
+  set("class", "tangmen");
+  create_family("唐门", 3, "三少爷");
+  set("attitude", "peaceful");
+  set("inquiry", ([
+    "阴劲" :
+      "练了阴劲之后，身上某一部分男人的特征，就开始退化。\n（他还在笑，眼睛里却什么也没有）\n",
+    "上官刃" :
+      "他是我唐家的朋友。很好的朋友。\n",
+    "唐门" :
+      "「如意」两个字是什么意思，你知道吗？\n（他笑得很温柔）\n想干什么就干什么。\n",
+    "暗器" :
+      "赵无忌的武功虽然并不高明，要杀我却不难。\n可惜他从来不肯免费杀人。\n",
+  ]));
+
+  set_skill("throwing", 170);
+  set_skill("dujili", 150);
+  set_skill("parry", 160);
+  set_skill("tangmen-shenfa", 150);
+  set_skill("dodge", 160);
+  set_skill("move", 160);
+  set_skill("force", 170);
+  set_skill("yinjia-gong", 170);
+  set_skill("tangmen-zhen", 160);
+
+  map_skill("dodge", "tangmen-shenfa");
+  map_skill("force", "yinjia-gong");
+  map_skill("move", "tangmen-shenfa");
+  map_skill("throwing", "tangmen-zhen");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-robe")->wear();
+  carry_object("/d/bylh/tangmen/obj/tangmen-claw")->wield();
+}
