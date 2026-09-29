@@ -24,7 +24,7 @@ string *menpai = ({ "chaoting", "gaibang", "wudang", "huashan", "wolfmount",
   "kuaihuo", "sanqing", "shenshui", "haoyue",
   "tiexue", "fugui",
   "mojiao", "bianfu", "baiyun", "jinqian", "wanmei", "shenjian", "tianfeng",
-  "others",
+  "others", "tangmen",
 });
 
 string *maps = ({
