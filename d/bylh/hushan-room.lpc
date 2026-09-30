@@ -107,7 +107,6 @@ mapping maze_cell_desc = ([
 void setup_room_desc(object room, int length, int width, int height, int x, int y, int z) {
   string key, sn, lg;
   mixed info;
-  mapping items;
 
   key = sprintf("%d,%d,%d", x, y, z);
   info = maze_cell_desc[key];

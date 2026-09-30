@@ -49,7 +49,7 @@ void init() {
 
 int do_bet(string arg) {
   object me = this_player();
-  int round, his, i;
+  int round, his;
   string side;
 
   if (!arg || (arg != "大" && arg != "小" && arg != "big" && arg != "small")) {

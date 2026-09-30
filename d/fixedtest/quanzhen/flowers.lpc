@@ -107,7 +107,6 @@ int event_three(object me){
 
 int event_four(object me){
         
-        object book;
         
         if( me->query_temp("hiding")){
         
