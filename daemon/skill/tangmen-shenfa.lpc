@@ -22,7 +22,7 @@ void setup() {
 
 int valid_learn(object me) {
   if (!::valid_learn(me)) return 0;
-  if ((int)me->query_skill("step", 1) < 50)
+  if ((int)me->query_skill("move", 1) < 50)
     return notify_fail("你的基本功夫不到家，练不成唐门身法。
 ");
   return 1;
