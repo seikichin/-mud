@@ -15,8 +15,5 @@ void setup() {
 
 int valid_learn(object me) {
   if (!::valid_learn(me)) return 0;
-  if ((int)me->query("max_force") < 700)
-    return notify_fail("你的内力不够深厚，练不成唐门心法。
-");
   return 1;
 }
