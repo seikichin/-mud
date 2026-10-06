@@ -15,6 +15,7 @@ string send_mail();
 string receive_mail();
 string quest();
 object find_env(object ob);
+int rent_to_tangmen(object me);
 
 void create() {
   set_name("王风", ({ "officer wang", "officer", "wang" }));
@@ -33,6 +34,8 @@ void create() {
     "job": (: quest() :),
     "失物": (: quest() :),
     "驿站": "是啊... 这里就是风云驿，你要寄信或租马车吗？",
+    "唐门": "王风把声音压得极低：唐家堡的车就在后院歇着。您若本就是唐门的人，或是还没入门的白身，敲一声 rent mache tangmen 便是。",
+    "唐家堡": "王风把声音压得极低：唐家堡的车就在后院歇着。您若本就是唐门的人，或是还没入门的白身，敲一声 rent mache tangmen 便是。",
     "寄信": (: send_mail :),
     "信": (: send_mail :),
     "收信": (: receive_mail :),
@@ -76,10 +79,71 @@ string receive_mail() {
   return "好，待我找找....有了，你的信箱在这，慢慢看吧，不打搅你了。\n";
 }
 
+// 唐家堡专车：上车即走，直达唐门驿站，中途不显示行程。
+// 只载两种人：唐门弟子；以及三级以下、尚未入门的白身百姓
+// （唐家堡收弟子只从这样的人里挑，这趟车就是去接他们的）。
+int rent_to_tangmen(object me) {
+  object room;
+  mixed mv;
+
+  if (!me) me = this_player();
+
+  if (me->is_fighting()) {
+    message_vision("$N连连摆手：正打着呢，小的可不敢载您。\n", this_object(), me);
+    return 1;
+  }
+  if (me->is_busy()) {
+    message_vision("$N说：您先把手上的事忙完，车就在这儿等着。\n", this_object(), me);
+    return 1;
+  }
+
+  // 判定白身百姓的写法与 daemon/skill/ironcuff.lpc 一致：
+  // class 与 once_menpai 皆空，才算从未入过门。
+  if (me->query("class") != "tangmen") {
+    if (me->query("class") || me->query("once_menpai")) {
+      message_vision("$N打量了$n一眼，低声道：这道门只通唐家堡，您不是唐门的人，坐不了这趟车。\n",
+        this_object(), me);
+      return 1;
+    }
+    if (F_LEVEL->get_level(me->query("combat_exp")) >= 3) {
+      message_vision("$N摇了摇头：客官已经出道了。唐家堡的门，不是谁都能进的。\n",
+        this_object(), me);
+      return 1;
+    }
+  }
+
+  room = load_object("/d/bylh/tangmen/yizhan");
+  if (!objectp(room)) {
+    message_vision("$N一脸为难：去唐家堡的路，今天走不通。\n", this_object(), me);
+    return 1;
+  }
+
+  message_vision("$N拉开车门，坐进了那辆不起眼的乌木马车。\n", me);
+  tell_object(me, "车帘一放，车夫也不问去处，只把鞭子一甩。\n");
+
+  mv = me->move(room);
+  if (!mv || stringp(mv)) {
+    tell_object(me, "马车刚出城，又折了回来。\n");
+    if (stringp(mv)) tell_object(me, mv);
+    return 1;
+  }
+
+  message_vision("$N从马车上走了下来。\n", me);
+  tell_object(me, "（车马不停，一路直抵唐家堡。）\n");
+  return 1;
+}
+
 int do_rent(string arg) {
 
   object ob, chefu;
   object me = this_player();
+
+  // 去唐家堡的专车：rent mache tangmen
+  if (arg == "mache tangmen" || arg == "mache 唐门"
+    || arg == "carriage tangmen" || arg == "carriage 唐门"
+    || arg == "tangmen" || arg == "唐门")
+    return rent_to_tangmen(me);
+
   if (arg != "carriage" && arg != "mache") {
     return notify_fail("你要租什么？\n");
   }

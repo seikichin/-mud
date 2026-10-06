@@ -1,0 +1,107 @@
+// 《白玉老虎》蜀中唐门 · 唐家堡 · 驿站车夫
+//
+//   唐门弟子凭「rent mache」（或「租 马车」）乘车出堡，
+//   直往风云驿站，中途车马不停（不逐步行走，直接抵达）。
+//   车资八两，从银行存款（deposit）扣除。
+
+inherit NPC;
+#include <ansi.h>
+
+int do_rent(string arg);
+
+void create() {
+  set_name("唐门车夫", ({ "唐门车夫", "tang chefu", "chefu", "wagoner" }));
+  set("gender", "男性");
+  set("age", 34);
+  set("long",
+    "一个穿青布短打的汉子，袖子挽到肘上，露出一道旧疤。\n\n"
+    "他手里捏着一条鞭子，鞭梢磨得发白。\n"
+    "常年走那条出堡的路，风里来雨里去，脸晒成了酱色。\n\n"
+    "他看了你一眼，把鞭子往肩上一搭。\n"
+  );
+  set("combat_exp", 200000);
+  set("class", "tangmen");
+  create_family("唐门", 6, "车夫");
+  set("attitude", "peaceful");
+  set("NO_KILL", 1);
+  set("no_arrest", 1);
+  set("inquiry", ([
+    "马车" :
+      "八两银子一趟，直往风云驿站。要车就说 rent mache。\n",
+    "车" :
+      "车里宽敞，垫子是新换的。\n",
+    "租" :
+      "要车就说 rent mache。\n",
+    "驿站" :
+      "这里就是唐家堡的驿站。车只出堡，直往风云驿站。\n",
+    "风云驿站" :
+      "风云驿在风云城里，是天下最大的驿站。\n"
+      "每天快马三匹，早午晚各传递书信三次。\n"
+      "咱们唐家的车，一向只停在那里。\n",
+    "唐门" :
+      "外人不许在唐家堡里乱走。\n",
+  ]));
+
+  set_skill("dodge", 70);
+  set_skill("move", 70);
+  set_skill("parry", 70);
+  set_skill("unarmed", 70);
+  set_skill("force", 60);
+  set_skill("tangmen-xinfa", 60);
+  map_skill("force", "tangmen-xinfa");
+  setup();
+  carry_object("/d/bylh/tangmen/obj/tangmen-cloth")->wear();
+}
+
+void init() {
+  add_action("do_rent", "rent");
+  add_action("do_rent", "租");
+  add_action("do_rent", "租马车");
+}
+
+int do_rent(string arg) {
+  object me = this_player();
+  int t;
+
+  if (!me || !userp(me))
+    return notify_fail("你要租什么？（rent mache）\n");
+
+  if (arg && arg != "" && arg != "carriage" && arg != "mache" && arg != "马车")
+    return notify_fail("你要租什么？（rent mache）\n");
+
+  // 本驿的车，只拉唐门的人
+  if (me->query("class") != "tangmen") {
+    command("say 唐门的车，不拉外人。");
+    return 1;
+  }
+
+  // 车资八两
+  if (me->query("deposit") < 800) {
+    command("say 一趟八两。你的存银不够。");
+    return notify_fail("你银行里的存款不足八两银子。\n");
+  }
+
+  // 刚下车歇口气（不用 call_out，本环境 call_out 不可靠）
+  t = (int)me->query_temp("tangmen_che_time");
+  if (t && time() - t < 10) {
+    command("say 车马才停，且歇一歇。");
+    return notify_fail("车马才停，且歇一歇。\n");
+  }
+
+  message_vision(HIY "\n$N掀开车帘，坐了进去。\n" NOR, me);
+  message_vision("车夫把鞭子一甩，马车辘辘地出了唐家堡。\n", me);
+
+  if (!me->move("/d/fy/mailst")) {
+    message_vision("车夫勒住马，道：「路不好走，客官稍候。」\n", me);
+    return 1;
+  }
+
+  // 车到了才收钱
+  me->add("deposit", -800);
+  me->set_temp("tangmen_che_time", time());
+
+  message_vision("$N从马车上走了下来。\n", me);
+  tell_object(me, "唐家堡驿站从你的账户上转走了八两银子。\n");
+  tell_object(me, HIY "（车马不停，一路直奔风云驿站。）\n" NOR);
+  return 1;
+}

@@ -29,6 +29,7 @@ LONG
     "northeast" : __DIR__ "yanzhipu",
     "east" : __DIR__ "jiulou",
     "north" : __DIR__ "dating",
+    "southeast" : __DIR__ "yizhan",
   ]));
   setup();
 }
