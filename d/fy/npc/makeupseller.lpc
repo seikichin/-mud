@@ -98,16 +98,32 @@ int accept_object(object who, object ob) {
 
 
   tmpname = "/open/tempmask" + sprintf("%d", time());
-  message_vision("$N对着$n表情僵硬的笑了笑．．．\n", this_object(), who);
   gender = (string)ob->query("targetgender");
   name = (string)ob->query("targetname");
   id = (string)ob->query("targetid");
-  if (!stringp(id)) return 0;
-  if (!find_living(id)) return 0;
-  if (!stringp(gender)) return 0;
-  if (!stringp(name)) return 0;
-  if ((string)gender != "男性" && (string)gender != "女性")
-    return 0;
+
+  // 纸片上没有印下真人的模样：多半是 print 时那个人不在场（没见过面），
+  // 纸上只留下模糊的笔迹，没有记下他的姓名与性别。
+  if (!stringp(id) || !stringp(name)) {
+    return notify_fail(CYN "芳儿把纸片翻来覆去看了半天，皱起眉头：\n"
+      "这上头什么都没有记下，我照什么给你做面具？\n"
+      "先买张空白纸片，用 " HIC "print 全名" NOR CYN " 把要模仿的人印上去再来吧。\n" NOR);
+  }
+
+  // 人不在世（对象未载入）：凭印象做不出一张脸，提示玩家先去亲眼见一见。
+  if (!find_living(id)) {
+    return notify_fail(CYN "芳儿捏着纸片端详了半天，摇了摇头：\n"
+      "你最近有见过" + name + "（" + id + "）吗？\n"
+      "没见过面，凭印象怎么给你做面具？\n"
+      "你还是去亲自见一见他，再回来找我吧。\n" NOR);
+  }
+
+  if (!stringp(gender) || ((string)gender != "男性" && (string)gender != "女性")) {
+    return notify_fail(CYN "芳儿看了看纸片，为难地说：\n"
+      "这人是男是女都没写清楚，我可不敢乱做。\n" NOR);
+  }
+
+  message_vision("$N对着$n表情僵硬的笑了笑．．．\n", this_object(), who);
   id = capitalize(id);
   newfile = read_file("/obj/item/orig_mask.o");
   if (!newfile) return 0;

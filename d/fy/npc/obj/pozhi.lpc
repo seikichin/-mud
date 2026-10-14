@@ -27,6 +27,8 @@ int do_print(string arg) {
   // No more player faking wizard	
   if (!tarobj || (objectp(tarobj) && tarobj->query("wiz_invis"))) {
     message_vision("$N把" + target + "写在$n上。\n", this_player(), this_object());
+    tell_object(this_player(), HIR "（你根本没见过" + target + "，"
+      "纸上只留下一团模糊的墨迹，印不出他的模样．）\n" NOR);
     this_object()->set("long",
       "这是一张" + this_object()->name() + "，上面写着＂" + target + "＂几个小字．\n");
   } else {
